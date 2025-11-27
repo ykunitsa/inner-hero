@@ -8,76 +8,91 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 // MARK: - Step Timer Controller
 
 /// Контроллер для управления таймером конкретного шага
-@Observable
 class StepTimerController {
-    var isRunning: Bool = false
-    var elapsedTime: TimeInterval = 0
-    var isPaused: Bool = false
+    private(set) var isRunning: Bool = false
+    private(set) var elapsedTime: TimeInterval = 0
+    private(set) var isPaused: Bool = false
     
-    private var timer: Timer?
-    private var pausedTime: TimeInterval = 0
+    private var cancellable: AnyCancellable?
+    private var startTime: Date?
+    private var pausedDuration: TimeInterval = 0
     
-    /// Запустить таймер
+    // Callback для обновления UI
+    var onTimeUpdate: ((TimeInterval) -> Void)?
+    
+    // Добавить этот метод для установки времени извне
+    func setElapsedTime(_ time: TimeInterval) {
+        elapsedTime = time
+        pausedDuration = time
+        onTimeUpdate?(time)
+    }
+    
     func start() {
         guard !isRunning else { return }
         
         isRunning = true
         isPaused = false
+        startTime = Date()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            guard let self: StepTimerController = self else { return }
-            self.elapsedTime += 0.1
-        }
+        cancellable = Timer.publish(every: 0.1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.updateElapsedTime()
+            }
     }
     
-    /// Приостановить таймер
+    private func updateElapsedTime() {
+        guard let startTime = startTime, isRunning, !isPaused else { return }
+        elapsedTime = Date().timeIntervalSince(startTime) + pausedDuration
+        onTimeUpdate?(elapsedTime)
+    }
+    
     func pause() {
         guard isRunning, !isPaused else { return }
         
         isPaused = true
-        pausedTime = elapsedTime
-        timer?.invalidate()
-        timer = nil
+        pausedDuration = elapsedTime
+        cancellable?.cancel()
     }
     
-    /// Возобновить таймер
     func resume() {
         guard isPaused else { return }
         
         isPaused = false
-        elapsedTime = pausedTime
+        startTime = Date()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            self.elapsedTime += 0.1
-        }
+        cancellable = Timer.publish(every: 0.1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.updateElapsedTime()
+            }
     }
     
-    /// Сбросить таймер
     func reset() {
         stop()
         elapsedTime = 0
-        pausedTime = 0
+        pausedDuration = 0
+        startTime = nil
+        onTimeUpdate?(0)
     }
     
-    /// Остановить таймер
     func stop() {
         isRunning = false
         isPaused = false
-        timer?.invalidate()
-        timer = nil
+        cancellable?.cancel()
+        cancellable = nil
+        startTime = nil
     }
     
-    /// Получить оставшееся время для таймера обратного отсчёта
     func remainingTime(for duration: TimeInterval) -> TimeInterval {
         return max(0, duration - elapsedTime)
     }
     
-    /// Проверить, истёк ли таймер
     func isExpired(for duration: TimeInterval) -> Bool {
         return elapsedTime >= duration
     }
@@ -144,6 +159,7 @@ struct ActiveSessionView: View {
     // Шаги
     @State private var completedSteps: Set<Int> = []
     @State private var stepTimers: [Int: StepTimerController] = [:]
+    @State private var timerElapsedTimes: [Int: TimeInterval] = [:]
     
     // UI preferences
     @State private var showTimer: Bool = true
@@ -510,8 +526,9 @@ struct ActiveSessionView: View {
     private func timerControlSection(for step: Step, at index: Int) -> some View {
         let timerController = getStepTimer(index)
         let duration = TimeInterval(step.timerDuration)
-        let remaining = timerController.remainingTime(for: duration)
-        let isExpired = timerController.isExpired(for: duration)
+        let elapsedTime = timerElapsedTimes[index] ?? 0
+        let remaining = max(0, duration - elapsedTime)
+        let isExpired = elapsedTime >= duration
         
         return VStack(spacing: 16) {
             // Timer display toggle
@@ -832,7 +849,8 @@ struct ActiveSessionView: View {
         // Восстановить таймеры шагов
         for (index, time) in session.stepTimings {
             let timer = getStepTimer(index)
-            timer.elapsedTime = time
+            timer.setElapsedTime(time) // Используем новый метод
+            timerElapsedTimes[index] = time // Также обновляем UI состояние
         }
     }
     
@@ -985,6 +1003,9 @@ struct ActiveSessionView: View {
             return existing
         }
         let newTimer = StepTimerController()
+        newTimer.onTimeUpdate = { [self] time in
+            timerElapsedTimes[index] = time
+        }
         stepTimers[index] = newTimer
         return newTimer
     }

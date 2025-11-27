@@ -81,8 +81,8 @@ struct ExposuresListView: View {
                     showingActiveSession = true
                 }
             }
-            .navigationDestination(isPresented: $showingActiveSession) {
-                if let session = currentSession, let exposure = exposureToStart {
+            .navigationDestination(item: $currentSession) { session in
+                if let exposure = session.exposure {
                     ActiveSessionView(session: session, exposure: exposure)
                 }
             }
