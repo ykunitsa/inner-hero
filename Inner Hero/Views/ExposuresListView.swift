@@ -55,7 +55,7 @@ struct ExposuresListView: View {
             }
             // HIG: Использование semantic color вместо кастомного backgroundColor
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
-            .navigationTitle("Inner Hero")
+            .navigationTitle("Экспозиции")
             // HIG: .large для главного экрана приложения
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -64,27 +64,21 @@ struct ExposuresListView: View {
                     Button {
                         showingCreateSheet = true
                     } label: {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: "plus")
                             // HIG: Dynamic Type - .title2 вместо фиксированного размера
-                            .font(.title2)
-                            // HIG: Использование системного .teal вместо кастомного primaryGreen
-                            .foregroundStyle(.teal)
+                            .font(.headline)
                     }
-                    // HIG: Минимальный touch target 44x44pt для кнопок
-                    .frame(minWidth: 44, minHeight: 44)
                     .accessibilityLabel("Добавить экспозицию")
                 }
             }
             .sheet(isPresented: $showingCreateSheet) {
                 CreateExposureView()
             }
-            .sheet(isPresented: $showingStartSession) {
-                if let exposure = exposureToStart {
-                    StartSessionSheet(exposure: exposure) { session in
-                        currentSession = session
-                        showingStartSession = false
-                        showingActiveSession = true
-                    }
+            .sheet(item: $exposureToStart) { exposure in 
+                StartSessionSheet(exposure: exposure) { session in
+                    currentSession = session
+                    showingStartSession = false
+                    showingActiveSession = true
                 }
             }
             .navigationDestination(isPresented: $showingActiveSession) {
@@ -379,7 +373,6 @@ struct ExposuresListView: View {
     
     private func startSession(for exposure: Exposure) {
         exposureToStart = exposure
-        showingStartSession = true
     }
     
     private func deleteExposures(offsets: IndexSet) {
