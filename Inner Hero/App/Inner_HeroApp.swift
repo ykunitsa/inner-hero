@@ -1,10 +1,3 @@
-//
-//  Inner_HeroApp.swift
-//  Inner Hero
-//
-//  Created by Yauheni Kunitsa on 21.10.25.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -22,7 +15,6 @@ struct Inner_HeroApp: App {
     }()
     
     init() {
-        // Автоматическая загрузка тестовых данных при первом запуске
         loadSampleDataIfNeeded()
     }
 
@@ -39,13 +31,11 @@ struct Inner_HeroApp: App {
     
     // MARK: - Sample Data Loading
     
-    /// Загрузить примеры данных при первом запуске
     private func loadSampleDataIfNeeded() {
-        // Загружать только один раз или в DEBUG режиме
         #if DEBUG
         let shouldLoad = !hasLoadedSampleData
         #else
-        let shouldLoad = false // В релизной версии не загружать автоматически
+        let shouldLoad = false
         #endif
         
         guard shouldLoad else { return }
@@ -53,12 +43,9 @@ struct Inner_HeroApp: App {
         do {
             let context = sharedModelContainer.mainContext
             
-            // Проверить, что база данных пустая
             if try SampleDataLoader.isDatabaseEmpty(context) {
-                // Загрузить экспозиции из JSON
                 try SampleDataLoader.loadSampleExposures(into: context)
                 
-                // Опционально: создать примеры сеансов для тестирования графиков
                 let exposures = try context.fetch(FetchDescriptor<Exposure>())
                 try SampleDataLoader.loadSampleSessions(for: exposures, into: context)
                 

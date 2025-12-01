@@ -1,10 +1,3 @@
-//
-//  SessionView.swift
-//  Inner Hero
-//
-//  Created by Yauheni Kunitsa on 21.10.25.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -19,7 +12,6 @@ struct SessionView: View {
     @State private var showError = false
     @State private var errorMessage = ""
     
-    // HIG: Accessibility — Reduce Motion support
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     
     private var dataManager: DataManager {
@@ -36,7 +28,6 @@ struct SessionView: View {
                 }
             }
             .navigationTitle("Сеанс")
-            // HIG: Navigation — Large title для главных экранов
             .navigationBarTitleDisplayMode(.large)
             .navigationDestination(isPresented: $showingActiveSession) {
                 if let session = currentSession, let exposure = selectedExposure {
@@ -54,7 +45,6 @@ struct SessionView: View {
     // MARK: - Subviews
     
     private var emptyStateView: some View {
-        // HIG: Empty States — ContentUnavailableView для пустых состояний
         ContentUnavailableView(
             "Нет экспозиций",
             systemImage: "play.circle",
@@ -64,10 +54,10 @@ struct SessionView: View {
     
     private var startSessionForm: some View {
         ScrollView {
-            VStack(spacing: 32) { // HIG: Spacing — 32pt между major sections
+            VStack(spacing: 32) {
                 formHeader
                 
-                VStack(spacing: 24) { // HIG: Spacing — 24pt между секциями формы
+                VStack(spacing: 24) {
                     exposureSelectionSection
                     
                     Divider()
@@ -79,47 +69,41 @@ struct SessionView: View {
                 startSessionButton
             }
         }
-        // HIG: Colors — semantic background для scroll view
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
     }
     
     // MARK: - Form Components
     
     private var formHeader: some View {
-        VStack(spacing: 16) { // HIG: Spacing — 16pt между связанными элементами
+        VStack(spacing: 16) {
             Image(systemName: "figure.mind.and.body")
-                // HIG: Typography — используем Dynamic Type вместо .system(size: 70)
                 .font(.system(size: 64))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(.blue)
-                // HIG: Accessibility — декоративная иконка скрыта от VoiceOver
                 .accessibilityHidden(true)
             
             Text("Начать новый сеанс")
-                // HIG: Typography — .title2 для section headers (22pt)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundStyle(.primary)
         }
-        .padding(.top, 24) // HIG: Spacing — 24pt от верхнего края
+        .padding(.top, 24)
     }
     
     private var exposureSelectionSection: some View {
-        VStack(alignment: .leading, spacing: 12) { // HIG: Spacing — 12pt для form fields
+        VStack(alignment: .leading, spacing: 12) {
             Label("Выберите экспозицию", systemImage: "list.bullet.clipboard")
-                // HIG: Typography — .headline для emphasized labels (17pt semibold)
                 .font(.headline)
                 .foregroundStyle(.primary)
             
             if let selected = selectedExposure {
                 exposureCard(selected)
-                    // HIG: Animation — условная анимация с reduceMotion
                     .transition(.opacity.combined(with: .scale(scale: 0.98)))
             }
             
             exposureSelectionMenu
         }
-        .padding(.horizontal, 20) // HIG: Spacing — 20pt горизонтальные отступы от краев экрана
+        .padding(.horizontal, 20)
     }
     
     private var exposureSelectionMenu: some View {
@@ -139,7 +123,6 @@ struct SessionView: View {
         } label: {
             exposureSelectionMenuLabel
         }
-        // HIG: Touch Targets — минимум 44x44pt для интерактивных элементов
         .frame(minHeight: 44)
         .accessibilityLabel("Выбор экспозиции")
         .accessibilityHint(selectedExposure == nil ? "Выберите экспозицию для начала сеанса" : "Текущая экспозиция: \(selectedExposure?.title ?? "")")
@@ -148,30 +131,23 @@ struct SessionView: View {
     private var exposureSelectionMenuLabel: some View {
         HStack {
             Text(selectedExposure == nil ? "Выбрать экспозицию" : "Изменить выбор")
-                // HIG: Typography — .body для основного текста (17pt)
                 .font(.body)
                 .foregroundStyle(selectedExposure == nil ? Color.secondary : Color.blue)
             Spacer()
             Image(systemName: "chevron.down")
-                // HIG: Typography — .footnote для вспомогательных иконок
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
-        // HIG: Spacing — 16pt padding для интерактивных элементов
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        // HIG: Colors — semantic background colors
         .background(Color(.secondarySystemGroupedBackground))
-        // HIG: Layout — .continuous corner radius для современного вида
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
     
     private func selectExposure(_ exposure: Exposure) {
-        // HIG: Animation — respect Reduce Motion
         withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.3)) {
             selectedExposure = exposure
         }
-        // HIG: Haptics — selection feedback
         let generator = UISelectionFeedbackGenerator()
         generator.selectionChanged()
     }
@@ -183,43 +159,34 @@ struct SessionView: View {
                             .foregroundStyle(.primary)
                         
                         Text("Оцените ваш текущий уровень тревоги до начала сеанса")
-                            // HIG: Typography — .subheadline для supporting text (15pt)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                         
-                        VStack(spacing: 20) { // HIG: Spacing — 20pt между элементами контрола
-                            // Anxiety Value Display
+                        VStack(spacing: 20) {
                             HStack {
                                 Spacer()
                                 Text("\(Int(anxietyBefore))")
-                                    // HIG: Typography — Dynamic Type для больших цифр
                                     .font(.system(.largeTitle, design: .rounded))
                                     .fontWeight(.bold)
-                                    // HIG: Typography — предотвращаем "прыгание" цифр
                                     .monospacedDigit()
                                     .foregroundStyle(anxietyColor(for: Int(anxietyBefore)))
-                                    // HIG: Accessibility — описание значения для VoiceOver
                                     .accessibilityLabel("Уровень тревоги: \(Int(anxietyBefore)) из 10")
                                 Spacer()
                             }
-                            .padding(.vertical, 12) // HIG: Spacing — 12pt vertical padding
+                            .padding(.vertical, 12)
                             
-                            // Slider
-                            VStack(spacing: 8) { // HIG: Spacing — 8pt tight spacing
+                            VStack(spacing: 8) {
                                 Slider(value: $anxietyBefore, in: 0...10, step: 1)
                                     .tint(anxietyColor(for: Int(anxietyBefore)))
-                                    // HIG: Accessibility — VoiceOver label для slider
                                     .accessibilityLabel("Уровень тревоги")
                                     .accessibilityValue("\(Int(anxietyBefore)) из 10")
                                     .onChange(of: anxietyBefore) { _, _ in
-                                        // HIG: Haptics — feedback при изменении значения
                                         let generator = UISelectionFeedbackGenerator()
                                         generator.selectionChanged()
                                     }
                                 
                                 HStack {
                                     Text("0\nНет тревоги")
-                                        // HIG: Typography — .caption2 для smallest text (11pt)
                                         .font(.caption2)
                                         .multilineTextAlignment(.leading)
                                         .foregroundStyle(.secondary)
@@ -234,30 +201,21 @@ struct SessionView: View {
                                         .multilineTextAlignment(.trailing)
                                         .foregroundStyle(.secondary)
                                 }
-                                // HIG: Accessibility — скрываем декоративные метки от VoiceOver
                                 .accessibilityHidden(true)
                             }
                             
-                            // Anxiety Description
                             Text(anxietyDescription(for: Int(anxietyBefore)))
-                                // HIG: Typography — .callout для secondary content (16pt)
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
-                                .padding(.vertical, 12) // HIG: Spacing — 12pt padding
+                                .padding(.vertical, 12)
                                 .frame(maxWidth: .infinity)
-                                // HIG: Colors — semantic background colors
                                 .background(Color(.tertiarySystemGroupedBackground))
-                                // HIG: Layout — .continuous corner radius
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                                // HIG: Accessibility — VoiceOver читает описание
                                 .accessibilityLabel("Описание уровня тревоги: \(anxietyDescription(for: Int(anxietyBefore)))")
                         }
-                        // HIG: Spacing — 20pt padding для card-like контента
                         .padding(20)
-                        // HIG: Colors — subtle background для выделения секции
                         .background(Color(.secondarySystemGroupedBackground))
-                        // HIG: Layout — .continuous corner radius 12pt
                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
                     .padding(.horizontal, 20)
@@ -268,36 +226,30 @@ struct SessionView: View {
                     startSession()
                 } label: {
                     Label("Начать сеанс", systemImage: "play.fill")
-                        // HIG: Typography — .headline для button labels (17pt semibold)
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                 }
-                // HIG: Buttons — используем .borderedProminent для primary actions
                 .buttonStyle(.borderedProminent)
                 .tint(.blue)
-                // HIG: Touch Targets — минимум 56pt для prominent buttons
                 .controlSize(.large)
                 .disabled(selectedExposure == nil)
                 .padding(.horizontal, 20)
-                .padding(.bottom, 24) // HIG: Spacing — 24pt bottom padding
-                // HIG: Accessibility — VoiceOver hint
+                .padding(.bottom, 24)
                 .accessibilityHint(selectedExposure == nil ? "Сначала выберите экспозицию" : "Начать сеанс с экспозицией \(selectedExposure?.title ?? "")")
     }
     
     // MARK: - Helper Views
     
     private func exposureCard(_ exposure: Exposure) -> some View {
-        VStack(alignment: .leading, spacing: 8) { // HIG: Spacing — 8pt tight spacing внутри card
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
-                VStack(alignment: .leading, spacing: 4) { // HIG: Spacing — 4pt между title и description
+                VStack(alignment: .leading, spacing: 4) {
                     Text(exposure.title)
-                        // HIG: Typography — .body.weight(.semibold) для card titles
                         .font(.body)
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
                     
                     Text(exposure.exposureDescription)
-                        // HIG: Typography — .subheadline для secondary text (15pt)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
@@ -305,21 +257,15 @@ struct SessionView: View {
                 Spacer()
             }
         }
-        // HIG: Spacing — 16pt padding для compact cards
         .padding(16)
-        // HIG: Colors — semantic background с accent color overlay
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                // HIG: Colors — 8% opacity для subtle backgrounds
                 .fill(Color.blue.opacity(0.08))
         )
-        // HIG: Layout — stroke для выделения выбранного элемента
         .overlay(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                // HIG: Colors — 30% opacity для borders
                 .stroke(Color.blue.opacity(0.3), lineWidth: 1.5)
         )
-        // HIG: Accessibility — VoiceOver описание карточки
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Выбранная экспозиция: \(exposure.title). \(exposure.exposureDescription)")
     }
@@ -327,14 +273,13 @@ struct SessionView: View {
     // MARK: - Helper Functions
     
     private func anxietyColor(for value: Int) -> Color {
-        // HIG: Colors — semantic colors для anxiety levels
         switch value {
         case 0...3:
-            return .green       // Low anxiety
+            return .green
         case 4...6:
-            return .orange      // Moderate anxiety
+            return .orange
         case 7...10:
-            return .red         // High anxiety
+            return .red
         default:
             return .gray
         }
@@ -364,7 +309,6 @@ struct SessionView: View {
     private func startSession() {
         guard let exposure = selectedExposure else { return }
         
-        // HIG: Haptics — medium impact для важных действий
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         
@@ -376,7 +320,6 @@ struct SessionView: View {
             currentSession = session
             showingActiveSession = true
         } catch {
-            // HIG: Haptics — error feedback при ошибке
             let errorGenerator = UINotificationFeedbackGenerator()
             errorGenerator.notificationOccurred(.error)
             
