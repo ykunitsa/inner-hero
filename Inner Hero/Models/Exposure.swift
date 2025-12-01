@@ -1,10 +1,3 @@
-//
-//  Exposure.swift
-//  Inner Hero
-//
-//  Created by Yauheni Kunitsa on 21.10.25.
-//
-
 import Foundation
 import SwiftData
 
@@ -14,8 +7,8 @@ import SwiftData
 final class Step {
     var text: String
     var hasTimer: Bool
-    var timerDuration: Int // Длительность в секундах
-    var order: Int // Порядковый номер шага
+    var timerDuration: Int
+    var order: Int
     
     init(text: String, hasTimer: Bool = false, timerDuration: Int = 300, order: Int = 0) {
         self.text = text
@@ -35,7 +28,6 @@ final class Exposure {
     var steps: [Step]
     var createdAt: Date
     
-    // Один-ко-многим: одна экспозиция может иметь много результатов сеансов
     @Relationship(deleteRule: .cascade, inverse: \SessionResult.exposure)
     var sessionResults: [SessionResult]
     
@@ -54,4 +46,3 @@ final class Exposure {
         self.sessionResults = []
     }
 }
-

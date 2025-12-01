@@ -1,145 +1,5 @@
-//
-//  ActiveSessionView.swift
-//  Inner Hero
-//
-//  Calm, focused exposure session screen for anxious users
-//  Redesigned according to Apple HIG and Design Guidelines
-//
-
 import SwiftUI
 import SwiftData
-import Combine
-
-// MARK: - Step Timer Controller
-
-/// Контроллер для управления таймером конкретного шага
-class StepTimerController {
-    private(set) var isRunning: Bool = false
-    private(set) var elapsedTime: TimeInterval = 0
-    private(set) var isPaused: Bool = false
-    
-    private var cancellable: AnyCancellable?
-    private var startTime: Date?
-    private var pausedDuration: TimeInterval = 0
-    
-    // Callback для обновления UI
-    var onTimeUpdate: ((TimeInterval) -> Void)?
-    
-    // Добавить этот метод для установки времени извне
-    func setElapsedTime(_ time: TimeInterval) {
-        elapsedTime = time
-        pausedDuration = time
-        onTimeUpdate?(time)
-    }
-    
-    func start() {
-        guard !isRunning else { return }
-        
-        isRunning = true
-        isPaused = false
-        startTime = Date()
-        
-        cancellable = Timer.publish(every: 0.1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                self?.updateElapsedTime()
-            }
-    }
-    
-    private func updateElapsedTime() {
-        guard let startTime = startTime, isRunning, !isPaused else { return }
-        elapsedTime = Date().timeIntervalSince(startTime) + pausedDuration
-        onTimeUpdate?(elapsedTime)
-    }
-    
-    func pause() {
-        guard isRunning, !isPaused else { return }
-        
-        isPaused = true
-        pausedDuration = elapsedTime
-        cancellable?.cancel()
-    }
-    
-    func resume() {
-        guard isPaused else { return }
-        
-        isPaused = false
-        startTime = Date()
-        
-        cancellable = Timer.publish(every: 0.1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                self?.updateElapsedTime()
-            }
-    }
-    
-    func reset() {
-        stop()
-        elapsedTime = 0
-        pausedDuration = 0
-        startTime = nil
-        onTimeUpdate?(0)
-    }
-    
-    func stop() {
-        isRunning = false
-        isPaused = false
-        cancellable?.cancel()
-        cancellable = nil
-        startTime = nil
-    }
-    
-    func remainingTime(for duration: TimeInterval) -> TimeInterval {
-        return max(0, duration - elapsedTime)
-    }
-    
-    func isExpired(for duration: TimeInterval) -> Bool {
-        return elapsedTime >= duration
-    }
-    
-    deinit {
-        stop()
-    }
-}
-
-// MARK: - Breathing Animation Controller
-
-@Observable
-class BreathingController {
-    var isBreathing: Bool = false
-    var breathPhase: BreathPhase = .inhale
-    
-    enum BreathPhase {
-        case inhale, hold, exhale, rest
-        
-        var duration: TimeInterval {
-            switch self {
-            case .inhale: return 4.0
-            case .hold: return 2.0
-            case .exhale: return 6.0
-            case .rest: return 2.0
-            }
-        }
-        
-        var instruction: String {
-            switch self {
-            case .inhale: return "Вдохните медленно..."
-            case .hold: return "Задержите дыхание..."
-            case .exhale: return "Выдохните медленно..."
-            case .rest: return "Расслабьтесь..."
-            }
-        }
-        
-        var next: BreathPhase {
-            switch self {
-            case .inhale: return .hold
-            case .hold: return .exhale
-            case .exhale: return .rest
-            case .rest: return .inhale
-            }
-        }
-    }
-}
 
 // MARK: - Active Session View
 
@@ -150,23 +10,19 @@ struct ActiveSessionView: View {
     let session: SessionResult
     let exposure: Exposure
     
-    // Состояние
     @State private var notes: String = ""
     @State private var showingCompletion = false
     @State private var showingPauseModal = false
     @State private var showingInterruptAlert = false
     
-    // Шаги
     @State private var completedSteps: Set<Int> = []
     @State private var stepTimers: [Int: StepTimerController] = [:]
     @State private var timerElapsedTimes: [Int: TimeInterval] = [:]
     
-    // UI preferences
     @State private var showTimer: Bool = true
     @State private var showProgressBar: Bool = false
     @State private var showAllSteps: Bool = false
     
-    // Breathing guide
     @State private var breathingController = BreathingController()
     @State private var showBreathingGuide = false
     @State private var breathScale: CGFloat = 0.6
@@ -180,14 +36,12 @@ struct ActiveSessionView: View {
         exposure.steps.sorted(by: { $0.order < $1.order })
     }
     
-    // Автоматическое определение текущего шага: первый невыполненный
     private var currentStepIndex: Int {
         for (index, _) in steps.enumerated() {
             if !completedSteps.contains(index) {
                 return index
             }
         }
-        // Если все выполнены, вернуть последний шаг
         return max(0, steps.count - 1)
     }
     
@@ -203,34 +57,26 @@ struct ActiveSessionView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 40) {
-                // Progress indicator
                 stepProgressIndicator
                 
-                // Current step
                 if let step = currentStep {
                     currentStepLargeCard(step: step, index: currentStepIndex)
                 } else if allStepsCompleted {
                     completionPrompt
                 }
                 
-                // Session controls - moved up for better visibility
                 sessionControlButtons
                 
-                // Timer controls (if step has timer)
                 if let step = currentStep, step.hasTimer {
                     timerControlSection(for: step, at: currentStepIndex)
                 }
                 
-                // Breathing guide
                 breathingGuideSection
                 
-                // Navigation buttons
                 navigationButtons
                 
-                // Optional: Show all steps toggle
                 showAllStepsToggle
                 
-                // All steps (collapsible)
                 if showAllSteps {
                     allStepsSection
                 }
@@ -277,7 +123,6 @@ struct ActiveSessionView: View {
                     dismiss()
                 }
             )
-            // HIG: Standard sheet detents
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }
@@ -292,8 +137,6 @@ struct ActiveSessionView: View {
         }
     }
     
-    // MARK: - View Components
-    
     private var stepProgressIndicator: some View {
         VStack(spacing: 8) {
             Text("Шаг \(currentStepIndex + 1) из \(steps.count)")
@@ -301,7 +144,6 @@ struct ActiveSessionView: View {
                 .foregroundStyle(.secondary)
                 .accessibilityLabel("Шаг \(currentStepIndex + 1) из \(steps.count)")
             
-            // Progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 3, style: .continuous)
@@ -393,7 +235,6 @@ struct ActiveSessionView: View {
     
     private var sessionControlButtons: some View {
         VStack(spacing: 12) {
-            // Complete session button - primary
             Button {
                 saveProgress()
                 showingCompletion = true
@@ -416,7 +257,6 @@ struct ActiveSessionView: View {
             .accessibilityLabel("Завершить сеанс")
             .accessibilityHint("Дважды нажмите чтобы завершить и сохранить результаты")
             
-            // Pause button - secondary
             Button {
                 showingPauseModal = true
             } label: {
@@ -772,7 +612,6 @@ struct ActiveSessionView: View {
         let isCurrent = index == currentStepIndex
         
         return HStack(spacing: 16) {
-            // Step number indicator
             ZStack {
                 Circle()
                     .fill(isCompleted ? Color.green : (isCurrent ? Color.teal : Color.gray.opacity(0.3)))
@@ -791,7 +630,6 @@ struct ActiveSessionView: View {
             }
             .accessibilityHidden(true)
             
-            // Step content
             VStack(alignment: .leading, spacing: 6) {
                 Text(step.text)
                     .font(.body)
@@ -815,7 +653,6 @@ struct ActiveSessionView: View {
             
             Spacer()
             
-            // Toggle button
             Button {
                 toggleStepCompletion(index)
             } label: {
@@ -843,19 +680,16 @@ struct ActiveSessionView: View {
     // MARK: - Helper Functions
     
     private func setupSession() {
-        // Восстановить состояние из SessionResult
         completedSteps = Set(session.completedStepIndices)
         
-        // Восстановить таймеры шагов
         for (index, time) in session.stepTimings {
             let timer = getStepTimer(index)
-            timer.setElapsedTime(time) // Используем новый метод
-            timerElapsedTimes[index] = time // Также обновляем UI состояние
+            timer.setElapsedTime(time)
+            timerElapsedTimes[index] = time
         }
     }
     
     private func cleanupSession() {
-        // Остановить все таймеры шагов
         for (_, timer) in stepTimers {
             timer.stop()
         }
@@ -863,22 +697,18 @@ struct ActiveSessionView: View {
     }
     
     private func saveProgress() {
-        // Сохранить выполненные шаги
         session.completedStepIndices = Array(completedSteps).sorted()
         
-        // Сохранить время для каждого шага
         for (index, timer) in stepTimers {
             if timer.elapsedTime > 0 {
                 session.setStepTime(index, time: timer.elapsedTime)
             }
         }
         
-        // Сохранить заметки
         if !notes.isEmpty {
             session.notes = notes
         }
         
-        // Сохранить контекст
         try? modelContext.save()
     }
     
@@ -897,7 +727,6 @@ struct ActiveSessionView: View {
                 session.markStepCompleted(index)
                 triggerSuccessHaptic()
                 
-                // Остановить таймер шага при его завершении
                 if let timer = stepTimers[index] {
                     timer.stop()
                 }
@@ -910,7 +739,6 @@ struct ActiveSessionView: View {
     private func goToNextStep() {
         guard currentStepIndex < steps.count - 1 else { return }
         
-        // Mark current step as completed if not already
         if !completedSteps.contains(currentStepIndex) {
             toggleStepCompletion(currentStepIndex)
         }
@@ -921,7 +749,6 @@ struct ActiveSessionView: View {
     private func goToPreviousStep() {
         guard currentStepIndex > 0 else { return }
         
-        // Mark current step as incomplete to go back
         if completedSteps.contains(currentStepIndex - 1) {
             toggleStepCompletion(currentStepIndex - 1)
         }
@@ -957,7 +784,6 @@ struct ActiveSessionView: View {
         let phase = breathingController.breathPhase
         let duration = phase.duration
         
-        // Animate scale based on phase
         withAnimation(.easeInOut(duration: duration)) {
             switch phase {
             case .inhale:
@@ -971,12 +797,10 @@ struct ActiveSessionView: View {
             }
         }
         
-        // Trigger haptic at phase transitions
         if phase == .inhale || phase == .exhale {
             triggerHaptic(.light)
         }
         
-        // Schedule next phase
         breathTimer?.invalidate()
         breathTimer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { _ in
             self.breathingController.breathPhase = phase.next
@@ -1028,407 +852,12 @@ struct ActiveSessionView: View {
     }
 }
 
-// MARK: - Pause Session Modal
-
-struct PauseSessionModal: View {
-    let onResume: () -> Void
-    let onEnd: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 32) {
-            // Icon and header section
-            VStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(Color.teal.opacity(0.15))
-                        .frame(width: 64, height: 64)
-                    
-                    Image(systemName: "heart.fill")
-                        .font(.system(size: 28))
-                        .foregroundStyle(.teal)
-                }
-                .accessibilityHidden(true)
-                
-                VStack(spacing: 8) {
-                    Text("Вы делаете отлично!")
-                        .font(.title3.weight(.semibold))
-                        .multilineTextAlignment(.center)
-                    
-                    Text("Вы уже проделали важную работу. Можете отдохнуть в любое время.")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                }
-            }
-            .padding(.top, 24)
-            
-            // Supportive messages
-            VStack(alignment: .leading, spacing: 10) {
-                supportiveMessage(icon: "checkmark.circle.fill", text: "Делайте перерывы когда нужно")
-                supportiveMessage(icon: "heart.circle.fill", text: "Забота о себе - это не слабость")
-                supportiveMessage(icon: "star.circle.fill", text: "Каждый шаг - это прогресс")
-            }
-            .padding(.horizontal, 20)
-            
-            Spacer()
-            
-            // Action buttons
-            VStack(spacing: 12) {
-                // Primary action - Resume
-                Button {
-                    onResume()
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "play.fill")
-                            .font(.subheadline)
-                            .accessibilityHidden(true)
-                        Text("Продолжить сеанс")
-                            .font(.headline)
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.teal)
-                    )
-                }
-                .accessibilityLabel("Продолжить сеанс")
-                .accessibilityHint("Дважды нажмите чтобы вернуться к сеансу")
-                
-                // Secondary action - End
-                Button {
-                    onEnd()
-                } label: {
-                    Text("Завершить на сегодня")
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color(.tertiarySystemBackground))
-                        )
-                }
-                .accessibilityLabel("Завершить на сегодня")
-                .accessibilityHint("Дважды нажмите чтобы завершить сеанс без сохранения")
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
-        }
-        .background(Color(.systemGroupedBackground))
-    }
-    
-    private func supportiveMessage(icon: String, text: String) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: icon)
-                .font(.subheadline)
-                .foregroundStyle(.teal)
-                .frame(width: 20)
-                .accessibilityHidden(true)
-            
-            Text(text)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
-            
-            Spacer()
-        }
-        .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-        )
-    }
-}
-
-// MARK: - Complete Session View
-
-struct CompleteSessionView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
-    
-    let session: SessionResult
-    let notes: String
-    let onComplete: () -> Void
-    
-    @State private var anxietyAfter: Double = 5
-    @State private var finalNotes: String = ""
-    @State private var showError = false
-    @State private var errorMessage = ""
-    
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
-    
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 32) {
-                    // Header
-                    VStack(spacing: 12) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.teal)
-                            .accessibilityHidden(true)
-                        
-                        Text("Завершение сеанса")
-                            .font(.title3.weight(.semibold))
-                    }
-                    .padding(.top, 20)
-                    
-                    // Session Summary
-                    sessionSummaryCard
-                    
-                    // Anxiety After section
-                    VStack(alignment: .leading, spacing: 16) {
-                        Label("Уровень тревоги после сеанса", systemImage: "gauge")
-                            .font(.headline)
-                        
-                        Text("Оцените ваш уровень тревоги сейчас (0–10)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        
-                        VStack(spacing: 16) {
-                            HStack {
-                                Spacer()
-                                Text("\(Int(anxietyAfter))")
-                                    .font(.system(.title, design: .rounded))
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(anxietyColor(for: Int(anxietyAfter)))
-                                    .monospacedDigit()
-                                Spacer()
-                            }
-                            
-                            Slider(value: $anxietyAfter, in: 0...10, step: 1)
-                                .tint(anxietyColor(for: Int(anxietyAfter)))
-                        }
-                        .padding(16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color(.secondarySystemGroupedBackground))
-                        )
-                    }
-                    .padding(.horizontal, 20)
-                    .accessibilityElement(children: .contain)
-                    .accessibilityLabel("Уровень тревоги после сеанса")
-                    
-                    // Progress
-                    progressCard
-                    
-                    // Additional Notes section
-                    VStack(alignment: .leading, spacing: 12) {
-                        Label("Дополнительные заметки", systemImage: "note.text")
-                            .font(.headline)
-                        
-                        TextEditor(text: $finalNotes)
-                            .frame(minHeight: 100)
-                            .padding(10)
-                            .background(Color(.tertiarySystemBackground))
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    }
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color(.secondarySystemGroupedBackground))
-                    )
-                    .padding(.horizontal, 20)
-                    
-                    // Primary action button
-                    Button {
-                        completeSession()
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "checkmark")
-                                .font(.subheadline)
-                            Text("Сохранить результат")
-                                .font(.headline)
-                        }
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color.teal)
-                        )
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 32)
-                    .accessibilityLabel("Сохранить результат сеанса")
-                    .accessibilityHint("Дважды нажмите чтобы сохранить и завершить")
-                }
-            }
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
-            .navigationTitle("Завершение")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
-                        dismiss()
-                    }
-                }
-            }
-            .alert("Ошибка", isPresented: $showError) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(errorMessage)
-            }
-        }
-        .onAppear {
-            finalNotes = notes
-        }
-    }
-    
-    private var sessionSummaryCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label("Результаты сеанса", systemImage: "chart.bar.fill")
-                .font(.headline)
-            
-            HStack(spacing: 16) {
-                // Stats card - completed steps
-                VStack(spacing: 6) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(.teal)
-                        .accessibilityHidden(true)
-                    Text("\(session.completedStepIndices.count)")
-                        .font(.title2.weight(.bold))
-                    Text("шагов")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("\(session.completedStepIndices.count) шагов выполнено")
-                
-                Divider()
-                
-                // Stats card - time spent
-                VStack(spacing: 6) {
-                    Image(systemName: "clock.fill")
-                        .font(.title3)
-                        .foregroundStyle(.teal)
-                        .accessibilityHidden(true)
-                    Text(formatTime(session.getTotalStepsTime()))
-                        .font(.title3.weight(.bold))
-                        .monospacedDigit()
-                    Text("время")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Время выполнения: \(formatTime(session.getTotalStepsTime()))")
-            }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-                .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
-        )
-        .padding(.horizontal, 20)
-    }
-    
-    private var progressCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label("Прогресс", systemImage: "chart.line.uptrend.xyaxis")
-                .font(.headline)
-            
-            HStack(spacing: 12) {
-                // Before anxiety value
-                VStack(spacing: 4) {
-                    Text("До")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Text("\(session.anxietyBefore)")
-                        .font(.title2.weight(.bold))
-                }
-                
-                Image(systemName: "arrow.right")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 8)
-                    .accessibilityHidden(true)
-                
-                // After anxiety value
-                VStack(spacing: 4) {
-                    Text("После")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Text("\(Int(anxietyAfter))")
-                        .font(.title2.weight(.bold))
-                }
-                
-                Spacer()
-                
-                // Change indicator
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("Изменение")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    let change = session.anxietyBefore - Int(anxietyAfter)
-                    Text("\(change > 0 ? "-" : "+")\(abs(change))")
-                        .font(.title2.weight(.bold))
-                        .foregroundStyle(change > 0 ? .green : (change < 0 ? .red : .gray))
-                }
-            }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-                .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
-        )
-        .padding(.horizontal, 20)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Прогресс тревоги")
-        .accessibilityValue("До: \(session.anxietyBefore), После: \(Int(anxietyAfter)), Изменение: \(session.anxietyBefore - Int(anxietyAfter))")
-    }
-    
-    private func anxietyColor(for value: Int) -> Color {
-        switch value {
-        case 0...3:
-            return .green
-        case 4...6:
-            return .orange
-        case 7...10:
-            return .red
-        default:
-            return .gray
-        }
-    }
-    
-    private func formatTime(_ timeInterval: TimeInterval) -> String {
-        let minutes = Int(timeInterval) / 60
-        let seconds = Int(timeInterval) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
-    }
-    
-    private func completeSession() {
-        do {
-            let combinedNotes = notes.isEmpty ? finalNotes : notes + "\n\n" + finalNotes
-            try dataManager.completeSession(
-                session,
-                anxietyAfter: Int(anxietyAfter),
-                notes: combinedNotes.trimmingCharacters(in: .whitespacesAndNewlines)
-            )
-            dismiss()
-            onComplete()
-        } catch {
-            errorMessage = "Не удалось сохранить результат: \(error.localizedDescription)"
-            showError = true
-        }
-    }
-}
-
 #Preview("Active Session") {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Exposure.self, SessionResult.self, configurations: config)
         let context = container.mainContext
         
-        // Create sample data
         let exposure = Exposure(
             title: "Преодоление страха пауков",
             exposureDescription: "Постепенная экспозиция к страху пауков",
@@ -1455,5 +884,3 @@ struct CompleteSessionView: View {
         return Text("Preview Error: \(error.localizedDescription)")
     }
 }
-
-
