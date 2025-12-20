@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct SessionHistoryRowView: View {
-    let session: SessionResult
+    let session: ExposureSessionResult
 
     private enum Layout {
         static let rowSpacing: CGFloat = 12

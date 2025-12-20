@@ -8,7 +8,7 @@ struct Inner_HeroApp: App {
     
     var sharedModelContainer: ModelContainer = {
         do {
-            return try ModelContainer(for: Exposure.self, SessionResult.self, Step.self)
+            return try ModelContainer(for: Exposure.self, ExposureSessionResult.self, ExposureStep.self)
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }

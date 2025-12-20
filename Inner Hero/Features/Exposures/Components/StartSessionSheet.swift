@@ -6,7 +6,7 @@ struct StartSessionSheet: View {
     @Environment(\.modelContext) private var modelContext
     
     let exposure: Exposure
-    let onSessionCreated: (SessionResult) -> Void
+    let onSessionCreated: (ExposureSessionResult) -> Void
     
     @State private var anxietyBefore: Double = 5
     @State private var showError = false
@@ -24,8 +24,19 @@ struct StartSessionSheet: View {
                     anxietySliderSection
                     startButton
                 }
+                .padding(.bottom, 20)
             }
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .background(
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.95, green: 0.97, blue: 1.0),
+                        Color(red: 0.92, green: 0.95, blue: 0.98)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+            )
             .navigationTitle("Новый сеанс")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -33,6 +44,7 @@ struct StartSessionSheet: View {
                     Button("Отмена") {
                         dismiss()
                     }
+                    .foregroundStyle(TextColors.toolbar)
                 }
             }
             .alert("Ошибка", isPresented: $showError) {
@@ -47,26 +59,34 @@ struct StartSessionSheet: View {
         VStack(spacing: 16) {
             Image(systemName: "figure.mind.and.body")
                 .font(.system(size: 60))
-                .foregroundStyle(.teal)
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [.blue, .cyan],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
             Text("Начать сеанс")
-                .font(.title2.weight(.semibold))
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(TextColors.primary)
             Text(exposure.title)
                 .font(.body)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TextColors.secondary)
                 .multilineTextAlignment(.center)
         }
         .padding(.top, 20)
+        .padding(.horizontal, 20)
     }
     
     private var anxietySliderSection: some View {
         VStack(alignment: .leading, spacing: 20) {
             Label("Уровень тревоги", systemImage: "gauge")
                 .font(.headline)
-                .foregroundStyle(.primary)
+                .foregroundStyle(TextColors.primary)
             
             Text("Оцените ваш текущий уровень тревоги до начала сеанса (0–10)")
                 .font(.body)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TextColors.secondary)
             
             VStack(spacing: 20) {
                 HStack {
@@ -87,60 +107,88 @@ struct StartSessionSheet: View {
                         Text("0\nНет тревоги")
                             .font(.caption)
                             .multilineTextAlignment(.leading)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(TextColors.secondary)
                         Spacer()
                         Text("5\nСредний")
                             .font(.caption)
                             .multilineTextAlignment(.center)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(TextColors.secondary)
                         Spacer()
                         Text("10\nМаксимум")
                             .font(.caption)
                             .multilineTextAlignment(.trailing)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(TextColors.secondary)
                     }
                 }
                 
                 Text(anxietyDescription(for: Int(anxietyBefore)))
                     .font(.body)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color(.tertiarySystemBackground))
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 0.98, green: 0.99, blue: 1.0),
+                                        Color(red: 0.96, green: 0.97, blue: 0.99)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
                     )
             }
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(.secondarySystemGroupedBackground))
-                    .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 0.98, green: 0.99, blue: 1.0),
+                                Color(red: 0.96, green: 0.97, blue: 0.99)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
             )
         }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+        )
         .padding(.horizontal, 20)
     }
     
     private var startButton: some View {
         Button(action: startSession) {
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
                 Text("Начать сеанс")
-                    .font(.headline)
+                    .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
-            .frame(minHeight: 56)
+            .frame(height: 52)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.teal)
-                    .shadow(color: Color.teal.opacity(0.3), radius: 12, y: 6)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
             )
-            .padding(.horizontal, 20)
-            .padding(.bottom, 20)
         }
+        .padding(.horizontal, 20)
         .accessibilityLabel("Начать сеанс")
     }
     

@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct SessionDetailView: View {
-    let session: SessionResult
+    let session: ExposureSessionResult
     
     private enum Layout {
         static let screenHorizontalPadding: CGFloat = 20

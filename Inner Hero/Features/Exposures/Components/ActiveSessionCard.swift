@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ActiveSessionCard: View {
-    let session: SessionResult
+    let session: ExposureSessionResult
     let exposure: Exposure
     let onTap: () -> Void
     
@@ -15,13 +15,20 @@ struct ActiveSessionCard: View {
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(.secondarySystemGroupedBackground))
-                    .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(Color.teal.opacity(0.3), lineWidth: 1)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [.blue.opacity(0.3), .cyan.opacity(0.2)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.5
+                    )
             )
         }
         .buttonStyle(.plain)
@@ -39,13 +46,19 @@ struct ActiveSessionCard: View {
             
             Text("Активный сеанс")
                 .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TextColors.secondary)
             
             Spacer()
             
             Image(systemName: "arrow.right.circle.fill")
                 .font(.body)
-                .foregroundStyle(.teal)
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [.blue, .cyan],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
         }
     }
     
@@ -53,29 +66,41 @@ struct ActiveSessionCard: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(exposure.title)
                 .font(.title2.weight(.semibold))
-                .foregroundStyle(.primary)
+                .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
             
             HStack(spacing: 16) {
                 Label {
                     Text(session.startAt, style: .relative)
                         .font(.body)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                 } icon: {
                     Image(systemName: "clock")
                         .font(.body)
-                        .foregroundStyle(.teal)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                 }
                 
                 if !exposure.steps.isEmpty {
                     Label {
                         Text("\(session.completedStepIndices.count)/\(exposure.steps.count)")
                             .font(.body)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(TextColors.secondary)
                     } icon: {
                         Image(systemName: "checkmark.circle")
                             .font(.body)
-                            .foregroundStyle(.teal)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .cyan],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
                     }
                 }
             }

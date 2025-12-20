@@ -4,16 +4,16 @@ import SwiftData
 struct ExposuresListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Exposure.createdAt, order: .reverse) private var exposures: [Exposure]
-    @Query(sort: \SessionResult.startAt, order: .reverse) private var allSessions: [SessionResult]
+    @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var allSessions: [ExposureSessionResult]
     
     @State private var showingCreateSheet = false
     @State private var exposureToDelete: Exposure?
     @State private var showingDeleteAlert = false
     @State private var exposureToStart: Exposure?
-    @State private var currentSession: SessionResult?
+    @State private var currentSession: ExposureSessionResult?
     @State private var appeared = false
     
-    private var activeSessions: [SessionResult] {
+    private var activeSessions: [ExposureSessionResult] {
         allSessions.filter { $0.endAt == nil }
     }
     
@@ -25,7 +25,6 @@ struct ExposuresListView: View {
                        let exposure = activeSession.exposure {
                         ActiveSessionCard(session: activeSession, exposure: exposure) {
                             currentSession = activeSession
-                            exposureToStart = exposure
                         }
                         .transition(.move(edge: .top).combined(with: .opacity))
                     }
@@ -40,7 +39,17 @@ struct ExposuresListView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .background(
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.95, green: 0.97, blue: 1.0),
+                        Color(red: 0.92, green: 0.95, blue: 0.98)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+            )
             .navigationTitle("Экспозиции")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -50,6 +59,7 @@ struct ExposuresListView: View {
                     } label: {
                         Image(systemName: "plus")
                             .font(.headline)
+                            .foregroundStyle(TextColors.toolbar)
                     }
                     .accessibilityLabel("Добавить экспозицию")
                 }
@@ -89,17 +99,23 @@ struct ExposuresListView: View {
         VStack(spacing: 24) {
             Image(systemName: "leaf.circle")
                 .font(.system(size: 72))
-                .foregroundStyle(.teal.opacity(0.6))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [.blue.opacity(0.6), .cyan.opacity(0.5)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
                 .accessibilityHidden(true)
             
             VStack(spacing: 12) {
                 Text("Начните свой путь")
                     .font(.title2.weight(.semibold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(TextColors.primary)
                 
                 Text("Создайте первую экспозицию для работы с тревогой")
                     .font(.body)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
             }
         }
@@ -111,7 +127,7 @@ struct ExposuresListView: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Мои экспозиции")
                 .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TextColors.secondary)
                 .padding(.leading, 4)
             
             VStack(spacing: 16) {
@@ -162,9 +178,4 @@ struct ExposuresListView: View {
             exposureToDelete = nil
         }
     }
-}
-
-#Preview {
-    ExposuresListView()
-        .modelContainer(for: Exposure.self, inMemory: true)
 }

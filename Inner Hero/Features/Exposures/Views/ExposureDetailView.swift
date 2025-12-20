@@ -24,7 +24,17 @@ struct ExposureDetailView: View {
             .padding(.top, 20)
             .padding(.bottom, 40)
         }
-        .background(Color(.systemGroupedBackground).ignoresSafeArea())
+        .background(
+            LinearGradient(
+                colors: [
+                    Color(red: 0.95, green: 0.97, blue: 1.0),
+                    Color(red: 0.92, green: 0.95, blue: 0.98)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+        )
         .navigationTitle("Детали")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -32,7 +42,13 @@ struct ExposureDetailView: View {
                 NavigationLink(destination: EditExposureView(exposure: exposure)) {
                     Image(systemName: "pencil.circle.fill")
                         .font(.title2)
-                        .foregroundStyle(.teal)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                 }
                 .frame(minWidth: 44, minHeight: 44)
             }
@@ -43,14 +59,27 @@ struct ExposureDetailView: View {
         VStack(spacing: 16) {
             ZStack {
                 Circle()
-                    .fill(Color.teal.opacity(0.15))
+                    .fill(
+                        LinearGradient(
+                            colors: [.blue.opacity(0.15), .cyan.opacity(0.1)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                     .frame(width: 100, height: 100)
                 Image(systemName: "figure.mind.and.body")
                     .font(.system(size: 50))
-                    .foregroundStyle(.teal)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
             }
             Text(exposure.title)
                 .font(.title.weight(.semibold))
+                .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.center)
         }
         .accessibilityElement(children: .combine)
@@ -58,9 +87,9 @@ struct ExposureDetailView: View {
     
     private var quickStatsSection: some View {
         HStack(spacing: 16) {
-            QuickStatCard(icon: "list.number", value: "\(totalSteps)", label: "Шагов", color: .teal)
+            QuickStatCard(icon: "list.number", value: "\(totalSteps)", label: "Шагов", color: .blue)
             QuickStatCard(icon: "timer", value: "\(stepsWithTimer)", label: "С таймером", color: .orange)
-            QuickStatCard(icon: "chart.bar.fill", value: "\(exposure.sessionResults.count)", label: "Сеансов", color: .teal)
+            QuickStatCard(icon: "chart.bar.fill", value: "\(exposure.sessionResults.count)", label: "Сеансов", color: .blue)
         }
     }
     
@@ -69,22 +98,29 @@ struct ExposureDetailView: View {
             HStack {
                 Image(systemName: "doc.text")
                     .font(.body)
-                    .foregroundStyle(.teal)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                 Text("Описание")
                     .font(.body.weight(.semibold))
+                    .foregroundStyle(TextColors.primary)
             }
             
             Text(exposure.exposureDescription)
                 .font(.body)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TextColors.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-                .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
         )
     }
     
@@ -93,9 +129,16 @@ struct ExposureDetailView: View {
             HStack {
                 Image(systemName: "checklist")
                     .font(.body)
-                    .foregroundStyle(.teal)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                 Text("Шаги выполнения")
                     .font(.body.weight(.semibold))
+                    .foregroundStyle(TextColors.primary)
             }
             
             VStack(spacing: 12) {
@@ -112,14 +155,20 @@ struct ExposureDetailView: View {
                 HStack {
                     Image(systemName: "clock")
                         .font(.body)
-                        .foregroundStyle(.teal)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                     Text("История сеансов")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(TextColors.primary)
                     Spacer()
                     Image(systemName: "chevron.right")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                 }
                 
                 if exposure.sessionResults.count > 0 {
@@ -127,10 +176,10 @@ struct ExposureDetailView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Всего")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(TextColors.secondary)
                             Text("\(exposure.sessionResults.count)")
                                 .font(.title2.weight(.semibold))
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(TextColors.primary)
                         }
                         
                         Divider()
@@ -138,26 +187,32 @@ struct ExposureDetailView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Последний")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(TextColors.secondary)
                             if let lastSession = exposure.sessionResults.sorted(by: { $0.startAt > $1.startAt }).first {
                                 Text(lastSession.startAt, style: .relative)
                                     .font(.body.weight(.medium))
-                                    .foregroundStyle(.teal)
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [.blue, .cyan],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
                             }
                         }
                     }
                 } else {
                     Text("Нет завершенных сеансов")
                         .font(.body)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(20)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(.secondarySystemGroupedBackground))
-                    .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
             )
         }
         .buttonStyle(.plain)
@@ -165,19 +220,25 @@ struct ExposureDetailView: View {
     
     private var startSessionButton: some View {
         Button(action: onStartSession) {
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
                 Text("Начать сеанс")
-                    .font(.headline)
+                    .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
-            .frame(minHeight: 56)
+            .frame(height: 52)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.teal)
-                    .shadow(color: Color.teal.opacity(0.3), radius: 12, y: 6)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
             )
         }
         .accessibilityLabel("Начать сеанс")
@@ -196,19 +257,34 @@ struct QuickStatCard: View {
         VStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.body)
-                .foregroundStyle(color)
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: color == .blue ? [.blue, .cyan] : [color, color.opacity(0.8)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
             Text(value)
                 .font(.title3.weight(.semibold))
-                .foregroundStyle(.primary)
+                .foregroundStyle(TextColors.primary)
             Text(label)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TextColors.secondary)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 16)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(color.opacity(0.08))
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.98, green: 0.99, blue: 1.0),
+                            Color(red: 0.96, green: 0.97, blue: 0.99)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(value) \(label)")
@@ -216,24 +292,24 @@ struct QuickStatCard: View {
 }
 
 struct StepDetailCard: View {
-    let step: Step
+    let step: ExposureStep
     let index: Int
     
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             ZStack {
                 Circle()
-                    .fill(Color.teal.opacity(0.15))
+                    .fill(Color.blue.opacity(0.1))
                     .frame(width: 36, height: 36)
                 Text("\(index + 1)")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(.teal)
+                    .foregroundStyle(.blue)
             }
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(step.text)
                     .font(.body)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(TextColors.primary)
                     .fixedSize(horizontal: false, vertical: true)
                 
                 if step.hasTimer {
@@ -246,7 +322,16 @@ struct StepDetailCard: View {
                     .foregroundStyle(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(Capsule().fill(.orange))
+                    .background(
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    colors: [.orange, .orange.opacity(0.8)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                    )
                 }
             }
         }
@@ -254,7 +339,16 @@ struct StepDetailCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(.tertiarySystemBackground))
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.98, green: 0.99, blue: 1.0),
+                            Color(red: 0.96, green: 0.97, blue: 0.99)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Шаг \(index + 1): \(step.text)")

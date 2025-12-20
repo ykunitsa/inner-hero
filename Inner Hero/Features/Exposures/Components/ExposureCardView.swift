@@ -14,9 +14,9 @@ struct ExposureCardView: View {
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-                .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
         )
     }
     
@@ -25,12 +25,12 @@ struct ExposureCardView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(exposure.title)
                     .font(.title3.weight(.semibold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.leading)
                 
                 Text(exposure.exposureDescription)
                     .font(.body)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TextColors.secondary)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
             }
@@ -39,7 +39,7 @@ struct ExposureCardView: View {
             
             Image(systemName: "chevron.right")
                 .font(.body)
-                .foregroundStyle(Color(.tertiaryLabel))
+                .foregroundStyle(TextColors.tertiary)
         }
     }
     
@@ -48,19 +48,31 @@ struct ExposureCardView: View {
             HStack(spacing: 6) {
                 Image(systemName: "list.bullet")
                     .font(.caption)
-                    .foregroundStyle(.teal)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                 Text("\(exposure.steps.count)")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TextColors.secondary)
             }
             
             HStack(spacing: 6) {
                 Image(systemName: "chart.bar")
                     .font(.caption)
-                    .foregroundStyle(.teal)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                 Text("\(exposure.sessionResults.count)")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TextColors.secondary)
             }
             
             Spacer()
@@ -75,7 +87,16 @@ struct ExposureCardView: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(Capsule().fill(Color.teal))
+                .background(
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                )
             }
             .buttonStyle(.plain)
             .frame(minHeight: 44)

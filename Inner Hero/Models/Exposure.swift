@@ -1,10 +1,10 @@
 import Foundation
 import SwiftData
 
-// MARK: - Step Model
+// MARK: - ExposureStep Model
 
 @Model
-final class Step {
+final class ExposureStep {
     var text: String
     var hasTimer: Bool
     var timerDuration: Int
@@ -25,17 +25,17 @@ final class Exposure {
     @Attribute(.unique) var id: UUID
     var title: String
     var exposureDescription: String
-    var steps: [Step]
+    var steps: [ExposureStep]
     var createdAt: Date
     
-    @Relationship(deleteRule: .cascade, inverse: \SessionResult.exposure)
-    var sessionResults: [SessionResult]
+    @Relationship(deleteRule: .cascade, inverse: \ExposureSessionResult.exposure)
+    var sessionResults: [ExposureSessionResult]
     
     init(
         id: UUID = UUID(),
         title: String,
         exposureDescription: String,
-        steps: [Step] = [],
+        steps: [ExposureStep] = [],
         createdAt: Date = Date()
     ) {
         self.id = id
