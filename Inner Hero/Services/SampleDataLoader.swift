@@ -31,7 +31,7 @@ struct SampleDataLoader {
         
         for exposureData in sampleData.exposures {
             let steps = exposureData.steps.enumerated().map { index, text in
-                Step(text: text, hasTimer: false, timerDuration: 0, order: index)
+                ExposureStep(text: text, hasTimer: false, timerDuration: 0, order: index)
             }
             
             let exposure = Exposure(
@@ -75,7 +75,7 @@ struct SampleDataLoader {
                     "Потребовалось больше времени, чем планировал"
                 ].randomElement() ?? ""
                 
-                let session = SessionResult(
+                let session = ExposureSessionResult(
                     exposure: exposure,
                     startAt: startDate,
                     endAt: endDate,

@@ -3,9 +3,9 @@ import SwiftData
 
 struct AllSessionsHistoryView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \SessionResult.startAt, order: .reverse) private var allSessions: [SessionResult]
+    @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var allSessions: [ExposureSessionResult]
     
-    private var completedSessions: [SessionResult] {
+    private var completedSessions: [ExposureSessionResult] {
         allSessions.filter { $0.endAt != nil }
     }
     

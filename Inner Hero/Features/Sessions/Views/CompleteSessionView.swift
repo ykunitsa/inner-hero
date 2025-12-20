@@ -7,7 +7,7 @@ struct CompleteSessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
-    let session: SessionResult
+    let session: ExposureSessionResult
     let notes: String
     let onComplete: () -> Void
     
@@ -26,12 +26,19 @@ struct CompleteSessionView: View {
                 VStack(spacing: 32) {
                     VStack(spacing: 12) {
                         Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.teal)
+                            .font(.system(size: 56))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.green, .green.opacity(0.7)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
                             .accessibilityHidden(true)
                         
                         Text("Завершение сеанса")
-                            .font(.title3.weight(.semibold))
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundStyle(TextColors.primary)
                     }
                     .padding(.top, 20)
                     
@@ -40,10 +47,11 @@ struct CompleteSessionView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         Label("Уровень тревоги после сеанса", systemImage: "gauge")
                             .font(.headline)
+                            .foregroundStyle(TextColors.primary)
                         
                         Text("Оцените ваш уровень тревоги сейчас (0–10)")
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(TextColors.secondary)
                         
                         VStack(spacing: 16) {
                             HStack {
@@ -59,10 +67,19 @@ struct CompleteSessionView: View {
                             Slider(value: $anxietyAfter, in: 0...10, step: 1)
                                 .tint(anxietyColor(for: Int(anxietyAfter)))
                         }
-                        .padding(16)
+                        .padding(20)
                         .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color(.secondarySystemGroupedBackground))
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [
+                                            Color(red: 0.98, green: 0.99, blue: 1.0),
+                                            Color(red: 0.96, green: 0.97, blue: 0.99)
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
                         )
                     }
                     .padding(.horizontal, 20)
@@ -74,17 +91,28 @@ struct CompleteSessionView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Label("Дополнительные заметки", systemImage: "note.text")
                             .font(.headline)
+                            .foregroundStyle(TextColors.primary)
                         
                         TextEditor(text: $finalNotes)
                             .frame(minHeight: 100)
                             .padding(10)
-                            .background(Color(.tertiarySystemBackground))
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .background(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 0.98, green: 0.99, blue: 1.0),
+                                        Color(red: 0.96, green: 0.97, blue: 0.99)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
-                    .padding(16)
+                    .padding(20)
                     .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color(.secondarySystemGroupedBackground))
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(Color(.systemBackground))
+                            .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
                     )
                     .padding(.horizontal, 20)
                     
@@ -93,16 +121,23 @@ struct CompleteSessionView: View {
                     } label: {
                         HStack(spacing: 8) {
                             Image(systemName: "checkmark")
-                                .font(.subheadline)
+                                .font(.body)
                             Text("Сохранить результат")
-                                .font(.headline)
+                                .font(.system(size: 17, weight: .semibold))
                         }
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 48)
+                        .frame(height: 52)
                         .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color.teal)
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [.blue, .cyan],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
                         )
                     }
                     .padding(.horizontal, 20)
@@ -111,7 +146,17 @@ struct CompleteSessionView: View {
                     .accessibilityHint("Дважды нажмите чтобы сохранить и завершить")
                 }
             }
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .background(
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.95, green: 0.97, blue: 1.0),
+                        Color(red: 0.92, green: 0.95, blue: 0.98)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+            )
             .navigationTitle("Завершение")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -119,6 +164,7 @@ struct CompleteSessionView: View {
                     Button("Отмена") {
                         dismiss()
                     }
+                    .foregroundStyle(TextColors.toolbar)
                 }
             }
             .alert("Ошибка", isPresented: $showError) {
@@ -136,18 +182,26 @@ struct CompleteSessionView: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Результаты сеанса", systemImage: "chart.bar.fill")
                 .font(.headline)
+                .foregroundStyle(TextColors.primary)
             
             HStack(spacing: 16) {
                 VStack(spacing: 6) {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.title3)
-                        .foregroundStyle(.teal)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                         .accessibilityHidden(true)
                     Text("\(session.completedStepIndices.count)")
                         .font(.title2.weight(.bold))
+                        .foregroundStyle(TextColors.primary)
                     Text("шагов")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                 }
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
@@ -158,25 +212,32 @@ struct CompleteSessionView: View {
                 VStack(spacing: 6) {
                     Image(systemName: "clock.fill")
                         .font(.title3)
-                        .foregroundStyle(.teal)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                         .accessibilityHidden(true)
                     Text(formatTime(session.getTotalStepsTime()))
                         .font(.title3.weight(.bold))
+                        .foregroundStyle(TextColors.primary)
                         .monospacedDigit()
                     Text("время")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                 }
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Время выполнения: \(formatTime(session.getTotalStepsTime()))")
             }
         }
-        .padding(16)
+        .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-                .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
         )
         .padding(.horizontal, 20)
     }
@@ -185,28 +246,31 @@ struct CompleteSessionView: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Прогресс", systemImage: "chart.line.uptrend.xyaxis")
                 .font(.headline)
+                .foregroundStyle(TextColors.primary)
             
             HStack(spacing: 12) {
                 VStack(spacing: 4) {
                     Text("До")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                     Text("\(session.anxietyBefore)")
                         .font(.title2.weight(.bold))
+                        .foregroundStyle(TextColors.primary)
                 }
                 
                 Image(systemName: "arrow.right")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TextColors.secondary)
                     .padding(.horizontal, 8)
                     .accessibilityHidden(true)
                 
                 VStack(spacing: 4) {
                     Text("После")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                     Text("\(Int(anxietyAfter))")
                         .font(.title2.weight(.bold))
+                        .foregroundStyle(TextColors.primary)
                 }
                 
                 Spacer()
@@ -214,7 +278,7 @@ struct CompleteSessionView: View {
                 VStack(alignment: .trailing, spacing: 4) {
                     Text("Изменение")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                     let change = session.anxietyBefore - Int(anxietyAfter)
                     Text("\(change > 0 ? "-" : "+")\(abs(change))")
                         .font(.title2.weight(.bold))
@@ -222,11 +286,11 @@ struct CompleteSessionView: View {
                 }
             }
         }
-        .padding(16)
+        .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-                .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
         )
         .padding(.horizontal, 20)
         .accessibilityElement(children: .combine)

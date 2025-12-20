@@ -49,6 +49,22 @@ enum Opacity {
     static let darkShadow: Double = 0.3
 }
 
+// MARK: - Text Colors
+
+enum TextColors {
+    /// Primary text - soft dark gray with cool undertone
+    static let primary = Color(red: 0.2, green: 0.22, blue: 0.26) // #33384A
+    
+    /// Secondary text - medium gray with blue undertone
+    static let secondary = Color(red: 0.45, green: 0.48, blue: 0.54) // #737A8A
+    
+    /// Tertiary text - lighter gray for subtle elements
+    static let tertiary = Color(red: 0.60, green: 0.62, blue: 0.66) // #999DA8
+    
+    /// Toolbar icons and buttons
+    static let toolbar = Color(red: 0.35, green: 0.38, blue: 0.44) // #596170
+}
+
 // MARK: - App Theme
 
 enum AppTheme {

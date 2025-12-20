@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MainTabSessionDetailView: View {
-    let session: SessionResult
+    let session: ExposureSessionResult
     
     var body: some View {
         ScrollView {

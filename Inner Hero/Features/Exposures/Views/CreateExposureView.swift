@@ -153,7 +153,7 @@ struct CreateExposureView: View {
             .filter { !$0.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty }
             .enumerated()
             .map { index, stepItem in
-                Step(
+                ExposureStep(
                     text: stepItem.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
                     hasTimer: stepItem.hasTimer,
                     timerDuration: stepItem.timerDuration,

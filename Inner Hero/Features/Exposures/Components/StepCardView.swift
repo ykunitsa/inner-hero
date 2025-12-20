@@ -44,7 +44,7 @@ enum StepStatus {
 // MARK: - Individual Step Card
 
 struct StepCardView: View {
-    let step: Step
+    let step: ExposureStep
     let stepNumber: Int
     let status: StepStatus
     
@@ -230,11 +230,11 @@ struct StepCardView: View {
 // MARK: - Steps Progress View (Container)
 
 struct StepsProgressView: View {
-    let steps: [Step]
+    let steps: [ExposureStep]
     let currentStepIndex: Int
     let onStepTap: ((Int) -> Void)?
     
-    init(steps: [Step], currentStepIndex: Int, onStepTap: ((Int) -> Void)? = nil) {
+    init(steps: [ExposureStep], currentStepIndex: Int, onStepTap: ((Int) -> Void)? = nil) {
         self.steps = steps
         self.currentStepIndex = currentStepIndex
         self.onStepTap = onStepTap
@@ -364,7 +364,7 @@ struct StepsProgressView: View {
 // MARK: - Compact Steps Progress View (Alternative)
 
 struct CompactStepsProgressView: View {
-    let steps: [Step]
+    let steps: [ExposureStep]
     let currentStepIndex: Int
     
     @Environment(\.accessibilityReduceMotion) var reduceMotion
@@ -476,7 +476,7 @@ struct CompactStepsProgressView: View {
 #Preview("Single Step - Not Done") {
     ScrollView {
         StepCardView(
-            step: Step(text: "Посмотрите на фотографию паука в течение 30 секунд", hasTimer: true, timerDuration: 30, order: 0),
+            step: ExposureStep(text: "Посмотрите на фотографию паука в течение 30 секунд", hasTimer: true, timerDuration: 30, order: 0),
             stepNumber: 1,
             status: .notDone
         )
@@ -488,7 +488,7 @@ struct CompactStepsProgressView: View {
 #Preview("Single Step - Current") {
     ScrollView {
         StepCardView(
-            step: Step(text: "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения", hasTimer: true, timerDuration: 120, order: 1),
+            step: ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения", hasTimer: true, timerDuration: 120, order: 1),
             stepNumber: 2,
             status: .current
         )
@@ -500,7 +500,7 @@ struct CompactStepsProgressView: View {
 #Preview("Single Step - Done") {
     ScrollView {
         StepCardView(
-            step: Step(text: "Представьте, что держите паука в руках", hasTimer: false, timerDuration: 0, order: 2),
+            step: ExposureStep(text: "Представьте, что держите паука в руках", hasTimer: false, timerDuration: 0, order: 2),
             stepNumber: 3,
             status: .done
         )
@@ -511,11 +511,11 @@ struct CompactStepsProgressView: View {
 
 #Preview("Full Steps Progress") {
     let sampleSteps = [
-        Step(text: "Посмотрите на фотографию паука в течение 30 секунд", hasTimer: true, timerDuration: 30, order: 0),
-        Step(text: "Посмотрите видео с пауками в течение 2 минут", hasTimer: true, timerDuration: 120, order: 1),
-        Step(text: "Представьте, что держите паука в руках. Закройте глаза и визуализируйте эту ситуацию как можно подробнее", hasTimer: false, timerDuration: 0, order: 2),
-        Step(text: "Посмотрите на живого паука в террариуме", hasTimer: false, timerDuration: 0, order: 3),
-        Step(text: "Подержите паука в руках (с помощью специалиста)", hasTimer: false, timerDuration: 0, order: 4)
+        ExposureStep(text: "Посмотрите на фотографию паука в течение 30 секунд", hasTimer: true, timerDuration: 30, order: 0),
+        ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут", hasTimer: true, timerDuration: 120, order: 1),
+        ExposureStep(text: "Представьте, что держите паука в руках. Закройте глаза и визуализируйте эту ситуацию как можно подробнее", hasTimer: false, timerDuration: 0, order: 2),
+        ExposureStep(text: "Посмотрите на живого паука в террариуме", hasTimer: false, timerDuration: 0, order: 3),
+        ExposureStep(text: "Подержите паука в руках (с помощью специалиста)", hasTimer: false, timerDuration: 0, order: 4)
     ]
     
     ScrollView {
@@ -532,10 +532,10 @@ struct CompactStepsProgressView: View {
 
 #Preview("Compact Progress") {
     let sampleSteps = [
-        Step(text: "Посмотрите на фотографию", hasTimer: true, timerDuration: 30, order: 0),
-        Step(text: "Посмотрите видео", hasTimer: true, timerDuration: 120, order: 1),
-        Step(text: "Представьте ситуацию", hasTimer: false, timerDuration: 0, order: 2),
-        Step(text: "Посмотрите вживую", hasTimer: false, timerDuration: 0, order: 3)
+        ExposureStep(text: "Посмотрите на фотографию", hasTimer: true, timerDuration: 30, order: 0),
+        ExposureStep(text: "Посмотрите видео", hasTimer: true, timerDuration: 120, order: 1),
+        ExposureStep(text: "Представьте ситуацию", hasTimer: false, timerDuration: 0, order: 2),
+        ExposureStep(text: "Посмотрите вживую", hasTimer: false, timerDuration: 0, order: 3)
     ]
     
     VStack(alignment: .leading, spacing: 0) {
@@ -551,7 +551,7 @@ struct CompactStepsProgressView: View {
 #Preview("Dark Mode - Current Step") {
     ScrollView {
         StepCardView(
-            step: Step(text: "Посмотрите видео с пауками в течение 2 минут", hasTimer: true, timerDuration: 120, order: 1),
+            step: ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут", hasTimer: true, timerDuration: 120, order: 1),
             stepNumber: 2,
             status: .current
         )
@@ -565,7 +565,7 @@ struct CompactStepsProgressView: View {
     ScrollView {
         VStack(spacing: 16) {
             StepCardView(
-                step: Step(text: "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения", hasTimer: true, timerDuration: 120, order: 1),
+                step: ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения", hasTimer: true, timerDuration: 120, order: 1),
                 stepNumber: 2,
                 status: .current
             )

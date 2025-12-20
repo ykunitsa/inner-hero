@@ -186,7 +186,7 @@ struct EditExposureView: View {
             .filter { !$0.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty }
             .enumerated()
             .map { index, stepItem in
-                Step(
+                ExposureStep(
                     text: stepItem.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
                     hasTimer: stepItem.hasTimer,
                     timerDuration: stepItem.timerDuration,
@@ -220,9 +220,9 @@ struct EditExposureView: View {
         let container = try ModelContainer(for: Exposure.self, configurations: config)
         
         let sampleSteps = [
-            Step(text: "Первый шаг", hasTimer: false, timerDuration: 0, order: 0),
-            Step(text: "Второй шаг с таймером", hasTimer: true, timerDuration: 300, order: 1),
-            Step(text: "Третий финальный шаг", hasTimer: false, timerDuration: 0, order: 2)
+            ExposureStep(text: "Первый шаг", hasTimer: false, timerDuration: 0, order: 0),
+            ExposureStep(text: "Второй шаг с таймером", hasTimer: true, timerDuration: 300, order: 1),
+            ExposureStep(text: "Третий финальный шаг", hasTimer: false, timerDuration: 0, order: 2)
         ]
         
         let sampleExposure = Exposure(

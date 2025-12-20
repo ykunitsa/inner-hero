@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class SessionResult {
+final class ExposureSessionResult {
     @Attribute(.unique) var id: UUID
     var startAt: Date
     var endAt: Date?

@@ -8,7 +8,7 @@ struct ProfileView: View {
                     HStack {
                         Image(systemName: "leaf.circle.fill")
                             .font(.system(size: 48))
-                            .foregroundStyle(.teal)
+                            .foregroundStyle(.blue)
                             .accessibilityHidden(true)
                         
                         VStack(alignment: .leading, spacing: 4) {
