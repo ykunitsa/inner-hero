@@ -304,6 +304,8 @@ struct ActiveSessionView: View {
     @State private var showTimer: Bool = true
     @State private var showProgressBar: Bool = false
     @State private var showAllSteps: Bool = false
+    @State private var selectedStepIndex: Int? = nil
+    @State private var scrollToStepId: Int? = nil
     
     private var dataManager: DataManager {
         DataManager(modelContext: modelContext)
@@ -314,6 +316,9 @@ struct ActiveSessionView: View {
     }
     
     private var currentStepIndex: Int {
+        if let selected = selectedStepIndex {
+            return selected
+        }
         for (index, _) in steps.enumerated() {
             if !completedSteps.contains(index) {
                 return index
@@ -419,34 +424,31 @@ struct ActiveSessionView: View {
                     .foregroundStyle(TextColors.toolbar)
             }
             
-            // Left side bottom toolbar
-            ToolbarItem(placement: .bottomBar) {
+            // Left side bottom toolbar - mode toggle button
+            ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    withAnimation {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                         showAllSteps.toggle()
                     }
                 } label: {
-                    Image(systemName: showAllSteps ? "list.bullet.circle.fill" : "list.bullet.circle")
+                    Image(systemName: showAllSteps ? "checklist.checked" : "checklist")
                         .font(.title2)
                         .foregroundStyle(TextColors.toolbar)
+                        .symbolEffect(.bounce, value: showAllSteps)
                 }
                 .accessibilityLabel(showAllSteps ? "Скрыть все шаги" : "Показать все шаги")
+                
+                Spacer()
+            }
+            
+            // Step number buttons in the middle - navigation
+            ToolbarItem(placement: .bottomBar) {
+                stepNumberButtons
             }
             
             // Right side buttons grouped
             ToolbarItemGroup(placement: .bottomBar) {
                 Spacer()
-                
-                // Back button
-                Button {
-                    goToPreviousStep()
-                } label: {
-                    Image(systemName: "chevron.left.circle")
-                        .font(.title2)
-                        .foregroundStyle(TextColors.toolbar)
-                }
-                .disabled(currentStepIndex == 0)
-                .accessibilityLabel("Предыдущий шаг")
                 
                 // Complete button or Finish flag
                 Button {
@@ -457,13 +459,15 @@ struct ActiveSessionView: View {
                     }
                 } label: {
                     if currentStepIndex == steps.count - 1 && !completedSteps.contains(currentStepIndex) {
-                        Image(systemName: "flag.pattern.checkered.2.crossed")
+                        Image(systemName: "flag.pattern.checkered")
                             .font(.title2)
                             .foregroundStyle(.green)
+                            .symbolEffect(.bounce, value: completedSteps.count)
                     } else {
-                        Image(systemName: completedSteps.contains(currentStepIndex) ? "checkmark.circle.fill" : "checkmark.circle")
+                        Image(systemName: completedSteps.contains(currentStepIndex) ? "checkmark.circle.fill" : "checkmark")
                             .font(.title2)
                             .foregroundStyle(completedSteps.contains(currentStepIndex) ? .green : TextColors.toolbar)
+                            .symbolEffect(.bounce, value: completedSteps.contains(currentStepIndex))
                     }
                 }
                 .disabled(allStepsCompleted)
@@ -508,6 +512,69 @@ struct ActiveSessionView: View {
         } message: {
             Text("Вы уверены, что хотите прервать сеанс? Прогресс не будет сохранён.")
         }
+    }
+    
+    private var stepNumberButtons: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Array(steps.indices), id: \.self) { index in
+                        stepNumberButton(index: index, scrollProxy: proxy)
+                            .id(index)
+                    }
+                }
+                .padding(.horizontal, 8)
+            }
+            .frame(height: 44)
+            .clipShape(Capsule())
+            .onAppear {
+                // Center current step on first appearance
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        proxy.scrollTo(currentStepIndex, anchor: .center)
+                    }
+                }
+            }
+            .onChange(of: currentStepIndex) { oldValue, newValue in
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    proxy.scrollTo(newValue, anchor: .center)
+                }
+            }
+            .onChange(of: scrollToStepId) { oldValue, newValue in
+                if let stepId = newValue {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        proxy.scrollTo(stepId, anchor: .center)
+                    }
+                    scrollToStepId = nil
+                }
+            }
+        }
+    }
+    
+    private func stepNumberButton(index: Int, scrollProxy: ScrollViewProxy) -> some View {
+        let isCurrent = index == currentStepIndex
+        let isCompleted = completedSteps.contains(index)
+        
+        return Button {
+            scrollToStepId = index
+            goToStep(index)
+        } label: {
+            if isCompleted && !isCurrent {
+                // Show checkmark for completed steps that are not current
+                Image(systemName: "checkmark")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.green)
+                    .symbolEffect(.bounce, value: currentStepIndex)
+            } else {
+                // Show number for current step or incomplete steps
+                Text("\(index + 1)")
+                    .font(.system(size: 16, weight: isCurrent ? .bold : .semibold))
+                    .foregroundStyle(isCurrent ? .blue : (isCompleted ? .green : TextColors.primary))
+            }
+        }
+        .frame(minWidth: 36, minHeight: 36)
+        .accessibilityLabel("Шаг \(index + 1)")
+        .accessibilityValue(isCurrent ? "Текущий шаг" : (isCompleted ? "Выполнен" : "Не выполнен"))
     }
     
     private var stepProgressIndicator: some View {
@@ -1003,12 +1070,14 @@ struct ActiveSessionView: View {
     
     private func completeCurrentStep() {
         triggerSuccessHaptic()
+        selectedStepIndex = nil // Reset to auto-navigation
         toggleStepCompletion(currentStepIndex)
     }
     
     private func finishSession() {
         // Mark the last step as completed
         withAnimation(.spring(response: 0.3)) {
+            selectedStepIndex = nil // Reset to auto-navigation
             completedSteps.insert(currentStepIndex)
             session.markStepCompleted(currentStepIndex)
             
@@ -1032,6 +1101,10 @@ struct ActiveSessionView: View {
                 completedSteps.remove(index)
                 session.markStepIncomplete(index)
             } else {
+                // When completing a step, reset selectedStepIndex to return to auto-navigation
+                if index == currentStepIndex {
+                    selectedStepIndex = nil
+                }
                 completedSteps.insert(index)
                 session.markStepCompleted(index)
                 triggerSuccessHaptic()
@@ -1048,22 +1121,14 @@ struct ActiveSessionView: View {
     
     // MARK: - Step Navigation
     
-    private func goToPreviousStep() {
-        guard currentStepIndex > 0 else { return }
-        
-        // Find the previous incomplete step, or the last completed one before current
-        let previousIndex = currentStepIndex - 1
+    private func goToStep(_ index: Int) {
+        guard index >= 0 && index < steps.count else { return }
         
         withAnimation(.spring(response: 0.3)) {
-            if completedSteps.contains(previousIndex) {
-                // Uncomplete the previous step to go back to it
-                completedSteps.remove(previousIndex)
-                session.markStepIncomplete(previousIndex)
-            }
+            selectedStepIndex = index
         }
         
-        triggerHaptic(.medium)
-        saveProgress()
+        triggerHaptic(.light)
     }
     
     // MARK: - Haptic Feedback

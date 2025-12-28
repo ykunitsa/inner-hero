@@ -2,11 +2,26 @@ import SwiftUI
 import SwiftData
 
 struct ExposureDetailView: View {
+    @Environment(\.modelContext) private var modelContext
     let exposure: Exposure
     let onStartSession: () -> Void
     
+    @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
+    @State private var showScheduleSheet = false
+    @State private var isFavorite = false
+    
+    private var dataManager: DataManager {
+        DataManager(modelContext: modelContext)
+    }
+    
     private var totalSteps: Int { exposure.steps.count }
     private var stepsWithTimer: Int { exposure.steps.filter { $0.hasTimer }.count }
+    
+    private var assignment: ExerciseAssignment? {
+        allAssignments.first { assignment in
+            assignment.exerciseType == .exposure && assignment.exposureId == exposure.id
+        }
+    }
     
     var body: some View {
         ScrollView {
@@ -18,6 +33,7 @@ struct ExposureDetailView: View {
                     stepsSection
                 }
                 sessionsHistoryCard
+                scheduleSection
                 startSessionButton
             }
             .padding(.horizontal, 20)
@@ -39,19 +55,65 @@ struct ExposureDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                NavigationLink(destination: EditExposureView(exposure: exposure)) {
-                    Image(systemName: "pencil.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
+                HStack(spacing: 12) {
+                    Button {
+                        toggleFavorite()
+                    } label: {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .font(.title3)
+                            .foregroundStyle(
+                                isFavorite ?
+                                LinearGradient(
+                                    colors: [.pink, .red],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ) :
+                                LinearGradient(
+                                    colors: [TextColors.tertiary, TextColors.tertiary],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
+                    }
+                    .frame(minWidth: 44, minHeight: 44)
+                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    
+                    Button {
+                        showScheduleSheet = true
+                    } label: {
+                        Image(systemName: "calendar.badge.plus")
+                            .font(.title3)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.orange, .orange.opacity(0.8)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
+                    .frame(minWidth: 44, minHeight: 44)
+                    .accessibilityLabel("Запланировать")
+                    
+                    NavigationLink(destination: EditExposureView(exposure: exposure)) {
+                        Image(systemName: "pencil.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .cyan],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
+                    .frame(minWidth: 44, minHeight: 44)
                 }
-                .frame(minWidth: 44, minHeight: 44)
             }
+        }
+        .sheet(isPresented: $showScheduleSheet) {
+            ScheduleExerciseView(preSelectedExposureId: exposure.id)
+        }
+        .onAppear {
+            checkFavoriteStatus()
         }
     }
     
@@ -218,6 +280,17 @@ struct ExposureDetailView: View {
         .buttonStyle(.plain)
     }
     
+    private var scheduleSection: some View {
+        ExerciseScheduleSection(
+            assignment: assignment,
+            exerciseType: .exposure,
+            exposureId: exposure.id,
+            breathingPatternType: nil,
+            relaxationType: nil,
+            activityListId: nil
+        )
+    }
+    
     private var startSessionButton: some View {
         Button(action: onStartSession) {
             HStack(spacing: 8) {
@@ -242,6 +315,40 @@ struct ExposureDetailView: View {
             )
         }
         .accessibilityLabel("Начать сеанс")
+    }
+    
+    private func toggleFavorite() {
+        Task {
+            do {
+                let newFavoriteStatus = try dataManager.toggleFavorite(
+                    exerciseType: .exposure,
+                    exerciseId: exposure.id
+                )
+                await MainActor.run {
+                    isFavorite = newFavoriteStatus
+                    HapticFeedback.selection()
+                }
+            } catch {
+                print("Ошибка переключения избранного: \(error)")
+                HapticFeedback.error()
+            }
+        }
+    }
+    
+    private func checkFavoriteStatus() {
+        Task {
+            do {
+                let favorite = try dataManager.isFavorite(
+                    exerciseType: .exposure,
+                    exerciseId: exposure.id
+                )
+                await MainActor.run {
+                    isFavorite = favorite
+                }
+            } catch {
+                print("Ошибка проверки избранного: \(error)")
+            }
+        }
     }
 }
 

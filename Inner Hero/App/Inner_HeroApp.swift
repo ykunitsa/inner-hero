@@ -8,7 +8,17 @@ struct Inner_HeroApp: App {
     
     var sharedModelContainer: ModelContainer = {
         do {
-            return try ModelContainer(for: Exposure.self, ExposureSessionResult.self, ExposureStep.self)
+            return try ModelContainer(
+                for: Exposure.self, 
+                ExposureSessionResult.self, 
+                ExposureStep.self,
+                BreathingSessionResult.self,
+                RelaxationSessionResult.self,
+                ActivityList.self,
+                BehavioralActivationSession.self,
+                ExerciseAssignment.self,
+                FavoriteExercise.self
+            )
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
@@ -48,6 +58,9 @@ struct Inner_HeroApp: App {
                 
                 let exposures = try context.fetch(FetchDescriptor<Exposure>())
                 try SampleDataLoader.loadSampleSessions(for: exposures, into: context)
+                
+                // Load predefined activation lists
+                try SampleDataLoader.loadPredefinedActivationLists(into: context)
                 
                 hasLoadedSampleData = true
                 print("✅ Тестовые данные загружены успешно")

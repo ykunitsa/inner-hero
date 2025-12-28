@@ -96,6 +96,77 @@ struct SampleDataLoader {
         let exposures = try modelContext.fetch(descriptor)
         return exposures.isEmpty
     }
+    
+    static func loadPredefinedActivationLists(into modelContext: ModelContext) throws {
+        let predefinedLists: [(title: String, activities: [String])] = [
+            (
+                title: "Morning Routine",
+                activities: [
+                    "Exercise for 20-30 minutes",
+                    "Take a shower",
+                    "Eat a healthy breakfast",
+                    "Review daily goals",
+                    "Meditate for 10 minutes"
+                ]
+            ),
+            (
+                title: "Self-Care Activities",
+                activities: [
+                    "Take a relaxing bath",
+                    "Read a book for pleasure",
+                    "Listen to favorite music",
+                    "Practice a hobby",
+                    "Call a friend or family member",
+                    "Go for a walk in nature"
+                ]
+            ),
+            (
+                title: "Social Connections",
+                activities: [
+                    "Meet a friend for coffee",
+                    "Attend a social event",
+                    "Join a club or group",
+                    "Volunteer in community",
+                    "Reach out to someone new",
+                    "Spend time with family"
+                ]
+            ),
+            (
+                title: "Productive Tasks",
+                activities: [
+                    "Complete a work task",
+                    "Organize living space",
+                    "Learn something new",
+                    "Work on a personal project",
+                    "Plan the week ahead",
+                    "Handle pending errands"
+                ]
+            ),
+            (
+                title: "Physical Activities",
+                activities: [
+                    "Go for a run or jog",
+                    "Try yoga or stretching",
+                    "Go to the gym",
+                    "Play a sport",
+                    "Go swimming",
+                    "Take a dance class",
+                    "Go hiking"
+                ]
+            )
+        ]
+        
+        for list in predefinedLists {
+            let activationList = ActivityList(
+                title: list.title,
+                activities: list.activities,
+                isPredefined: true
+            )
+            modelContext.insert(activationList)
+        }
+        
+        try modelContext.save()
+    }
 }
 
 // MARK: - Errors

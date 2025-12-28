@@ -31,6 +31,8 @@ final class Exposure {
     @Relationship(deleteRule: .cascade, inverse: \ExposureSessionResult.exposure)
     var sessionResults: [ExposureSessionResult]
     
+    var assignment: ExerciseAssignment?
+    
     init(
         id: UUID = UUID(),
         title: String,
