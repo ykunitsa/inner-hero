@@ -5,12 +5,14 @@ struct ExposuresListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Exposure.createdAt, order: .reverse) private var exposures: [Exposure]
     @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var allSessions: [ExposureSessionResult]
+    @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     
     @State private var showingCreateSheet = false
     @State private var exposureToDelete: Exposure?
     @State private var showingDeleteAlert = false
     @State private var exposureToStart: Exposure?
     @State private var currentSession: ExposureSessionResult?
+    @State private var exposureToSchedule: Exposure?
     @State private var appeared = false
     
     private var activeSessions: [ExposureSessionResult] {
@@ -71,6 +73,9 @@ struct ExposuresListView: View {
                 StartSessionSheet(exposure: exposure) { session in
                     currentSession = session
                 }
+            }
+            .sheet(item: $exposureToSchedule) { exposure in
+                ScheduleExerciseView(preSelectedExposureId: exposure.id)
             }
             .navigationDestination(item: $currentSession) { session in
                 if let exposure = session.exposure {
@@ -141,12 +146,23 @@ struct ExposuresListView: View {
     }
     
     private func exposureCard(exposure: Exposure) -> some View {
-        NavigationLink(destination: ExposureDetailView(exposure: exposure, onStartSession: {
+        let assignment = allAssignments.first { assignment in
+            assignment.exerciseType == .exposure && assignment.exposureId == exposure.id
+        }
+        
+        return NavigationLink(destination: ExposureDetailView(exposure: exposure, onStartSession: {
             startSession(for: exposure)
         })) {
-            ExposureCardView(exposure: exposure) {
-                startSession(for: exposure)
-            }
+            ExposureCardView(
+                exposure: exposure,
+                onStartSession: {
+                    startSession(for: exposure)
+                },
+                assignment: assignment,
+                onSchedule: {
+                    exposureToSchedule = exposure
+                }
+            )
         }
         .buttonStyle(.plain)
         .contextMenu {

@@ -4,6 +4,15 @@ import SwiftData
 struct ExposureCardView: View {
     let exposure: Exposure
     let onStartSession: () -> Void
+    let assignment: ExerciseAssignment?
+    let onSchedule: (() -> Void)?
+    
+    init(exposure: Exposure, onStartSession: @escaping () -> Void, assignment: ExerciseAssignment? = nil, onSchedule: (() -> Void)? = nil) {
+        self.exposure = exposure
+        self.onStartSession = onStartSession
+        self.assignment = assignment
+        self.onSchedule = onSchedule
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -37,9 +46,22 @@ struct ExposureCardView: View {
             
             Spacer(minLength: 12)
             
-            Image(systemName: "chevron.right")
-                .font(.body)
-                .foregroundStyle(TextColors.tertiary)
+            HStack(spacing: 8) {
+                if let onSchedule = onSchedule {
+                    Button(action: onSchedule) {
+                        Image(systemName: assignment != nil ? "calendar.badge.checkmark" : "calendar.badge.plus")
+                            .font(.body)
+                            .foregroundStyle(assignment != nil ? .orange : TextColors.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .frame(minWidth: 44, minHeight: 44)
+                    .accessibilityLabel(assignment != nil ? "Редактировать расписание" : "Создать расписание")
+                }
+                
+                Image(systemName: "chevron.right")
+                    .font(.body)
+                    .foregroundStyle(TextColors.tertiary)
+            }
         }
     }
     
@@ -73,6 +95,10 @@ struct ExposureCardView: View {
                 Text("\(exposure.sessionResults.count)")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
+            }
+            
+            if let assignment = assignment, assignment.isActive {
+                ScheduleIndicatorView(assignment: assignment)
             }
             
             Spacer()
