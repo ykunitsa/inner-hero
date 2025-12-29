@@ -244,6 +244,8 @@ struct CalendarDayView: View {
             return .teal
         case .relaxation:
             return .mint
+        case .grounding:
+            return .purple
         case .behavioralActivation:
             return .green
         }

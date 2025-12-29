@@ -14,6 +14,7 @@ struct Inner_HeroApp: App {
                 ExposureStep.self,
                 BreathingSessionResult.self,
                 RelaxationSessionResult.self,
+                GroundingSessionResult.self,
                 ActivityList.self,
                 BehavioralActivationSession.self,
                 ExerciseAssignment.self,

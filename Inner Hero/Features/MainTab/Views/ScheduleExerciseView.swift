@@ -12,6 +12,7 @@ struct ScheduleExerciseView: View {
     @State private var selectedExposureId: UUID?
     @State private var selectedBreathingPattern: BreathingPatternType?
     @State private var selectedRelaxationType: RelaxationType?
+    @State private var selectedGroundingType: GroundingType?
     @State private var selectedActivityListId: UUID?
     @State private var selectedDays: [Int] = []
     @State private var selectedTime: Date = {
@@ -31,6 +32,7 @@ struct ScheduleExerciseView: View {
     let preSelectedExposureId: UUID?
     let preSelectedBreathingPattern: BreathingPatternType?
     let preSelectedRelaxationType: RelaxationType?
+    let preSelectedGroundingType: GroundingType?
     let preSelectedActivityListId: UUID?
     
     init(
@@ -38,12 +40,14 @@ struct ScheduleExerciseView: View {
         preSelectedExposureId: UUID? = nil,
         preSelectedBreathingPattern: BreathingPatternType? = nil,
         preSelectedRelaxationType: RelaxationType? = nil,
+        preSelectedGroundingType: GroundingType? = nil,
         preSelectedActivityListId: UUID? = nil
     ) {
         self.assignmentToEdit = assignment
         self.preSelectedExposureId = preSelectedExposureId
         self.preSelectedBreathingPattern = preSelectedBreathingPattern
         self.preSelectedRelaxationType = preSelectedRelaxationType
+        self.preSelectedGroundingType = preSelectedGroundingType
         self.preSelectedActivityListId = preSelectedActivityListId
         
         if let assignment = assignment {
@@ -51,6 +55,7 @@ struct ScheduleExerciseView: View {
             _selectedExposureId = State(initialValue: assignment.exposureId)
             _selectedBreathingPattern = State(initialValue: assignment.breathingPattern)
             _selectedRelaxationType = State(initialValue: assignment.relaxation)
+            _selectedGroundingType = State(initialValue: assignment.grounding)
             _selectedActivityListId = State(initialValue: assignment.activityListId)
             _selectedDays = State(initialValue: assignment.daysOfWeek)
             _selectedTime = State(initialValue: assignment.time)
@@ -66,6 +71,9 @@ struct ScheduleExerciseView: View {
             } else if preSelectedRelaxationType != nil {
                 _exerciseType = State(initialValue: .relaxation)
                 _selectedRelaxationType = State(initialValue: preSelectedRelaxationType)
+            } else if preSelectedGroundingType != nil {
+                _exerciseType = State(initialValue: .grounding)
+                _selectedGroundingType = State(initialValue: preSelectedGroundingType)
             } else if preSelectedActivityListId != nil {
                 _exerciseType = State(initialValue: .behavioralActivation)
                 _selectedActivityListId = State(initialValue: preSelectedActivityListId)
@@ -124,6 +132,7 @@ struct ScheduleExerciseView: View {
                 Text("Экспозиция").tag(ExerciseType.exposure)
                 Text("Дыхание").tag(ExerciseType.breathing)
                 Text("Релаксация").tag(ExerciseType.relaxation)
+                Text("Заземление").tag(ExerciseType.grounding)
                 Text("Активация").tag(ExerciseType.behavioralActivation)
             }
             .onChange(of: exerciseType) {
@@ -131,6 +140,7 @@ struct ScheduleExerciseView: View {
                 selectedExposureId = nil
                 selectedBreathingPattern = nil
                 selectedRelaxationType = nil
+                selectedGroundingType = nil
                 selectedActivityListId = nil
             }
         } header: {
@@ -180,6 +190,18 @@ struct ScheduleExerciseView: View {
                 }
             } header: {
                 Text("Релаксация")
+            }
+            
+        case .grounding:
+            Section {
+                Picker("Заземление", selection: $selectedGroundingType) {
+                    Text("Выберите упражнение").tag(nil as GroundingType?)
+                    ForEach(GroundingExercise.predefinedExercises) { exercise in
+                        Text(exercise.name).tag(exercise.type as GroundingType?)
+                    }
+                }
+            } header: {
+                Text("Заземление")
             }
             
         case .behavioralActivation:
@@ -240,6 +262,8 @@ struct ScheduleExerciseView: View {
             return selectedBreathingPattern != nil
         case .relaxation:
             return selectedRelaxationType != nil
+        case .grounding:
+            return selectedGroundingType != nil
         case .behavioralActivation:
             return selectedActivityListId != nil
         }
@@ -275,6 +299,7 @@ struct ScheduleExerciseView: View {
                     assignment.exposureId = selectedExposureId
                     assignment.breathingPattern = selectedBreathingPattern
                     assignment.relaxation = selectedRelaxationType
+                    assignment.grounding = selectedGroundingType
                     assignment.activityListId = selectedActivityListId
                     
                     try modelContext.save()
@@ -295,6 +320,7 @@ struct ScheduleExerciseView: View {
                         exposureId: selectedExposureId,
                         breathingPatternType: selectedBreathingPattern,
                         relaxationType: selectedRelaxationType,
+                        groundingType: selectedGroundingType,
                         activityListId: selectedActivityListId
                     )
                     

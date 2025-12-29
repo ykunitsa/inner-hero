@@ -7,6 +7,7 @@ enum ExerciseType: String, Codable {
     case exposure
     case breathing
     case relaxation
+    case grounding
     case behavioralActivation
 }
 
@@ -25,6 +26,7 @@ final class ExerciseAssignment {
     var exposureId: UUID?
     var breathingPatternType: String?
     var relaxationType: String?
+    var groundingType: String?
     var activityListId: UUID?
     
     // Notification identifier
@@ -40,6 +42,7 @@ final class ExerciseAssignment {
         exposureId: UUID? = nil,
         breathingPatternType: BreathingPatternType? = nil,
         relaxationType: RelaxationType? = nil,
+        groundingType: GroundingType? = nil,
         activityListId: UUID? = nil,
         notificationId: String? = nil
     ) {
@@ -52,6 +55,7 @@ final class ExerciseAssignment {
         self.exposureId = exposureId
         self.breathingPatternType = breathingPatternType?.rawValue
         self.relaxationType = relaxationType?.rawValue
+        self.groundingType = groundingType?.rawValue
         self.activityListId = activityListId
         self.notificationId = notificationId
     }
@@ -75,6 +79,16 @@ final class ExerciseAssignment {
         }
         set {
             relaxationType = newValue?.rawValue
+        }
+    }
+    
+    var grounding: GroundingType? {
+        get {
+            guard let rawValue = groundingType else { return nil }
+            return GroundingType(rawValue: rawValue)
+        }
+        set {
+            groundingType = newValue?.rawValue
         }
     }
     

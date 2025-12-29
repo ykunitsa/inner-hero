@@ -135,6 +135,14 @@ final class NotificationManager {
                 }
             }
             return "Релаксация"
+        case .grounding:
+            if let groundingType = assignment.grounding {
+                switch groundingType {
+                case .fiveFourThreeTwoOne:
+                    return "5-4-3-2-1"
+                }
+            }
+            return "Заземление"
         case .behavioralActivation:
             return "Поведенческая активация"
         }
