@@ -132,6 +132,28 @@ final class DataManager {
         return try modelContext.fetch(descriptor)
     }
     
+    // MARK: - GroundingSessionResult Operations
+    
+    @discardableResult
+    func createGroundingSessionResult(
+        type: GroundingType,
+        duration: TimeInterval
+    ) throws -> GroundingSessionResult {
+        let session = GroundingSessionResult(
+            duration: duration,
+            type: type
+        )
+        
+        modelContext.insert(session)
+        try saveContext()
+        return session
+    }
+    
+    func fetchAllGroundingSessions(sortBy sortDescriptors: [SortDescriptor<GroundingSessionResult>] = []) throws -> [GroundingSessionResult] {
+        let descriptor = FetchDescriptor<GroundingSessionResult>(sortBy: sortDescriptors)
+        return try modelContext.fetch(descriptor)
+    }
+    
     // MARK: - ActivityList Operations
     
     @discardableResult
@@ -209,6 +231,7 @@ final class DataManager {
         exposureId: UUID? = nil,
         breathingPatternType: BreathingPatternType? = nil,
         relaxationType: RelaxationType? = nil,
+        groundingType: GroundingType? = nil,
         activityListId: UUID? = nil
     ) throws -> ExerciseAssignment {
         // Check if assignment already exists for this exercise
@@ -231,6 +254,10 @@ final class DataManager {
             if let relaxationType = relaxationType {
                 existingAssignment = try fetchAssignmentForRelaxationType(relaxationType)
             }
+        case .grounding:
+            if let groundingType = groundingType {
+                existingAssignment = try fetchAssignmentForGroundingType(groundingType)
+            }
         case .behavioralActivation:
             // For behavioral activation, we can have multiple assignments
             break
@@ -248,6 +275,7 @@ final class DataManager {
             existing.exposureId = exposureId
             existing.breathingPattern = breathingPatternType
             existing.relaxation = relaxationType
+            existing.grounding = groundingType
             existing.activityListId = activityListId
             try saveContext()
             return existing
@@ -262,6 +290,7 @@ final class DataManager {
             exposureId: exposureId,
             breathingPatternType: breathingPatternType,
             relaxationType: relaxationType,
+            groundingType: groundingType,
             activityListId: activityListId
         )
         
@@ -299,6 +328,13 @@ final class DataManager {
         }
     }
     
+    func fetchAssignmentsForGroundingType(_ groundingType: GroundingType) throws -> [ExerciseAssignment] {
+        let allAssignments = try fetchAllExerciseAssignments()
+        return allAssignments.filter {
+            $0.exerciseType == .grounding && $0.grounding == groundingType
+        }
+    }
+    
     // MARK: - Single Assignment Fetch Methods
     
     func fetchAssignmentForExposure(_ exposure: Exposure) throws -> ExerciseAssignment? {
@@ -313,6 +349,11 @@ final class DataManager {
     
     func fetchAssignmentForRelaxationType(_ relaxationType: RelaxationType) throws -> ExerciseAssignment? {
         let assignments = try fetchAssignmentsForRelaxationType(relaxationType)
+        return assignments.first
+    }
+    
+    func fetchAssignmentForGroundingType(_ groundingType: GroundingType) throws -> ExerciseAssignment? {
+        let assignments = try fetchAssignmentsForGroundingType(groundingType)
         return assignments.first
     }
     
@@ -397,6 +438,7 @@ final class DataManager {
         try modelContext.delete(model: ExposureSessionResult.self)
         try modelContext.delete(model: BreathingSessionResult.self)
         try modelContext.delete(model: RelaxationSessionResult.self)
+        try modelContext.delete(model: GroundingSessionResult.self)
         try modelContext.delete(model: ActivityList.self)
         try modelContext.delete(model: BehavioralActivationSession.self)
         try modelContext.delete(model: ExerciseAssignment.self)

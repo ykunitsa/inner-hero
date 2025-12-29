@@ -175,6 +175,13 @@ struct ExerciseScheduleView: View {
             }
             return "Релаксация"
             
+        case .grounding:
+            if let groundingType = assignment.grounding,
+               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
+                return exercise.name
+            }
+            return "Заземление"
+            
         case .behavioralActivation:
             if let activityListId = assignment.activityListId,
                let activityList = activityLists.first(where: { $0.id == activityListId }) {

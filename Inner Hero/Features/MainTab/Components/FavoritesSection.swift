@@ -116,6 +116,22 @@ struct FavoritesSection: View {
                 )
             }
             
+        case .grounding:
+            if let identifier = favorite.exerciseIdentifier,
+               let groundingType = GroundingType(rawValue: identifier),
+               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
+                return FavoriteExerciseItem(
+                    id: favorite.id,
+                    name: exercise.name,
+                    description: exercise.description,
+                    icon: exercise.icon,
+                    color: .purple,
+                    exerciseType: .grounding,
+                    exerciseId: nil,
+                    exerciseIdentifier: identifier
+                )
+            }
+            
         case .behavioralActivation:
             if let exerciseId = favorite.exerciseId,
                let activityList = activityLists.first(where: { $0.id == exerciseId }) {
@@ -236,6 +252,15 @@ struct FavoriteExerciseCard: View {
                let relaxationType = RelaxationType(rawValue: identifier),
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == relaxationType }) {
                 MuscleRelaxationSessionView(exercise: exercise)
+            } else {
+                Text("Упражнение не найдено")
+            }
+            
+        case .grounding:
+            if let identifier = item.exerciseIdentifier,
+               let groundingType = GroundingType(rawValue: identifier),
+               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
+                GroundingSessionView(exercise: exercise)
             } else {
                 Text("Упражнение не найдено")
             }

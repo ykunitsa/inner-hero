@@ -8,6 +8,7 @@ struct ExercisesView: View {
         case exposures
         case breathing
         case relaxation
+        case grounding
         case activation
     }
     
@@ -50,6 +51,16 @@ struct ExercisesView: View {
                     .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
                     
                     exerciseCard(
+                        title: "Заземление",
+                        description: "Заземление и техники внимания для снижения тревоги",
+                        icon: "brain.head.profile",
+                        color: .purple,
+                        type: .grounding
+                    )
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    .animation(.easeOut(duration: 0.3).delay(0.4), value: appeared)
+                    
+                    exerciseCard(
                         title: "Активация",
                         description: "Повышение активности через осмысленные действия",
                         icon: "figure.walk",
@@ -57,7 +68,7 @@ struct ExercisesView: View {
                         type: .activation
                     )
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.4), value: appeared)
+                    .animation(.easeOut(duration: 0.3).delay(0.5), value: appeared)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
@@ -135,6 +146,8 @@ struct ExercisesView: View {
             BreathingExercisesView()
         case .relaxation:
             MuscleRelaxationListView()
+        case .grounding:
+            GroundingExercisesView()
         case .activation:
             BehavioralActivationView()
         }

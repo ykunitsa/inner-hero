@@ -132,6 +132,13 @@ struct ScheduledExercisesSection: View {
             }
             return "Релаксация"
             
+        case .grounding:
+            if let groundingType = assignment.grounding,
+               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
+                return exercise.name
+            }
+            return "Заземление"
+            
         case .behavioralActivation:
             if let activityListId = assignment.activityListId,
                let activityList = activityLists.first(where: { $0.id == activityListId }) {
@@ -158,6 +165,8 @@ struct ScheduledExercisesSection: View {
             return assignment.breathingPattern?.rawValue
         case .relaxation:
             return assignment.relaxation?.rawValue
+        case .grounding:
+            return assignment.grounding?.rawValue
         default:
             return nil
         }
@@ -233,6 +242,8 @@ struct ScheduledExerciseCard: View {
             return "wind"
         case .relaxation:
             return "figure.mind.and.body"
+        case .grounding:
+            return "brain.head.profile"
         case .behavioralActivation:
             return "figure.walk"
         }
@@ -246,6 +257,8 @@ struct ScheduledExerciseCard: View {
             return .teal
         case .relaxation:
             return .mint
+        case .grounding:
+            return .purple
         case .behavioralActivation:
             return .green
         }
