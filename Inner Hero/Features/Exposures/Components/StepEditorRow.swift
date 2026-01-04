@@ -34,12 +34,15 @@ struct StepEditorRow: View {
     }
     
     private var stepHeader: some View {
-        HStack(spacing: Spacing.xxs) {
+        HStack(alignment: .firstTextBaseline, spacing: Spacing.xxs) {
             if showsReorderHandle {
                 Image(systemName: "line.3.horizontal")
                     .font(.body)
                     .foregroundStyle(.secondary)
                     .frame(minWidth: 44, minHeight: 44)
+                    .alignmentGuide(.firstTextBaseline) { dimensions in
+                        dimensions[VerticalAlignment.center]
+                    }
                     .accessibilityLabel("Переместить шаг")
             }
             
@@ -67,6 +70,9 @@ struct StepEditorRow: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .alignmentGuide(.firstTextBaseline) { dimensions in
+                dimensions[VerticalAlignment.center]
+            }
             .accessibilityLabel("Таймер для шага \(index + 1)")
             .accessibilityValue(step.hasTimer ? "Включен" : "Выключен")
             
@@ -79,6 +85,9 @@ struct StepEditorRow: View {
                 .buttonStyle(.plain)
                 .frame(minWidth: 44, minHeight: 44)
                 .contentShape(Rectangle())
+                .alignmentGuide(.firstTextBaseline) { dimensions in
+                    dimensions[VerticalAlignment.center]
+                }
                 .accessibilityLabel("Удалить шаг \(index + 1)")
             }
         }

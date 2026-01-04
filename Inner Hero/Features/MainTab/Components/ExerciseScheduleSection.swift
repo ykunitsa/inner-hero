@@ -100,6 +100,7 @@ struct ExerciseScheduleSection: View {
             Divider()
             
             HStack(spacing: 12) {
+                Spacer(minLength: 0)
                 Button {
                     showScheduleSheet = true
                 } label: {
@@ -137,7 +138,9 @@ struct ExerciseScheduleSection: View {
                     )
                 }
                 .buttonStyle(.plain)
+                Spacer(minLength: 0)
             }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
     }
     
