@@ -4,6 +4,7 @@ import SwiftData
 struct StartSessionSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     
     let exposure: Exposure
     let onSessionCreated: (ExposureSessionResult) -> Void
@@ -26,17 +27,7 @@ struct StartSessionSheet: View {
                 }
                 .padding(.bottom, 20)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
+            .background(TopMeshGradientBackground())
             .navigationTitle("Новый сеанс")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -159,8 +150,13 @@ struct StartSessionSheet: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .fill(.thinMaterial)
+                .shadow(
+                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                    radius: 10,
+                    x: 0,
+                    y: 4
+                )
         )
         .padding(.horizontal, 20)
     }

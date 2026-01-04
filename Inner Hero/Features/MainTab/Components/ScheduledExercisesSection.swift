@@ -52,31 +52,35 @@ struct ScheduledExercisesSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            let accent = LinearGradient(
+                colors: [.orange, .orange.opacity(0.8)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
             HStack {
                 Image(systemName: "calendar.badge.clock")
                     .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.orange, .orange.opacity(0.8)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundStyle(accent)
                 Text("Запланированные упражнения")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
+                    .foregroundStyle(accent)
             }
             
             if upcomingExercises.isEmpty {
                 emptyStateView
             } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(upcomingExercises.prefix(5)) { exercise in
-                            ScheduledExerciseCard(exercise: exercise)
-                        }
+                LazyVGrid(
+                    columns: [
+                        GridItem(.flexible(), spacing: 12),
+                        GridItem(.flexible(), spacing: 12)
+                    ],
+                    spacing: 12
+                ) {
+                    ForEach(upcomingExercises.prefix(5)) { exercise in
+                        ScheduledExerciseCard(exercise: exercise)
+                            .frame(maxWidth: .infinity)
                     }
-                    .padding(.horizontal, 4)
                 }
             }
         }
@@ -189,6 +193,9 @@ struct UpcomingExercise: Identifiable {
 
 struct ScheduledExerciseCard: View {
     let exercise: UpcomingExercise
+    @Environment(\.colorScheme) var colorScheme
+    
+    private static let cardHeight: CGFloat = 160
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -214,11 +221,20 @@ struct ScheduledExerciseCard: View {
                 .foregroundStyle(TextColors.tertiary)
         }
         .padding(16)
-        .frame(width: 160)
+        .frame(maxWidth: .infinity, minHeight: Self.cardHeight, maxHeight: Self.cardHeight, alignment: .topLeading)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(
-                    LinearGradient(
+                    colorScheme == .dark
+                    ? LinearGradient(
+                        colors: [
+                            Color(uiColor: .secondarySystemGroupedBackground),
+                            Color(uiColor: .tertiarySystemGroupedBackground)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    : LinearGradient(
                         colors: [
                             Color(red: 0.98, green: 0.99, blue: 1.0),
                             Color(red: 0.96, green: 0.97, blue: 0.99)
@@ -230,7 +246,7 @@ struct ScheduledExerciseCard: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(colorForExerciseType(exercise.exerciseType).opacity(0.2), lineWidth: 1)
+                .strokeBorder(colorForExerciseType(exercise.exerciseType).opacity(colorScheme == .dark ? 0.3 : 0.2), lineWidth: 1)
         )
     }
     

@@ -27,6 +27,7 @@ final class Exposure {
     var exposureDescription: String
     var steps: [ExposureStep]
     var createdAt: Date
+    var isPredefined: Bool = false
     
     @Relationship(deleteRule: .cascade, inverse: \ExposureSessionResult.exposure)
     var sessionResults: [ExposureSessionResult]
@@ -38,13 +39,15 @@ final class Exposure {
         title: String,
         exposureDescription: String,
         steps: [ExposureStep] = [],
-        createdAt: Date = Date()
+        createdAt: Date = Date(),
+        isPredefined: Bool = false
     ) {
         self.id = id
         self.title = title
         self.exposureDescription = exposureDescription
         self.steps = steps
         self.createdAt = createdAt
+        self.isPredefined = isPredefined
         self.sessionResults = []
     }
 }

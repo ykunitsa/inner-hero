@@ -3,6 +3,7 @@ import SwiftData
 
 struct ExposureDetailView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     let exposure: Exposure
     let onStartSession: () -> Void
     
@@ -40,17 +41,7 @@ struct ExposureDetailView: View {
             .padding(.top, 20)
             .padding(.bottom, 40)
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.97, blue: 1.0),
-                    Color(red: 0.92, green: 0.95, blue: 0.98)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-        )
+        .background(TopMeshGradientBackground())
         .navigationTitle("Детали")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -181,8 +172,13 @@ struct ExposureDetailView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .fill(.thinMaterial)
+                .shadow(
+                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                    radius: 10,
+                    x: 0,
+                    y: 4
+                )
         )
     }
     
@@ -273,8 +269,13 @@ struct ExposureDetailView: View {
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                    .fill(.thinMaterial)
+                    .shadow(
+                        color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                        radius: 10,
+                        x: 0,
+                        y: 4
+                    )
             )
         }
         .buttonStyle(.plain)
@@ -382,16 +383,7 @@ struct QuickStatCard: View {
         .padding(.vertical, 16)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.98, green: 0.99, blue: 1.0),
-                            Color(red: 0.96, green: 0.97, blue: 0.99)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(.thinMaterial)
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(value) \(label)")
@@ -446,16 +438,7 @@ struct StepDetailCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.98, green: 0.99, blue: 1.0),
-                            Color(red: 0.96, green: 0.97, blue: 0.99)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(.thinMaterial)
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Шаг \(index + 1): \(step.text)")

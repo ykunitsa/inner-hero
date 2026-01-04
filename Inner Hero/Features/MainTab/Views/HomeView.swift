@@ -13,34 +13,20 @@ struct HomeView: View {
                         .transition(.opacity.combined(with: .move(edge: .bottom)))
                         .animation(.easeOut(duration: 0.3).delay(0.0), value: appeared)
                     
-                    ExerciseCalendarView()
+                    FavoritesSection()
                         .transition(.opacity.combined(with: .move(edge: .bottom)))
                         .animation(.easeOut(duration: 0.3).delay(0.1), value: appeared)
                     
-                    FavoritesSection()
-                        .transition(.opacity.combined(with: .move(edge: .bottom)))
-                        .animation(.easeOut(duration: 0.3).delay(0.2), value: appeared)
-                    
                     articlesSection
                         .transition(.opacity.combined(with: .move(edge: .bottom)))
-                        .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
+                        .animation(.easeOut(duration: 0.3).delay(0.2), value: appeared)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
-            .navigationTitle("Главная")
+            .background(TopMeshGradientBackground())
+            .navigationTitle("Сводка")
             .navigationBarTitleDisplayMode(.large)
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -52,31 +38,29 @@ struct HomeView: View {
     
     private var articlesSection: some View {
         VStack(alignment: .leading, spacing: 16) {
+            let accent = LinearGradient(
+                colors: [.purple, .indigo],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
             HStack {
                 Image(systemName: "book.fill")
                     .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.purple, .indigo],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundStyle(accent)
                 Text("Образовательные статьи")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
+                    .foregroundStyle(accent)
             }
             
             if articles.isEmpty {
                 emptyArticlesView
             } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(articles) { article in
-                            ArticleCard(article: article)
-                        }
+                LazyVStack(spacing: 12) {
+                    ForEach(articles) { article in
+                        ArticleCard(article: article)
+                            .frame(maxWidth: .infinity)
                     }
-                    .padding(.horizontal, 4)
                 }
             }
         }

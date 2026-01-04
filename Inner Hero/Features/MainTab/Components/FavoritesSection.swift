@@ -15,31 +15,35 @@ struct FavoritesSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            let accent = LinearGradient(
+                colors: [.pink, .red],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
             HStack {
                 Image(systemName: "heart.fill")
                     .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.pink, .red],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundStyle(accent)
                 Text("Любимые упражнения")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
+                    .foregroundStyle(accent)
             }
             
             if favoriteExercises.isEmpty {
                 emptyStateView
             } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(favoriteExercises) { item in
-                            FavoriteExerciseCard(item: item)
-                        }
+                LazyVGrid(
+                    columns: [
+                        GridItem(.flexible(), spacing: 12),
+                        GridItem(.flexible(), spacing: 12)
+                    ],
+                    spacing: 12
+                ) {
+                    ForEach(favoriteExercises) { item in
+                        FavoriteExerciseCard(item: item)
+                            .frame(maxWidth: .infinity)
                     }
-                    .padding(.horizontal, 4)
                 }
             }
         }
@@ -76,7 +80,7 @@ struct FavoritesSection: View {
                     id: favorite.id,
                     name: exposure.title,
                     description: exposure.exposureDescription,
-                    icon: "leaf.circle.fill",
+                    icon: "leaf",
                     color: .blue,
                     exerciseType: .exposure,
                     exerciseId: exerciseId,
@@ -170,6 +174,9 @@ struct FavoriteExerciseItem: Identifiable {
 struct FavoriteExerciseCard: View {
     let item: FavoriteExerciseItem
     @State private var navigationPath = NavigationPath()
+    @Environment(\.colorScheme) var colorScheme
+    
+    private static let cardHeight: CGFloat = 160
     
     var body: some View {
         NavigationLink {
@@ -193,10 +200,6 @@ struct FavoriteExerciseCard: View {
                         )
                     
                     Spacer()
-                    
-                    Image(systemName: "heart.fill")
-                        .font(.caption)
-                        .foregroundStyle(.pink)
                 }
                 
                 Text(item.name)
@@ -210,11 +213,20 @@ struct FavoriteExerciseCard: View {
                     .lineLimit(2)
             }
             .padding(16)
-            .frame(width: 180)
+            .frame(maxWidth: .infinity, minHeight: Self.cardHeight, maxHeight: Self.cardHeight, alignment: .topLeading)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(
-                        LinearGradient(
+                        colorScheme == .dark
+                        ? LinearGradient(
+                            colors: [
+                                Color(uiColor: .secondarySystemGroupedBackground),
+                                Color(uiColor: .tertiarySystemGroupedBackground)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        : LinearGradient(
                             colors: [
                                 Color(red: 0.98, green: 0.99, blue: 1.0),
                                 Color(red: 0.96, green: 0.97, blue: 0.99)
@@ -226,7 +238,7 @@ struct FavoriteExerciseCard: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(item.color.opacity(0.2), lineWidth: 1)
+                    .strokeBorder(item.color.opacity(colorScheme == .dark ? 0.3 : 0.2), lineWidth: 1)
             )
         }
         .buttonStyle(.plain)

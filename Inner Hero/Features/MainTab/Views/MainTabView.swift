@@ -16,12 +16,12 @@ struct MainTabView: View {
                 .tag(Tab.home)
                 .tabItem {
                     Label {
-                        Text("Главная")
+                        Text("Сводка")
                     } icon: {
-                        Image(systemName: "house.fill")
+                        Image(systemName: "heart.circle")
                     }
                 }
-                .accessibilityLabel("Главная")
+                .accessibilityLabel("Сводка")
             
             ExercisesView()
                 .tag(Tab.exercises)

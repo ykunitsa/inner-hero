@@ -10,13 +10,10 @@ struct ScheduleIndicatorView: View {
                 .font(.caption)
                 .foregroundStyle(.orange)
             
-            Text(timeString)
+            
+            Text("Расписание")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(TextColors.secondary)
-            
-            Text(assignment.getDayNamesString())
-                .font(.caption)
-                .foregroundStyle(TextColors.tertiary)
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)

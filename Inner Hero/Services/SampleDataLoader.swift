@@ -21,13 +21,7 @@ struct SampleDataLoader {
         into modelContext: ModelContext,
         from fileName: String = "SampleData"
     ) throws {
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
-            throw SampleDataError.fileNotFound
-        }
-        
-        let data = try Data(contentsOf: url)
-        let decoder = JSONDecoder()
-        let sampleData = try decoder.decode(SampleData.self, from: data)
+        let sampleData = try loadSampleData(from: fileName)
         
         for exposureData in sampleData.exposures {
             let steps = exposureData.steps.enumerated().map { index, text in
@@ -37,7 +31,8 @@ struct SampleDataLoader {
             let exposure = Exposure(
                 title: exposureData.title,
                 exposureDescription: exposureData.description,
-                steps: steps
+                steps: steps,
+                isPredefined: true
             )
             modelContext.insert(exposure)
         }
@@ -166,6 +161,27 @@ struct SampleDataLoader {
         }
         
         try modelContext.save()
+    }
+    
+    // MARK: - Predefined Exposure Helpers
+    
+    static func exposureKey(title: String, description: String) -> String {
+        "\(title)|\(description)"
+    }
+    
+    static func sampleExposureKeys(from fileName: String = "SampleData") throws -> Set<String> {
+        let sampleData = try loadSampleData(from: fileName)
+        return Set(sampleData.exposures.map { exposureKey(title: $0.title, description: $0.description) })
+    }
+    
+    private static func loadSampleData(from fileName: String) throws -> SampleData {
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
+            throw SampleDataError.fileNotFound
+        }
+        
+        let data = try Data(contentsOf: url)
+        let decoder = JSONDecoder()
+        return try decoder.decode(SampleData.self, from: data)
     }
 }
 
