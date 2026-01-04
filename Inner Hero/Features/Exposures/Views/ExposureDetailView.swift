@@ -30,12 +30,12 @@ struct ExposureDetailView: View {
                 heroHeaderSection
                 quickStatsSection
                 descriptionCard
+                startSessionButton
                 if !exposure.steps.isEmpty {
                     stepsSection
                 }
                 sessionsHistoryCard
                 scheduleSection
-                startSessionButton
             }
             .padding(.horizontal, 20)
             .padding(.top, 20)
@@ -86,7 +86,7 @@ struct ExposureDetailView: View {
                     .accessibilityLabel("Запланировать")
                     
                     NavigationLink(destination: EditExposureView(exposure: exposure)) {
-                        Image(systemName: "pencil.circle.fill")
+                        Image(systemName: "pencil")
                             .font(.title2)
                             .foregroundStyle(
                                 LinearGradient(
@@ -231,7 +231,7 @@ struct ExposureDetailView: View {
                 
                 if exposure.sessionResults.count > 0 {
                     HStack(spacing: 20) {
-                        VStack(alignment: .leading, spacing: 4) {
+                        VStack(alignment: .center, spacing: 4) {
                             Text("Всего")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
@@ -239,6 +239,7 @@ struct ExposureDetailView: View {
                                 .font(.title2.weight(.semibold))
                                 .foregroundStyle(TextColors.primary)
                         }
+                        .frame(maxWidth: .infinity, alignment: .center)
                         
                         Divider()
                         
@@ -258,6 +259,7 @@ struct ExposureDetailView: View {
                                     )
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
                     Text("Нет завершенных сеансов")
