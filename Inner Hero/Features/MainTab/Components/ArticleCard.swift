@@ -2,6 +2,9 @@ import SwiftUI
 
 struct ArticleCard: View {
     let article: Article
+    @Environment(\.colorScheme) var colorScheme
+    
+    private static let cardHeight: CGFloat = 160
     
     var body: some View {
         NavigationLink {
@@ -57,11 +60,20 @@ struct ArticleCard: View {
                 }
             }
             .padding(16)
-            .frame(width: 200)
+            .frame(maxWidth: .infinity, minHeight: Self.cardHeight, maxHeight: Self.cardHeight, alignment: .topLeading)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(
-                        LinearGradient(
+                        colorScheme == .dark
+                        ? LinearGradient(
+                            colors: [
+                                Color(uiColor: .secondarySystemGroupedBackground),
+                                Color(uiColor: .tertiarySystemGroupedBackground)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        : LinearGradient(
                             colors: [
                                 Color(red: 0.98, green: 0.99, blue: 1.0),
                                 Color(red: 0.96, green: 0.97, blue: 0.99)
@@ -73,7 +85,7 @@ struct ArticleCard: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(Color.blue.opacity(0.2), lineWidth: 1)
+                    .strokeBorder(Color.blue.opacity(colorScheme == .dark ? 0.3 : 0.2), lineWidth: 1)
             )
         }
         .buttonStyle(.plain)

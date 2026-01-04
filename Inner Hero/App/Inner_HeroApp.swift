@@ -5,6 +5,7 @@ import SwiftData
 struct Inner_HeroApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @AppStorage("hasLoadedSampleData") private var hasLoadedSampleData = false
+    @AppStorage("hasBackfilledPredefinedExposures") private var hasBackfilledPredefinedExposures = false
     
     var sharedModelContainer: ModelContainer = {
         do {
@@ -27,6 +28,7 @@ struct Inner_HeroApp: App {
     
     init() {
         loadSampleDataIfNeeded()
+        backfillPredefinedExposuresIfNeeded()
     }
 
     var body: some Scene {
@@ -68,6 +70,37 @@ struct Inner_HeroApp: App {
             }
         } catch {
             print("⚠️ Ошибка загрузки тестовых данных: \(error)")
+        }
+    }
+    
+    private func backfillPredefinedExposuresIfNeeded() {
+        guard !hasBackfilledPredefinedExposures else { return }
+        
+        do {
+            let context = sharedModelContainer.mainContext
+            let predefinedKeys = try SampleDataLoader.sampleExposureKeys()
+            let keyForExposure: (Exposure) -> String = { exposure in
+                SampleDataLoader.exposureKey(title: exposure.title, description: exposure.exposureDescription)
+            }
+            
+            let allExposures = try context.fetch(FetchDescriptor<Exposure>())
+            var didUpdate = false
+            
+            for exposure in allExposures where exposure.isPredefined == false {
+                if predefinedKeys.contains(keyForExposure(exposure)) {
+                    exposure.isPredefined = true
+                    didUpdate = true
+                }
+            }
+            
+            if didUpdate {
+                try context.save()
+            }
+            
+            hasBackfilledPredefinedExposures = true
+        } catch {
+            // If anything goes wrong, don't block the app; we'll try again on the next launch.
+            print("⚠️ Ошибка обновления флага предустановленных экспозиций: \(error)")
         }
     }
 }

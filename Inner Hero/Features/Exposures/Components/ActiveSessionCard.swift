@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct ActiveSessionCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let session: ExposureSessionResult
     let exposure: Exposure
     let onTap: () -> Void
@@ -16,8 +18,13 @@ struct ActiveSessionCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                    .fill(.thinMaterial)
+                    .shadow(
+                        color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                        radius: 10,
+                        x: 0,
+                        y: 4
+                    )
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -49,16 +56,6 @@ struct ActiveSessionCard: View {
                 .foregroundStyle(TextColors.secondary)
             
             Spacer()
-            
-            Image(systemName: "arrow.right.circle.fill")
-                .font(.body)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.blue, .cyan],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
         }
     }
     

@@ -6,6 +6,7 @@ struct ExposuresListView: View {
     @Query(sort: \Exposure.createdAt, order: .reverse) private var exposures: [Exposure]
     @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var allSessions: [ExposureSessionResult]
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     
     @State private var showingCreateSheet = false
     @State private var exposureToDelete: Exposure?
@@ -17,6 +18,31 @@ struct ExposuresListView: View {
     
     private var activeSessions: [ExposureSessionResult] {
         allSessions.filter { $0.endAt == nil }
+    }
+    
+    private var pinnedExposures: [Exposure] {
+        let exposureById: [UUID: Exposure] = Dictionary(uniqueKeysWithValues: exposures.map { ($0.id, $0) })
+        var seen = Set<UUID>()
+        
+        return favorites
+            .filter { $0.exerciseType == .exposure }
+            .compactMap { $0.exerciseId }
+            .compactMap { id in
+                guard seen.insert(id).inserted else { return nil }
+                return exposureById[id]
+            }
+    }
+    
+    private var pinnedExposureIDs: Set<UUID> {
+        Set(pinnedExposures.map(\.id))
+    }
+    
+    private var userCreatedExposures: [Exposure] {
+        exposures.filter { !pinnedExposureIDs.contains($0.id) && $0.isPredefined == false }
+    }
+    
+    private var predefinedExposures: [Exposure] {
+        exposures.filter { !pinnedExposureIDs.contains($0.id) && $0.isPredefined == true }
     }
     
     var body: some View {
@@ -34,24 +60,14 @@ struct ExposuresListView: View {
                     if exposures.isEmpty {
                         emptyStateView
                     } else {
-                        exposuresSection
+                        exposuresSections
                     }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
+            .background(TopMeshGradientBackground())
             .navigationTitle("Экспозиции")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -128,9 +144,25 @@ struct ExposuresListView: View {
         .accessibilityElement(children: .combine)
     }
     
-    private var exposuresSection: some View {
+    private var exposuresSections: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            if !pinnedExposures.isEmpty {
+                exposuresSection(title: "Закреплённые", exposures: pinnedExposures)
+            }
+            
+            if !userCreatedExposures.isEmpty {
+                exposuresSection(title: "Созданные мной", exposures: userCreatedExposures)
+            }
+            
+            if !predefinedExposures.isEmpty {
+                exposuresSection(title: "Предустановленные", exposures: predefinedExposures)
+            }
+        }
+    }
+    
+    private func exposuresSection(title: String, exposures: [Exposure]) -> some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Мои экспозиции")
+            Text(title)
                 .font(.caption.weight(.medium))
                 .foregroundStyle(TextColors.secondary)
                 .padding(.leading, 4)
@@ -155,13 +187,7 @@ struct ExposuresListView: View {
         })) {
             ExposureCardView(
                 exposure: exposure,
-                onStartSession: {
-                    startSession(for: exposure)
-                },
-                assignment: assignment,
-                onSchedule: {
-                    exposureToSchedule = exposure
-                }
+                assignment: assignment
             )
         }
         .buttonStyle(.plain)
@@ -170,6 +196,15 @@ struct ExposuresListView: View {
                 startSession(for: exposure)
             } label: {
                 Label("Начать сеанс", systemImage: "play.fill")
+            }
+            
+            Button {
+                exposureToSchedule = exposure
+            } label: {
+                Label(
+                    assignment?.isActive == true ? "Редактировать расписание" : "Создать расписание",
+                    systemImage: "calendar"
+                )
             }
             
             Button(role: .destructive) {

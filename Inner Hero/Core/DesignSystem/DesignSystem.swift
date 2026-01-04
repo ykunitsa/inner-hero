@@ -52,17 +52,17 @@ enum Opacity {
 // MARK: - Text Colors
 
 enum TextColors {
-    /// Primary text - soft dark gray with cool undertone
-    static let primary = Color(red: 0.2, green: 0.22, blue: 0.26) // #33384A
+    /// Primary text (adaptive for light/dark mode)
+    static let primary: Color = .primary
     
-    /// Secondary text - medium gray with blue undertone
-    static let secondary = Color(red: 0.45, green: 0.48, blue: 0.54) // #737A8A
+    /// Secondary text (adaptive for light/dark mode)
+    static let secondary: Color = .secondary
     
-    /// Tertiary text - lighter gray for subtle elements
-    static let tertiary = Color(red: 0.60, green: 0.62, blue: 0.66) // #999DA8
+    /// Tertiary text (adaptive for light/dark mode)
+    static let tertiary: Color = .secondary.opacity(0.7)
     
-    /// Toolbar icons and buttons
-    static let toolbar = Color(red: 0.35, green: 0.38, blue: 0.44) // #596170
+    /// Toolbar icons and buttons (adaptive for light/dark mode)
+    static let toolbar: Color = .primary
 }
 
 // MARK: - App Theme

@@ -16,19 +16,15 @@ struct ExercisesView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 20) {
-                    scheduleCard
-                        .transition(.opacity.combined(with: .move(edge: .bottom)))
-                        .animation(.easeOut(duration: 0.3).delay(0.0), value: appeared)
-                    
                     exerciseCard(
                         title: "Экспозиции",
                         description: "Постепенное преодоление страхов и тревог",
-                        icon: "leaf.circle.fill",
+                        icon: "leaf",
                         color: .blue,
                         type: .exposures
                     )
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.1), value: appeared)
+                    .animation(.easeOut(duration: 0.3).delay(0.0), value: appeared)
                     
                     exerciseCard(
                         title: "Дыхание",
@@ -38,7 +34,7 @@ struct ExercisesView: View {
                         type: .breathing
                     )
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.2), value: appeared)
+                    .animation(.easeOut(duration: 0.3).delay(0.1), value: appeared)
                     
                     exerciseCard(
                         title: "Релаксация",
@@ -48,7 +44,7 @@ struct ExercisesView: View {
                         type: .relaxation
                     )
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
+                    .animation(.easeOut(duration: 0.3).delay(0.2), value: appeared)
                     
                     exerciseCard(
                         title: "Заземление",
@@ -58,7 +54,7 @@ struct ExercisesView: View {
                         type: .grounding
                     )
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.4), value: appeared)
+                    .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
                     
                     exerciseCard(
                         title: "Активация",
@@ -68,12 +64,13 @@ struct ExercisesView: View {
                         type: .activation
                     )
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.5), value: appeared)
+                    .animation(.easeOut(duration: 0.3).delay(0.4), value: appeared)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
+            .background(TopMeshGradientBackground())
             .navigationTitle("Упражнения")
             .navigationBarTitleDisplayMode(.large)
             .opacity(appeared ? 1 : 0)
@@ -82,59 +79,6 @@ struct ExercisesView: View {
                 appeared = true
             }
         }
-    }
-    
-    private var scheduleCard: some View {
-        NavigationLink {
-            ExerciseScheduleView()
-        } label: {
-            HStack(spacing: 16) {
-                Image(systemName: "calendar.badge.clock")
-                    .font(.system(size: 40))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.orange.opacity(0.8), .orange.opacity(0.6)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 60, height: 60)
-                    .background(
-                        Circle()
-                            .fill(Color.orange.opacity(0.1))
-                    )
-                    .accessibilityHidden(true)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Расписание")
-                        .font(.title3.weight(.semibold))
-                        .foregroundStyle(TextColors.primary)
-                    
-                    Text("Планируйте упражнения по расписанию")
-                        .font(.subheadline)
-                        .foregroundStyle(TextColors.secondary)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(2)
-                }
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .font(.body)
-                    .foregroundStyle(TextColors.tertiary)
-            }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Расписание. Планируйте упражнения по расписанию")
-        .accessibilityHint("Дважды нажмите для открытия")
     }
     
     @ViewBuilder
@@ -183,11 +127,11 @@ struct ExercisesView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(title)
                         .font(.title3.weight(.semibold))
-                        .foregroundStyle(TextColors.primary)
+                        .foregroundStyle(Color.primary)
                     
                     Text(description)
                         .font(.subheadline)
-                        .foregroundStyle(TextColors.secondary)
+                        .foregroundStyle(Color.secondary)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
                 }
@@ -196,7 +140,7 @@ struct ExercisesView: View {
                 
                 Image(systemName: "chevron.right")
                     .font(.body)
-                    .foregroundStyle(TextColors.tertiary)
+                    .foregroundStyle(Color.secondary)
             }
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
