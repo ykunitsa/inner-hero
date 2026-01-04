@@ -53,12 +53,28 @@ struct StepEditorRow: View {
                 .font(.body)
                 .focused(focusState, equals: .step(step.id))
                 .accessibilityLabel("Шаг \(index + 1)")
+
+            Button {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    step.hasTimer.toggle()
+                }
+            } label: {
+                Image(systemName: "timer")
+                    .symbolVariant(step.hasTimer ? .fill : .none)
+                    .foregroundStyle(step.hasTimer ? .primary : .secondary)
+                    .font(.body)
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Таймер для шага \(index + 1)")
+            .accessibilityValue(step.hasTimer ? "Включен" : "Выключен")
             
             if isRemovable {
                 Button(role: .destructive, action: onDelete) {
                     Image(systemName: "minus.circle.fill")
                         .font(.title3)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(.red.opacity(0.7))
                 }
                 .buttonStyle(.plain)
                 .frame(minWidth: 44, minHeight: 44)
@@ -68,19 +84,13 @@ struct StepEditorRow: View {
         }
     }
     
+    @ViewBuilder
     private var timerSection: some View {
-        VStack(alignment: .leading, spacing: Spacing.xxs) {
-            Toggle("Таймер для этого шага", isOn: $step.hasTimer)
-                .font(.subheadline)
-                .frame(minHeight: 44)
-                .accessibilityLabel("Таймер для шага \(index + 1)")
-            
-            if step.hasTimer {
-                StepTimerControlsView(step: $step)
-                    .transition(.scale.combined(with: .opacity))
-            }
+        if step.hasTimer {
+            StepTimerControlsView(step: $step)
+                .padding(.top, Spacing.xxxs)
+                .transition(.scale.combined(with: .opacity))
         }
-        .padding(.top, Spacing.xxxs)
     }
 }
 
@@ -95,6 +105,7 @@ private struct StepTimerControlsView: View {
             
             HStack(spacing: Spacing.sm) {
                 durationPicker(title: "Минуты", range: 0..<60, selection: $step.timerMinutes)
+                    .frame(maxWidth: .infinity)
                 
                 Text(":")
                     .font(.title2.weight(.semibold))
@@ -102,6 +113,7 @@ private struct StepTimerControlsView: View {
                     .padding(.top, Spacing.md)
                 
                 durationPicker(title: "Секунды", range: 0..<60, selection: $step.timerSeconds, padded: true)
+                    .frame(maxWidth: .infinity)
             }
             
             HStack(spacing: Spacing.xxxs) {
@@ -119,6 +131,7 @@ private struct StepTimerControlsView: View {
             .accessibilityLabel("Общее время: \(formattedDuration)")
         }
         .padding(Spacing.sm)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
                 .fill(Color(.systemGray6))
@@ -151,7 +164,8 @@ private struct StepTimerControlsView: View {
                 }
             }
             .pickerStyle(.wheel)
-            .frame(width: 80, height: 100)
+            .frame(maxWidth: .infinity)
+            .frame(height: 100)
             .clipped()
         }
     }

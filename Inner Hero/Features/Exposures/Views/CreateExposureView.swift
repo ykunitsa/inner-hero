@@ -66,22 +66,27 @@ struct CreateExposureView: View {
                             )
                         }
                     }
-                    
-                    Button {
-                        addStep()
-                    } label: {
-                        Label("Добавить шаг", systemImage: "plus.circle.fill")
-                            .font(.headline)
-                            .foregroundStyle(.teal)
-                    }
-                    .frame(minHeight: 44)
-                    .accessibilityLabel("Добавить шаг")
-                    .accessibilityHint("Дважды нажмите чтобы добавить новый шаг")
                 } header: {
-                    Text("Шаги выполнения")
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.secondary)
+                    HStack {
+                        Text("Шаги выполнения")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                        
+                        Spacer()
+                        
+                        Button {
+                            addStep()
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title3)
+                                .foregroundStyle(.primary)
+                        }
+                        .buttonStyle(.plain)
+                        .frame(minWidth: 44, minHeight: 44)
+                        .accessibilityLabel("Добавить шаг")
+                        .accessibilityHint("Добавляет пустой шаг в конец списка")
+                    }
                 } footer: {
                     Text("Опишите последовательность действий. Каждый шаг может иметь свой таймер.")
                         .font(.footnote)
@@ -138,9 +143,10 @@ struct CreateExposureView: View {
     }
     
     private func deleteStep(at index: Int) {
+        guard steps.count > 1 else { return }
         guard index < steps.count else { return }
         
-        _ = withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
             steps.remove(at: index)
         }
         

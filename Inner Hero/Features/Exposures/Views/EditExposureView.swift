@@ -78,11 +78,26 @@ struct EditExposureView: View {
     private var stepsSection: some View {
         Section {
             stepsListView
-            addStepButton
         } header: {
-            Text("Шаги выполнения")
-                .font(.footnote)
-                .fontWeight(.medium)
+            HStack {
+                Text("Шаги выполнения")
+                    .font(.footnote)
+                    .fontWeight(.medium)
+                
+                Spacer()
+                
+                Button {
+                    addStep()
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.teal)
+                }
+                .buttonStyle(.plain)
+                .frame(minWidth: 44, minHeight: 44)
+                .accessibilityLabel("Добавить шаг")
+                .accessibilityHint("Добавляет пустой шаг в конец списка")
+            }
         } footer: {
             Text("Опишите последовательность действий. Каждый шаг может иметь свой таймер. Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления.")
                 .font(.caption)
@@ -104,20 +119,6 @@ struct EditExposureView: View {
         }
         .onMove(perform: moveStep)
         .onDelete(perform: deleteStep)
-    }
-    
-    private var addStepButton: some View {
-        Button {
-            addStep()
-        } label: {
-            Label("Добавить шаг", systemImage: "plus.circle.fill")
-                .font(.body)
-                .fontWeight(.medium)
-        }
-        .tint(.teal)
-        .frame(minHeight: 44)
-        .accessibilityLabel("Добавить новый шаг")
-        .accessibilityHint("Добавляет пустой шаг в конец списка")
     }
     
     @ToolbarContentBuilder
