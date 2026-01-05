@@ -1,8 +1,5 @@
 import SwiftUI
-
-#if canImport(UIKit)
-import UIKit
-#endif
+import CoreHaptics
 
 // MARK: - Spacing
 
@@ -106,11 +103,12 @@ struct CardStyle: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        #if canImport(UIKit)
-        let backgroundColor = Color(uiColor: .secondarySystemGroupedBackground)
-        #else
-        let backgroundColor = Color.gray.opacity(0.1)
-        #endif
+        let backgroundColor: Color = {
+            if colorScheme == .dark {
+                return Color(red: 0.14, green: 0.15, blue: 0.18)
+            }
+            return Color(red: 0.95, green: 0.97, blue: 1.0)
+        }()
         
         return content
             .padding(padding)
@@ -147,11 +145,12 @@ struct AccentCardStyle: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        #if canImport(UIKit)
-        let backgroundColor = Color(uiColor: .secondarySystemGroupedBackground)
-        #else
-        let backgroundColor = Color.gray.opacity(0.1)
-        #endif
+        let backgroundColor: Color = {
+            if colorScheme == .dark {
+                return Color(red: 0.14, green: 0.15, blue: 0.18)
+            }
+            return Color(red: 0.95, green: 0.97, blue: 1.0)
+        }()
         
         return content
             .padding(padding)
@@ -203,42 +202,106 @@ extension View {
     }
 }
 
-// MARK: - Haptic Feedback Helpers
+// MARK: - Haptic Feedback Helpers (CoreHaptics-only, no UIKit)
 
-#if canImport(UIKit)
 enum HapticFeedback {
+    enum ImpactStyle {
+        case light
+        case medium
+        case heavy
+        case soft
+        case rigid
+    }
+
     static func success() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
+        playTransients([
+            (time: 0.0, intensity: 0.55, sharpness: 0.35),
+            (time: 0.10, intensity: 0.75, sharpness: 0.45)
+        ])
     }
-    
+
     static func warning() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.warning)
+        playTransients([
+            (time: 0.0, intensity: 0.70, sharpness: 0.55),
+            (time: 0.14, intensity: 0.55, sharpness: 0.45)
+        ])
     }
-    
+
     static func error() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.error)
+        playTransients([
+            (time: 0.0, intensity: 0.80, sharpness: 0.70),
+            (time: 0.12, intensity: 0.80, sharpness: 0.70),
+            (time: 0.24, intensity: 0.60, sharpness: 0.55)
+        ])
     }
-    
-    static func impact(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .light) {
-        let generator = UIImpactFeedbackGenerator(style: style)
-        generator.impactOccurred()
+
+    static func impact(_ style: ImpactStyle = .light) {
+        let (intensity, sharpness): (Float, Float) = switch style {
+        case .light: (0.35, 0.30)
+        case .medium: (0.55, 0.45)
+        case .heavy: (0.80, 0.60)
+        case .soft: (0.25, 0.10)
+        case .rigid: (0.60, 0.80)
+        }
+
+        playTransients([(time: 0.0, intensity: intensity, sharpness: sharpness)])
     }
-    
+
     static func selection() {
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
+        playTransients([(time: 0.0, intensity: 0.25, sharpness: 0.15)])
+    }
+
+    // MARK: - CoreHaptics internals
+
+    private static var engine: CHHapticEngine?
+
+    private static var supportsHaptics: Bool {
+        CHHapticEngine.capabilitiesForHardware().supportsHaptics
+    }
+
+    private static func ensureEngineStarted() {
+        guard supportsHaptics else { return }
+        if engine != nil { return }
+
+        do {
+            let newEngine = try CHHapticEngine()
+            newEngine.isAutoShutdownEnabled = true
+            newEngine.stoppedHandler = { _ in
+                engine = nil
+            }
+            newEngine.resetHandler = {
+                do { try engine?.start() } catch { /* no-op */ }
+            }
+            try newEngine.start()
+            engine = newEngine
+        } catch {
+            engine = nil
+        }
+    }
+
+    private static func playTransients(_ transients: [(time: TimeInterval, intensity: Float, sharpness: Float)]) {
+        guard !transients.isEmpty else { return }
+        ensureEngineStarted()
+        guard let engine, supportsHaptics else { return }
+
+        let events = transients.map { item in
+            CHHapticEvent(
+                eventType: .hapticTransient,
+                parameters: [
+                    CHHapticEventParameter(parameterID: .hapticIntensity, value: item.intensity),
+                    CHHapticEventParameter(parameterID: .hapticSharpness, value: item.sharpness)
+                ],
+                relativeTime: item.time
+            )
+        }
+
+        do {
+            let pattern = try CHHapticPattern(events: events, parameters: [])
+            let player = try engine.makePlayer(with: pattern)
+            try player.start(atTime: 0)
+        } catch {
+            // no-op
+        }
     }
 }
-#else
-enum HapticFeedback {
-    static func success() { }
-    static func warning() { }
-    static func error() { }
-    static func impact(_ style: Int = 0) { }
-    static func selection() { }
-}
-#endif
 

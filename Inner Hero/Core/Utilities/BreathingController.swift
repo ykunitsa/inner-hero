@@ -5,12 +5,15 @@ import Foundation
 @Observable
 class BreathingController {
     var isBreathing: Bool = false
+    var isPaused: Bool = false
     var breathPhase: BreathPhase = .inhale
     var patternType: BreathingPatternType
     var elapsedTime: TimeInterval = 0
     
     private var timer: Timer?
     private var phaseTimer: Timer?
+    private var phaseStartDate: Date?
+    private var phaseRemaining: TimeInterval = 0
     
     init(patternType: BreathingPatternType) {
         self.patternType = patternType
@@ -44,10 +47,10 @@ class BreathingController {
         
         var instruction: String {
             switch self {
-            case .inhale: return "Inhale"
-            case .hold: return "Hold"
-            case .exhale: return "Exhale"
-            case .rest: return "Rest"
+            case .inhale: return "Вдох"
+            case .hold: return "Задержка"
+            case .exhale: return "Выдох"
+            case .rest: return "Отдых"
             }
         }
         
@@ -81,15 +84,19 @@ class BreathingController {
     }
     
     func start() {
-        guard !isBreathing else { return }
+        if isBreathing {
+            if isPaused {
+                resume()
+            }
+            return
+        }
         isBreathing = true
+        isPaused = false
         elapsedTime = 0
         breathPhase = .inhale
         
         // Timer for elapsed time
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            self?.elapsedTime += 0.1
-        }
+        startElapsedTimer()
         
         // Start first phase
         scheduleNextPhase()
@@ -97,10 +104,47 @@ class BreathingController {
     
     func stop() {
         isBreathing = false
-        timer?.invalidate()
-        timer = nil
+        isPaused = false
+        stopElapsedTimer()
         phaseTimer?.invalidate()
         phaseTimer = nil
+        phaseStartDate = nil
+        phaseRemaining = 0
+    }
+
+    func pause() {
+        guard isBreathing, !isPaused else { return }
+        isPaused = true
+        stopElapsedTimer()
+
+        if let phaseStartDate {
+            let elapsedInPhase = Date().timeIntervalSince(phaseStartDate)
+            phaseRemaining = max(0, phaseRemaining - elapsedInPhase)
+        }
+
+        phaseTimer?.invalidate()
+        phaseTimer = nil
+        self.phaseStartDate = nil
+    }
+
+    func resume() {
+        guard isBreathing, isPaused else { return }
+        isPaused = false
+        startElapsedTimer()
+
+        if phaseRemaining <= 0 {
+            scheduleNextPhase()
+        } else {
+            schedulePhaseTimer(duration: phaseRemaining)
+        }
+    }
+
+    var remainingTimeInCurrentPhase: TimeInterval {
+        if !isBreathing { return 0 }
+        if isPaused { return max(0, phaseRemaining) }
+        guard let phaseStartDate else { return max(0, phaseRemaining) }
+        let elapsedInPhase = Date().timeIntervalSince(phaseStartDate)
+        return max(0, phaseRemaining - elapsedInPhase)
     }
     
     private func scheduleNextPhase() {
@@ -113,12 +157,34 @@ class BreathingController {
             return
         }
         
+        phaseRemaining = duration
+        schedulePhaseTimer(duration: duration)
+    }
+
+    private func schedulePhaseTimer(duration: TimeInterval) {
         phaseTimer?.invalidate()
+        phaseStartDate = Date()
+
         phaseTimer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { [weak self] _ in
-            guard let self = self, self.isBreathing else { return }
+            guard let self else { return }
+            guard self.isBreathing, !self.isPaused else { return }
+            self.phaseStartDate = nil
+            self.phaseRemaining = 0
             self.breathPhase = self.breathPhase.next(for: self.patternType)
             self.scheduleNextPhase()
         }
+    }
+
+    private func startElapsedTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            self?.elapsedTime += 0.1
+        }
+    }
+
+    private func stopElapsedTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     deinit {
