@@ -4,6 +4,7 @@ import SwiftData
 // MARK: - Compact Timer View
 
 private struct CompactTimerView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var timerController: StepTimerController
     let duration: TimeInterval
     let formatTime: (TimeInterval) -> String
@@ -28,13 +29,35 @@ private struct CompactTimerView: View {
         timerController.isPaused
     }
     
+    private var progressTrackColor: Color {
+        Color.primary.opacity(colorScheme == .dark ? 0.18 : 0.12)
+    }
+    
+    private var secondaryControlBackgroundColor: Color {
+        Color.primary.opacity(colorScheme == .dark ? 0.14 : 0.08)
+    }
+    
+    private var panelBackgroundGradientColors: [Color] {
+        if colorScheme == .dark {
+            return [
+                Color(red: 0.14, green: 0.15, blue: 0.18),
+                Color(red: 0.10, green: 0.11, blue: 0.14)
+            ]
+        }
+        
+        return [
+            Color(red: 0.95, green: 0.97, blue: 1.0),
+            Color(red: 0.92, green: 0.95, blue: 0.98)
+        ]
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             // Progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
-                        .fill(Color.white.opacity(0.3))
+                        .fill(progressTrackColor)
                         .frame(height: 4)
                     
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
@@ -110,7 +133,7 @@ private struct CompactTimerView: View {
                             .frame(width: 36, height: 36)
                             .background(
                                 Circle()
-                                    .fill(Color.white.opacity(0.5))
+                                    .fill(secondaryControlBackgroundColor)
                             )
                     }
                     .accessibilityLabel("Сбросить таймер")
@@ -124,15 +147,17 @@ private struct CompactTimerView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [
-                            Color(red: 0.95, green: 0.97, blue: 1.0),
-                            Color(red: 0.92, green: 0.95, blue: 0.98)
-                        ],
+                        colors: panelBackgroundGradientColors,
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
-                .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 2)
+                .shadow(
+                    color: Color.black.opacity(colorScheme == .dark ? 0.30 : 0.05),
+                    radius: 6,
+                    x: 0,
+                    y: 2
+                )
         )
     }
 }
@@ -140,6 +165,7 @@ private struct CompactTimerView: View {
 // MARK: - Timer Section Content
 
 private struct TimerSectionContent: View {
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var timerController: StepTimerController
     let duration: TimeInterval
     let formatTime: (TimeInterval) -> String
@@ -168,13 +194,35 @@ private struct TimerSectionContent: View {
         duration > 0 ? min(1.0, elapsedTime / duration) : 0.0
     }
     
+    private var progressTrackColor: Color {
+        Color.primary.opacity(colorScheme == .dark ? 0.18 : 0.12)
+    }
+    
+    private var secondaryControlBackgroundColor: Color {
+        Color.primary.opacity(colorScheme == .dark ? 0.14 : 0.08)
+    }
+    
+    private var panelBackgroundGradientColors: [Color] {
+        if colorScheme == .dark {
+            return [
+                Color(red: 0.14, green: 0.15, blue: 0.18),
+                Color(red: 0.10, green: 0.11, blue: 0.14)
+            ]
+        }
+        
+        return [
+            Color(red: 0.95, green: 0.97, blue: 1.0),
+            Color(red: 0.92, green: 0.95, blue: 0.98)
+        ]
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             // Progress bar at the top of timer panel
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
-                        .fill(Color.white.opacity(0.3))
+                        .fill(progressTrackColor)
                         .frame(height: 4)
                     
                     RoundedRectangle(cornerRadius: 2, style: .continuous)
@@ -254,7 +302,7 @@ private struct TimerSectionContent: View {
                             .frame(width: 52, height: 52)
                             .background(
                                 Circle()
-                                    .fill(Color.white.opacity(0.5))
+                                    .fill(secondaryControlBackgroundColor)
                             )
                     }
                     .accessibilityLabel("Сбросить таймер")
@@ -268,15 +316,17 @@ private struct TimerSectionContent: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [
-                            Color(red: 0.95, green: 0.97, blue: 1.0),
-                            Color(red: 0.92, green: 0.95, blue: 0.98)
-                        ],
+                        colors: panelBackgroundGradientColors,
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .shadow(
+                    color: Color.black.opacity(colorScheme == .dark ? 0.30 : 0.05),
+                    radius: 10,
+                    x: 0,
+                    y: 4
+                )
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 16)
@@ -288,6 +338,7 @@ private struct TimerSectionContent: View {
 struct ActiveSessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     
     let session: ExposureSessionResult
     let exposure: Exposure
@@ -296,6 +347,7 @@ struct ActiveSessionView: View {
     @State private var showingCompletion = false
     @State private var showingPauseModal = false
     @State private var showingInterruptAlert = false
+    @State private var shouldDismissAfterCompletion = false
     
     @State private var completedSteps: Set<Int> = []
     @State private var stepTimers: [Int: StepTimerController] = [:]
@@ -306,6 +358,24 @@ struct ActiveSessionView: View {
     @State private var showAllSteps: Bool = false
     @State private var selectedStepIndex: Int? = nil
     @State private var scrollToStepId: Int? = nil
+
+    // Swipe-to-complete (only for the large current step card)
+    @State private var cardSwipeOffsetX: CGFloat = 0
+    @State private var isSwipingCard: Bool = false
+    
+    private var backgroundGradientColors: [Color] {
+        if colorScheme == .dark {
+            return [
+                Color(red: 0.06, green: 0.07, blue: 0.10),
+                Color(red: 0.10, green: 0.11, blue: 0.14)
+            ]
+        }
+        
+        return [
+            Color(red: 0.95, green: 0.97, blue: 1.0),
+            Color(red: 0.92, green: 0.95, blue: 0.98)
+        ]
+    }
     
     private var dataManager: DataManager {
         DataManager(modelContext: modelContext)
@@ -345,10 +415,7 @@ struct ActiveSessionView: View {
                 .padding(.bottom, 20)
                 .background(
                     LinearGradient(
-                        colors: [
-                            Color(red: 0.95, green: 0.97, blue: 1.0),
-                            Color(red: 0.92, green: 0.95, blue: 0.98)
-                        ],
+                        colors: backgroundGradientColors,
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -378,10 +445,7 @@ struct ActiveSessionView: View {
         }
         .background(
             LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.97, blue: 1.0),
-                    Color(red: 0.92, green: 0.95, blue: 0.98)
-                ],
+                colors: backgroundGradientColors,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -452,13 +516,13 @@ struct ActiveSessionView: View {
                 
                 // Complete button or Finish flag
                 Button {
-                    if currentStepIndex == steps.count - 1 && !completedSteps.contains(currentStepIndex) {
+                    if currentStepIndex == steps.count - 1 {
                         finishSession()
                     } else {
                         completeCurrentStep()
                     }
                 } label: {
-                    if currentStepIndex == steps.count - 1 && !completedSteps.contains(currentStepIndex) {
+                    if currentStepIndex == steps.count - 1 {
                         Image(systemName: "flag.pattern.checkered")
                             .font(.title2)
                             .foregroundStyle(.green)
@@ -470,8 +534,7 @@ struct ActiveSessionView: View {
                             .symbolEffect(.bounce, value: completedSteps.contains(currentStepIndex))
                     }
                 }
-                .disabled(allStepsCompleted)
-                .accessibilityLabel(currentStepIndex == steps.count - 1 && !completedSteps.contains(currentStepIndex) ? "Завершить сессию" : "Завершить текущий шаг")
+                .accessibilityLabel(currentStepIndex == steps.count - 1 ? "Завершить сессию" : "Завершить текущий шаг")
             }
         }
         .onAppear {
@@ -480,13 +543,19 @@ struct ActiveSessionView: View {
         .onDisappear {
             cleanupSession()
         }
-        .sheet(isPresented: $showingCompletion) {
+        .sheet(isPresented: $showingCompletion, onDismiss: {
+            guard shouldDismissAfterCompletion else { return }
+            shouldDismissAfterCompletion = false
+            dismiss()
+        }) {
             CompleteSessionView(
                 session: session,
                 notes: notes,
                 onComplete: {
-                    saveProgress()
-                    dismiss()
+                    // Close the sheet first, then close this screen in `onDismiss`.
+                    saveProgress(includeNotes: false)
+                    shouldDismissAfterCompletion = true
+                    showingCompletion = false
                 }
             )
         }
@@ -559,17 +628,17 @@ struct ActiveSessionView: View {
             scrollToStepId = index
             goToStep(index)
         } label: {
-            if isCompleted && !isCurrent {
-                // Show checkmark for completed steps that are not current
+            if isCompleted {
+                // Show checkmark for completed steps (never show the number)
                 Image(systemName: "checkmark")
                     .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.green)
+                    .foregroundStyle(isCurrent ? .blue : .green)
                     .symbolEffect(.bounce, value: currentStepIndex)
             } else {
                 // Show number for current step or incomplete steps
                 Text("\(index + 1)")
                     .font(.system(size: 16, weight: isCurrent ? .bold : .semibold))
-                    .foregroundStyle(isCurrent ? .blue : (isCompleted ? .green : TextColors.primary))
+                    .foregroundStyle(isCurrent ? .blue : TextColors.primary)
             }
         }
         .frame(minWidth: 36, minHeight: 36)
@@ -625,57 +694,118 @@ struct ActiveSessionView: View {
         let isTimerPaused = timerController?.isPaused == true
         
         return GeometryReader { geometry in
-            VStack(spacing: 0) {
-                // Top section: step text (2/3 of card)
-                ZStack(alignment: .center) {
-                    // Step text (centered vertically and horizontally)
-                    Text(step.text)
-                        .font(.system(size: 32, weight: .semibold))
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .foregroundStyle(TextColors.primary)
-                        .lineSpacing(8)
-                        .padding(.horizontal, 40)
-                    
-                    // Step number in top-left corner
-                    VStack {
+            let swipeThreshold: CGFloat = 80
+            let clampedOffsetX = min(max(cardSwipeOffsetX, -140), 140)
+            let swipeIntensity = min(1.0, abs(clampedOffsetX) / swipeThreshold)
+            let swipeColor: Color = clampedOffsetX >= 0 ? .green : .red
+
+            ZStack {
+                // Swipe feedback behind the card
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(swipeColor.opacity(0.12 * swipeIntensity))
+                    .overlay {
                         HStack {
-                            Text("\(index + 1)")
-                                .font(.system(size: 32, weight: .bold, design: .rounded))
-                                .foregroundStyle(.blue)
-                                .frame(width: 60, height: 60)
-                                .background(Circle().fill(Color.blue.opacity(0.1)))
+                            if clampedOffsetX > 0 {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 28, weight: .semibold))
+                                    .foregroundStyle(swipeColor.opacity(0.9 * swipeIntensity))
+                                Spacer()
+                            } else if clampedOffsetX < 0 {
+                                Spacer()
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.system(size: 28, weight: .semibold))
+                                    .foregroundStyle(swipeColor.opacity(0.9 * swipeIntensity))
+                            }
+                        }
+                        .padding(.horizontal, 22)
+                    }
+
+                VStack(spacing: 0) {
+                    // Top section: step text (2/3 of card)
+                    ZStack(alignment: .center) {
+                        // Step text (centered vertically and horizontally)
+                        Text(step.text)
+                            .font(.system(size: 32, weight: .semibold))
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .foregroundStyle(TextColors.primary)
+                            .lineSpacing(8)
+                            .padding(.horizontal, 40)
+                        
+                        // Step number in top-left corner
+                        VStack {
+                            HStack {
+                                Text("\(index + 1)")
+                                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                                    .foregroundStyle(.blue)
+                                    .frame(width: 60, height: 60)
+                                    .background(Circle().fill(Color.blue.opacity(0.1)))
+                                
+                                Spacer()
+                            }
                             
                             Spacer()
                         }
-                        
-                        Spacer()
+                        .padding(24)
                     }
-                    .padding(24)
+                    .frame(maxWidth: .infinity, maxHeight: step.hasTimer ? geometry.size.height * 0.67 : .infinity)
+                    .background(Color(.systemBackground))
+                    
+                    // Timer panel at bottom (1/3 of card)
+                    if step.hasTimer, let timerController = timerController {
+                        timerSectionView(
+                            timerController: timerController,
+                            duration: duration,
+                            elapsedTime: elapsedTime,
+                            remaining: remaining,
+                            isExpired: isExpired,
+                            isTimerRunning: isTimerRunning,
+                            isTimerPaused: isTimerPaused
+                        )
+                        .frame(height: geometry.size.height * 0.33)
+                    }
                 }
-                .frame(maxWidth: .infinity, maxHeight: step.hasTimer ? geometry.size.height * 0.67 : .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(.systemBackground))
-                
-                // Timer panel at bottom (1/3 of card)
-                if step.hasTimer, let timerController = timerController {
-                    timerSectionView(
-                        timerController: timerController,
-                        duration: duration,
-                        elapsedTime: elapsedTime,
-                        remaining: remaining,
-                        isExpired: isExpired,
-                        isTimerRunning: isTimerRunning,
-                        isTimerPaused: isTimerPaused
-                    )
-                    .frame(height: geometry.size.height * 0.33)
-                }
+                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .shadow(color: Color.black.opacity(0.08), radius: 20, x: 0, y: 8)
+                .offset(x: clampedOffsetX)
+                .animation(.spring(response: 0.25, dampingFraction: 0.85), value: clampedOffsetX)
+                .transition(.scale.combined(with: .opacity))
+                .animation(.spring(response: 0.3), value: isCompleted)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .shadow(color: Color.black.opacity(0.08), radius: 20, x: 0, y: 8)
-            .transition(.scale.combined(with: .opacity))
-            .animation(.spring(response: 0.3), value: isCompleted)
+            .contentShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 12, coordinateSpace: .local)
+                    .onChanged { value in
+                        let dx = value.translation.width
+                        let dy = value.translation.height
+                        guard abs(dx) > abs(dy) else { return } // don't fight vertical scroll
+                        isSwipingCard = true
+                        cardSwipeOffsetX = dx
+                    }
+                    .onEnded { value in
+                        defer {
+                            isSwipingCard = false
+                            withAnimation(.spring(response: 0.25, dampingFraction: 0.85)) {
+                                cardSwipeOffsetX = 0
+                            }
+                        }
+
+                        guard isSwipingCard else { return }
+                        let dx = value.translation.width
+
+                        if dx >= swipeThreshold {
+                            completeStepBySwipe(index)
+                        } else if dx <= -swipeThreshold {
+                            uncompleteStepBySwipe(index)
+                        }
+                    }
+            )
+            .onChange(of: currentStepIndex) { _, _ in
+                cardSwipeOffsetX = 0
+                isSwipingCard = false
+            }
         }
     }
     
@@ -1052,7 +1182,7 @@ struct ActiveSessionView: View {
         }
     }
     
-    private func saveProgress() {
+    private func saveProgress(includeNotes: Bool = true) {
         session.completedStepIndices = Array(completedSteps).sorted()
         
         for (index, timer) in stepTimers {
@@ -1061,7 +1191,7 @@ struct ActiveSessionView: View {
             }
         }
         
-        if !notes.isEmpty {
+        if includeNotes, !notes.isEmpty {
             session.notes = notes
         }
         
@@ -1069,9 +1199,18 @@ struct ActiveSessionView: View {
     }
     
     private func completeCurrentStep() {
-        triggerSuccessHaptic()
-        selectedStepIndex = nil // Reset to auto-navigation
-        toggleStepCompletion(currentStepIndex)
+        // Capture the step the user is currently on (including manual navigation).
+        let targetIndex = currentStepIndex
+        let isCompleting = !completedSteps.contains(targetIndex)
+        
+        if isCompleting {
+            triggerSuccessHaptic()
+        }
+        
+        toggleStepCompletion(targetIndex)
+        
+        // After completing, return to auto-navigation; after un-completing, stay on this step.
+        selectedStepIndex = isCompleting ? nil : targetIndex
     }
     
     private func finishSession() {
@@ -1098,8 +1237,23 @@ struct ActiveSessionView: View {
     private func toggleStepCompletion(_ index: Int) {
         withAnimation(.spring(response: 0.3)) {
             if completedSteps.contains(index) {
-                completedSteps.remove(index)
-                session.markStepIncomplete(index)
+                // When un-completing a step, also un-complete all subsequent steps
+                // to keep progress consistent.
+                let indicesToInvalidate = completedSteps.filter { $0 >= index }
+                
+                for stepIndex in indicesToInvalidate {
+                    completedSteps.remove(stepIndex)
+                    session.markStepIncomplete(stepIndex)
+                    
+                    // Clear any recorded timing for invalidated steps.
+                    session.stepTimings.removeValue(forKey: stepIndex)
+                    timerElapsedTimes.removeValue(forKey: stepIndex)
+                    
+                    // Reset any running timers for invalidated steps.
+                    if let timer = stepTimers[stepIndex] {
+                        timer.reset()
+                    }
+                }
             } else {
                 // When completing a step, reset selectedStepIndex to return to auto-navigation
                 if index == currentStepIndex {
@@ -1116,6 +1270,36 @@ struct ActiveSessionView: View {
         }
         
         saveProgress()
+    }
+
+    // MARK: - Swipe completion (deterministic)
+
+    private func completeStepBySwipe(_ index: Int) {
+        guard index >= 0, index < steps.count else { return }
+        guard !completedSteps.contains(index) else {
+            // Already completed — still return to auto-navigation.
+            selectedStepIndex = nil
+            return
+        }
+
+        withAnimation(.spring(response: 0.3)) {
+            completedSteps.insert(index)
+            session.markStepCompleted(index)
+            selectedStepIndex = nil // return to auto-navigation (advance to next incomplete)
+
+            if let timer = stepTimers[index] {
+                timer.stop()
+            }
+        }
+
+        triggerSuccessHaptic()
+        saveProgress()
+    }
+
+    private func uncompleteStepBySwipe(_ index: Int) {
+        guard index >= 0, index < steps.count else { return }
+        guard completedSteps.contains(index) else { return }
+        toggleStepCompletion(index) // keeps existing invalidation rules for subsequent steps
     }
     
     

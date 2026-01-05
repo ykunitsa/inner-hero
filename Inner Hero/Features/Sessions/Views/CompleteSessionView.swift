@@ -6,6 +6,7 @@ import SwiftData
 struct CompleteSessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     
     let session: ExposureSessionResult
     let notes: String
@@ -16,33 +17,63 @@ struct CompleteSessionView: View {
     @State private var showError = false
     @State private var errorMessage = ""
     
+    private enum FocusField: Hashable {
+        case finalNotes
+    }
+    
+    @FocusState private var focusedField: FocusField?
+    
     private var dataManager: DataManager {
         DataManager(modelContext: modelContext)
+    }
+    
+    private var screenBackgroundGradientColors: [Color] {
+        if colorScheme == .dark {
+            return [
+                Color(red: 0.06, green: 0.07, blue: 0.09),
+                Color(red: 0.10, green: 0.11, blue: 0.14)
+            ]
+        }
+        
+        return [
+            Color(red: 0.95, green: 0.97, blue: 1.0),
+            Color(red: 0.92, green: 0.95, blue: 0.98)
+        ]
+    }
+    
+    private var cardBackgroundColor: Color {
+        if colorScheme == .dark {
+            return Color(red: 0.14, green: 0.15, blue: 0.18)
+        }
+        
+        return Color.white
+    }
+    
+    private var cardShadowOpacity: Double {
+        colorScheme == .dark ? Opacity.darkShadow : Opacity.lightShadow
+    }
+    
+    private var editorBackgroundGradientColors: [Color] {
+        if colorScheme == .dark {
+            return [
+                Color(red: 0.12, green: 0.13, blue: 0.16),
+                Color(red: 0.09, green: 0.10, blue: 0.13)
+            ]
+        }
+        
+        return [
+            Color(red: 0.98, green: 0.99, blue: 1.0),
+            Color(red: 0.96, green: 0.97, blue: 0.99)
+        ]
     }
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 32) {
-                    VStack(spacing: 12) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 56))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.green, .green.opacity(0.7)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .accessibilityHidden(true)
-                        
-                        Text("Завершение сеанса")
-                            .font(.system(size: 22, weight: .semibold))
-                            .foregroundStyle(TextColors.primary)
-                    }
-                    .padding(.top, 20)
-                    
                     sessionSummaryCard
+                    
+                    praiseCard
                     
                     VStack(alignment: .leading, spacing: 16) {
                         Label("Уровень тревоги после сеанса", systemImage: "gauge")
@@ -72,10 +103,7 @@ struct CompleteSessionView: View {
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                                 .fill(
                                     LinearGradient(
-                                        colors: [
-                                            Color(red: 0.98, green: 0.99, blue: 1.0),
-                                            Color(red: 0.96, green: 0.97, blue: 0.99)
-                                        ],
+                                        colors: editorBackgroundGradientColors,
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
                                     )
@@ -89,19 +117,22 @@ struct CompleteSessionView: View {
                     progressCard
                     
                     VStack(alignment: .leading, spacing: 12) {
-                        Label("Дополнительные заметки", systemImage: "note.text")
+                        Label("Опишите ваше состояние", systemImage: "note.text")
                             .font(.headline)
                             .foregroundStyle(TextColors.primary)
                         
+                        Text("Что вы чувствуете сейчас? Какие мысли/ощущения были во время сеанса? Что помогло?")
+                            .font(.subheadline)
+                            .foregroundStyle(TextColors.secondary)
+                        
                         TextEditor(text: $finalNotes)
                             .frame(minHeight: 100)
+                            .focused($focusedField, equals: .finalNotes)
+                            .scrollContentBackground(.hidden)
                             .padding(10)
                             .background(
                                 LinearGradient(
-                                    colors: [
-                                        Color(red: 0.98, green: 0.99, blue: 1.0),
-                                        Color(red: 0.96, green: 0.97, blue: 0.99)
-                                    ],
+                                    colors: editorBackgroundGradientColors,
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
@@ -111,53 +142,22 @@ struct CompleteSessionView: View {
                     .padding(20)
                     .background(
                         RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .fill(Color(.systemBackground))
-                            .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                            .fill(cardBackgroundColor)
+                            .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
                     )
                     .padding(.horizontal, 20)
-                    
-                    Button {
-                        completeSession()
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "checkmark")
-                                .font(.body)
-                            Text("Сохранить результат")
-                                .font(.system(size: 17, weight: .semibold))
-                        }
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [.blue, .cyan],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
-                        )
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 32)
-                    .accessibilityLabel("Сохранить результат сеанса")
-                    .accessibilityHint("Дважды нажмите чтобы сохранить и завершить")
                 }
+                .padding(.top, 20)
+                .padding(.bottom, 32)
             }
             .background(
                 LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
+                    colors: screenBackgroundGradientColors,
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
             )
-            .navigationTitle("Завершение")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -165,6 +165,23 @@ struct CompleteSessionView: View {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
+                }
+                
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Сохранить") {
+                        completeSession()
+                    }
+                    .fontWeight(.semibold)
+                    .foregroundStyle(TextColors.toolbar)
+                    .accessibilityLabel("Сохранить результат сеанса")
+                    .accessibilityHint("Дважды нажмите чтобы сохранить и завершить")
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Готово") {
+                        focusedField = nil
+                    }
                 }
             }
             .alert("Ошибка", isPresented: $showError) {
@@ -176,6 +193,42 @@ struct CompleteSessionView: View {
         .onAppear {
             finalNotes = notes
         }
+    }
+    
+    private var praiseCard: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label("Вы молодец!", systemImage: "sparkles")
+                .font(.headline)
+                .foregroundStyle(TextColors.primary)
+            
+            Text("Вы завершили сеанс — это уже важный шаг. Даже если тревога была высокой, вы тренировались оставаться рядом с ощущениями и двигаться вперёд.")
+                .font(.body)
+                .foregroundStyle(TextColors.secondary)
+            
+            VStack(alignment: .leading, spacing: 12) {
+                PraiseTipRow(
+                    iconSystemName: "checkmark.seal",
+                    text: "Отметьте любой маленький прогресс — он накапливается."
+                )
+                
+                PraiseTipRow(
+                    iconSystemName: "heart.text.square",
+                    text: "Запишите, что помогло (дыхание, фокус на задаче, поддерживающая мысль) — это пригодится в следующий раз."
+                )
+            }
+            .font(.subheadline)
+            .foregroundStyle(TextColors.secondary)
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(cardBackgroundColor)
+                .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
+        )
+        .padding(.horizontal, 20)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Похвала за выполнение сеанса")
+        .accessibilityHint("Короткое поддерживающее сообщение и подсказки")
     }
     
     private var sessionSummaryCard: some View {
@@ -236,8 +289,8 @@ struct CompleteSessionView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .fill(cardBackgroundColor)
+                .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
         )
         .padding(.horizontal, 20)
     }
@@ -248,54 +301,92 @@ struct CompleteSessionView: View {
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
-            HStack(spacing: 12) {
-                VStack(spacing: 4) {
-                    Text("До")
-                        .font(.caption)
-                        .foregroundStyle(TextColors.secondary)
-                    Text("\(session.anxietyBefore)")
-                        .font(.title2.weight(.bold))
-                        .foregroundStyle(TextColors.primary)
-                }
+            HStack(spacing: 14) {
+                progressGauge(title: "До", value: session.anxietyBefore)
                 
                 Image(systemName: "arrow.right")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal, 2)
                     .accessibilityHidden(true)
                 
-                VStack(spacing: 4) {
-                    Text("После")
-                        .font(.caption)
-                        .foregroundStyle(TextColors.secondary)
-                    Text("\(Int(anxietyAfter))")
-                        .font(.title2.weight(.bold))
-                        .foregroundStyle(TextColors.primary)
-                }
+                progressGauge(title: "После", value: Int(anxietyAfter))
                 
-                Spacer()
+                Spacer(minLength: 8)
                 
                 VStack(alignment: .trailing, spacing: 4) {
                     Text("Изменение")
                         .font(.caption)
                         .foregroundStyle(TextColors.secondary)
+                    
                     let change = session.anxietyBefore - Int(anxietyAfter)
-                    Text("\(change > 0 ? "-" : "+")\(abs(change))")
+                    let changeText = change == 0 ? "0" : "\(change > 0 ? "-" : "+")\(abs(change))"
+                    
+                    Text(changeText)
                         .font(.title2.weight(.bold))
-                        .foregroundStyle(change > 0 ? .green : (change < 0 ? .red : .gray))
+                        .foregroundStyle(change > 0 ? .green : (change < 0 ? .yellow : .gray))
+                        .monospacedDigit()
                 }
             }
         }
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .fill(cardBackgroundColor)
+                .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
         )
         .padding(.horizontal, 20)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Прогресс тревоги")
-        .accessibilityValue("До: \(session.anxietyBefore), После: \(Int(anxietyAfter)), Изменение: \(session.anxietyBefore - Int(anxietyAfter))")
+        .accessibilityValue(accessibilityProgressValue)
+    }
+
+    private func progressGauge(title: String, value: Int) -> some View {
+        VStack(spacing: 8) {
+            Gauge(value: Double(value), in: 0...10) {
+                EmptyView()
+            } currentValueLabel: {
+                Text("\(value)")
+                    .font(.system(.headline, design: .rounded).weight(.bold))
+                    .foregroundStyle(TextColors.primary)
+                    .monospacedDigit()
+            }
+            .gaugeStyle(.accessoryCircular)
+            .tint(anxietyColor(for: value))
+            .frame(width: 58, height: 58)
+            .accessibilityHidden(true)
+            
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(TextColors.secondary)
+        }
+        .frame(width: 72)
+    }
+    
+    private var accessibilityProgressValue: String {
+        let before = session.anxietyBefore
+        let after = Int(anxietyAfter)
+        let change = before - after
+        let changeText = change == 0 ? "0" : "\(change > 0 ? "-" : "+")\(abs(change))"
+        return "До: \(before) из 10, После: \(after) из 10, Изменение: \(changeText)"
+    }
+    
+    private struct PraiseTipRow: View {
+        let iconSystemName: String
+        let text: String
+        
+        var body: some View {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: iconSystemName)
+                    .frame(width: 22, alignment: .center)
+                    .padding(.top, 1)
+                    .accessibilityHidden(true)
+                
+                Text(text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .accessibilityElement(children: .combine)
+        }
     }
     
     private func anxietyColor(for value: Int) -> Color {
@@ -325,7 +416,6 @@ struct CompleteSessionView: View {
                 anxietyAfter: Int(anxietyAfter),
                 notes: combinedNotes.trimmingCharacters(in: .whitespacesAndNewlines)
             )
-            dismiss()
             onComplete()
         } catch {
             errorMessage = "Не удалось сохранить результат: \(error.localizedDescription)"

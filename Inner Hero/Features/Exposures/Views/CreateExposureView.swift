@@ -29,6 +29,7 @@ struct CreateExposureView: View {
                             .font(.body)
                             .frame(minHeight: 80)
                             .focused($focusedField, equals: .description)
+                            .scrollContentBackground(.hidden)
                             .accessibilityLabel("Описание экспозиции")
                         
                         if exposureDescription.isEmpty {
