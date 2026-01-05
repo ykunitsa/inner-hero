@@ -19,17 +19,19 @@ struct StartSessionSheet: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 32) {
-                    header
-                    anxietySliderSection
-                    startButton
+            GeometryReader { proxy in
+                ScrollView(.vertical) {
+                    VStack(spacing: 32) {
+                        header
+                        anxietySliderSection
+                        guidanceSection
+                        startButton
+                    }
+                    .frame(width: proxy.size.width)
+                    .padding(.bottom, 20)
                 }
-                .padding(.bottom, 20)
+                .background(.background)
             }
-            .background(TopMeshGradientBackground())
-            .navigationTitle("Новый сеанс")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Отмена") {
@@ -57,16 +59,67 @@ struct StartSessionSheet: View {
                         endPoint: .bottomTrailing
                     )
                 )
-            Text("Начать сеанс")
-                .font(.system(size: 22, weight: .semibold))
-                .foregroundStyle(TextColors.primary)
-            Text(exposure.title)
-                .font(.body)
-                .foregroundStyle(TextColors.secondary)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 6) {
+                Text(exposure.title)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(TextColors.primary)
+                    .multilineTextAlignment(.center)
+                
+                Text("Сеанс экспозиции")
+                    .font(.body)
+                    .foregroundStyle(TextColors.secondary)
+            }
         }
         .padding(.top, 20)
         .padding(.horizontal, 20)
+    }
+    
+    private var guidanceSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label("Ты справишься", systemImage: "sparkles")
+                .font(.headline)
+                .foregroundStyle(TextColors.primary)
+            
+            Text("Экспозиция — это мягкая тренировка смелости: ты учишься оставаться рядом с тревогой и замечать, что с ней можно быть — она неприятная, но переносимая. Иногда тревога снижается во время шага, иногда — позже. И так, и так нормально.")
+                .font(.body)
+                .foregroundStyle(TextColors.secondary)
+            
+            VStack(alignment: .leading, spacing: 12) {
+                GuidanceTipRow(
+                    iconSystemName: "figure.walk",
+                    text: "Начни с посильного шага и двигайся постепенно."
+                )
+                
+                GuidanceTipRow(
+                    iconSystemName: "timer",
+                    text: "Если тревога держится — это не значит, что «не получается». Постарайся просто оставаться и отмечать: волна тревоги может меняться, приходить и уходить."
+                )
+                
+                GuidanceTipRow(
+                    iconSystemName: "checkmark.seal",
+                    text: "Замечай избегание и «защитные действия» — без критики. Когда получится, мягко возвращайся к шагу."
+                )
+            }
+            .font(.subheadline)
+            .foregroundStyle(TextColors.secondary)
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(.thinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .strokeBorder(cardBorderColor, lineWidth: 1)
+                )
+                .shadow(
+                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                    radius: 10,
+                    x: 0,
+                    y: 4
+                )
+        )
+        .padding(.horizontal, 20)
+        .accessibilityElement(children: .combine)
     }
     
     private var anxietySliderSection: some View {
@@ -118,32 +171,14 @@ struct StartSessionSheet: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        Color(red: 0.98, green: 0.99, blue: 1.0),
-                                        Color(red: 0.96, green: 0.97, blue: 0.99)
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    )
             }
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color(red: 0.98, green: 0.99, blue: 1.0),
-                                Color(red: 0.96, green: 0.97, blue: 0.99)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                    .fill(softCardFill)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .strokeBorder(cardBorderColor, lineWidth: 1)
                     )
             )
         }
@@ -189,6 +224,74 @@ struct StartSessionSheet: View {
     }
     
     // MARK: - Helpers
+    
+    private var softCardFill: AnyShapeStyle {
+        if colorScheme == .dark {
+            return AnyShapeStyle(
+                LinearGradient(
+                    colors: [
+                        Color.white.opacity(0.10),
+                        Color.white.opacity(0.04)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+        }
+        
+        return AnyShapeStyle(
+            LinearGradient(
+                colors: [
+                    Color(red: 0.98, green: 0.99, blue: 1.0),
+                    Color(red: 0.96, green: 0.97, blue: 0.99)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+    }
+    
+    private var insetCardFill: AnyShapeStyle {
+        if colorScheme == .dark {
+            return AnyShapeStyle(Color.white.opacity(0.06))
+        }
+        
+        return AnyShapeStyle(
+            LinearGradient(
+                colors: [
+                    Color(red: 0.98, green: 0.99, blue: 1.0),
+                    Color(red: 0.96, green: 0.97, blue: 0.99)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+    }
+    
+    private var cardBorderColor: Color {
+        colorScheme == .dark ? Color.white.opacity(0.10) : Color.black.opacity(0.06)
+    }
+    
+    private var insetBorderColor: Color {
+        colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.05)
+    }
+    
+    private struct GuidanceTipRow: View {
+        let iconSystemName: String
+        let text: String
+        
+        var body: some View {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: iconSystemName)
+                    .frame(width: 22, alignment: .center)
+                    .padding(.top, 1)
+                
+                Text(text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .accessibilityElement(children: .combine)
+        }
+    }
     
     private func anxietyColor(for value: Int) -> Color {
         switch value {
