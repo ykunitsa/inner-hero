@@ -3,8 +3,37 @@ import SwiftUI
 // MARK: - Pause Session Modal
 
 struct PauseSessionModal: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     let onResume: () -> Void
     let onEnd: () -> Void
+    
+    private var backgroundGradientColors: [Color] {
+        if colorScheme == .dark {
+            return [
+                Color(red: 0.10, green: 0.11, blue: 0.14),
+                Color(red: 0.06, green: 0.07, blue: 0.10)
+            ]
+        }
+        
+        return [
+            Color(red: 0.95, green: 0.97, blue: 1.0),
+            Color(red: 0.92, green: 0.95, blue: 0.98)
+        ]
+    }
+    
+    private var secondaryButtonBackground: some ShapeStyle {
+        if colorScheme == .dark {
+            return AnyShapeStyle(Color.primary.opacity(0.14))
+        }
+        
+        // Subtle, glassy surface on light theme
+        return AnyShapeStyle(.ultraThinMaterial)
+    }
+    
+    private var cardShadowColor: Color {
+        colorScheme == .dark ? Color.black.opacity(0.35) : Color.black.opacity(0.05)
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -72,7 +101,7 @@ struct PauseSessionModal: View {
                         .frame(height: 54)
                         .background(
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(Color.white.opacity(0.6))
+                                .fill(secondaryButtonBackground)
                         )
                 }
                 .accessibilityLabel("Завершить на сегодня")
@@ -113,10 +142,7 @@ struct PauseSessionModal: View {
         }
         .background(
             LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.97, blue: 1.0),
-                    Color(red: 0.92, green: 0.95, blue: 0.98)
-                ],
+                colors: backgroundGradientColors,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -147,8 +173,8 @@ struct PauseSessionModal: View {
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 2)
+                .fill(.background)
+                .shadow(color: cardShadowColor, radius: 6, x: 0, y: 2)
         )
     }
 }

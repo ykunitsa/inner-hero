@@ -31,3 +31,29 @@ struct BreathingPattern: Identifiable {
     ]
 }
 
+// MARK: - Localization Helpers
+
+extension BreathingPattern {
+    var localizedName: String {
+        switch type {
+        case .box:
+            return "Квадратное дыхание"
+        case .fourSix:
+            return "Дыхание 4–6"
+        case .paced:
+            return "Ритмичное дыхание"
+        }
+    }
+    
+    var localizedDescription: String {
+        switch type {
+        case .box:
+            return "Ровные фазы вдоха, паузы и выдоха. Помогает быстро вернуть спокойствие и фокус."
+        case .fourSix:
+            return "Вдох на 4 секунды, выдох на 6. Мягко активирует расслабление и снижает тревожность."
+        case .paced:
+            return "Медленное дыхание в устойчивом ритме. Помогает снизить напряжение и стабилизировать состояние."
+        }
+    }
+}
+

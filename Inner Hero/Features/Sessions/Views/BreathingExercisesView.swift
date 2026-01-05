@@ -4,177 +4,111 @@ import SwiftData
 // MARK: - BreathingExercisesView
 
 struct BreathingExercisesView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
-    @State private var patternToSchedule: BreathingPattern?
-    @State private var showScheduleSheet = false
-    @State private var selectedPatternType: BreathingPatternType?
-    
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
     
     var body: some View {
         NavigationStack {
-            List {
-                Section {
+            ScrollView {
+                LazyVStack(spacing: 16) {
                     ForEach(BreathingPattern.predefinedPatterns) { pattern in
                         let assignment = allAssignments.first { assignment in
                             assignment.exerciseType == .breathing && assignment.breathingPattern == pattern.type
                         }
                         
                         NavigationLink {
-                            BreathingSessionView(pattern: pattern)
+                            BreathingPatternDetailView(pattern: pattern)
                         } label: {
-                            BreathingPatternRow(
+                            BreathingPatternCardView(
                                 pattern: pattern,
-                                assignment: assignment,
-                                onSchedule: {
-                                    selectedPatternType = pattern.type
-                                    showScheduleSheet = true
-                                }
+                                assignment: assignment
                             )
                         }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button {
-                                patternToSchedule = pattern
-                                showScheduleSheet = true
-                            } label: {
-                                Label("Запланировать", systemImage: "calendar.badge.plus")
-                            }
-                            .tint(.orange)
-                        }
+                        .buttonStyle(.plain)
                     }
-                } header: {
-                    VStack(spacing: Spacing.xs) {
-                        Image(systemName: "wind")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.teal.gradient)
-                            .accessibilityHidden(true)
-                        
-                        Text("Controlled breathing techniques help regulate your nervous system and reduce anxiety")
-                            .font(.subheadline)
-                            .foregroundStyle(TextColors.secondary)
-                            .multilineTextAlignment(.center)
-                            .textCase(.none)
-                            .padding(.top, Spacing.xxs)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, Spacing.md)
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+                .padding(.bottom, 40)
             }
-            .navigationTitle("Breathing")
+            .background(TopMeshGradientBackground(palette: .teal))
+            .navigationTitle("Дыхание")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $showScheduleSheet) {
-                if let patternType = selectedPatternType {
-                    ScheduleExerciseView(preSelectedBreathingPattern: patternType)
-                }
-            }
         }
     }
 }
 
-// MARK: - BreathingPatternRow
+// MARK: - BreathingPatternCardView
 
-struct BreathingPatternRow: View {
-    @Environment(\.modelContext) private var modelContext
+private struct BreathingPatternCardView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     let pattern: BreathingPattern
     let assignment: ExerciseAssignment?
-    let onSchedule: (() -> Void)?
-    @State private var isFavorite = false
-    
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
     
     var body: some View {
-        HStack(alignment: .top, spacing: Spacing.sm) {
+        VStack(alignment: .leading, spacing: 16) {
+            header
+            description
+            
+            metadataRow
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(.thinMaterial)
+                .shadow(
+                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                    radius: 10,
+                    x: 0,
+                    y: 4
+                )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
+        )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(pattern.localizedName)
+        .accessibilityHint("Нажмите дважды, чтобы открыть детали. Запуск сеанса доступен внутри.")
+    }
+    
+    private var header: some View {
+        HStack(alignment: .center, spacing: 12) {
             Image(systemName: pattern.icon)
-                .font(.title2)
+                .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.teal)
-                .frame(width: 40)
+                .frame(width: 36, height: 36)
+                .background(
+                    Circle()
+                        .fill(.teal.opacity(colorScheme == .dark ? 0.20 : 0.12))
+                )
                 .accessibilityHidden(true)
             
-            VStack(alignment: .leading, spacing: Spacing.xxxs) {
-                HStack {
-                    Text(pattern.name)
-                        .font(.headline)
-                        .foregroundStyle(TextColors.primary)
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 8) {
-                        Button {
-                            toggleFavorite()
-                        } label: {
-                            Image(systemName: isFavorite ? "heart.fill" : "heart")
-                                .font(.subheadline)
-                                .foregroundStyle(isFavorite ? .pink : TextColors.tertiary)
-                        }
-                        .buttonStyle(.plain)
-                        .frame(minWidth: 32, minHeight: 32)
-                        .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
-                        .onAppear {
-                            checkFavoriteStatus()
-                        }
-                        
-                        if let assignment = assignment, assignment.isActive {
-                            ScheduleIndicatorView(assignment: assignment)
-                        }
-                        
-                        if let onSchedule = onSchedule {
-                            Button(action: onSchedule) {
-                                Image(systemName: assignment != nil ? "calendar.badge.checkmark" : "calendar.badge.plus")
-                                    .font(.subheadline)
-                                    .foregroundStyle(assignment != nil ? .orange : TextColors.tertiary)
-                            }
-                            .buttonStyle(.plain)
-                            .frame(minWidth: 32, minHeight: 32)
-                            .accessibilityLabel(assignment != nil ? "Редактировать расписание" : "Создать расписание")
-                        }
-                    }
-                }
-                
-                Text(pattern.description)
-                    .font(.subheadline)
-                    .foregroundStyle(TextColors.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .padding(.vertical, Spacing.xxs)
-    }
-    
-    private func toggleFavorite() {
-        Task {
-            do {
-                let newFavoriteStatus = try dataManager.toggleFavorite(
-                    exerciseType: .breathing,
-                    exerciseIdentifier: pattern.type.rawValue
-                )
-                await MainActor.run {
-                    isFavorite = newFavoriteStatus
-                    HapticFeedback.selection()
-                }
-            } catch {
-                print("Ошибка переключения избранного: \(error)")
-                HapticFeedback.error()
-            }
+            Text(pattern.localizedName)
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(TextColors.primary)
+                .multilineTextAlignment(.leading)
+            
+            Spacer(minLength: 0)
         }
     }
     
-    private func checkFavoriteStatus() {
-        Task {
-            do {
-                let favorite = try dataManager.isFavorite(
-                    exerciseType: .breathing,
-                    exerciseIdentifier: pattern.type.rawValue
-                )
-                await MainActor.run {
-                    isFavorite = favorite
-                }
-            } catch {
-                print("Ошибка проверки избранного: \(error)")
+    private var description: some View {
+        Text(pattern.localizedDescription)
+            .font(.body)
+            .foregroundStyle(TextColors.secondary)
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+    }
+    
+    private var metadataRow: some View {
+        HStack(spacing: 12) {
+            if let assignment = assignment, assignment.isActive {
+                ScheduleIndicatorView(assignment: assignment)
             }
+            
+            Spacer(minLength: 0)
         }
     }
 }
@@ -185,4 +119,5 @@ struct BreathingPatternRow: View {
     NavigationStack {
         BreathingExercisesView()
     }
+    .modelContainer(for: [ExerciseAssignment.self], inMemory: true)
 }
