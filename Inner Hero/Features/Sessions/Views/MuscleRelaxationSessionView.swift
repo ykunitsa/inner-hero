@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import Foundation
 
 // MARK: - MuscleRelaxationSessionView
 
@@ -13,7 +14,20 @@ struct MuscleRelaxationSessionView: View {
     @State private var currentStepIndex = 0
     @State private var sessionStartTime = Date()
     @State private var isAnimating = false
-    @State private var showingFinishAlert = false
+    @State private var showingFinishConfirmation = false
+    @State private var showingCongratsSheet = false
+    @State private var shouldDismissAfterCongrats = false
+    
+    @State private var sessionPhase: SessionPhase = .readingInstruction
+    @State private var didHandlePhaseCompletion = false
+    
+    @State private var relaxationPulseTimer: Timer?
+    @State private var readingPhaseTask: Task<Void, Never>?
+    
+    private enum SessionPhase: Hashable {
+        case readingInstruction
+        case runningStep
+    }
     
     private var muscleGroups: [MuscleGroup] {
         MuscleGroup.groups(for: exercise.type)
@@ -25,6 +39,15 @@ struct MuscleRelaxationSessionView: View {
     
     private var isLastStep: Bool {
         currentStepIndex == muscleGroups.count - 1
+    }
+    
+    private var currentPhaseDuration: TimeInterval {
+        switch sessionPhase {
+        case .readingInstruction:
+            return readingDuration(for: currentStep)
+        case .runningStep:
+            return currentStep.duration
+        }
     }
     
     var body: some View {
@@ -43,14 +66,14 @@ struct MuscleRelaxationSessionView: View {
             VStack(spacing: Spacing.md) {
                 // Muscle group name with progress
                 VStack(spacing: Spacing.xs) {
-                    Text(currentStep.name)
+                    Text(localizedStepName(currentStep))
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(TextColors.primary)
                         .multilineTextAlignment(.center)
                     
                     // Progress indicator
                     HStack(spacing: Spacing.xs) {
-                        Text("Step \(currentStepIndex + 1) of \(muscleGroups.count)")
+                        Text("Шаг \(currentStepIndex + 1) из \(muscleGroups.count)")
                             .font(.caption2.weight(.medium))
                             .foregroundStyle(TextColors.tertiary)
                         
@@ -88,16 +111,29 @@ struct MuscleRelaxationSessionView: View {
                         .scaleEffect(isAnimating ? 1.2 : 0.9)
                         .shadow(color: .mint.opacity(0.3), radius: isAnimating ? 25 : 15)
                     
-                    // Phase overlay - muscle icon
-                    Image(systemName: currentStep.icon)
-                        .font(.system(size: 50))
+                    // Phase overlay - use phase icons (bolt/leaf)
+                    Image(systemName: currentStep.phase == .tension ? "bolt.fill" : "leaf.fill")
+                        .font(.system(size: 46, weight: .semibold))
                         .foregroundStyle(.white)
                         .scaleEffect(isAnimating ? 1.1 : 1.0)
                 }
                 
+                Group {
+                    switch sessionPhase {
+                    case .readingInstruction:
+                        Text(localizedStepInstruction(currentStep))
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundStyle(TextColors.primary)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(6)
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 24)
+                            .contentTransition(.opacity)
+                            .animation(.easeInOut(duration: 0.2), value: currentStepIndex)
+                    case .runningStep:
                 // Timer countdown
                 VStack(spacing: Spacing.xxs) {
-                    Text(currentStep.phase == .tension ? "Tense" : "Relax")
+                            Text(phaseTitle(for: currentStep.phase))
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(currentStep.phase == .tension ? Color.orange : Color.mint)
                     
@@ -105,70 +141,113 @@ struct MuscleRelaxationSessionView: View {
                         .font(.system(size: 56, weight: .bold, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(TextColors.primary)
+                        }
+                    }
                 }
                 
                 Spacer()
                 
-                // Instruction card
+                if sessionPhase == .runningStep {
+                    // Instruction card (shown after the 5-second reading phase)
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     HStack {
                         Image(systemName: "text.bubble")
                             .font(.body)
                             .foregroundStyle(.mint)
                         
-                        Text("Instructions")
+                            Text("Инструкция")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(TextColors.primary)
                     }
                     
-                    Text(currentStep.instruction)
+                        Text(localizedStepInstruction(currentStep))
                         .font(.subheadline)
                         .foregroundStyle(TextColors.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .cardStyle(padding: Spacing.md)
                 .padding(.horizontal)
-                
-                // Next button
-                Button {
-                    handleNextButton()
-                } label: {
-                    Text(isLastStep ? "Finish" : "Next")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(
-                            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                                .fill(isLastStep ? Color.green : Color.mint)
-                        )
                 }
-                .padding(.horizontal)
-                .padding(.bottom, Spacing.xs)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    cleanupSession()
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.headline.weight(.semibold))
+                }
+                .accessibilityLabel("Выйти")
+                .tint(.mint)
+            }
+            
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button {
+                    togglePlayPause()
+                } label: {
+                    Label(
+                        timer.isRunning && !timer.isPaused ? "Пауза" : "Пуск",
+                        systemImage: timer.isRunning && !timer.isPaused ? "pause.fill" : "play.fill"
+                    )
+                }
+                .tint(.mint)
+                .accessibilityLabel(timer.isRunning && !timer.isPaused ? "Пауза" : "Пуск")
+                .disabled(sessionPhase == .readingInstruction)
+                
+                Spacer()
+                
+                Button {
+                    showingFinishConfirmation = true
+                } label: {
+                    Label("Финиш", systemImage: "flag.checkered")
+                }
+                .tint(.mint)
+                .accessibilityLabel("Финиш")
+            }
+        }
         .onAppear {
             sessionStartTime = Date()
-            startCurrentStep()
+            startReadingPhase()
         }
         .onDisappear {
-            timer.stop()
+            cleanupSession()
         }
-        .alert("Finish Session?", isPresented: $showingFinishAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Finish") {
+        .onReceive(timer.$elapsedTime) { _ in
+            handlePhaseCompletionIfNeeded()
+        }
+        .alert("Завершить сеанс?", isPresented: $showingFinishConfirmation) {
+            Button("Отмена", role: .cancel) { }
+            Button("Завершить") {
                 finishSession()
             }
         } message: {
-            Text("Are you sure you want to finish this relaxation session?")
+            Text("Вы уверены, что хотите завершить сеанс мышечной релаксации?")
+        }
+        .sheet(isPresented: $showingCongratsSheet, onDismiss: {
+            guard shouldDismissAfterCongrats else { return }
+            shouldDismissAfterCongrats = false
+            dismiss()
+        }) {
+            RelaxationCongratsSessionModal(
+                onDone: {
+                    shouldDismissAfterCongrats = true
+                    showingCongratsSheet = false
+                }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
     }
     
     // MARK: - Helper Properties
     
     private var formattedRemainingTime: String {
-        let remaining = timer.remainingTime(for: currentStep.duration)
+        let remaining = timer.remainingTime(for: currentPhaseDuration)
         let seconds = Int(ceil(remaining))
         return "\(seconds)"
     }
@@ -182,17 +261,49 @@ struct MuscleRelaxationSessionView: View {
     
     // MARK: - Actions
     
-    private func startCurrentStep() {
+    private func startReadingPhase() {
+        readingPhaseTask?.cancel()
+        readingPhaseTask = nil
+        
+        didHandlePhaseCompletion = false
+        sessionPhase = .readingInstruction
+        stopRelaxationPulse()
+        
+        // Do not use the StepTimerController for this phase, so we can guarantee a strict 5s.
+        timer.stop()
+        timer.reset()
+        
+        // Keep the visual calm during the reading phase.
+        withAnimation(.easeInOut(duration: 0.2)) {
+            isAnimating = false
+        }
+        
+        // Deterministic 5-second reading phase.
+        readingPhaseTask = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(5))
+            guard !Task.isCancelled else { return }
+            guard sessionPhase == .readingInstruction else { return }
+            startRunningPhase()
+        }
+    }
+    
+    private func startRunningPhase() {
+        readingPhaseTask?.cancel()
+        readingPhaseTask = nil
+        
+        didHandlePhaseCompletion = false
+        sessionPhase = .runningStep
+        
         timer.reset()
         timer.start()
-        startAnimation()
         
-        #if canImport(UIKit)
+        startAnimation()
         HapticFeedback.impact(.medium)
-        #endif
     }
     
     private func startAnimation() {
+        stopRelaxationPulse()
+        
         // Initial state based on phase
         isAnimating = currentStep.phase == .relaxation
         
@@ -208,43 +319,20 @@ struct MuscleRelaxationSessionView: View {
                 isAnimating = false
             }
             
-            // Add gentle breathing animation
-            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
-                guard currentStepIndex < muscleGroups.count else { return }
-                withAnimation(.easeInOut(duration: 3.0)) {
-                    isAnimating.toggle()
+            // Add gentle breathing animation (ensure the timer is invalidated between steps)
+            relaxationPulseTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
+                Task { @MainActor in
+                    guard sessionPhase == .runningStep else { return }
+                    withAnimation(.easeInOut(duration: 3.0)) {
+                        isAnimating.toggle()
+                    }
                 }
             }
         }
     }
     
-    private func handleNextButton() {
-        if isLastStep {
-            showingFinishAlert = true
-        } else {
-            moveToNextStep()
-        }
-    }
-    
-    private func moveToNextStep() {
-        timer.stop()
-        
-        withAnimation(.easeInOut(duration: 0.3)) {
-            currentStepIndex += 1
-        }
-        
-        #if canImport(UIKit)
-        HapticFeedback.selection()
-        #endif
-        
-        // Small delay before starting next step
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            startCurrentStep()
-        }
-    }
-    
     private func finishSession() {
-        timer.stop()
+        cleanupSession()
         
         let totalDuration = Date().timeIntervalSince(sessionStartTime)
         
@@ -256,238 +344,191 @@ struct MuscleRelaxationSessionView: View {
                 duration: totalDuration
             )
             
-            #if canImport(UIKit)
             HapticFeedback.success()
-            #endif
         } catch {
             print("Error saving relaxation session: \(error)")
-            #if canImport(UIKit)
             HapticFeedback.error()
-            #endif
         }
         
-        dismiss()
-    }
-}
-
-// MARK: - MuscleGroup Model
-
-private struct MuscleGroup {
-    let name: String
-    let instruction: String
-    let icon: String
-    let duration: TimeInterval
-    let phase: Phase
-    
-    enum Phase {
-        case tension
-        case relaxation
+        showingCongratsSheet = true
     }
     
-    static func groups(for type: RelaxationType) -> [MuscleGroup] {
-        switch type {
-        case .fullBody:
-            return fullBodySequence
-        case .short:
-            return shortSequence
+    private func finishSessionAutomaticallyIfLastStep() {
+        guard isLastStep else { return }
+        finishSession()
+    }
+    
+    private func cleanupSession() {
+        readingPhaseTask?.cancel()
+        readingPhaseTask = nil
+        
+        timer.stop()
+        stopRelaxationPulse()
+    }
+    
+    private func stopRelaxationPulse() {
+        relaxationPulseTimer?.invalidate()
+        relaxationPulseTimer = nil
+    }
+    
+    private func handlePhaseCompletionIfNeeded() {
+        guard timer.isRunning, !timer.isPaused else { return }
+        guard !didHandlePhaseCompletion else { return }
+        guard timer.isExpired(for: currentPhaseDuration) else { return }
+        
+        didHandlePhaseCompletion = true
+        timer.stop()
+        
+        switch sessionPhase {
+        case .readingInstruction:
+            // Reading phase is handled by a dedicated 5-second Task.
+            return
+        case .runningStep:
+            if isLastStep {
+                finishSessionAutomaticallyIfLastStep()
+            } else {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    currentStepIndex += 1
+                }
+                HapticFeedback.selection()
+                startReadingPhase()
+            }
         }
     }
     
-    private static let fullBodySequence: [MuscleGroup] = [
-        // Hands and forearms
-        MuscleGroup(
-            name: "Hands & Forearms",
-            instruction: "Make tight fists with both hands. Feel the tension in your hands and forearms.",
-            icon: "hand.raised.fill",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Hands & Forearms",
-            instruction: "Release your fists. Let your hands relax completely. Notice the difference between tension and relaxation.",
-            icon: "hand.raised.fill",
-            duration: 15,
-            phase: .relaxation
-        ),
+    private func togglePlayPause() {
+        guard sessionPhase == .runningStep else { return }
         
-        // Upper arms
-        MuscleGroup(
-            name: "Upper Arms",
-            instruction: "Bend your arms and tense your biceps. Make them as tight as possible.",
-            icon: "figure.strengthtraining.traditional",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Upper Arms",
-            instruction: "Let your arms drop and relax. Feel the tension flowing away from your upper arms.",
-            icon: "figure.strengthtraining.traditional",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Shoulders
-        MuscleGroup(
-            name: "Shoulders",
-            instruction: "Raise your shoulders up toward your ears. Hold them high and feel the tension.",
-            icon: "figure.arms.open",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Shoulders",
-            instruction: "Let your shoulders drop down naturally. Feel them becoming heavy and relaxed.",
-            icon: "figure.arms.open",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Face and jaw
-        MuscleGroup(
-            name: "Face & Jaw",
-            instruction: "Scrunch up your face. Squeeze your eyes shut and clench your jaw tightly.",
-            icon: "face.smiling",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Face & Jaw",
-            instruction: "Release all tension from your face. Let your jaw drop slightly and relax your eyes.",
-            icon: "face.smiling",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Chest and back
-        MuscleGroup(
-            name: "Chest & Back",
-            instruction: "Take a deep breath and pull your shoulders back. Arch your back slightly.",
-            icon: "lungs.fill",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Chest & Back",
-            instruction: "Exhale and let your chest and back relax completely. Breathe naturally.",
-            icon: "lungs.fill",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Stomach
-        MuscleGroup(
-            name: "Stomach",
-            instruction: "Tighten your stomach muscles. Make your abdomen hard and tense.",
-            icon: "figure.core.training",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Stomach",
-            instruction: "Release your stomach muscles. Let your belly be soft and relaxed.",
-            icon: "figure.core.training",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Legs
-        MuscleGroup(
-            name: "Legs & Thighs",
-            instruction: "Tighten your thigh muscles. Straighten your legs and make them rigid.",
-            icon: "figure.walk",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Legs & Thighs",
-            instruction: "Let your legs relax completely. Feel them becoming heavy and loose.",
-            icon: "figure.walk",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Feet
-        MuscleGroup(
-            name: "Feet & Calves",
-            instruction: "Point your toes downward and tense your calves and feet.",
-            icon: "shoeprints.fill",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Feet & Calves",
-            instruction: "Release all tension from your feet and calves. Let them rest naturally.",
-            icon: "shoeprints.fill",
-            duration: 15,
-            phase: .relaxation
-        ),
-    ]
+        if timer.isRunning && !timer.isPaused {
+            timer.pause()
+        } else if timer.isPaused {
+            timer.resume()
+        } else {
+            timer.start()
+        }
+    }
     
-    private static let shortSequence: [MuscleGroup] = [
-        // Combined upper body
-        MuscleGroup(
-            name: "Upper Body",
-            instruction: "Make fists, tense your arms, and raise your shoulders. Hold all this tension.",
-            icon: "figure.strengthtraining.traditional",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Upper Body",
-            instruction: "Release everything. Let your arms drop and shoulders fall. Feel the relaxation.",
-            icon: "figure.strengthtraining.traditional",
-            duration: 15,
-            phase: .relaxation
-        ),
+    /// The reading phase lasts **at least 5 seconds**, and automatically extends for longer instructions.
+    /// This keeps the UX consistent while making it realistically readable.
+    private func readingDuration(for step: MuscleGroup) -> TimeInterval {
+        let text = localizedStepInstruction(step)
+        let words = text
+            .split(whereSeparator: { $0.isWhitespace || $0.isNewline })
+            .count
         
-        // Face
-        MuscleGroup(
-            name: "Face",
-            instruction: "Scrunch your face. Squeeze your eyes and clench your jaw.",
-            icon: "face.smiling",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Face",
-            instruction: "Let all tension melt away from your face. Relax your jaw and eyes.",
-            icon: "face.smiling",
-            duration: 15,
-            phase: .relaxation
-        ),
+        // ~2.2 words/sec is a comfortable reading speed on mobile.
+        let estimated = Double(words) / 2.2
         
-        // Core
-        MuscleGroup(
-            name: "Core",
-            instruction: "Take a deep breath. Arch your back and tighten your stomach.",
-            icon: "figure.core.training",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Core",
-            instruction: "Exhale and release. Let your back settle and stomach soften.",
-            icon: "figure.core.training",
-            duration: 15,
-            phase: .relaxation
-        ),
-        
-        // Lower body
-        MuscleGroup(
-            name: "Lower Body",
-            instruction: "Straighten your legs and point your toes. Tense your thighs, calves, and feet.",
-            icon: "figure.walk",
-            duration: 7,
-            phase: .tension
-        ),
-        MuscleGroup(
-            name: "Lower Body",
-            instruction: "Let your legs relax completely. Feel them becoming heavy and at ease.",
-            icon: "figure.walk",
-            duration: 15,
-            phase: .relaxation
-        ),
-    ]
+        // Clamp to keep the app feeling snappy, but still readable.
+        return max(5, min(12, ceil(estimated)))
+    }
+    
+    private func phaseTitle(for phase: MuscleGroup.Phase) -> String {
+        switch phase {
+        case .tension:
+            return "Напрячь"
+        case .relaxation:
+            return "Расслабить"
+        }
+    }
+    
+    private func localizedStepName(_ step: MuscleGroup) -> String {
+        switch step.name {
+        case "Hands & Forearms":
+            return "Кисти и предплечья"
+        case "Upper Arms":
+            return "Плечи и бицепсы"
+        case "Shoulders":
+            return "Плечи"
+        case "Face & Jaw":
+            return "Лицо и челюсть"
+        case "Chest & Back":
+            return "Грудь и спина"
+        case "Stomach":
+            return "Живот"
+        case "Legs & Thighs":
+            return "Ноги и бёдра"
+        case "Feet & Calves":
+            return "Стопы и икры"
+        case "Upper Body":
+            return "Верхняя часть тела"
+        case "Face":
+            return "Лицо"
+        case "Core":
+            return "Кор"
+        case "Lower Body":
+            return "Нижняя часть тела"
+        default:
+            return step.name
+        }
+    }
+    
+    private func localizedStepInstruction(_ step: MuscleGroup) -> String {
+        switch (step.name, step.phase) {
+        case ("Hands & Forearms", .tension):
+            return "Сожмите обе кисти в кулаки. Почувствуйте напряжение в кистях и предплечьях."
+        case ("Hands & Forearms", .relaxation):
+            return "Разожмите кулаки. Полностью расслабьте руки и отметьте разницу между напряжением и расслаблением."
+            
+        case ("Upper Arms", .tension):
+            return "Согните руки и напрягите бицепсы. Сожмите мышцы настолько, насколько комфортно."
+        case ("Upper Arms", .relaxation):
+            return "Опустите руки и расслабьте их. Почувствуйте, как напряжение уходит из верхней части рук."
+            
+        case ("Shoulders", .tension):
+            return "Поднимите плечи к ушам. Удерживайте и ощущайте напряжение."
+        case ("Shoulders", .relaxation):
+            return "Опустите плечи в естественное положение. Дайте им стать тяжёлыми и расслабленными."
+            
+        case ("Face & Jaw", .tension):
+            return "Сильно наморщите лицо: зажмурьте глаза и сожмите челюсть."
+        case ("Face & Jaw", .relaxation):
+            return "Отпустите напряжение в лице. Челюсть слегка разожмите, глаза расслабьте."
+            
+        case ("Chest & Back", .tension):
+            return "Сделайте глубокий вдох и отведите плечи назад. Слегка прогните спину."
+        case ("Chest & Back", .relaxation):
+            return "Выдохните и расслабьте грудь и спину. Дышите спокойно и естественно."
+            
+        case ("Stomach", .tension):
+            return "Напрягите мышцы живота. Сделайте живот твёрдым."
+        case ("Stomach", .relaxation):
+            return "Расслабьте мышцы живота. Пусть живот станет мягким."
+            
+        case ("Legs & Thighs", .tension):
+            return "Напрягите мышцы бёдер. Выпрямите ноги и сделайте их более жёсткими."
+        case ("Legs & Thighs", .relaxation):
+            return "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и свободными."
+            
+        case ("Feet & Calves", .tension):
+            return "Опустите носки вниз и напрягите икры и стопы."
+        case ("Feet & Calves", .relaxation):
+            return "Отпустите напряжение в стопах и икрах. Дайте им расслабиться естественно."
+            
+        case ("Upper Body", .tension):
+            return "Сожмите кулаки, напрягите руки и поднимите плечи. Удерживайте общее напряжение."
+        case ("Upper Body", .relaxation):
+            return "Отпустите всё. Пусть руки опустятся, а плечи расслабятся. Почувствуйте облегчение."
+            
+        case ("Face", .tension):
+            return "Наморщите лицо: зажмурьте глаза и сожмите челюсть."
+        case ("Face", .relaxation):
+            return "Пусть напряжение уйдёт из лица. Расслабьте челюсть и глаза."
+            
+        case ("Core", .tension):
+            return "Сделайте глубокий вдох. Слегка прогните спину и напрягите живот."
+        case ("Core", .relaxation):
+            return "Выдохните и отпустите напряжение. Пусть спина и живот расслабятся."
+            
+        case ("Lower Body", .tension):
+            return "Выпрямите ноги и направьте носки вниз. Напрягите бёдра, икры и стопы."
+        case ("Lower Body", .relaxation):
+            return "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и спокойными."
+            
+        default:
+            return step.instruction
+        }
+    }
 }
 
 // MARK: - Preview

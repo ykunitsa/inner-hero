@@ -13,15 +13,15 @@ struct RelaxationExercise: Identifiable {
     static let predefinedExercises: [RelaxationExercise] = [
         RelaxationExercise(
             type: .fullBody,
-            name: "Full Body Relaxation",
-            description: "Complete progressive muscle relaxation sequence targeting all major muscle groups. Releases deep tension throughout the body.",
+            name: "Расслабление всего тела",
+            description: "Полная последовательность прогрессивной мышечной релаксации для всех основных групп мышц. Помогает снять глубокое напряжение по всему телу.",
             icon: "figure.mind.and.body",
             duration: 900 // 15 minutes
         ),
         RelaxationExercise(
             type: .short,
-            name: "Quick Relaxation",
-            description: "Shortened progressive muscle relaxation focusing on key tension areas. Perfect for quick stress relief during the day.",
+            name: "Быстрая релаксация",
+            description: "Короткая версия прогрессивной мышечной релаксации с фокусом на ключевых зонах напряжения. Подходит для быстрого снятия стресса в течение дня.",
             icon: "figure.stand",
             duration: 300 // 5 minutes
         )
