@@ -8,6 +8,7 @@ struct TopMeshGradientBackground: View {
     enum Palette: Sendable {
         case `default`
         case teal
+        case mint
     }
     
     var height: CGFloat
@@ -49,6 +50,20 @@ struct TopMeshGradientBackground: View {
                 Color(red: 0.93, green: 0.98, blue: 0.98), // near-white teal
                 Color(red: 0.90, green: 0.97, blue: 0.99), // near-white cyan
                 Color(red: 0.88, green: 0.96, blue: 0.97)  // near-white mint
+            ]
+        case .mint:
+            return [
+                Color(red: 0.24, green: 0.92, blue: 0.78), // vivid mint
+                Color(red: 0.18, green: 0.78, blue: 0.66), // seafoam teal
+                Color(red: 0.14, green: 0.70, blue: 0.60), // deep seafoam
+                
+                Color(red: 0.42, green: 0.96, blue: 0.84), // bright mint
+                Color(red: 0.36, green: 0.88, blue: 0.86), // mint-cyan
+                Color(red: 0.20, green: 0.84, blue: 0.74), // soft seafoam
+                
+                Color(red: 0.94, green: 0.99, blue: 0.98), // near-white mint
+                Color(red: 0.92, green: 0.98, blue: 0.99), // near-white mint-cyan
+                Color(red: 0.90, green: 0.98, blue: 0.97)  // near-white seafoam
             ]
         }
     }

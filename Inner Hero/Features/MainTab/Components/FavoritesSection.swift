@@ -263,7 +263,7 @@ struct FavoriteExerciseCard: View {
             if let identifier = item.exerciseIdentifier,
                let relaxationType = RelaxationType(rawValue: identifier),
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == relaxationType }) {
-                MuscleRelaxationSessionView(exercise: exercise)
+                RelaxationExerciseDetailView(exercise: exercise)
             } else {
                 Text("Упражнение не найдено")
             }
