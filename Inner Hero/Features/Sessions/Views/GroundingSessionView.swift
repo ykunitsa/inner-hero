@@ -11,19 +11,15 @@ struct GroundingSessionView: View {
     
     @State private var sessionStartTime = Date()
     @State private var currentStepIndex = 0
-    @State private var showingFinishAlert = false
+    @State private var showingFinishConfirmation = false
+    @State private var showingCongratsSheet = false
+    @State private var shouldDismissAfterCongrats = false
     
-    private var steps: [GroundingStep] {
-        [
-            GroundingStep(number: 5, title: "Посмотрите вокруг", prompt: "Назовите 5 вещей, которые вы видите"),
-            GroundingStep(number: 4, title: "Почувствуйте опору", prompt: "Назовите 4 вещи, которые вы можете потрогать"),
-            GroundingStep(number: 3, title: "Прислушайтесь", prompt: "Назовите 3 звука, которые вы слышите"),
-            GroundingStep(number: 2, title: "Уловите запахи", prompt: "Назовите 2 запаха, которые вы чувствуете"),
-            GroundingStep(number: 1, title: "Вкус", prompt: "Назовите 1 вкус, который вы ощущаете")
-        ]
+    private var steps: [GroundingInstructionStep] {
+        exercise.instructionSteps
     }
     
-    private var currentStep: GroundingStep {
+    private var currentStep: GroundingInstructionStep {
         steps[currentStepIndex]
     }
     
@@ -33,6 +29,49 @@ struct GroundingSessionView: View {
     
     private var isLastStep: Bool {
         currentStepIndex == steps.count - 1
+    }
+    
+    private var stepIconSystemName: String {
+        switch currentStep.number {
+        case 5:
+            return "eye.fill"
+        case 4:
+            return "hand.raised.fill"
+        case 3:
+            return "ear.fill"
+        case 2:
+            if #available(iOS 17.0, *) {
+                return "nose.fill"
+            } else {
+                return "wind"
+            }
+        case 1:
+            if #available(iOS 17.0, *) {
+                return "mouth.fill"
+            } else {
+                return "cup.and.saucer.fill"
+            }
+        default:
+            return "sparkles"
+        }
+    }
+    
+    private var congratsConfiguration: CongratsSessionModal.Configuration {
+        switch exercise.type {
+        case .fiveFourThreeTwoOne:
+            return CongratsSessionModal.Configuration(
+                palette: .purpleIndigo,
+                topIconSystemName: "sparkles",
+                title: "Ты молодец!",
+                subtitle: "Ты вернул(а) внимание в настоящий момент — это реально помогает.",
+                messages: [
+                    .init(iconSystemName: "eye.circle.fill", text: "Если хочется, повтори ещё один круг — можно в своём темпе."),
+                    .init(iconSystemName: "hand.raised.circle.fill", text: "Ты опирался(ась) на ощущения — это навык, который укрепляется практикой."),
+                    .init(iconSystemName: "heart.circle.fill", text: "Даже маленький шаг — это забота о себе.")
+                ],
+                primaryButtonTitle: "Отлично"
+            )
+        }
     }
     
     var body: some View {
@@ -93,10 +132,23 @@ struct GroundingSessionView: View {
                             .frame(width: 180, height: 180)
                             .shadow(color: .purple.opacity(0.25), radius: 18)
                         
-                        Text("\(currentStep.number)")
-                            .font(.system(size: 64, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                            .accessibilityLabel("Шаг \(currentStep.number)")
+                        HStack(spacing: 16) {
+                            ZStack {
+                                Circle()
+                                    .fill(.white.opacity(0.18))
+                                    .frame(width: 50, height: 50)
+                                
+                                Image(systemName: stepIconSystemName)
+                                    .font(.system(size: 24, weight: .semibold))
+                                    .foregroundStyle(.white)
+                            }
+                            .accessibilityHidden(true)
+                            
+                            Text("\(currentStep.number)")
+                                .font(.system(size: 64, weight: .bold, design: .rounded))
+                                .foregroundStyle(.white)
+                                .accessibilityLabel("Шаг \(currentStep.number)")
+                        }
                     }
                     
                     Text(currentStep.title)
@@ -113,56 +165,85 @@ struct GroundingSessionView: View {
                 }
                 
                 Spacer()
-                
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.headline.weight(.semibold))
+                }
+                .accessibilityLabel("Выйти")
+                .tint(.purple)
+            }
+            
+            ToolbarItemGroup(placement: .bottomBar) {
                 HStack(spacing: 12) {
                     Button {
                         goBack()
                     } label: {
-                        Text("Назад")
-                            .font(.headline)
-                            .foregroundStyle(isFirstStep ? TextColors.tertiary : TextColors.primary)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(
-                                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                                    .fill(Color.white.opacity(0.65))
-                            )
+                        Label("Назад", systemImage: "chevron.left")
+                            .padding(.leading, 8)
+                            .padding(.trailing, 4)
                     }
                     .disabled(isFirstStep)
+                    .accessibilityLabel("Назад")
                     
+                    Divider()
+
                     Button {
-                        if isLastStep {
-                            showingFinishAlert = true
-                        } else {
-                            goNext()
-                        }
+                        goNext()
                     } label: {
-                        Text(isLastStep ? "Завершить" : "Дальше")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(
-                                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                                    .fill(Color.purple)
-                            )
+                        Label("Вперёд", systemImage: "chevron.right")
+                            .padding(.leading, 4)
+                            .padding(.trailing, 8)
                     }
+                    .disabled(isLastStep)
+                    .accessibilityLabel("Вперёд")
                 }
-                .padding(.horizontal)
-                .padding(.bottom, Spacing.md)
+                .tint(.purple)
+                
+                Spacer()
+                
+                Button {
+                    showingFinishConfirmation = true
+                } label: {
+                    Label("Финиш", systemImage: "flag.checkered")
+                }
+                .disabled(!isLastStep)
+                .accessibilityLabel("Финиш")
+                .tint(.purple)
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             sessionStartTime = Date()
         }
-        .alert("Завершить упражнение?", isPresented: $showingFinishAlert) {
+        .alert("Завершить упражнение?", isPresented: $showingFinishConfirmation) {
             Button("Отмена", role: .cancel) { }
             Button("Завершить") {
                 finishSession()
             }
         } message: {
             Text("Вы уверены, что хотите завершить это упражнение?")
+        }
+        .sheet(isPresented: $showingCongratsSheet, onDismiss: {
+            guard shouldDismissAfterCongrats else { return }
+            shouldDismissAfterCongrats = false
+            dismiss()
+        }) {
+            CongratsSessionModal(
+                configuration: congratsConfiguration,
+                onDone: {
+                    shouldDismissAfterCongrats = true
+                    showingCongratsSheet = false
+                }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
     }
     
@@ -197,9 +278,10 @@ struct GroundingSessionView: View {
         } catch {
             print("Error saving grounding session: \(error)")
             HapticFeedback.error()
+            dismiss()
+            return
         }
-        
-        dismiss()
+        showingCongratsSheet = true
     }
     
     // MARK: - Formatting
@@ -209,15 +291,6 @@ struct GroundingSessionView: View {
         let seconds = Int(duration) % 60
         return String(format: "%d:%02d", minutes, seconds)
     }
-}
-
-// MARK: - GroundingStep
-
-private struct GroundingStep: Identifiable {
-    let id = UUID()
-    let number: Int
-    let title: String
-    let prompt: String
 }
 
 #Preview {

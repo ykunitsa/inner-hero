@@ -340,6 +340,7 @@ struct RelaxationExerciseDetailView: View {
             assignment: assignment,
             exerciseType: .relaxation,
             exposureId: nil,
+            groundingType: nil,
             breathingPatternType: nil,
             relaxationType: exercise.type,
             activityListId: nil
