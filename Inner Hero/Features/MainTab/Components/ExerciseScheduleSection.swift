@@ -7,6 +7,7 @@ struct ExerciseScheduleSection: View {
     let assignment: ExerciseAssignment?
     let exerciseType: ExerciseType
     let exposureId: UUID?
+    let groundingType: GroundingType?
     let breathingPatternType: BreathingPatternType?
     let relaxationType: RelaxationType?
     let activityListId: UUID?
@@ -50,6 +51,7 @@ struct ExerciseScheduleSection: View {
                 preSelectedExposureId: exposureId,
                 preSelectedBreathingPattern: breathingPatternType,
                 preSelectedRelaxationType: relaxationType,
+                preSelectedGroundingType: groundingType,
                 preSelectedActivityListId: activityListId
             )
         }
@@ -223,6 +225,7 @@ struct ExerciseScheduleSection: View {
             assignment: nil,
             exerciseType: .exposure,
             exposureId: UUID(),
+            groundingType: nil,
             breathingPatternType: nil,
             relaxationType: nil,
             activityListId: nil

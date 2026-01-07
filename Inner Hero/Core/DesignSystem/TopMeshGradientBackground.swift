@@ -9,6 +9,7 @@ struct TopMeshGradientBackground: View {
         case `default`
         case teal
         case mint
+        case purple
     }
     
     var height: CGFloat
@@ -64,6 +65,20 @@ struct TopMeshGradientBackground: View {
                 Color(red: 0.94, green: 0.99, blue: 0.98), // near-white mint
                 Color(red: 0.92, green: 0.98, blue: 0.99), // near-white mint-cyan
                 Color(red: 0.90, green: 0.98, blue: 0.97)  // near-white seafoam
+            ]
+        case .purple:
+            return [
+                Color(red: 0.62, green: 0.48, blue: 0.98), // violet
+                Color(red: 0.45, green: 0.35, blue: 0.92), // deep purple
+                Color(red: 0.34, green: 0.44, blue: 0.96), // indigo-blue
+                
+                Color(red: 0.80, green: 0.62, blue: 1.00), // soft lilac
+                Color(red: 0.60, green: 0.70, blue: 1.00), // periwinkle
+                Color(red: 0.95, green: 0.70, blue: 0.96), // pink-lilac
+                
+                Color(red: 0.96, green: 0.96, blue: 1.00), // near-white violet
+                Color(red: 0.94, green: 0.95, blue: 1.00), // near-white periwinkle
+                Color(red: 0.93, green: 0.94, blue: 0.99)  // near-white purple
             ]
         }
     }

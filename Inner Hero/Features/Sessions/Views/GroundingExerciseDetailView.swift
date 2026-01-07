@@ -1,13 +1,15 @@
 import SwiftUI
 import SwiftData
 
-struct ExposureDetailView: View {
+struct GroundingExerciseDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
-    let exposure: Exposure
-    let onStartSession: () -> Void
+    
+    let exercise: GroundingExercise
     
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
+    @Query(sort: \GroundingSessionResult.performedAt, order: .reverse) private var allSessions: [GroundingSessionResult]
+    
     @State private var showScheduleSheet = false
     @State private var isFavorite = false
     
@@ -15,13 +17,24 @@ struct ExposureDetailView: View {
         DataManager(modelContext: modelContext)
     }
     
-    private var totalSteps: Int { exposure.steps.count }
-    private var stepsWithTimer: Int { exposure.steps.filter { $0.hasTimer }.count }
-    
     private var assignment: ExerciseAssignment? {
         allAssignments.first { assignment in
-            assignment.exerciseType == .exposure && assignment.exposureId == exposure.id
+            assignment.exerciseType == .grounding && assignment.grounding == exercise.type
         }
+    }
+    
+    private var sessions: [GroundingSessionResult] {
+        allSessions.filter { $0.type == exercise.type }
+    }
+    
+    private var averageDurationText: String {
+        guard !sessions.isEmpty else { return "—" }
+        let total = sessions.reduce(0) { $0 + $1.duration }
+        return formatDuration(total / Double(sessions.count))
+    }
+    
+    private var lastSessionDate: Date? {
+        sessions.first?.performedAt
     }
     
     var body: some View {
@@ -31,9 +44,6 @@ struct ExposureDetailView: View {
                 quickStatsSection
                 descriptionCard
                 startSessionButton
-                if !exposure.steps.isEmpty {
-                    stepsSection
-                }
                 sessionsHistoryCard
                 scheduleSection
             }
@@ -41,7 +51,7 @@ struct ExposureDetailView: View {
             .padding(.top, 20)
             .padding(.bottom, 40)
         }
-        .background(TopMeshGradientBackground())
+        .background(TopMeshGradientBackground(palette: .purple))
         .navigationTitle("Детали")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -53,17 +63,9 @@ struct ExposureDetailView: View {
                         Image(systemName: isFavorite ? "heart.fill" : "heart")
                             .font(.title3)
                             .foregroundStyle(
-                                isFavorite ?
-                                LinearGradient(
-                                    colors: [.pink, .red],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ) :
-                                LinearGradient(
-                                    colors: [TextColors.tertiary, TextColors.tertiary],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
+                                isFavorite
+                                ? LinearGradient(colors: [.pink, .red], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                : LinearGradient(colors: [TextColors.tertiary, TextColors.tertiary], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
@@ -84,24 +86,14 @@ struct ExposureDetailView: View {
                     }
                     .frame(minWidth: 44, minHeight: 44)
                     .accessibilityLabel("Запланировать")
-                    
-                    NavigationLink(destination: EditExposureView(exposure: exposure)) {
-                        Image(systemName: "pencil")
-                            .font(.title2)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .cyan],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
                 }
             }
         }
         .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(preSelectedExposureId: exposure.id)
+            ScheduleExerciseView(
+                assignment: assignment,
+                preSelectedGroundingType: exercise.type
+            )
         }
         .onAppear {
             checkFavoriteStatus()
@@ -114,23 +106,25 @@ struct ExposureDetailView: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [.blue.opacity(0.15), .cyan.opacity(0.1)],
+                            colors: [.purple.opacity(0.16), .indigo.opacity(0.10)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
                     .frame(width: 100, height: 100)
-                Image(systemName: "figure.mind.and.body")
+                
+                Image(systemName: exercise.icon)
                     .font(.system(size: 50))
                     .foregroundStyle(
                         LinearGradient(
-                            colors: [.blue, .cyan],
+                            colors: [.purple, .indigo],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
             }
-            Text(exposure.title)
+            
+            Text(exercise.name)
                 .font(.title.weight(.semibold))
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.center)
@@ -140,9 +134,9 @@ struct ExposureDetailView: View {
     
     private var quickStatsSection: some View {
         HStack(spacing: 16) {
-            QuickStatCard(icon: "list.number", value: "\(totalSteps)", label: "Шагов", color: .blue)
-            QuickStatCard(icon: "timer", value: "\(stepsWithTimer)", label: "С таймером", color: .orange)
-            QuickStatCard(icon: "chart.bar.fill", value: "\(exposure.sessionResults.count)", label: "Сеансов", color: .blue)
+            QuickStatCard(icon: "list.number", value: "\(exercise.instructionSteps.count)", label: "Шагов", color: .purple)
+            QuickStatCard(icon: "clock.fill", value: "\(sessions.count)", label: "Сеансов", color: .purple)
+            QuickStatCard(icon: "timer", value: averageDurationText, label: "Средняя", color: .purple)
         }
     }
     
@@ -153,7 +147,7 @@ struct ExposureDetailView: View {
                     .font(.body)
                     .foregroundStyle(
                         LinearGradient(
-                            colors: [.blue, .cyan],
+                            colors: [.purple, .indigo],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -163,7 +157,7 @@ struct ExposureDetailView: View {
                     .foregroundStyle(TextColors.primary)
             }
             
-            Text(exposure.exposureDescription)
+            Text(exercise.description)
                 .font(.body)
                 .foregroundStyle(TextColors.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -182,60 +176,65 @@ struct ExposureDetailView: View {
         )
     }
     
-    private var stepsSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Image(systemName: "checklist")
+    private var startSessionButton: some View {
+        NavigationLink(destination: GroundingSessionView(exercise: exercise)) {
+            HStack(spacing: 8) {
+                Image(systemName: "play.fill")
                     .font(.body)
-                    .foregroundStyle(
+                Text("Начать сеанс")
+                    .font(.system(size: 17, weight: .semibold))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 52)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
                         LinearGradient(
-                            colors: [.blue, .cyan],
+                            colors: [.purple, .indigo],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Шаги выполнения")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
-            
-            VStack(spacing: 12) {
-                ForEach(Array(exposure.steps.enumerated()), id: \.offset) { index, step in
-                    StepDetailCard(step: step, index: index)
-                }
-            }
+                    .shadow(color: .purple.opacity(0.3), radius: 8, x: 0, y: 4)
+            )
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Начать сеанс")
     }
     
     private var sessionsHistoryCard: some View {
-        NavigationLink(destination: SessionHistoryView(exposure: exposure)) {
+        NavigationLink(destination: GroundingSessionHistoryView(type: exercise.type, title: exercise.name)) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "clock")
                         .font(.body)
                         .foregroundStyle(
                             LinearGradient(
-                                colors: [.blue, .cyan],
+                                colors: [.purple, .indigo],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
+                    
                     Text("История сеансов")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(TextColors.primary)
+                    
                     Spacer()
+                    
                     Image(systemName: "chevron.right")
                         .font(.caption)
                         .foregroundStyle(TextColors.secondary)
                 }
                 
-                if exposure.sessionResults.count > 0 {
+                if sessions.count > 0 {
                     HStack(spacing: 20) {
                         VStack(alignment: .center, spacing: 4) {
                             Text("Всего")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
-                            Text("\(exposure.sessionResults.count)")
+                            Text("\(sessions.count)")
                                 .font(.title2.weight(.semibold))
                                 .foregroundStyle(TextColors.primary)
                         }
@@ -247,12 +246,13 @@ struct ExposureDetailView: View {
                             Text("Последний")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
-                            if let lastSession = exposure.sessionResults.sorted(by: { $0.startAt > $1.startAt }).first {
-                                Text(lastSession.startAt, style: .relative)
+                            
+                            if let date = lastSessionDate {
+                                Text(date, style: .relative)
                                     .font(.body.weight(.medium))
                                     .foregroundStyle(
                                         LinearGradient(
-                                            colors: [.blue, .cyan],
+                                            colors: [.purple, .indigo],
                                             startPoint: .leading,
                                             endPoint: .trailing
                                         )
@@ -262,7 +262,7 @@ struct ExposureDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
-                    Text("Нет завершенных сеансов")
+                    Text("Нет завершённых сеансов")
                         .font(.body)
                         .foregroundStyle(TextColors.secondary)
                 }
@@ -286,47 +286,21 @@ struct ExposureDetailView: View {
     private var scheduleSection: some View {
         ExerciseScheduleSection(
             assignment: assignment,
-            exerciseType: .exposure,
-            exposureId: exposure.id,
-            groundingType: nil,
+            exerciseType: .grounding,
+            exposureId: nil,
+            groundingType: exercise.type,
             breathingPatternType: nil,
             relaxationType: nil,
             activityListId: nil
         )
     }
     
-    private var startSessionButton: some View {
-        Button(action: onStartSession) {
-            HStack(spacing: 8) {
-                Image(systemName: "play.fill")
-                    .font(.body)
-                Text("Начать сеанс")
-                    .font(.system(size: 17, weight: .semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
-            )
-        }
-        .accessibilityLabel("Начать сеанс")
-    }
-    
     private func toggleFavorite() {
         Task {
             do {
                 let newFavoriteStatus = try dataManager.toggleFavorite(
-                    exerciseType: .exposure,
-                    exerciseId: exposure.id
+                    exerciseType: .grounding,
+                    exerciseIdentifier: exercise.type.rawValue
                 )
                 await MainActor.run {
                     isFavorite = newFavoriteStatus
@@ -343,8 +317,8 @@ struct ExposureDetailView: View {
         Task {
             do {
                 let favorite = try dataManager.isFavorite(
-                    exerciseType: .exposure,
-                    exerciseId: exposure.id
+                    exerciseType: .grounding,
+                    exerciseIdentifier: exercise.type.rawValue
                 )
                 await MainActor.run {
                     isFavorite = favorite
@@ -354,96 +328,20 @@ struct ExposureDetailView: View {
             }
         }
     }
-}
-
-// MARK: - Supporting Views
-
-struct QuickStatCard: View {
-    let icon: String
-    let value: String
-    let label: String
-    let color: Color
     
-    var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.body)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: color == .blue ? [.blue, .cyan] : [color, color.opacity(0.8)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-            Text(value)
-                .font(.title3.weight(.semibold))
-                .foregroundStyle(TextColors.primary)
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(TextColors.secondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.thinMaterial)
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(value) \(label)")
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        let totalSeconds = Int(duration.rounded())
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        return "\(minutes):\(String(format: "%02d", seconds))"
     }
 }
 
-struct StepDetailCard: View {
-    let step: ExposureStep
-    let index: Int
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(Color.blue.opacity(0.1))
-                    .frame(width: 36, height: 36)
-                Text("\(index + 1)")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.blue)
-            }
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(step.text)
-                    .font(.body)
-                    .foregroundStyle(TextColors.primary)
-                    .fixedSize(horizontal: false, vertical: true)
-                
-                if step.hasTimer {
-                    HStack(spacing: 6) {
-                        Image(systemName: "timer")
-                            .font(.caption)
-                        Text("\(step.timerDuration / 60):\(String(format: "%02d", step.timerDuration % 60))")
-                            .font(.caption.weight(.medium))
-                    }
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(
-                        Capsule()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.orange, .orange.opacity(0.8)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                    )
-                }
-            }
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.thinMaterial)
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Шаг \(index + 1): \(step.text)")
+#Preview {
+    NavigationStack {
+        GroundingExerciseDetailView(exercise: GroundingExercise.predefinedExercises[0])
     }
+    .modelContainer(for: [ExerciseAssignment.self, FavoriteExercise.self, GroundingSessionResult.self], inMemory: true)
 }
+
+

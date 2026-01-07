@@ -306,6 +306,7 @@ struct BreathingPatternDetailView: View {
             assignment: assignment,
             exerciseType: .breathing,
             exposureId: nil,
+            groundingType: nil,
             breathingPatternType: pattern.type,
             relaxationType: nil,
             activityListId: nil
