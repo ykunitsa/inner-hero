@@ -6,55 +6,112 @@ struct ActivationDetailView: View {
     let activation: ActivityList
     
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     @State private var showingEditSheet = false
+    @State private var showScheduleSheet = false
+    @State private var isFavorite = false
+    
+    @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
+    
+    private var dataManager: DataManager {
+        DataManager(modelContext: modelContext)
+    }
+    
+    private var assignment: ExerciseAssignment? {
+        allAssignments.first { assignment in
+            assignment.exerciseType == .behavioralActivation && assignment.activityListId == activation.id
+        }
+    }
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
                 heroHeaderSection
                 quickStatsSection
-                activitiesSection
+                purposeCard
                 startActivityButton
+                activitiesSection
+                scheduleSection
             }
             .padding(.horizontal, 20)
             .padding(.top, 20)
             .padding(.bottom, 40)
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.97, blue: 1.0),
-                    Color(red: 0.92, green: 0.95, blue: 0.98)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-        )
-        .navigationTitle("Details")
+        .background(TopMeshGradientBackground(palette: .green))
+        .navigationTitle("Детали")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if !activation.isPredefined {
-                ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .primaryAction) {
+                HStack(spacing: 12) {
                     Button {
-                        showingEditSheet = true
+                        toggleFavorite()
                     } label: {
-                        Image(systemName: "pencil.circle.fill")
-                            .font(.title2)
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .font(.title3)
                             .foregroundStyle(
+                                isFavorite ?
                                 LinearGradient(
-                                    colors: [.green, .mint],
+                                    colors: [.pink, .red],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ) :
+                                LinearGradient(
+                                    colors: [TextColors.tertiary, TextColors.tertiary],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
+                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    
+                    Button {
+                        showScheduleSheet = true
+                    } label: {
+                        Image(systemName: "calendar.badge.plus")
+                            .font(.title3)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.orange, .orange.opacity(0.8)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
+                    .frame(minWidth: 44, minHeight: 44)
+                    .accessibilityLabel("Запланировать")
+                    
+                    if !activation.isPredefined {
+                        Button {
+                            showingEditSheet = true
+                        } label: {
+                            Image(systemName: "pencil.circle.fill")
+                                .font(.title2)
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.green, .mint],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                        }
+                        .frame(minWidth: 44, minHeight: 44)
+                        .accessibilityLabel("Редактировать")
+                    }
                 }
             }
         }
         .sheet(isPresented: $showingEditSheet) {
             EditActivationView(activation: activation)
+        }
+        .sheet(isPresented: $showScheduleSheet) {
+            ScheduleExerciseView(
+                assignment: assignment,
+                preSelectedActivityListId: activation.id
+            )
+        }
+        .onAppear {
+            checkFavoriteStatus()
         }
     }
     
@@ -88,7 +145,7 @@ struct ActivationDetailView: View {
                     .multilineTextAlignment(.center)
                 
                 if activation.isPredefined {
-                    Text("Built-in Activation List")
+                    Text("Предустановленный список")
                         .font(.subheadline)
                         .foregroundStyle(TextColors.tertiary)
                 }
@@ -102,17 +159,69 @@ struct ActivationDetailView: View {
             QuickStatCard(
                 icon: "list.bullet",
                 value: "\(activation.activities.count)",
-                label: "Activities",
+                label: "Активности",
                 color: .green
             )
             
             QuickStatCard(
                 icon: activation.isPredefined ? "lock.fill" : "person.fill",
-                value: activation.isPredefined ? "Built-in" : "Custom",
-                label: "Type",
+                value: activation.isPredefined ? "Предустановленный" : "Созданный",
+                label: "Тип",
                 color: .mint
             )
         }
+    }
+    
+    private var purposeCard: some View {
+        infoCard(
+            title: "Для чего это",
+            icon: "target",
+            accent: LinearGradient(colors: [.green, .mint], startPoint: .topLeading, endPoint: .bottomTrailing)
+        ) {
+            Text(
+                """
+                Поведенческая активация помогает мягко «включаться» в жизнь, когда нет сил, настроения или мотивации. \
+                Вы заранее выбираете простые действия (приятные или значимые), делаете их маленькими шагами и замечаете, \
+                как меняются состояние и уровень удовольствия.
+                """
+            )
+        }
+    }
+    
+    private func infoCard(
+        title: String,
+        icon: String,
+        accent: LinearGradient,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.body)
+                    .foregroundStyle(accent)
+                
+                Text(title)
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(TextColors.primary)
+            }
+            
+            content()
+                .font(.body)
+                .foregroundStyle(TextColors.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(.thinMaterial)
+                .shadow(
+                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
+                    radius: 10,
+                    x: 0,
+                    y: 4
+                )
+        )
     }
     
     private var activitiesSection: some View {
@@ -127,25 +236,33 @@ struct ActivationDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Activities")
+                Text("Активности")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
             
             if activation.activities.isEmpty {
-                Text("No activities yet")
+                Text("Пока нет активностей")
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 32)
             } else {
-                VStack(spacing: 12) {
-                    ForEach(Array(activation.activities.enumerated()), id: \.offset) { index, activity in
-                        ActivityRowCard(activity: activity, index: index)
-                    }
-                }
+                ActivityGroupCard(activities: activation.activities)
             }
         }
+    }
+    
+    private var scheduleSection: some View {
+        ExerciseScheduleSection(
+            assignment: assignment,
+            exerciseType: .behavioralActivation,
+            exposureId: nil,
+            groundingType: nil,
+            breathingPatternType: nil,
+            relaxationType: nil,
+            activityListId: activation.id
+        )
     }
     
     private var startActivityButton: some View {
@@ -153,7 +270,7 @@ struct ActivationDetailView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Start Session")
+                Text("Начать сеанс")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -174,13 +291,40 @@ struct ActivationDetailView: View {
         .buttonStyle(.plain)
         .disabled(activation.activities.isEmpty)
         .opacity(activation.activities.isEmpty ? 0.5 : 1.0)
-        .accessibilityLabel("Start activation session")
+        .accessibilityLabel("Начать сеанс поведенческой активации")
+    }
+    
+    private func toggleFavorite() {
+        do {
+            let newFavoriteStatus = try dataManager.toggleFavorite(
+                exerciseType: .behavioralActivation,
+                exerciseId: activation.id
+            )
+            isFavorite = newFavoriteStatus
+            HapticFeedback.selection()
+        } catch {
+            HapticFeedback.error()
+        }
+    }
+    
+    private func checkFavoriteStatus() {
+        do {
+            let favorite = try dataManager.isFavorite(
+                exerciseType: .behavioralActivation,
+                exerciseId: activation.id
+            )
+            isFavorite = favorite
+        } catch {
+            isFavorite = false
+        }
     }
 }
 
 // MARK: - Supporting Views
 
 struct ActivityRowCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     let activity: String
     let index: Int
     
@@ -204,19 +348,57 @@ struct ActivityRowCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.98, green: 0.99, blue: 1.0),
-                            Color(red: 0.96, green: 0.97, blue: 0.99)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(.thinMaterial)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Activity \(index + 1): \(activity)")
+        .accessibilityLabel("Активность \(index + 1): \(activity)")
+    }
+}
+
+struct ActivityGroupCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
+    let activities: [String]
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(activities.indices, id: \.self) { idx in
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Image(systemName: "circle.fill")
+                        .font(.system(size: 7, weight: .semibold))
+                        .foregroundStyle(.green.opacity(0.8))
+                        .padding(.top, 7)
+                    
+                    Text(activities[idx])
+                        .font(.body)
+                        .foregroundStyle(TextColors.primary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+                
+                if idx != activities.indices.last {
+                    Divider()
+                        .padding(.leading, 16)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(.thinMaterial)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
+        )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Список активностей")
     }
 }
 
@@ -228,20 +410,13 @@ struct StartActivationView: View {
     @State private var showingActivityList = false
     @State private var selectedActivity: String?
     @State private var navigateToSession = false
+
+    @State private var isRouletteRunning = false
+    @State private var rouletteActivity: String?
+    @State private var rouletteTask: Task<Void, Never>?
     
     var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.97, blue: 1.0),
-                    Color(red: 0.92, green: 0.95, blue: 0.98)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            
             VStack(spacing: 32) {
                 Spacer()
                 
@@ -274,86 +449,80 @@ struct StartActivationView: View {
                             .foregroundStyle(TextColors.primary)
                             .multilineTextAlignment(.center)
                         
-                        Text("Choose how to select your activity")
-                            .font(.subheadline)
-                            .foregroundStyle(TextColors.secondary)
-                            .multilineTextAlignment(.center)
+                        if isRouletteRunning {
+                            Text("Выбираем активность…")
+                                .font(.subheadline)
+                                .foregroundStyle(TextColors.secondary)
+                                .multilineTextAlignment(.center)
+
+                            if let rouletteActivity {
+                                Text(rouletteActivity)
+                                    .font(.headline.weight(.semibold))
+                                    .foregroundStyle(TextColors.primary)
+                                    .multilineTextAlignment(.center)
+                                    .id(rouletteActivity)
+                                    .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                            }
+                        } else {
+                            Text("Выберите способ выбора активности")
+                                .font(.subheadline)
+                                .foregroundStyle(TextColors.secondary)
+                                .multilineTextAlignment(.center)
+                        }
                     }
                 }
                 .padding(.horizontal)
                 
                 Spacer()
-                
-                // Action buttons
-                VStack(spacing: 16) {
-                    // Select from list button
-                    Button {
-                        showingActivityList = true
-                    } label: {
-                        HStack(spacing: 12) {
-                            Image(systemName: "list.bullet")
-                                .font(.body.weight(.semibold))
-                            Text("Select Activity from List")
-                                .font(.system(size: 17, weight: .semibold))
-                        }
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [.green, .mint],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
-                        )
-                    }
-                    .buttonStyle(.plain)
-                    
-                    // Pick random button
-                    Button {
-                        if let randomActivity = activation.activities.randomElement() {
-                            selectedActivity = randomActivity
-                            navigateToSession = true
-                        }
-                    } label: {
-                        HStack(spacing: 12) {
-                            Image(systemName: "shuffle")
-                                .font(.body.weight(.semibold))
-                            Text("Pick Random Activity")
-                                .font(.system(size: 17, weight: .semibold))
-                        }
-                        .foregroundStyle(.green)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .strokeBorder(
-                                    LinearGradient(
-                                        colors: [.green, .mint],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 2
-                                )
-                                .background(
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .fill(Color.white)
-                                )
-                        )
-                    }
-                    .buttonStyle(.plain)
-                }
-                .padding(.horizontal, 20)
-                
+
                 Spacer()
             }
         }
-        .navigationTitle("Start Session")
+        .navigationTitle("Начать сеанс")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
+        .tint(.green)
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button {
+                    guard !isRouletteRunning else { return }
+                    showingActivityList = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "list.bullet")
+                            .font(.body)
+                        Text("Список")
+                    }
+                    .foregroundStyle(.green)
+                }
+                .disabled(activation.activities.isEmpty || isRouletteRunning)
+                .accessibilityLabel("Выбрать из списка")
+                .accessibilityHint("Открывает список активностей для выбора")
+                
+                Spacer()
+                
+                Button {
+                    runRouletteRandomPick()
+                } label: {
+                    HStack(spacing: 8) {
+                        if isRouletteRunning {
+                            ProgressView()
+                                .tint(.green)
+                            Text("Выбираем…")
+                        } else {
+                            Image(systemName: "shuffle")
+                                .font(.body)
+                            Text("Случайно")
+                        }
+                    }
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.green)
+                }
+                .disabled(activation.activities.isEmpty || isRouletteRunning)
+                .accessibilityLabel("Случайная активность")
+                .accessibilityHint("Выбирает случайную активность и начинает сеанс")
+            }
+        }
         .sheet(isPresented: $showingActivityList) {
             ActivitySelectionSheet(
                 activities: activation.activities,
@@ -372,6 +541,63 @@ struct StartActivationView: View {
                 )
             }
         }
+        .onDisappear {
+            rouletteTask?.cancel()
+            rouletteTask = nil
+        }
+    }
+
+    private func runRouletteRandomPick() {
+        guard !activation.activities.isEmpty else { return }
+        guard !isRouletteRunning else { return }
+
+        rouletteTask?.cancel()
+
+        isRouletteRunning = true
+
+        withAnimation(.easeInOut(duration: 0.12)) {
+            rouletteActivity = activation.activities.randomElement()
+        }
+
+        rouletteTask = Task { @MainActor in
+            let pool = activation.activities
+            let totalSteps = min(max(12, pool.count * 2), 20)
+
+            var delay: UInt64 = 60_000_000
+            for _ in 0..<totalSteps {
+                guard !Task.isCancelled else {
+                    isRouletteRunning = false
+                    return
+                }
+
+                let next = pool.randomElement() ?? rouletteActivity
+                withAnimation(.easeInOut(duration: 0.12)) {
+                    rouletteActivity = next
+                }
+
+                try? await Task.sleep(nanoseconds: delay)
+                delay = min(delay + 18_000_000, 140_000_000)
+            }
+
+            guard !Task.isCancelled else {
+                isRouletteRunning = false
+                return
+            }
+
+            if let final = pool.randomElement() {
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                    rouletteActivity = final
+                }
+
+                HapticFeedback.selection()
+                selectedActivity = final
+                try? await Task.sleep(nanoseconds: 250_000_000)
+                isRouletteRunning = false
+                navigateToSession = true
+            } else {
+                isRouletteRunning = false
+            }
+        }
     }
 }
 
@@ -387,22 +613,16 @@ struct ActivitySelectionSheet: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    ForEach(Array(activities.enumerated()), id: \.offset) { index, activity in
+                    ForEach(activities.indices, id: \.self) { index in
+                        let activity = activities[index]
                         Button {
-                            #if canImport(UIKit)
                             HapticFeedback.selection()
-                            #endif
                             onSelect(activity)
                         } label: {
                             HStack(alignment: .center, spacing: 16) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color.green.opacity(0.1))
-                                        .frame(width: 36, height: 36)
-                                    Text("\(index + 1)")
-                                        .font(.body.weight(.semibold))
-                                        .foregroundStyle(.green)
-                                }
+                                Circle()
+                                    .fill(Color.green.opacity(0.22))
+                                    .frame(width: 10, height: 10)
                                 
                                 Text(activity)
                                     .font(.body)
@@ -418,30 +638,21 @@ struct ActivitySelectionSheet: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(Color.white)
+                                    .fill(.thinMaterial)
                             )
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(activity)
+                        .accessibilityHint("Выбрать активность")
                     }
                 }
                 .padding(20)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
-            .navigationTitle("Select Activity")
+            .navigationTitle("Выбор активности")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Отмена") {
                         dismiss()
                     }
                 }
@@ -456,6 +667,7 @@ struct ActivationSessionView: View {
     let activation: ActivityList
     let selectedActivity: String
     
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
@@ -481,16 +693,7 @@ struct ActivationSessionView: View {
     
     var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(
-                colors: [
-                    Color.mint.opacity(0.1),
-                    Color.green.opacity(0.05)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            TopMeshGradientBackground(palette: .green)
             
             ScrollView {
                 VStack(spacing: 32) {
@@ -518,7 +721,7 @@ struct ActivationSessionView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text("Your Activity")
+                            Text("Ваша активность")
                                 .font(.subheadline)
                                 .foregroundStyle(TextColors.tertiary)
                             
@@ -533,7 +736,7 @@ struct ActivationSessionView: View {
                     // Time info card
                     HStack(spacing: 20) {
                         VStack(spacing: 4) {
-                            Text("Started")
+                            Text("Начало")
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(TextColors.tertiary)
                             Text(formattedStartTime)
@@ -547,7 +750,7 @@ struct ActivationSessionView: View {
                             .frame(height: 32)
                         
                         VStack(spacing: 4) {
-                            Text("Duration")
+                            Text("Длительность")
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(TextColors.tertiary)
                             Text(elapsedTime)
@@ -560,8 +763,12 @@ struct ActivationSessionView: View {
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.white)
+                            .fill(.thinMaterial)
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
                     )
                     .padding(.horizontal, 20)
                     
@@ -571,7 +778,7 @@ struct ActivationSessionView: View {
                             Image(systemName: "info.circle.fill")
                                 .font(.title3)
                                 .foregroundStyle(.green)
-                            Text("Instructions")
+                            Text("Инструкции")
                                 .font(.headline)
                                 .foregroundStyle(TextColors.primary)
                         }
@@ -579,27 +786,31 @@ struct ActivationSessionView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             InstructionRow(
                                 number: 1,
-                                text: "Take your time to complete this activity"
+                                text: "Выполняйте активность в комфортном темпе"
                             )
                             InstructionRow(
                                 number: 2,
-                                text: "Focus on being present in the moment"
+                                text: "Сконцентрируйтесь на ощущениях в настоящем моменте"
                             )
                             InstructionRow(
                                 number: 3,
-                                text: "Notice how you feel during and after"
+                                text: "Отмечайте, как вы себя чувствуете во время и после"
                             )
                             InstructionRow(
                                 number: 4,
-                                text: "Rate your pleasure when finished"
+                                text: "После завершения оцените уровень удовольствия"
                             )
                         }
                     }
                     .padding(20)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.white)
+                            .fill(.thinMaterial)
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
                     )
                     .padding(.horizontal, 20)
                     
@@ -611,7 +822,7 @@ struct ActivationSessionView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.body)
-                                Text("Mark as Complete")
+                                Text("Завершить")
                                     .font(.system(size: 17, weight: .semibold))
                             }
                             .foregroundStyle(.white)
@@ -638,6 +849,7 @@ struct ActivationSessionView: View {
         }
         .navigationTitle(activation.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .onReceive(timer) { _ in
             currentTime = Date()
         }
@@ -668,9 +880,7 @@ struct ActivationSessionView: View {
         
         do {
             try modelContext.save()
-            #if canImport(UIKit)
             HapticFeedback.success()
-            #endif
             isCompleted = true
             
             // Dismiss after a short delay
@@ -678,7 +888,7 @@ struct ActivationSessionView: View {
                 dismiss()
             }
         } catch {
-            print("Failed to save session: \(error)")
+            print("Не удалось сохранить сеанс: \(error)")
         }
     }
 }
@@ -712,8 +922,8 @@ struct InstructionRow: View {
     NavigationStack {
         ActivationDetailView(
             activation: ActivityList(
-                title: "Morning Routine",
-                activities: ["Exercise for 30 minutes", "Meditate", "Healthy breakfast", "Read for 15 minutes"],
+                title: "Утренняя рутина",
+                activities: ["Разминка 30 минут", "Медитация", "Полезный завтрак", "Чтение 15 минут"],
                 isPredefined: false
             )
         )

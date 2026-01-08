@@ -7,7 +7,7 @@ struct MainTabView: View {
     enum Tab {
         case home
         case exercises
-        case profile
+        case settings
     }
     
     var body: some View {
@@ -34,16 +34,16 @@ struct MainTabView: View {
                 }
                 .accessibilityLabel("Упражнения")
             
-            ProfileView()
-                .tag(Tab.profile)
+            SettingsView()
+                .tag(Tab.settings)
                 .tabItem {
                     Label {
-                        Text("Профиль")
+                        Text("Настройки")
                     } icon: {
-                        Image(systemName: "person.circle.fill")
+                        Image(systemName: "gearshape")
                     }
                 }
-                .accessibilityLabel("Профиль")
+                .accessibilityLabel("Настройки")
         }
         .tint(.blue)
     }

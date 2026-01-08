@@ -6,6 +6,8 @@ struct Inner_HeroApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @AppStorage("hasLoadedSampleData") private var hasLoadedSampleData = false
     @AppStorage("hasBackfilledPredefinedExposures") private var hasBackfilledPredefinedExposures = false
+    @AppStorage("hasBackfilledPredefinedActivationLists") private var hasBackfilledPredefinedActivationLists = false
+    @AppStorage(AppStorageKeys.themeMode) private var themeModeRawValue: String = ThemeMode.system.rawValue
     
     var sharedModelContainer: ModelContainer = {
         do {
@@ -29,15 +31,15 @@ struct Inner_HeroApp: App {
     init() {
         loadSampleDataIfNeeded()
         backfillPredefinedExposuresIfNeeded()
+        backfillPredefinedActivationListsIfNeeded()
     }
 
     var body: some Scene {
         WindowGroup {
-            if hasCompletedOnboarding {
-                MainTabView()
-            } else {
-                OnboardingView()
+            AppLockGateView {
+                RootAppView(hasCompletedOnboarding: hasCompletedOnboarding)
             }
+            .preferredColorScheme((ThemeMode(rawValue: themeModeRawValue) ?? .system).preferredColorScheme)
         }
         .modelContainer(sharedModelContainer)
     }
@@ -101,6 +103,31 @@ struct Inner_HeroApp: App {
         } catch {
             // If anything goes wrong, don't block the app; we'll try again on the next launch.
             print("⚠️ Ошибка обновления флага предустановленных экспозиций: \(error)")
+        }
+    }
+    
+    private func backfillPredefinedActivationListsIfNeeded() {
+        guard !hasBackfilledPredefinedActivationLists else { return }
+        
+        do {
+            let context = sharedModelContainer.mainContext
+            try SampleDataLoader.backfillPredefinedActivationListsIfNeeded(into: context)
+            hasBackfilledPredefinedActivationLists = true
+        } catch {
+            // If anything goes wrong, don't block the app; we'll try again on the next launch.
+            print("⚠️ Ошибка обновления предустановленных списков активностей: \(error)")
+        }
+    }
+}
+
+private struct RootAppView: View {
+    let hasCompletedOnboarding: Bool
+    
+    var body: some View {
+        if hasCompletedOnboarding {
+            MainTabView()
+        } else {
+            OnboardingView()
         }
     }
 }

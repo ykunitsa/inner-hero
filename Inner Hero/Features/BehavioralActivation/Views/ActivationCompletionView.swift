@@ -6,10 +6,10 @@ struct ActivationCompletionView: View {
     let startedAt: Date
     let onComplete: (Int?) -> Void
     
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     
     @State private var rating: Double = 3
-    @State private var skipRating: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -28,7 +28,7 @@ struct ActivationCompletionView: View {
                             )
                             .accessibilityHidden(true)
                         
-                        Text("Activity Completed")
+                        Text("Активность завершена")
                             .font(.title2.weight(.semibold))
                             .foregroundStyle(TextColors.primary)
                     }
@@ -38,40 +38,29 @@ struct ActivationCompletionView: View {
                     activitySummaryCard
                     
                     // Rating section
-                    if !skipRating {
-                        ratingSection
-                    }
-                    
-                    // Skip rating toggle
-                    skipRatingToggle
-                    
-                    Spacer(minLength: 20)
-                    
-                    // Complete button
-                    completeButton
+                    ratingSection
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 40)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
-            .navigationTitle("Complete Session")
+            .navigationTitle("Завершение сеанса")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Отмена") {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
+                }
+                
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Сохранить") {
+                        completeSession()
+                    }
+                    .foregroundStyle(TextColors.toolbar)
+                    .fontWeight(.semibold)
+                    .accessibilityLabel("Сохранить сеанс")
+                    .accessibilityHint("Сохранит сеанс и оценку впечатления")
                 }
             }
         }
@@ -85,7 +74,7 @@ struct ActivationCompletionView: View {
                 Image(systemName: "info.circle.fill")
                     .font(.title3)
                     .foregroundStyle(.green)
-                Text("Session Summary")
+                Text("Итоги сеанса")
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
             }
@@ -94,25 +83,25 @@ struct ActivationCompletionView: View {
             
             VStack(spacing: 12) {
                 SummaryRow(
-                    label: "Activity",
+                    label: "Активность",
                     value: activityName,
                     icon: "figure.walk"
                 )
                 
                 SummaryRow(
-                    label: "Started",
+                    label: "Начало",
                     value: formatTime(startedAt),
                     icon: "clock"
                 )
                 
                 SummaryRow(
-                    label: "Completed",
+                    label: "Завершено",
                     value: formatTime(Date()),
                     icon: "checkmark.circle"
                 )
                 
                 SummaryRow(
-                    label: "Duration",
+                    label: "Длительность",
                     value: formatDuration(Date().timeIntervalSince(startedAt)),
                     icon: "timer"
                 )
@@ -121,11 +110,15 @@ struct ActivationCompletionView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.white)
+                .fill(.thinMaterial)
                 .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
         )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
+        )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Session summary: \(activityName), started at \(formatTime(startedAt))")
+        .accessibilityLabel("Итоги сеанса: \(activityName), начало в \(formatTime(startedAt))")
     }
     
     // MARK: - Rating Section
@@ -136,12 +129,12 @@ struct ActivationCompletionView: View {
                 Image(systemName: "star.fill")
                     .font(.title3)
                     .foregroundStyle(.green)
-                Text("Rate Your Experience")
+                Text("Насколько понравилось?")
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
             }
             
-            Text("How would you rate the pleasure or satisfaction from this activity?")
+            Text("Оцените, насколько приятной была эта активность (1–5)")
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
             
@@ -168,114 +161,47 @@ struct ActivationCompletionView: View {
                 VStack(spacing: 8) {
                     Slider(value: $rating, in: 1...5, step: 1)
                         .tint(ratingColor(for: Int(rating)))
-                        .accessibilityLabel("Pleasure rating")
-                        .accessibilityValue("\(Int(rating)) out of 5")
+                        .accessibilityLabel("Оценка впечатления")
+                        .accessibilityValue("\(Int(rating)) из 5")
                     
                     HStack {
-                        Text("1")
+                        Text("1\nСовсем не понравилось")
                             .font(.caption)
-                            .foregroundStyle(TextColors.tertiary)
+                            .multilineTextAlignment(.leading)
+                            .foregroundStyle(TextColors.secondary)
                         Spacer()
-                        Text("5")
+                        Text("3\nНормально")
                             .font(.caption)
-                            .foregroundStyle(TextColors.tertiary)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(TextColors.secondary)
+                        Spacer()
+                        Text("5\nОчень понравилось")
+                            .font(.caption)
+                            .multilineTextAlignment(.trailing)
+                            .foregroundStyle(TextColors.secondary)
                     }
                 }
-                
-                // Rating scale labels
-                VStack(alignment: .leading, spacing: 8) {
-                    RatingLabelRow(value: 1, label: "Very low")
-                    RatingLabelRow(value: 2, label: "Low")
-                    RatingLabelRow(value: 3, label: "Moderate")
-                    RatingLabelRow(value: 4, label: "High")
-                    RatingLabelRow(value: 5, label: "Very high")
-                }
-                .padding(.top, 8)
             }
         }
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.white)
+                .fill(.thinMaterial)
                 .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
         )
-    }
-    
-    // MARK: - Skip Rating Toggle
-    
-    private var skipRatingToggle: some View {
-        Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                skipRating.toggle()
-            }
-            #if canImport(UIKit)
-            HapticFeedback.selection()
-            #endif
-        } label: {
-            HStack(spacing: 12) {
-                Image(systemName: skipRating ? "checkmark.square.fill" : "square")
-                    .font(.title3)
-                    .foregroundStyle(skipRating ? .green : TextColors.tertiary)
-                
-                Text("Skip rating (optional)")
-                    .font(.body)
-                    .foregroundStyle(TextColors.primary)
-                
-                Spacer()
-            }
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.white)
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Skip rating")
-        .accessibilityHint(skipRating ? "Rating will not be saved" : "Tap to skip rating")
-    }
-    
-    // MARK: - Complete Button
-    
-    private var completeButton: some View {
-        Button {
-            completeSession()
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.body)
-                Text("Save Session")
-                    .font(.system(size: 17, weight: .semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Save session")
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
+        )
     }
     
     // MARK: - Helper Methods
     
     private func completeSession() {
-        let finalRating = skipRating ? nil : Int(rating)
-        
-        #if canImport(UIKit)
         HapticFeedback.success()
-        #endif
         
         dismiss()
-        onComplete(finalRating)
+        onComplete(Int(rating))
     }
     
     private func formatTime(_ date: Date) -> String {
@@ -316,15 +242,15 @@ struct ActivationCompletionView: View {
     private func ratingLabel(for value: Int) -> String {
         switch value {
         case 1:
-            return "Very low"
+            return "Совсем не понравилось"
         case 2:
-            return "Low"
+            return "Скорее нет"
         case 3:
-            return "Moderate"
+            return "Нормально"
         case 4:
-            return "High"
+            return "Скорее да"
         case 5:
-            return "Very high"
+            return "Очень понравилось"
         default:
             return ""
         }
@@ -358,35 +284,16 @@ struct SummaryRow: View {
     }
 }
 
-struct RatingLabelRow: View {
-    let value: Int
-    let label: String
-    
-    var body: some View {
-        HStack(spacing: 8) {
-            Text("\(value)")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(TextColors.tertiary)
-                .frame(width: 20)
-            
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(TextColors.secondary)
-            
-            Spacer()
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview {
     ActivationCompletionView(
-        activityName: "Morning walk in the park",
+        activityName: "Утренняя прогулка в парке",
         startedAt: Date().addingTimeInterval(-900), // 15 minutes ago
         onComplete: { rating in
-            print("Completed with rating: \(rating?.description ?? "none")")
+            print("Завершено, оценка: \(rating?.description ?? "нет")")
         }
     )
 }
+
 

@@ -95,58 +95,58 @@ struct SampleDataLoader {
     static func loadPredefinedActivationLists(into modelContext: ModelContext) throws {
         let predefinedLists: [(title: String, activities: [String])] = [
             (
-                title: "Morning Routine",
+                title: "Утренняя рутина",
                 activities: [
-                    "Exercise for 20-30 minutes",
-                    "Take a shower",
-                    "Eat a healthy breakfast",
-                    "Review daily goals",
-                    "Meditate for 10 minutes"
+                    "Разминка 20–30 минут",
+                    "Принять душ",
+                    "Полезный завтрак",
+                    "Просмотреть цели на день",
+                    "Медитация 10 минут"
                 ]
             ),
             (
-                title: "Self-Care Activities",
+                title: "Забота о себе",
                 activities: [
-                    "Take a relaxing bath",
-                    "Read a book for pleasure",
-                    "Listen to favorite music",
-                    "Practice a hobby",
-                    "Call a friend or family member",
-                    "Go for a walk in nature"
+                    "Принять расслабляющую ванну",
+                    "Почитать для удовольствия",
+                    "Послушать любимую музыку",
+                    "Заняться хобби",
+                    "Позвонить другу или близкому",
+                    "Прогулка на природе"
                 ]
             ),
             (
-                title: "Social Connections",
+                title: "Социальные контакты",
                 activities: [
-                    "Meet a friend for coffee",
-                    "Attend a social event",
-                    "Join a club or group",
-                    "Volunteer in community",
-                    "Reach out to someone new",
-                    "Spend time with family"
+                    "Встретиться с другом за кофе",
+                    "Посетить мероприятие",
+                    "Присоединиться к клубу или группе",
+                    "Волонтёрство",
+                    "Написать/позвонить новому знакомому",
+                    "Провести время с семьёй"
                 ]
             ),
             (
-                title: "Productive Tasks",
+                title: "Полезные дела",
                 activities: [
-                    "Complete a work task",
-                    "Organize living space",
-                    "Learn something new",
-                    "Work on a personal project",
-                    "Plan the week ahead",
-                    "Handle pending errands"
+                    "Завершить рабочую задачу",
+                    "Навести порядок дома",
+                    "Изучить что-то новое",
+                    "Продвинуть личный проект",
+                    "Спланировать неделю",
+                    "Сделать накопившиеся дела"
                 ]
             ),
             (
-                title: "Physical Activities",
+                title: "Физическая активность",
                 activities: [
-                    "Go for a run or jog",
-                    "Try yoga or stretching",
-                    "Go to the gym",
-                    "Play a sport",
-                    "Go swimming",
-                    "Take a dance class",
-                    "Go hiking"
+                    "Пробежка или бег трусцой",
+                    "Йога или растяжка",
+                    "Тренировка в зале",
+                    "Поиграть в спорт",
+                    "Поплавать",
+                    "Танцевальная тренировка",
+                    "Поход/пешая прогулка"
                 ]
             )
         ]
@@ -161,6 +161,82 @@ struct SampleDataLoader {
         }
         
         try modelContext.save()
+    }
+
+    /// Updates previously inserted predefined activation lists that were created in English.
+    /// Safe to call repeatedly; it only updates lists that match known old titles.
+    static func backfillPredefinedActivationListsIfNeeded(into modelContext: ModelContext) throws {
+        let oldTitleToNew: [String: (title: String, activities: [String])] = [
+            "Morning Routine": (
+                title: "Утренняя рутина",
+                activities: [
+                    "Разминка 20–30 минут",
+                    "Принять душ",
+                    "Полезный завтрак",
+                    "Просмотреть цели на день",
+                    "Медитация 10 минут"
+                ]
+            ),
+            "Self-Care Activities": (
+                title: "Забота о себе",
+                activities: [
+                    "Принять расслабляющую ванну",
+                    "Почитать для удовольствия",
+                    "Послушать любимую музыку",
+                    "Заняться хобби",
+                    "Позвонить другу или близкому",
+                    "Прогулка на природе"
+                ]
+            ),
+            "Social Connections": (
+                title: "Социальные контакты",
+                activities: [
+                    "Встретиться с другом за кофе",
+                    "Посетить мероприятие",
+                    "Присоединиться к клубу или группе",
+                    "Волонтёрство",
+                    "Написать/позвонить новому знакомому",
+                    "Провести время с семьёй"
+                ]
+            ),
+            "Productive Tasks": (
+                title: "Полезные дела",
+                activities: [
+                    "Завершить рабочую задачу",
+                    "Навести порядок дома",
+                    "Изучить что-то новое",
+                    "Продвинуть личный проект",
+                    "Спланировать неделю",
+                    "Сделать накопившиеся дела"
+                ]
+            ),
+            "Physical Activities": (
+                title: "Физическая активность",
+                activities: [
+                    "Пробежка или бег трусцой",
+                    "Йога или растяжка",
+                    "Тренировка в зале",
+                    "Поиграть в спорт",
+                    "Поплавать",
+                    "Танцевальная тренировка",
+                    "Поход/пешая прогулка"
+                ]
+            )
+        ]
+        
+        let lists = try modelContext.fetch(FetchDescriptor<ActivityList>())
+        var didUpdate = false
+        
+        for list in lists where list.isPredefined {
+            guard let replacement = oldTitleToNew[list.title] else { continue }
+            list.title = replacement.title
+            list.activities = replacement.activities
+            didUpdate = true
+        }
+        
+        if didUpdate {
+            try modelContext.save()
+        }
     }
     
     // MARK: - Predefined Exposure Helpers

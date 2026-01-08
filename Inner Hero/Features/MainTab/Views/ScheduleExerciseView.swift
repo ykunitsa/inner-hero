@@ -1,12 +1,10 @@
 import SwiftUI
 import SwiftData
-#if canImport(UIKit)
-import UIKit
-#endif
 
 struct ScheduleExerciseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     
     @State private var exerciseType: ExerciseType = .exposure
     @State private var selectedExposureId: UUID?
@@ -108,8 +106,8 @@ struct ScheduleExerciseView: View {
             .alert("Разрешения на уведомления", isPresented: $showingPermissionAlert) {
                 if permissionDenied {
                     Button("Настройки") {
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(url)
+                        if let url = URL(string: "app-settings:") {
+                            openURL(url)
                         }
                     }
                     Button("Отмена", role: .cancel) { }
@@ -133,7 +131,7 @@ struct ScheduleExerciseView: View {
                 Text("Дыхание").tag(ExerciseType.breathing)
                 Text("Релаксация").tag(ExerciseType.relaxation)
                 Text("Заземление").tag(ExerciseType.grounding)
-                Text("Активация").tag(ExerciseType.behavioralActivation)
+                Text("Поведенческая активация").tag(ExerciseType.behavioralActivation)
             }
             .onChange(of: exerciseType) {
                 // Reset specific selections when type changes

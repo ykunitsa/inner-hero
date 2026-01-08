@@ -4,18 +4,39 @@ import SwiftData
 struct ActivationsListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ActivityList.title) private var activations: [ActivityList]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     
     @State private var showingCreateSheet = false
     @State private var activationToDelete: ActivityList?
     @State private var showingDeleteAlert = false
     @State private var appeared = false
     
-    private var predefinedActivations: [ActivityList] {
-        activations.filter { $0.isPredefined }
+    private var activationsById: [UUID: ActivityList] {
+        Dictionary(uniqueKeysWithValues: activations.map { ($0.id, $0) })
     }
     
-    private var userActivations: [ActivityList] {
-        activations.filter { !$0.isPredefined }
+    private var pinnedActivations: [ActivityList] {
+        var seen = Set<UUID>()
+        
+        return favorites
+            .filter { $0.exerciseType == .behavioralActivation }
+            .compactMap { $0.exerciseId }
+            .compactMap { id in
+                guard seen.insert(id).inserted else { return nil }
+                return activationsById[id]
+            }
+    }
+    
+    private var pinnedActivationIDs: Set<UUID> {
+        Set(pinnedActivations.map(\.id))
+    }
+    
+    private var userCreatedActivations: [ActivityList] {
+        activations.filter { !pinnedActivationIDs.contains($0.id) && $0.isPredefined == false }
+    }
+    
+    private var predefinedActivations: [ActivityList] {
+        activations.filter { !pinnedActivationIDs.contains($0.id) && $0.isPredefined == true }
     }
     
     var body: some View {
@@ -25,18 +46,16 @@ struct ActivationsListView: View {
                     if activations.isEmpty {
                         emptyStateView
                     } else {
-                        if !predefinedActivations.isEmpty {
-                            activationsSection(
-                                title: "Built-in Lists",
-                                activations: predefinedActivations
-                            )
+                        if !pinnedActivations.isEmpty {
+                            activationsSection(title: "Закреплённые", activations: pinnedActivations)
                         }
                         
-                        if !userActivations.isEmpty {
-                            activationsSection(
-                                title: "My Lists",
-                                activations: userActivations
-                            )
+                        if !userCreatedActivations.isEmpty {
+                            activationsSection(title: "Созданные мной", activations: userCreatedActivations)
+                        }
+                        
+                        if !predefinedActivations.isEmpty {
+                            activationsSection(title: "Предустановленные", activations: predefinedActivations)
                         }
                     }
                 }
@@ -44,18 +63,8 @@ struct ActivationsListView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
-            .navigationTitle("Activations")
+            .background(TopMeshGradientBackground(palette: .green))
+            .navigationTitle("Поведенческая активация")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -66,21 +75,21 @@ struct ActivationsListView: View {
                             .font(.headline)
                             .foregroundStyle(TextColors.toolbar)
                     }
-                    .accessibilityLabel("Add activation list")
+                    .accessibilityLabel("Добавить список активностей")
                 }
             }
             .sheet(isPresented: $showingCreateSheet) {
                 CreateActivationView()
             }
-            .alert("Delete Activation List?", isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
-                Button("Cancel", role: .cancel) {
+            .alert("Удалить список активностей?", isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
+                Button("Отмена", role: .cancel) {
                     activationToDelete = nil
                 }
-                Button("Delete", role: .destructive) {
+                Button("Удалить", role: .destructive) {
                     deleteActivation(activation)
                 }
             } message: { activation in
-                Text("Are you sure you want to delete \"\(activation.title)\"? This action cannot be undone.")
+                Text("Вы уверены, что хотите удалить список \"\(activation.title)\"? Это действие нельзя отменить.")
             }
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -104,11 +113,11 @@ struct ActivationsListView: View {
                 .accessibilityHidden(true)
             
             VStack(spacing: 12) {
-                Text("Get Active")
+                Text("Начните действовать")
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
                 
-                Text("Create your first activation list to engage in meaningful activities")
+                Text("Создайте первый список активностей для поведенческой активации")
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
@@ -146,13 +155,13 @@ struct ActivationsListView: View {
                     activationToDelete = activation
                     showingDeleteAlert = true
                 } label: {
-                    Label("Delete", systemImage: "trash")
+                    Label("Удалить", systemImage: "trash")
                 }
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(activation.title). \(activation.activities.count) activities\(activation.isPredefined ? ". Built-in list" : "")")
-        .accessibilityHint("Double tap to view details")
+        .accessibilityLabel("\(activation.title). \(activation.activities.count) активностей\(activation.isPredefined ? ". Предустановленный список" : "")")
+        .accessibilityHint("Дважды нажмите для просмотра деталей")
     }
     
     private func deleteActivation(_ activation: ActivityList) {
@@ -167,4 +176,3 @@ struct ActivationsListView: View {
     ActivationsListView()
         .modelContainer(for: ActivityList.self, inMemory: true)
 }
-

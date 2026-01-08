@@ -9,6 +9,7 @@ struct TopMeshGradientBackground: View {
         case `default`
         case teal
         case mint
+        case green
         case purple
     }
     
@@ -65,6 +66,20 @@ struct TopMeshGradientBackground: View {
                 Color(red: 0.94, green: 0.99, blue: 0.98), // near-white mint
                 Color(red: 0.92, green: 0.98, blue: 0.99), // near-white mint-cyan
                 Color(red: 0.90, green: 0.98, blue: 0.97)  // near-white seafoam
+            ]
+        case .green:
+            return [
+                Color(red: 0.20, green: 0.86, blue: 0.56), // vivid green
+                Color(red: 0.14, green: 0.74, blue: 0.46), // deep green
+                Color(red: 0.12, green: 0.66, blue: 0.42), // forest green
+                
+                Color(red: 0.44, green: 0.94, blue: 0.66), // bright spring
+                Color(red: 0.34, green: 0.86, blue: 0.74), // green-mint
+                Color(red: 0.24, green: 0.82, blue: 0.58), // soft green
+                
+                Color(red: 0.95, green: 0.99, blue: 0.97), // near-white green
+                Color(red: 0.92, green: 0.99, blue: 0.98), // near-white spring
+                Color(red: 0.90, green: 0.98, blue: 0.96)  // near-white mint-green
             ]
         case .purple:
             return [
