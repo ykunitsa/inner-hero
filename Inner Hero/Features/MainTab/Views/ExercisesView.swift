@@ -57,7 +57,7 @@ struct ExercisesView: View {
                     .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
                     
                     exerciseCard(
-                        title: "Активация",
+                        title: "Поведенческая активация",
                         description: "Повышение активности через осмысленные действия",
                         icon: "figure.walk",
                         color: .green,

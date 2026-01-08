@@ -1,8 +1,5 @@
 import Foundation
 import UserNotifications
-#if canImport(UIKit)
-import UIKit
-#endif
 
 @Observable
 final class NotificationManager {

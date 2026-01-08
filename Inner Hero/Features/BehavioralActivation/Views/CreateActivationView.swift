@@ -6,168 +6,152 @@ struct CreateActivationView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
-    @State private var activities: [String] = [""]
+    @State private var activities: [ActivityEditItem] = [
+        ActivityEditItem(text: "")
+    ]
     @State private var showingError = false
     @State private var errorMessage = ""
     
+    @FocusState private var focusedField: ActivationFormField?
+    
     private var canSave: Bool {
-        !title.trimmingCharacters(in: .whitespaces).isEmpty &&
-        activities.contains(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty })
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        return !trimmedTitle.isEmpty && activities.contains(where: { !$0.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
     }
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 32) {
-                    titleSection
-                    activitiesSection
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-                .padding(.bottom, 40)
+            Form {
+                basicInfoSection
+                activitiesSection
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.95, green: 0.97, blue: 1.0),
-                        Color(red: 0.92, green: 0.95, blue: 0.98)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
-            .navigationTitle("New Activation List")
+            .navigationTitle("Новый список активностей")
             .navigationBarTitleDisplayMode(.inline)
+            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Отмена") {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
                 }
                 
-                ToolbarItem(placement: .primaryAction) {
-                    Button("Save") {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Сохранить") {
                         saveActivation()
                     }
                     .disabled(!canSave)
-                    .foregroundStyle(canSave ? AppTheme.primaryColor : TextColors.tertiary)
+                    .opacity(canSave ? 1.0 : 0.5)
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Готово") {
+                        focusedField = nil
+                    }
+                    .font(.headline)
                 }
             }
-            .alert("Error", isPresented: $showingError) {
-                Button("OK", role: .cancel) { }
+            .alert("Ошибка", isPresented: $showingError) {
+                Button("ОК", role: .cancel) { }
             } message: {
                 Text(errorMessage)
             }
         }
+        .onAppear {
+            focusedField = .title
+        }
     }
     
-    private var titleSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "pencil")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Title")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
-            
-            TextField("e.g., Morning Routine", text: $title)
-                .textFieldStyle(.plain)
+    private var basicInfoSection: some View {
+        Section {
+            TextField("Название списка", text: $title)
                 .font(.body)
-                .padding(16)
-                .background(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color(.systemBackground))
-                )
+                .focused($focusedField, equals: .title)
+                .accessibilityLabel("Название списка активностей")
+        } header: {
+            Text("Основная информация")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.secondary)
+        } footer: {
+            Text("Дайте короткое название вашему списку активностей")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
     }
     
     private var activitiesSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "list.bullet")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+        Section {
+            ForEach($activities) { $item in
+                if let index = activities.firstIndex(where: { $0.id == item.id }) {
+                    ActivityEditorRow(
+                        item: $item,
+                        index: index,
+                        isRemovable: activities.count > 1,
+                        focusState: $focusedField,
+                        onDelete: { deleteActivity(at: index) }
                     )
-                Text("Activities")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
+                }
+            }
+        } header: {
+            HStack {
+                Text("Активности")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
                 
                 Spacer()
                 
                 Button {
-                    withAnimation {
-                        activities.append("")
-                    }
+                    addActivity()
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.title3)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.green, .mint],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .foregroundStyle(.primary)
                 }
+                .buttonStyle(.plain)
+                .frame(minWidth: TouchTarget.minimum, minHeight: TouchTarget.minimum)
+                .accessibilityLabel("Добавить активность")
+                .accessibilityHint("Добавляет пустую активность в конец списка")
             }
-            
-            VStack(spacing: 12) {
-                ForEach(activities.indices, id: \.self) { index in
-                    HStack(spacing: 12) {
-                        Text("\(index + 1).")
-                            .font(.body.weight(.medium))
-                            .foregroundStyle(TextColors.secondary)
-                            .frame(width: 24)
-                        
-                        TextField("Activity name", text: $activities[index])
-                            .textFieldStyle(.plain)
-                            .font(.body)
-                        
-                        if activities.count > 1 {
-                            Button {
-                                withAnimation {
-                                    _ = activities.remove(at: index)
-                                }
-                            } label: {
-                                Image(systemName: "minus.circle.fill")
-                                    .font(.title3)
-                                    .foregroundStyle(.red.opacity(0.7))
-                            }
-                        }
-                    }
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color(.systemBackground))
-                    )
-                }
-            }
+        } footer: {
+            Text("Добавьте одну или несколько активностей. Пустые строки не сохраняются.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
     }
     
+    private func addActivity() {
+        let newItem = ActivityEditItem(text: "")
+        activities.append(newItem)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            focusedField = .activity(newItem.id)
+        }
+        
+        HapticFeedback.impact(.light)
+    }
+    
+    private func deleteActivity(at index: Int) {
+        guard activities.count > 1 else { return }
+        guard index < activities.count else { return }
+        
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+            activities.remove(at: index)
+        }
+        
+        HapticFeedback.impact(.medium)
+    }
+    
     private func saveActivation() {
-        let trimmedTitle = title.trimmingCharacters(in: .whitespaces)
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
         let validActivities = activities
-            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
         
         guard !trimmedTitle.isEmpty, !validActivities.isEmpty else {
-            errorMessage = "Please enter a title and at least one activity"
+            errorMessage = "Введите название и добавьте хотя бы одну активность"
             showingError = true
             return
         }
@@ -184,7 +168,7 @@ struct CreateActivationView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = "Failed to save: \(error.localizedDescription)"
+            errorMessage = "Не удалось сохранить: \(error.localizedDescription)"
             showingError = true
         }
     }
