@@ -5,6 +5,7 @@ import SwiftData
 
 struct GroundingSessionView: View {
     let exercise: GroundingExercise
+    let assignment: ExerciseAssignment?
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -14,6 +15,11 @@ struct GroundingSessionView: View {
     @State private var showingFinishConfirmation = false
     @State private var showingCongratsSheet = false
     @State private var shouldDismissAfterCongrats = false
+    
+    init(exercise: GroundingExercise, assignment: ExerciseAssignment? = nil) {
+        self.exercise = exercise
+        self.assignment = assignment
+    }
     
     private var steps: [GroundingInstructionStep] {
         exercise.instructionSteps
@@ -274,6 +280,10 @@ struct GroundingSessionView: View {
                 type: exercise.type,
                 duration: elapsed
             )
+            
+            if let assignment {
+                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
+            }
             HapticFeedback.success()
         } catch {
             print("Error saving grounding session: \(error)")

@@ -234,54 +234,7 @@ final class DataManager {
         groundingType: GroundingType? = nil,
         activityListId: UUID? = nil
     ) throws -> ExerciseAssignment {
-        // Check if assignment already exists for this exercise
-        var existingAssignment: ExerciseAssignment?
-        
-        switch exerciseType {
-        case .exposure:
-            if let exposureId = exposureId {
-                // Need to fetch exposure to use fetchAssignmentForExposure
-                let exposures = try modelContext.fetch(FetchDescriptor<Exposure>())
-                if let exposure = exposures.first(where: { $0.id == exposureId }) {
-                    existingAssignment = try fetchAssignmentForExposure(exposure)
-                }
-            }
-        case .breathing:
-            if let patternType = breathingPatternType {
-                existingAssignment = try fetchAssignmentForBreathingPattern(patternType)
-            }
-        case .relaxation:
-            if let relaxationType = relaxationType {
-                existingAssignment = try fetchAssignmentForRelaxationType(relaxationType)
-            }
-        case .grounding:
-            if let groundingType = groundingType {
-                existingAssignment = try fetchAssignmentForGroundingType(groundingType)
-            }
-        case .behavioralActivation:
-            // For behavioral activation, we can have multiple assignments
-            break
-        }
-        
-        // If assignment exists, update it instead of creating new one
-        if let existing = existingAssignment {
-            try updateExerciseAssignment(
-                existing,
-                daysOfWeek: daysOfWeek,
-                time: time,
-                isActive: isActive
-            )
-            // Update exercise-specific fields
-            existing.exposureId = exposureId
-            existing.breathingPattern = breathingPatternType
-            existing.relaxation = relaxationType
-            existing.grounding = groundingType
-            existing.activityListId = activityListId
-            try saveContext()
-            return existing
-        }
-        
-        // Create new assignment
+        // Always create a new assignment (multiple schedules per exercise are allowed)
         let assignment = ExerciseAssignment(
             exerciseType: exerciseType,
             daysOfWeek: daysOfWeek,
@@ -439,11 +392,39 @@ final class DataManager {
         try modelContext.delete(model: BreathingSessionResult.self)
         try modelContext.delete(model: RelaxationSessionResult.self)
         try modelContext.delete(model: GroundingSessionResult.self)
+        try modelContext.delete(model: ExerciseCompletion.self)
         try modelContext.delete(model: ActivityList.self)
         try modelContext.delete(model: BehavioralActivationSession.self)
         try modelContext.delete(model: ExerciseAssignment.self)
         try modelContext.delete(model: FavoriteExercise.self)
         try saveContext()
+    }
+    
+    // MARK: - ExerciseCompletion (Plan completion)
+    
+    /// Idempotently marks a scheduled assignment as completed for the given day (startOfDay).
+    /// Uses `ExerciseCompletion.uniqueKey` to avoid duplicates.
+    @discardableResult
+    func markAssignmentCompletedIfNeeded(
+        assignment: ExerciseAssignment,
+        day: Date = Date(),
+        calendar: Calendar = .current
+    ) throws -> ExerciseCompletion {
+        let dayStart = calendar.startOfDay(for: day)
+        let uniqueKey = "\(assignment.id.uuidString)|\(Int(dayStart.timeIntervalSince1970))"
+        
+        let descriptor = FetchDescriptor<ExerciseCompletion>(
+            predicate: #Predicate { $0.uniqueKey == uniqueKey }
+        )
+        
+        if let existing = try modelContext.fetch(descriptor).first {
+            return existing
+        }
+        
+        let completion = ExerciseCompletion(day: dayStart, assignment: assignment, calendar: calendar)
+        modelContext.insert(completion)
+        try saveContext()
+        return completion
     }
     
     // MARK: - Analytics Operations

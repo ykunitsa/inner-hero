@@ -3,6 +3,7 @@ import SwiftData
 
 struct BreathingSessionView: View {
     let pattern: BreathingPattern
+    let assignment: ExerciseAssignment?
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -13,8 +14,9 @@ struct BreathingSessionView: View {
     @State private var shouldDismissAfterCongrats = false
     @State private var hapticsEngine = BreathingHapticsEngine()
     
-    init(pattern: BreathingPattern) {
+    init(pattern: BreathingPattern, assignment: ExerciseAssignment? = nil) {
         self.pattern = pattern
+        self.assignment = assignment
         self._controller = State(initialValue: BreathingController(patternType: pattern.type))
     }
     
@@ -221,6 +223,10 @@ struct BreathingSessionView: View {
                 patternType: pattern.type,
                 duration: controller.elapsedTime
             )
+            
+            if let assignment {
+                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
+            }
             HapticFeedback.success()
         } catch {
             print("Error saving breathing session: \(error)")

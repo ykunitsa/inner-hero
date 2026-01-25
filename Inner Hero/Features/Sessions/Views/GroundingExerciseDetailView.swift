@@ -17,8 +17,8 @@ struct GroundingExerciseDetailView: View {
         DataManager(modelContext: modelContext)
     }
     
-    private var assignment: ExerciseAssignment? {
-        allAssignments.first { assignment in
+    private var assignments: [ExerciseAssignment] {
+        allAssignments.filter { assignment in
             assignment.exerciseType == .grounding && assignment.grounding == exercise.type
         }
     }
@@ -91,7 +91,7 @@ struct GroundingExerciseDetailView: View {
         }
         .sheet(isPresented: $showScheduleSheet) {
             ScheduleExerciseView(
-                assignment: assignment,
+                assignment: nil,
                 preSelectedGroundingType: exercise.type
             )
         }
@@ -285,7 +285,7 @@ struct GroundingExerciseDetailView: View {
     
     private var scheduleSection: some View {
         ExerciseScheduleSection(
-            assignment: assignment,
+            assignments: assignments,
             exerciseType: .grounding,
             exposureId: nil,
             groundingType: exercise.type,

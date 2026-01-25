@@ -4,7 +4,7 @@ import SwiftData
 struct ExerciseScheduleSection: View {
     @Environment(\.modelContext) private var modelContext
     
-    let assignment: ExerciseAssignment?
+    let assignments: [ExerciseAssignment]
     let exerciseType: ExerciseType
     let exposureId: UUID?
     let groundingType: GroundingType?
@@ -13,6 +13,8 @@ struct ExerciseScheduleSection: View {
     let activityListId: UUID?
     
     @State private var showScheduleSheet = false
+    @State private var assignmentToEdit: ExerciseAssignment?
+    @State private var assignmentToDelete: ExerciseAssignment?
     @State private var showDeleteAlert = false
     
     var body: some View {
@@ -32,10 +34,11 @@ struct ExerciseScheduleSection: View {
                     .foregroundStyle(TextColors.primary)
             }
             
-            if let assignment = assignment {
-                scheduleInfoView(assignment: assignment)
-            } else {
+            if assignments.isEmpty {
                 createScheduleButton
+            } else {
+                schedulesList
+                addAnotherScheduleButton
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,7 +50,7 @@ struct ExerciseScheduleSection: View {
         )
         .sheet(isPresented: $showScheduleSheet) {
             ScheduleExerciseView(
-                assignment: assignment,
+                assignment: assignmentToEdit,
                 preSelectedExposureId: exposureId,
                 preSelectedBreathingPattern: breathingPatternType,
                 preSelectedRelaxationType: relaxationType,
@@ -55,20 +58,88 @@ struct ExerciseScheduleSection: View {
                 preSelectedActivityListId: activityListId
             )
         }
-        .alert("Удалить расписание?", isPresented: $showDeleteAlert) {
+        .alert("Удалить расписание?", isPresented: $showDeleteAlert, presenting: assignmentToDelete) { assignment in
             Button("Отмена", role: .cancel) { }
             Button("Удалить", role: .destructive) {
-                deleteSchedule()
+                deleteSchedule(assignment)
             }
-        } message: {
+        } message: { _ in
             Text("Вы уверены, что хотите удалить это расписание?")
         }
     }
     
-    private func scheduleInfoView(assignment: ExerciseAssignment) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
+    private var schedulesList: some View {
+        let sorted = assignments.sorted {
+            if $0.time != $1.time { return $0.time < $1.time }
+            return $0.createdAt < $1.createdAt
+        }
+        
+        return VStack(alignment: .leading, spacing: 12) {
+            ForEach(Array(sorted.enumerated()), id: \.element.id) { index, assignment in
+                scheduleRow(assignment: assignment)
+                
+                if index != (sorted.count - 1) {
+                    Divider()
+                }
+            }
+        }
+    }
+    
+    private var createScheduleButton: some View {
+        Button {
+            assignmentToEdit = nil
+            showScheduleSheet = true
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "plus.circle.fill")
+                    .font(.body)
+                Text("Создать расписание")
+                    .font(.body.weight(.medium))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [.orange, .orange.opacity(0.8)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var addAnotherScheduleButton: some View {
+        Button {
+            assignmentToEdit = nil
+            showScheduleSheet = true
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "plus.circle")
+                    .font(.body)
+                Text("Добавить расписание")
+                    .font(.body.weight(.medium))
+            }
+            .foregroundStyle(.orange)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color.orange.opacity(0.10))
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Добавить расписание")
+    }
+    
+    private func scheduleRow(assignment: ExerciseAssignment) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 8) {
                         Image(systemName: "clock")
                             .font(.caption)
@@ -99,11 +170,9 @@ struct ExerciseScheduleSection: View {
                 .labelsHidden()
             }
             
-            Divider()
-            
             HStack(spacing: 12) {
-                Spacer(minLength: 0)
                 Button {
+                    assignmentToEdit = assignment
                     showScheduleSheet = true
                 } label: {
                     HStack(spacing: 6) {
@@ -113,16 +182,17 @@ struct ExerciseScheduleSection: View {
                             .font(.subheadline.weight(.medium))
                     }
                     .foregroundStyle(.blue)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 14)
                     .padding(.vertical, 8)
                     .background(
                         Capsule()
-                            .fill(Color.blue.opacity(0.1))
+                            .fill(Color.blue.opacity(0.10))
                     )
                 }
                 .buttonStyle(.plain)
                 
                 Button {
+                    assignmentToDelete = assignment
                     showDeleteAlert = true
                 } label: {
                     HStack(spacing: 6) {
@@ -132,45 +202,21 @@ struct ExerciseScheduleSection: View {
                             .font(.subheadline.weight(.medium))
                     }
                     .foregroundStyle(.red)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 14)
                     .padding(.vertical, 8)
                     .background(
                         Capsule()
-                            .fill(Color.red.opacity(0.1))
+                            .fill(Color.red.opacity(0.10))
                     )
                 }
                 .buttonStyle(.plain)
+                
                 Spacer(minLength: 0)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-    }
-    
-    private var createScheduleButton: some View {
-        Button {
-            showScheduleSheet = true
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle.fill")
-                    .font(.body)
-                Text("Создать расписание")
-                    .font(.body.weight(.medium))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.orange, .orange.opacity(0.8)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-            )
-        }
-        .buttonStyle(.plain)
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
     }
     
     private func timeString(from date: Date) -> String {
@@ -201,9 +247,7 @@ struct ExerciseScheduleSection: View {
         }
     }
     
-    private func deleteSchedule() {
-        guard let assignment = assignment else { return }
-        
+    private func deleteSchedule(_ assignment: ExerciseAssignment) {
         Task {
             let dataManager = DataManager(modelContext: modelContext)
             
@@ -222,7 +266,7 @@ struct ExerciseScheduleSection: View {
 #Preview {
     VStack {
         ExerciseScheduleSection(
-            assignment: nil,
+            assignments: [],
             exerciseType: .exposure,
             exposureId: UUID(),
             groundingType: nil,

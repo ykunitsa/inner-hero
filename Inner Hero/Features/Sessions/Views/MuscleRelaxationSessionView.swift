@@ -6,6 +6,7 @@ import Foundation
 
 struct MuscleRelaxationSessionView: View {
     let exercise: RelaxationExercise
+    let assignment: ExerciseAssignment?
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -23,6 +24,11 @@ struct MuscleRelaxationSessionView: View {
     
     @State private var relaxationPulseTimer: Timer?
     @State private var readingPhaseTask: Task<Void, Never>?
+    
+    init(exercise: RelaxationExercise, assignment: ExerciseAssignment? = nil) {
+        self.exercise = exercise
+        self.assignment = assignment
+    }
     
     private enum SessionPhase: Hashable {
         case readingInstruction
@@ -343,6 +349,10 @@ struct MuscleRelaxationSessionView: View {
                 type: exercise.type,
                 duration: totalDuration
             )
+            
+            if let assignment {
+                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
+            }
             
             HapticFeedback.success()
         } catch {

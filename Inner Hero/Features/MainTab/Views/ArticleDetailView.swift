@@ -2,6 +2,29 @@ import SwiftUI
 
 struct ArticleDetailView: View {
     let article: Article
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var backgroundGradient: LinearGradient {
+        // Keep the same visual idea in light mode, but switch to a dark-friendly palette in dark mode.
+        let colors: [Color] = if colorScheme == .dark {
+            [
+                Color(red: 0.07, green: 0.09, blue: 0.13),
+                Color(red: 0.10, green: 0.12, blue: 0.18)
+            ]
+        } else {
+            [
+                Color(red: 0.95, green: 0.97, blue: 1.0),
+                Color(red: 0.92, green: 0.95, blue: 0.98)
+            ]
+        }
+
+        return LinearGradient(
+            colors: colors,
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
     
     var body: some View {
         ScrollView {
@@ -20,20 +43,18 @@ struct ArticleDetailView: View {
                             )
                             .frame(width: 80, height: 80)
                             .background(
-                                Circle()
-                                    .fill(Color.blue.opacity(0.1))
+                                Circle().fill(.thinMaterial)
                             )
                         
                         Spacer()
                         
                         Text(article.category)
                             .font(.subheadline.weight(.medium))
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(.tint)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
                             .background(
-                                Capsule()
-                                    .fill(Color.blue.opacity(0.1))
+                                Capsule().fill(.thinMaterial)
                             )
                     }
                     
@@ -71,17 +92,17 @@ struct ArticleDetailView: View {
             }
             .padding(20)
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.97, blue: 1.0),
-                    Color(red: 0.92, green: 0.95, blue: 0.98)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-        )
+        .background {
+            ZStack {
+                Rectangle()
+                    .fill(.background)
+                    .ignoresSafeArea()
+
+                backgroundGradient
+                    .opacity(colorScheme == .dark ? 0.35 : 1.0)
+                    .ignoresSafeArea()
+            }
+        }
         .navigationTitle("Статья")
         .navigationBarTitleDisplayMode(.inline)
     }

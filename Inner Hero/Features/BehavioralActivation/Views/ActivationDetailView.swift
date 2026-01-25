@@ -4,6 +4,7 @@ import Combine
 
 struct ActivationDetailView: View {
     let activation: ActivityList
+    let assignment: ExerciseAssignment?
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
@@ -17,10 +18,15 @@ struct ActivationDetailView: View {
         DataManager(modelContext: modelContext)
     }
     
-    private var assignment: ExerciseAssignment? {
-        allAssignments.first { assignment in
+    private var assignments: [ExerciseAssignment] {
+        allAssignments.filter { assignment in
             assignment.exerciseType == .behavioralActivation && assignment.activityListId == activation.id
         }
+    }
+    
+    init(activation: ActivityList, assignment: ExerciseAssignment? = nil) {
+        self.activation = activation
+        self.assignment = assignment
     }
     
     var body: some View {
@@ -106,7 +112,7 @@ struct ActivationDetailView: View {
         }
         .sheet(isPresented: $showScheduleSheet) {
             ScheduleExerciseView(
-                assignment: assignment,
+                assignment: nil,
                 preSelectedActivityListId: activation.id
             )
         }
@@ -255,7 +261,7 @@ struct ActivationDetailView: View {
     
     private var scheduleSection: some View {
         ExerciseScheduleSection(
-            assignment: assignment,
+            assignments: assignments,
             exerciseType: .behavioralActivation,
             exposureId: nil,
             groundingType: nil,
@@ -266,7 +272,7 @@ struct ActivationDetailView: View {
     }
     
     private var startActivityButton: some View {
-        NavigationLink(destination: StartActivationView(activation: activation)) {
+        NavigationLink(destination: StartActivationView(activation: activation, assignment: assignment)) {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
@@ -406,6 +412,7 @@ struct ActivityGroupCard: View {
 
 struct StartActivationView: View {
     let activation: ActivityList
+    let assignment: ExerciseAssignment?
     
     @State private var showingActivityList = false
     @State private var selectedActivity: String?
@@ -414,6 +421,11 @@ struct StartActivationView: View {
     @State private var isRouletteRunning = false
     @State private var rouletteActivity: String?
     @State private var rouletteTask: Task<Void, Never>?
+    
+    init(activation: ActivityList, assignment: ExerciseAssignment? = nil) {
+        self.activation = activation
+        self.assignment = assignment
+    }
     
     var body: some View {
         ZStack {
@@ -537,7 +549,8 @@ struct StartActivationView: View {
             if let activity = selectedActivity {
                 ActivationSessionView(
                     activation: activation,
-                    selectedActivity: activity
+                    selectedActivity: activity,
+                    assignment: self.assignment
                 )
             }
         }
@@ -666,6 +679,7 @@ struct ActivitySelectionSheet: View {
 struct ActivationSessionView: View {
     let activation: ActivityList
     let selectedActivity: String
+    let assignment: ExerciseAssignment?
     
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
@@ -677,6 +691,16 @@ struct ActivationSessionView: View {
     @State private var currentTime = Date()
     
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    private var dataManager: DataManager {
+        DataManager(modelContext: modelContext)
+    }
+    
+    init(activation: ActivityList, selectedActivity: String, assignment: ExerciseAssignment? = nil) {
+        self.activation = activation
+        self.selectedActivity = selectedActivity
+        self.assignment = assignment
+    }
     
     private var formattedStartTime: String {
         let formatter = DateFormatter()
@@ -880,6 +904,10 @@ struct ActivationSessionView: View {
         
         do {
             try modelContext.save()
+            
+            if let assignment = self.assignment {
+                try self.dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
+            }
             HapticFeedback.success()
             isCompleted = true
             

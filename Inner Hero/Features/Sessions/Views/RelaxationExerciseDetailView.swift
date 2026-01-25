@@ -17,8 +17,8 @@ struct RelaxationExerciseDetailView: View {
         DataManager(modelContext: modelContext)
     }
     
-    private var assignment: ExerciseAssignment? {
-        allAssignments.first { assignment in
+    private var assignments: [ExerciseAssignment] {
+        allAssignments.filter { assignment in
             assignment.exerciseType == .relaxation && assignment.relaxation == exercise.type
         }
     }
@@ -96,7 +96,7 @@ struct RelaxationExerciseDetailView: View {
         }
         .sheet(isPresented: $showScheduleSheet) {
             ScheduleExerciseView(
-                assignment: assignment,
+                assignment: nil,
                 preSelectedRelaxationType: exercise.type
             )
         }
@@ -337,7 +337,7 @@ struct RelaxationExerciseDetailView: View {
     
     private var scheduleSection: some View {
         ExerciseScheduleSection(
-            assignment: assignment,
+            assignments: assignments,
             exerciseType: .relaxation,
             exposureId: nil,
             groundingType: nil,

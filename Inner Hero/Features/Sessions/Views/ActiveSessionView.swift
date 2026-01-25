@@ -342,6 +342,13 @@ struct ActiveSessionView: View {
     
     let session: ExposureSessionResult
     let exposure: Exposure
+    let assignment: ExerciseAssignment?
+    
+    init(session: ExposureSessionResult, exposure: Exposure, assignment: ExerciseAssignment? = nil) {
+        self.session = session
+        self.exposure = exposure
+        self.assignment = assignment
+    }
     
     @State private var notes: String = ""
     @State private var showingCompletion = false
@@ -551,6 +558,7 @@ struct ActiveSessionView: View {
             CompleteSessionView(
                 session: session,
                 notes: notes,
+                assignment: assignment,
                 onComplete: {
                     // Close the sheet first, then close this screen in `onDismiss`.
                     saveProgress(includeNotes: false)

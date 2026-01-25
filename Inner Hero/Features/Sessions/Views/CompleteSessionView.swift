@@ -10,6 +10,7 @@ struct CompleteSessionView: View {
     
     let session: ExposureSessionResult
     let notes: String
+    let assignment: ExerciseAssignment?
     let onComplete: () -> Void
     
     @State private var anxietyAfter: Double = 5
@@ -416,6 +417,10 @@ struct CompleteSessionView: View {
                 anxietyAfter: Int(anxietyAfter),
                 notes: combinedNotes.trimmingCharacters(in: .whitespacesAndNewlines)
             )
+            
+            if let assignment {
+                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
+            }
             onComplete()
         } catch {
             errorMessage = "Не удалось сохранить результат: \(error.localizedDescription)"

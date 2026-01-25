@@ -17,8 +17,8 @@ struct BreathingPatternDetailView: View {
         DataManager(modelContext: modelContext)
     }
     
-    private var assignment: ExerciseAssignment? {
-        allAssignments.first { assignment in
+    private var assignments: [ExerciseAssignment] {
+        allAssignments.filter { assignment in
             assignment.exerciseType == .breathing && assignment.breathingPattern == pattern.type
         }
     }
@@ -91,7 +91,7 @@ struct BreathingPatternDetailView: View {
         }
         .sheet(isPresented: $showScheduleSheet) {
             ScheduleExerciseView(
-                assignment: assignment,
+                assignment: nil,
                 preSelectedBreathingPattern: pattern.type
             )
         }
@@ -303,7 +303,7 @@ struct BreathingPatternDetailView: View {
     
     private var scheduleSection: some View {
         ExerciseScheduleSection(
-            assignment: assignment,
+            assignments: assignments,
             exerciseType: .breathing,
             exposureId: nil,
             groundingType: nil,

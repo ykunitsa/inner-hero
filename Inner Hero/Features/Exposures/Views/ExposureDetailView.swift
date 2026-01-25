@@ -18,8 +18,8 @@ struct ExposureDetailView: View {
     private var totalSteps: Int { exposure.steps.count }
     private var stepsWithTimer: Int { exposure.steps.filter { $0.hasTimer }.count }
     
-    private var assignment: ExerciseAssignment? {
-        allAssignments.first { assignment in
+    private var assignments: [ExerciseAssignment] {
+        allAssignments.filter { assignment in
             assignment.exerciseType == .exposure && assignment.exposureId == exposure.id
         }
     }
@@ -285,7 +285,7 @@ struct ExposureDetailView: View {
     
     private var scheduleSection: some View {
         ExerciseScheduleSection(
-            assignment: assignment,
+            assignments: assignments,
             exerciseType: .exposure,
             exposureId: exposure.id,
             groundingType: nil,

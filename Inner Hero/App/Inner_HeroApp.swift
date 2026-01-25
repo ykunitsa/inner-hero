@@ -9,6 +9,8 @@ struct Inner_HeroApp: App {
     @AppStorage("hasBackfilledPredefinedActivationLists") private var hasBackfilledPredefinedActivationLists = false
     @AppStorage(AppStorageKeys.themeMode) private var themeModeRawValue: String = ThemeMode.system.rawValue
     
+    @StateObject private var articlesStore = ArticlesStore()
+    
     var sharedModelContainer: ModelContainer = {
         do {
             return try ModelContainer(
@@ -21,6 +23,7 @@ struct Inner_HeroApp: App {
                 ActivityList.self,
                 BehavioralActivationSession.self,
                 ExerciseAssignment.self,
+                ExerciseCompletion.self,
                 FavoriteExercise.self
             )
         } catch {
@@ -40,6 +43,7 @@ struct Inner_HeroApp: App {
                 RootAppView(hasCompletedOnboarding: hasCompletedOnboarding)
             }
             .preferredColorScheme((ThemeMode(rawValue: themeModeRawValue) ?? .system).preferredColorScheme)
+            .environmentObject(articlesStore)
         }
         .modelContainer(sharedModelContainer)
     }

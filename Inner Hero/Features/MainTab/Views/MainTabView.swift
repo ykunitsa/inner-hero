@@ -6,6 +6,8 @@ struct MainTabView: View {
     
     enum Tab {
         case home
+        case schedule
+        case knowledge
         case exercises
         case settings
     }
@@ -18,11 +20,11 @@ struct MainTabView: View {
                     Label {
                         Text("Сводка")
                     } icon: {
-                        Image(systemName: "heart.circle")
+                        Image(systemName: "heart.gauge.open")
                     }
                 }
                 .accessibilityLabel("Сводка")
-            
+
             ExercisesView()
                 .tag(Tab.exercises)
                 .tabItem {
@@ -34,13 +36,35 @@ struct MainTabView: View {
                 }
                 .accessibilityLabel("Упражнения")
             
+            ScheduleTabView()
+                .tag(Tab.schedule)
+                .tabItem {
+                    Label {
+                        Text("Расписание")
+                    } icon: {
+                        Image(systemName: "calendar")
+                    }
+                }
+                .accessibilityLabel("Расписание")
+            
+            KnowledgeCenterView()
+                .tag(Tab.knowledge)
+                .tabItem {
+                    Label {
+                        Text("Центр знаний")
+                    } icon: {
+                        Image(systemName: "book.pages")
+                    }
+                }
+                .accessibilityLabel("Центр знаний")
+            
             SettingsView()
                 .tag(Tab.settings)
                 .tabItem {
                     Label {
                         Text("Настройки")
                     } icon: {
-                        Image(systemName: "gearshape")
+                        Image(systemName: "gear")
                     }
                 }
                 .accessibilityLabel("Настройки")
