@@ -5,8 +5,8 @@ struct NextPlannedWidget: View {
     
     private func relativeDayLabel(for date: Date) -> String {
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return "Сегодня" }
-        if calendar.isDateInTomorrow(date) { return "Завтра" }
+        if calendar.isDateInToday(date) { return String(localized: "Сегодня") }
+        if calendar.isDateInTomorrow(date) { return String(localized: "Завтра") }
         return date.formatted(.dateTime.day().month(.abbreviated))
     }
     

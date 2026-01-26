@@ -96,7 +96,7 @@ private struct KnowledgeCenterArticleRow: View {
                         .lineLimit(2)
                     
                     HStack(spacing: 10) {
-                        Label("\(article.readTime) мин", systemImage: "clock")
+                        Label(String(format: NSLocalizedString("%d мин", comment: ""), article.readTime), systemImage: "clock")
                             .labelStyle(.titleAndIcon)
                         
                         Text(article.category)

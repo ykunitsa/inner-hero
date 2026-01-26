@@ -1,0 +1,282 @@
+"Сводка" = "Summary";
+"Экспозиция" = "Exposure";
+"Дыхание" = "Breathing";
+"Релаксация" = "Relaxation";
+"Заземление" = "Grounding";
+"Поведенческая активация" = "Behavioral activation";
+
+"Быстрый старт" = "Quick start";
+"Добавьте упражнения в избранное" = "Add exercises to favorites";
+"Упражнение не найдено" = "Exercise not found";
+
+"Статья дня" = "Article of the day";
+"Нет статей" = "No articles";
+"Загляните позже" = "Check back later";
+"%d мин" = "%d min";
+"%d мин чтения" = "%d min read";
+
+"Минуты практик" = "Practice minutes";
+"мин" = "min";
+"За 7 дней: %d мин" = "Last 7 days: %d min";
+"Сегодня %d минут. За 7 дней %d минут." = "Today %d minutes. Last 7 days %d minutes.";
+
+"Серия" = "Streak";
+"Начните сегодня" = "Start today";
+"Продолжайте в том же духе" = "Keep it up";
+
+"Сегодня" = "Today";
+"Завтра" = "Tomorrow";
+"Следующее" = "Next";
+"Нет задач" = "No tasks";
+"Открыть расписание" = "Open schedule";
+"План на сегодня" = "Today's plan";
+"Выполнено %d из %d" = "Completed %d of %d";
+"Готово" = "Done";
+"Осталось %d" = "Remaining %d";
+"Начать следующее упражнение" = "Start the next exercise";
+
+"Образование" = "Education";
+"Статья" = "Article";
+
+"Время для упражнения" = "Time for an exercise";
+"Напоминание: %@" = "Reminder: %@";
+"Дыхательное упражнение" = "Breathing exercise";
+"Box Breathing" = "Box Breathing";
+"4-6 Breathing" = "4-6 Breathing";
+"Paced Breathing" = "Paced Breathing";
+"Full Body Relaxation" = "Full Body Relaxation";
+"Quick Relaxation" = "Quick Relaxation";
+
+"Расслабление всего тела" = "Full body relaxation";
+"Полная последовательность прогрессивной мышечной релаксации для всех основных групп мышц. Помогает снять глубокое напряжение по всему телу." = "A full progressive muscle relaxation sequence for all major muscle groups. Helps release deep tension throughout the body.";
+"Быстрая релаксация" = "Quick relaxation";
+"Короткая версия прогрессивной мышечной релаксации с фокусом на ключевых зонах напряжения. Подходит для быстрого снятия стресса в течение дня." = "A shorter progressive muscle relaxation focused on key tension areas. Suitable for quick stress relief during the day.";
+
+"Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус." = "Grounding technique: find 5 things you can see, 4 sensations you can feel, 3 sounds, 2 smells (or sensations of air), and 1 taste.";
+"Осмотритесь" = "Look around";
+"Найдите 5 предметов вокруг и задержите на каждом взгляд на секунду." = "Find 5 objects around you and pause on each for a second.";
+"Опора" = "Touch points";
+"Найдите 4 ощущения от прикосновения: одежда, стул, пол, предмет в руках." = "Find 4 sensations of touch: clothes, chair, floor, an object in your hands.";
+"Звуки" = "Sounds";
+"Отметьте 3 звука: ближний, дальний и самый тихий." = "Notice 3 sounds: nearby, distant, and the quietest.";
+"Запахи" = "Smells";
+"Поймайте 2 запаха или просто 2 ощущения воздуха." = "Catch 2 smells or simply 2 sensations of air.";
+"Вкус" = "Taste";
+"Заметьте 1 вкус во рту или сделайте маленький глоток воды и почувствуйте вкус." = "Notice 1 taste in your mouth or take a small sip of water and sense the taste.";
+
+"ДН" = "DAY";
+"НЕД" = "WK";
+"МЕС" = "MO";
+"6 МЕС" = "6 MO";
+"ГОД" = "YR";
+"Улучшение" = "Improving";
+"Стабильно" = "Stable";
+"Ухудшение" = "Worsening";
+
+"Не выбрано" = "Not selected";
+"Каждый день" = "Every day";
+"Будни" = "Weekdays";
+"Выходные" = "Weekends";
+
+"Файл с тестовыми данными не найден" = "Sample data file not found";
+"Неверный формат данных" = "Invalid data format";
+
+"Утренняя рутина" = "Morning routine";
+"Разминка 20–30 минут" = "Warm-up for 20–30 minutes";
+"Принять душ" = "Take a shower";
+"Полезный завтрак" = "Healthy breakfast";
+"Просмотреть цели на день" = "Review goals for the day";
+"Медитация 10 минут" = "Meditation for 10 minutes";
+
+"Забота о себе" = "Self-care";
+"Принять расслабляющую ванну" = "Take a relaxing bath";
+"Почитать для удовольствия" = "Read for pleasure";
+"Послушать любимую музыку" = "Listen to favorite music";
+"Заняться хобби" = "Do a hobby";
+"Позвонить другу или близкому" = "Call a friend or loved one";
+"Прогулка на природе" = "Walk in nature";
+
+"Социальные контакты" = "Social connections";
+"Встретиться с другом за кофе" = "Meet a friend for coffee";
+"Посетить мероприятие" = "Attend an event";
+"Присоединиться к клубу или группе" = "Join a club or group";
+"Волонтёрство" = "Volunteering";
+"Написать/позвонить новому знакомому" = "Message or call a new acquaintance";
+"Провести время с семьёй" = "Spend time with family";
+
+"Полезные дела" = "Productive tasks";
+"Завершить рабочую задачу" = "Finish a work task";
+"Навести порядок дома" = "Tidy up at home";
+"Изучить что-то новое" = "Learn something new";
+"Продвинуть личный проект" = "Move a personal project forward";
+"Спланировать неделю" = "Plan the week";
+"Сделать накопившиеся дела" = "Handle pending tasks";
+
+"Физическая активность" = "Physical activity";
+"Пробежка или бег трусцой" = "Jog or run";
+"Йога или растяжка" = "Yoga or stretching";
+"Тренировка в зале" = "Gym workout";
+"Поиграть в спорт" = "Play a sport";
+"Поплавать" = "Go swimming";
+"Танцевальная тренировка" = "Dance workout";
+"Поход/пешая прогулка" = "Hike or long walk";
+
+"Упражнения" = "Exercises";
+"Расписание" = "Schedule";
+"Центр знаний" = "Knowledge center";
+"Настройки" = "Settings";
+
+"Экспозиции" = "Exposures";
+"Постепенное преодоление страхов и тревог" = "Gradual exposure to fears and anxieties";
+"Техники контролируемого дыхания для регуляции нервной системы" = "Controlled breathing techniques to regulate the nervous system";
+"Прогрессивная мышечная релаксация для снятия напряжения" = "Progressive muscle relaxation to release tension";
+"Заземление и техники внимания для снижения тревоги" = "Grounding and attention techniques to reduce anxiety";
+"Повышение активности через осмысленные действия" = "Increasing activity through meaningful actions";
+"Дважды нажмите для открытия" = "Double-tap to open";
+
+"Добавить расписание" = "Add schedule";
+"Удалить расписание?" = "Delete schedule?";
+"Отмена" = "Cancel";
+"Удалить" = "Delete";
+"Это действие нельзя отменить." = "This action cannot be undone.";
+"Прогресс" = "Progress";
+"Выполнено (нед.)" = "Completed (wk)";
+"По плану (нед.)" = "Planned (wk)";
+"%d д" = "%d d";
+"Запланировано" = "Planned";
+"Добавить" = "Add";
+"Нет расписаний на день" = "No schedules for the day";
+"Добавьте упражнение в расписание — оно появится здесь" = "Add an exercise to the schedule and it will appear here";
+"Снять отметку выполнения" = "Remove completion mark";
+"Отметить выполненным" = "Mark as completed";
+"Неактивно" = "Inactive";
+"Редактировать" = "Edit";
+"Действия" = "Actions";
+"Выполнено" = "Completed";
+"Пока нет выполненного" = "No completed items yet";
+"Здесь появятся завершённые сессии и ручные отметки за выбранный день" = "Completed sessions and manual marks for the selected day will appear here";
+"по плану" = "on schedule";
+"Отметка" = "Mark";
+"Сессия" = "Session";
+"Дыхание: %@" = "Breathing: %@";
+"Релаксация: %@" = "Relaxation: %@";
+"Заземление: %@" = "Grounding: %@";
+"Экспозиция: %@" = "Exposure: %@";
+"Активация: %@" = "Activation: %@";
+"%@. %@" = "%@. %@";
+
+"График прогресса тревожности" = "Anxiety progress chart";
+"Динамика тревожности" = "Anxiety trend";
+"уровень" = "level";
+"Текущий уровень тревожности: %d" = "Current anxiety level: %d";
+"Дата: %@" = "Date: %@";
+"Нет данных" = "No data";
+"Выбор периода отображения" = "Select display period";
+"До сеанса" = "Before session";
+"Синяя линия: тревожность до сеанса" = "Blue line: anxiety before session";
+"После сеанса" = "After session";
+"Голубая линия: тревожность после сеанса" = "Cyan line: anxiety after session";
+"Среднее До" = "Average before";
+"Среднее После" = "Average after";
+"Дата" = "Date";
+"Серия" = "Series";
+"До" = "Before";
+"После" = "After";
+"График динамики тревожности по датам" = "Anxiety trend chart by date";
+"Средняя тревожность до сеанса: %@" = "Average anxiety before session: %@";
+"Средняя тревожность после сеанса: %@" = "Average anxiety after session: %@";
+"Тренд: %@, изменение %@" = "Trend: %@, change %@";
+"Один день" = "One day";
+"Неделя" = "Week";
+"Месяц" = "Month";
+"Шесть месяцев" = "Six months";
+"Год" = "Year";
+
+"Все дни" = "All days";
+"Вы уверены, что хотите удалить это расписание?" = "Are you sure you want to delete this schedule?";
+"Создать расписание" = "Create schedule";
+"Любимые упражнения" = "Favorite exercises";
+"Нет избранных упражнений" = "No favorite exercises";
+"Добавьте упражнения в избранное для быстрого доступа" = "Add exercises to favorites for quick access";
+"Список активностей для поведенческой активации" = "Activity list for behavioral activation";
+
+"Запланированные упражнения" = "Scheduled exercises";
+"Нет запланированных упражнений" = "No scheduled exercises";
+"Задание не найдено" = "Assignment not found";
+"Возможно, расписание было удалено или изменено." = "The schedule may have been deleted or changed.";
+"Упражнение недоступно" = "Exercise unavailable";
+"Не удалось найти данные для запуска упражнения." = "Unable to find data to start the exercise.";
+"%d процентов" = "%d percent";
+
+"Новое расписание" = "New schedule";
+"Редактировать расписание" = "Edit schedule";
+"Сохранить" = "Save";
+"Разрешения на уведомления" = "Notification permissions";
+"Настройки" = "Settings";
+"OK" = "OK";
+"Для напоминаний о расписании необходимо разрешение на уведомления. Пожалуйста, включите их в настройках." = "Scheduling reminders require notification permission. Please enable it in Settings.";
+"Для напоминаний о расписании необходимо разрешение на уведомления." = "Scheduling reminders require notification permission.";
+"Тип упражнения" = "Exercise type";
+"Нет доступных экспозиций" = "No available exposures";
+"Выберите экспозицию" = "Select exposure";
+"Дыхательная техника" = "Breathing technique";
+"Выберите технику" = "Select technique";
+"Выберите упражнение" = "Select exercise";
+"Нет доступных списков активностей" = "No available activity lists";
+"Список активностей" = "Activity list";
+"Выберите список" = "Select list";
+"Время" = "Time";
+"Дни недели" = "Days of the week";
+"Выберите хотя бы один день" = "Select at least one day";
+"Активно" = "Active";
+"Когда активно, вы будете получать напоминания в выбранное время" = "When active, you will receive reminders at the selected time";
+
+"Внешний вид" = "Appearance";
+"Конфиденциальность" = "Privacy";
+"Данные" = "Data";
+"Поддержка" = "Support";
+"О приложении" = "About";
+"Тема" = "Theme";
+"Системная" = "System";
+"Светлая" = "Light";
+"Тёмная" = "Dark";
+"Блокировка приложения (Face ID)" = "App lock (Face ID)";
+"При включении приложение будет запрашивать подтверждение личности только при запуске." = "When enabled, the app will request identity confirmation only on launch.";
+
+"Экспортировать данные (JSON)" = "Export data (JSON)";
+"Экспорт" = "Export";
+"Файл содержит упражнения, расписания и результаты сессий." = "The file contains exercises, schedules, and session results.";
+"Сбросить все данные" = "Reset all data";
+"Сброс" = "Reset";
+"Удаляет все данные из приложения. Действие нельзя отменить." = "Deletes all data from the app. This action cannot be undone.";
+"Сбросить все данные?" = "Reset all data?";
+"Сбросить" = "Reset";
+"Это удалит все упражнения, расписания и результаты сессий." = "This will delete all exercises, schedules, and session results.";
+
+"Информация" = "Information";
+"Версия" = "Version";
+"Сборка" = "Build";
+"Если вы нашли проблему или хотите предложить улучшение — напишите нам." = "If you found a problem or want to suggest an improvement, write to us.";
+"Написать в поддержку: %@" = "Contact support: %@";
+"Версия %@ (%@)" = "Version %@ (%@)";
+
+"Проверка устройства недоступна." = "Device check is unavailable.";
+"Не удалось подтвердить личность." = "Failed to verify identity.";
+"Ошибка проверки: %@" = "Verification error: %@";
+"Разблокировать Inner Hero" = "Unlock Inner Hero";
+"Приложение заблокировано" = "App is locked";
+"Подтвердите личность, чтобы продолжить." = "Verify your identity to continue.";
+"Разблокировать" = "Unlock";
+
+"Добро пожаловать" = "Welcome";
+"Inner Hero поможет вам практиковать экспозиционную терапию для работы с тревогой. Создавайте сценарии, проводите сеансы и отслеживайте свой прогресс." = "Inner Hero helps you practice exposure therapy to work with anxiety. Create scenarios, run sessions, and track your progress.";
+"Важное предупреждение" = "Important warning";
+"Это приложение **не заменяет** профессиональную психотерапию или медицинскую помощь." = "This app **does not replace** professional psychotherapy or medical care.";
+"Если вы испытываете серьёзные симптомы тревоги или других психических состояний, пожалуйста, обратитесь к квалифицированному специалисту." = "If you experience severe symptoms of anxiety or other mental health conditions, please consult a qualified specialist.";
+"Используйте это приложение как дополнительный инструмент в рамках комплексного подхода к заботе о своём психическом здоровье." = "Use this app as an additional tool within a comprehensive approach to your mental health.";
+"Продолжить" = "Continue";
+"Завершить онбординг и перейти к приложению" = "Finish onboarding and continue to the app";
+
+"Статьи пока недоступны" = "Articles are not available yet";
+"По запросу ничего не найдено" = "No results found";
+"Поиск" = "Search";

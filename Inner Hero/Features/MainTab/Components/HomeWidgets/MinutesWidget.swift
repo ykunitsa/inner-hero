@@ -21,14 +21,20 @@ struct MinutesWidget: View {
                         .foregroundStyle(.secondary)
                 }
                 
-                Text("За 7 дней: \(weekMinutes) мин")
+                Text(String(format: NSLocalizedString("За 7 дней: %d мин", comment: ""), weekMinutes))
                     .font(.subheadline.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Минуты практик")
-        .accessibilityValue("Сегодня \(todayMinutes) минут. За 7 дней \(weekMinutes) минут.")
+        .accessibilityValue(
+            String(
+                format: NSLocalizedString("Сегодня %d минут. За 7 дней %d минут.", comment: ""),
+                todayMinutes,
+                weekMinutes
+            )
+        )
     }
 }
 

@@ -17,14 +17,14 @@ final class AppLockManager {
         lastErrorMessage = nil
         
         let context = LAContext()
-        context.localizedCancelTitle = "Отмена"
+        context.localizedCancelTitle = String(localized: "Отмена")
         
         var error: NSError?
         let canEvaluate = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
         
         guard canEvaluate else {
             isUnlocked = false
-            lastErrorMessage = "Проверка устройства недоступна."
+            lastErrorMessage = String(localized: "Проверка устройства недоступна.")
             return
         }
         
@@ -35,11 +35,14 @@ final class AppLockManager {
                 lastSuccessfulUnlockAt = Date()
             } else {
                 isUnlocked = false
-                lastErrorMessage = "Не удалось подтвердить личность."
+                lastErrorMessage = String(localized: "Не удалось подтвердить личность.")
             }
         } catch {
             isUnlocked = false
-            lastErrorMessage = "Ошибка проверки: \(error.localizedDescription)"
+            lastErrorMessage = String(
+                format: NSLocalizedString("Ошибка проверки: %@", comment: ""),
+                error.localizedDescription
+            )
         }
     }
 }

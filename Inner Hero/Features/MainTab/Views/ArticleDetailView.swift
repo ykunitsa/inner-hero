@@ -66,7 +66,7 @@ struct ArticleDetailView: View {
                         HStack(spacing: 6) {
                             Image(systemName: "clock")
                                 .font(.caption)
-                            Text("\(article.readTime) мин чтения")
+                            Text(String(format: NSLocalizedString("%d мин чтения", comment: ""), article.readTime))
                                 .font(.caption)
                         }
                         .foregroundStyle(TextColors.secondary)

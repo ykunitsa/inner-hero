@@ -59,7 +59,7 @@ struct QuickStartWidget: View {
                let exposure = exposures.first(where: { $0.id == id }) {
                 return exposure.title
             }
-            return "Экспозиция"
+            return String(localized: "Экспозиция")
             
         case .breathing:
             if let raw = favorite.exerciseIdentifier,
@@ -67,7 +67,7 @@ struct QuickStartWidget: View {
                let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == type }) {
                 return pattern.name
             }
-            return "Дыхание"
+            return String(localized: "Дыхание")
             
         case .relaxation:
             if let raw = favorite.exerciseIdentifier,
@@ -75,7 +75,7 @@ struct QuickStartWidget: View {
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == type }) {
                 return exercise.name
             }
-            return "Релаксация"
+            return String(localized: "Релаксация")
             
         case .grounding:
             if let raw = favorite.exerciseIdentifier,
@@ -83,10 +83,10 @@ struct QuickStartWidget: View {
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == type }) {
                 return exercise.name
             }
-            return "Заземление"
+            return String(localized: "Заземление")
             
         case .behavioralActivation:
-            return "Поведенческая активация"
+            return String(localized: "Поведенческая активация")
         }
     }
     

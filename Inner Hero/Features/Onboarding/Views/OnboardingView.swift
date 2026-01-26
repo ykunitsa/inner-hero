@@ -15,7 +15,7 @@ struct OnboardingView: View {
                 VStack(spacing: 20) {
                     Image(systemName: "heart.circle.fill")
                         .font(.system(size: 80))
-                        .foregroundStyle(.teal.gradient)
+                        .foregroundStyle(.primary)
                         .accessibilityHidden(true)
                     
                     Text("Inner Hero")
@@ -101,7 +101,7 @@ struct OnboardingView: View {
                         .frame(minHeight: 56)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.teal)
+                .tint(.primary)
                 .accessibilityLabel("Продолжить")
                 .accessibilityHint("Завершить онбординг и перейти к приложению")
                 .padding(.horizontal, 20)
