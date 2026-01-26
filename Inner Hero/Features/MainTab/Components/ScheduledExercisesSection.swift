@@ -118,7 +118,7 @@ struct ScheduledExercisesSection: View {
                let exposure = exposures.first(where: { $0.id == exposureId }) {
                 return exposure.title
             }
-            return "Экспозиция"
+            return String(localized: "Экспозиция")
             
         case .breathing:
             if let patternType = assignment.breathingPattern {
@@ -126,7 +126,7 @@ struct ScheduledExercisesSection: View {
                     return pattern.name
                 }
             }
-            return "Дыхательное упражнение"
+            return String(localized: "Дыхательное упражнение")
             
         case .relaxation:
             if let relaxationType = assignment.relaxation {
@@ -134,21 +134,21 @@ struct ScheduledExercisesSection: View {
                     return exercise.name
                 }
             }
-            return "Релаксация"
+            return String(localized: "Релаксация")
             
         case .grounding:
             if let groundingType = assignment.grounding,
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
                 return exercise.name
             }
-            return "Заземление"
+            return String(localized: "Заземление")
             
         case .behavioralActivation:
             if let activityListId = assignment.activityListId,
                let activityList = activityLists.first(where: { $0.id == activityListId }) {
                 return activityList.title
             }
-            return "Поведенческая активация"
+            return String(localized: "Поведенческая активация")
         }
     }
     
@@ -283,13 +283,13 @@ struct ScheduledExerciseCard: View {
     private func formatDate(_ date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
-            return "Сегодня"
+            return String(localized: "Сегодня")
         } else if calendar.isDateInTomorrow(date) {
-            return "Завтра"
+            return String(localized: "Завтра")
         } else {
             let formatter = DateFormatter()
             formatter.dateFormat = "d MMM"
-            formatter.locale = Locale(identifier: "ru_RU")
+            formatter.locale = .current
             return formatter.string(from: date)
         }
     }

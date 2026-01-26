@@ -17,8 +17,8 @@ struct ExercisesView: View {
             ScrollView {
                 LazyVStack(spacing: 20) {
                     exerciseCard(
-                        title: "Экспозиции",
-                        description: "Постепенное преодоление страхов и тревог",
+                        title: String(localized: "Экспозиции"),
+                        description: String(localized: "Постепенное преодоление страхов и тревог"),
                         icon: "leaf",
                         color: .blue,
                         type: .exposures
@@ -27,8 +27,8 @@ struct ExercisesView: View {
                     .animation(.easeOut(duration: 0.3).delay(0.0), value: appeared)
                     
                     exerciseCard(
-                        title: "Дыхание",
-                        description: "Техники контролируемого дыхания для регуляции нервной системы",
+                        title: String(localized: "Дыхание"),
+                        description: String(localized: "Техники контролируемого дыхания для регуляции нервной системы"),
                         icon: "wind",
                         color: .teal,
                         type: .breathing
@@ -37,8 +37,8 @@ struct ExercisesView: View {
                     .animation(.easeOut(duration: 0.3).delay(0.1), value: appeared)
                     
                     exerciseCard(
-                        title: "Релаксация",
-                        description: "Прогрессивная мышечная релаксация для снятия напряжения",
+                        title: String(localized: "Релаксация"),
+                        description: String(localized: "Прогрессивная мышечная релаксация для снятия напряжения"),
                         icon: "figure.mind.and.body",
                         color: .mint,
                         type: .relaxation
@@ -47,8 +47,8 @@ struct ExercisesView: View {
                     .animation(.easeOut(duration: 0.3).delay(0.2), value: appeared)
                     
                     exerciseCard(
-                        title: "Заземление",
-                        description: "Заземление и техники внимания для снижения тревоги",
+                        title: String(localized: "Заземление"),
+                        description: String(localized: "Заземление и техники внимания для снижения тревоги"),
                         icon: "brain.head.profile",
                         color: .purple,
                         type: .grounding
@@ -57,8 +57,8 @@ struct ExercisesView: View {
                     .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
                     
                     exerciseCard(
-                        title: "Поведенческая активация",
-                        description: "Повышение активности через осмысленные действия",
+                        title: String(localized: "Поведенческая активация"),
+                        description: String(localized: "Повышение активности через осмысленные действия"),
                         icon: "figure.walk",
                         color: .green,
                         type: .activation
@@ -153,7 +153,7 @@ struct ExercisesView: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title). \(description)")
-        .accessibilityHint("Дважды нажмите для открытия")
+        .accessibilityHint(String(localized: "Дважды нажмите для открытия"))
     }
 }
 

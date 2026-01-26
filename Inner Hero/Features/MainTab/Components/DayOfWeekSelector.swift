@@ -3,8 +3,13 @@ import SwiftUI
 struct DayOfWeekSelector: View {
     @Binding var selectedDays: [Int]
     
-    private let dayLabels = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
     private let dayNumbers = [1, 2, 3, 4, 5, 6, 7] // Sunday = 1, Monday = 2, etc.
+    
+    private var dayLabels: [String] {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        return formatter.shortWeekdaySymbols
+    }
     
     var body: some View {
         VStack(spacing: 16) {
@@ -23,7 +28,7 @@ struct DayOfWeekSelector: View {
     private var quickOptionsSection: some View {
         HStack(spacing: 12) {
             quickOptionButton(
-                title: "Все дни",
+                title: String(localized: "Все дни"),
                 isSelected: selectedDays.sorted() == [1, 2, 3, 4, 5, 6, 7]
             ) {
                 if selectedDays.sorted() == [1, 2, 3, 4, 5, 6, 7] {
@@ -35,7 +40,7 @@ struct DayOfWeekSelector: View {
             }
             
             quickOptionButton(
-                title: "Будни",
+                title: String(localized: "Будни"),
                 isSelected: selectedDays.sorted() == [2, 3, 4, 5, 6]
             ) {
                 if selectedDays.sorted() == [2, 3, 4, 5, 6] {
@@ -47,7 +52,7 @@ struct DayOfWeekSelector: View {
             }
             
             quickOptionButton(
-                title: "Выходные",
+                title: String(localized: "Выходные"),
                 isSelected: selectedDays.sorted() == [1, 7]
             ) {
                 if selectedDays.sorted() == [1, 7] {

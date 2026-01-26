@@ -62,7 +62,7 @@ struct ExposureProgressChart: View {
                 )
         )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("График прогресса тревожности")
+                .accessibilityLabel("График прогресса тревожности")
     }
     
     private var headerSection: some View {
@@ -103,12 +103,22 @@ struct ExposureProgressChart: View {
                         .foregroundStyle(TextColors.secondary)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Текущий уровень тревожности: \(latest.anxietyAfter ?? latest.anxietyBefore)")
+                .accessibilityLabel(
+                    String(
+                        format: NSLocalizedString("Текущий уровень тревожности: %d", comment: ""),
+                        latest.anxietyAfter ?? latest.anxietyBefore
+                    )
+                )
                 
                 Text(latest.date.formatted(date: .abbreviated, time: .omitted))
                     .font(.subheadline)
                     .foregroundStyle(TextColors.tertiary)
-                    .accessibilityLabel("Дата: \(latest.date.formatted(date: .long, time: .omitted))")
+                    .accessibilityLabel(
+                        String(
+                            format: NSLocalizedString("Дата: %@", comment: ""),
+                            latest.date.formatted(date: .long, time: .omitted)
+                        )
+                    )
             } else {
                 Text("Нет данных")
                     .font(.system(size: 48, weight: .medium))
@@ -125,7 +135,7 @@ struct ExposureProgressChart: View {
                         selectedPeriod = period
                     }
                 } label: {
-                    Text(period.rawValue)
+                    Text(period.label)
                         .font(.subheadline.weight(selectedPeriod == period ? .semibold : .regular))
                         .foregroundStyle(selectedPeriod == period ? .white : TextColors.secondary)
                         .frame(maxWidth: .infinity)
@@ -162,11 +172,11 @@ struct ExposureProgressChart: View {
     
     private func periodAccessibilityLabel(for period: TimePeriod) -> String {
         switch period {
-        case .day: return "Один день"
-        case .week: return "Неделя"
-        case .month: return "Месяц"
-        case .sixMonths: return "Шесть месяцев"
-        case .year: return "Год"
+        case .day: return String(localized: "Один день")
+        case .week: return String(localized: "Неделя")
+        case .month: return String(localized: "Месяц")
+        case .sixMonths: return String(localized: "Шесть месяцев")
+        case .year: return String(localized: "Год")
         }
     }
     
@@ -213,13 +223,13 @@ struct ExposureProgressChart: View {
         Chart {
             // Reference lines (average)
             if let stats = statistics, !filteredDataPoints.isEmpty {
-                RuleMark(y: .value("Среднее До", stats.averageAnxietyBefore))
+            RuleMark(y: .value(String(localized: "Среднее До"), stats.averageAnxietyBefore))
                     .foregroundStyle(.blue.opacity(0.25))
                     .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
                     .accessibilityHidden(true)
                 
                 if stats.averageAnxietyAfter != stats.averageAnxietyBefore {
-                    RuleMark(y: .value("Среднее После", stats.averageAnxietyAfter))
+                RuleMark(y: .value(String(localized: "Среднее После"), stats.averageAnxietyAfter))
                         .foregroundStyle(.cyan.opacity(0.25))
                         .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
                         .accessibilityHidden(true)
@@ -229,17 +239,17 @@ struct ExposureProgressChart: View {
             // Anxiety Before line - continuous line through all points
             ForEach(filteredDataPoints) { point in
                 LineMark(
-                    x: .value("Дата", point.date),
-                    y: .value("До сеанса", point.anxietyBefore),
-                    series: .value("Серия", "До")
+                    x: .value(String(localized: "Дата"), point.date),
+                    y: .value(String(localized: "До сеанса"), point.anxietyBefore),
+                    series: .value(String(localized: "Серия"), String(localized: "До"))
                 )
                 .foregroundStyle(.blue)
                 .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                 .interpolationMethod(.catmullRom)
                 
                 PointMark(
-                    x: .value("Дата", point.date),
-                    y: .value("До сеанса", point.anxietyBefore)
+                    x: .value(String(localized: "Дата"), point.date),
+                    y: .value(String(localized: "До сеанса"), point.anxietyBefore)
                 )
                 .foregroundStyle(.blue)
                 .symbolSize(80)
@@ -249,17 +259,17 @@ struct ExposureProgressChart: View {
             ForEach(filteredDataPoints.filter { $0.anxietyAfter != nil }) { point in
                 if let after = point.anxietyAfter {
                     LineMark(
-                        x: .value("Дата", point.date),
-                        y: .value("После сеанса", after),
-                        series: .value("Серия", "После")
+                        x: .value(String(localized: "Дата"), point.date),
+                        y: .value(String(localized: "После сеанса"), after),
+                        series: .value(String(localized: "Серия"), String(localized: "После"))
                     )
                     .foregroundStyle(.cyan)
                     .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                     .interpolationMethod(.catmullRom)
                     
                     PointMark(
-                        x: .value("Дата", point.date),
-                        y: .value("После сеанса", after)
+                        x: .value(String(localized: "Дата"), point.date),
+                        y: .value(String(localized: "После сеанса"), after)
                     )
                     .foregroundStyle(.cyan)
                     .symbolSize(80)
@@ -299,7 +309,12 @@ struct ExposureProgressChart: View {
                 color: .blue
             )
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Средняя тревожность до сеанса: \(String(format: "%.1f", stats.averageAnxietyBefore))")
+            .accessibilityLabel(
+                String(
+                    format: NSLocalizedString("Средняя тревожность до сеанса: %@", comment: ""),
+                    String(format: "%.1f", stats.averageAnxietyBefore)
+                )
+            )
             
             Divider()
                 .frame(height: 30)
@@ -311,7 +326,12 @@ struct ExposureProgressChart: View {
                 color: .cyan
             )
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Средняя тревожность после сеанса: \(String(format: "%.1f", stats.averageAnxietyAfter))")
+            .accessibilityLabel(
+                String(
+                    format: NSLocalizedString("Средняя тревожность после сеанса: %@", comment: ""),
+                    String(format: "%.1f", stats.averageAnxietyAfter)
+                )
+            )
             
             Divider()
                 .frame(height: 30)
@@ -331,7 +351,13 @@ struct ExposureProgressChart: View {
                     .foregroundStyle(TextColors.primary)
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Тренд: \(stats.trendDirection.description), изменение \(String(format: "%.1f", abs(stats.averageChange)))")
+            .accessibilityLabel(
+                String(
+                    format: NSLocalizedString("Тренд: %@, изменение %@", comment: ""),
+                    stats.trendDirection.description,
+                    String(format: "%.1f", abs(stats.averageChange))
+                )
+            )
         }
         .padding(.top, 8)
     }
@@ -348,7 +374,7 @@ struct ExposureProgressChart: View {
 // MARK: - Stat Item View
 
 private struct StatItemView: View {
-    let title: String
+    let title: LocalizedStringKey
     let value: String
     let color: Color
     

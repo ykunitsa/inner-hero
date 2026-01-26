@@ -95,58 +95,58 @@ struct SampleDataLoader {
     static func loadPredefinedActivationLists(into modelContext: ModelContext) throws {
         let predefinedLists: [(title: String, activities: [String])] = [
             (
-                title: "Утренняя рутина",
+                title: String(localized: "Утренняя рутина"),
                 activities: [
-                    "Разминка 20–30 минут",
-                    "Принять душ",
-                    "Полезный завтрак",
-                    "Просмотреть цели на день",
-                    "Медитация 10 минут"
+                    String(localized: "Разминка 20–30 минут"),
+                    String(localized: "Принять душ"),
+                    String(localized: "Полезный завтрак"),
+                    String(localized: "Просмотреть цели на день"),
+                    String(localized: "Медитация 10 минут")
                 ]
             ),
             (
-                title: "Забота о себе",
+                title: String(localized: "Забота о себе"),
                 activities: [
-                    "Принять расслабляющую ванну",
-                    "Почитать для удовольствия",
-                    "Послушать любимую музыку",
-                    "Заняться хобби",
-                    "Позвонить другу или близкому",
-                    "Прогулка на природе"
+                    String(localized: "Принять расслабляющую ванну"),
+                    String(localized: "Почитать для удовольствия"),
+                    String(localized: "Послушать любимую музыку"),
+                    String(localized: "Заняться хобби"),
+                    String(localized: "Позвонить другу или близкому"),
+                    String(localized: "Прогулка на природе")
                 ]
             ),
             (
-                title: "Социальные контакты",
+                title: String(localized: "Социальные контакты"),
                 activities: [
-                    "Встретиться с другом за кофе",
-                    "Посетить мероприятие",
-                    "Присоединиться к клубу или группе",
-                    "Волонтёрство",
-                    "Написать/позвонить новому знакомому",
-                    "Провести время с семьёй"
+                    String(localized: "Встретиться с другом за кофе"),
+                    String(localized: "Посетить мероприятие"),
+                    String(localized: "Присоединиться к клубу или группе"),
+                    String(localized: "Волонтёрство"),
+                    String(localized: "Написать/позвонить новому знакомому"),
+                    String(localized: "Провести время с семьёй")
                 ]
             ),
             (
-                title: "Полезные дела",
+                title: String(localized: "Полезные дела"),
                 activities: [
-                    "Завершить рабочую задачу",
-                    "Навести порядок дома",
-                    "Изучить что-то новое",
-                    "Продвинуть личный проект",
-                    "Спланировать неделю",
-                    "Сделать накопившиеся дела"
+                    String(localized: "Завершить рабочую задачу"),
+                    String(localized: "Навести порядок дома"),
+                    String(localized: "Изучить что-то новое"),
+                    String(localized: "Продвинуть личный проект"),
+                    String(localized: "Спланировать неделю"),
+                    String(localized: "Сделать накопившиеся дела")
                 ]
             ),
             (
-                title: "Физическая активность",
+                title: String(localized: "Физическая активность"),
                 activities: [
-                    "Пробежка или бег трусцой",
-                    "Йога или растяжка",
-                    "Тренировка в зале",
-                    "Поиграть в спорт",
-                    "Поплавать",
-                    "Танцевальная тренировка",
-                    "Поход/пешая прогулка"
+                    String(localized: "Пробежка или бег трусцой"),
+                    String(localized: "Йога или растяжка"),
+                    String(localized: "Тренировка в зале"),
+                    String(localized: "Поиграть в спорт"),
+                    String(localized: "Поплавать"),
+                    String(localized: "Танцевальная тренировка"),
+                    String(localized: "Поход/пешая прогулка")
                 ]
             )
         ]
@@ -168,58 +168,58 @@ struct SampleDataLoader {
     static func backfillPredefinedActivationListsIfNeeded(into modelContext: ModelContext) throws {
         let oldTitleToNew: [String: (title: String, activities: [String])] = [
             "Morning Routine": (
-                title: "Утренняя рутина",
+                title: String(localized: "Утренняя рутина"),
                 activities: [
-                    "Разминка 20–30 минут",
-                    "Принять душ",
-                    "Полезный завтрак",
-                    "Просмотреть цели на день",
-                    "Медитация 10 минут"
+                    String(localized: "Разминка 20–30 минут"),
+                    String(localized: "Принять душ"),
+                    String(localized: "Полезный завтрак"),
+                    String(localized: "Просмотреть цели на день"),
+                    String(localized: "Медитация 10 минут")
                 ]
             ),
             "Self-Care Activities": (
-                title: "Забота о себе",
+                title: String(localized: "Забота о себе"),
                 activities: [
-                    "Принять расслабляющую ванну",
-                    "Почитать для удовольствия",
-                    "Послушать любимую музыку",
-                    "Заняться хобби",
-                    "Позвонить другу или близкому",
-                    "Прогулка на природе"
+                    String(localized: "Принять расслабляющую ванну"),
+                    String(localized: "Почитать для удовольствия"),
+                    String(localized: "Послушать любимую музыку"),
+                    String(localized: "Заняться хобби"),
+                    String(localized: "Позвонить другу или близкому"),
+                    String(localized: "Прогулка на природе")
                 ]
             ),
             "Social Connections": (
-                title: "Социальные контакты",
+                title: String(localized: "Социальные контакты"),
                 activities: [
-                    "Встретиться с другом за кофе",
-                    "Посетить мероприятие",
-                    "Присоединиться к клубу или группе",
-                    "Волонтёрство",
-                    "Написать/позвонить новому знакомому",
-                    "Провести время с семьёй"
+                    String(localized: "Встретиться с другом за кофе"),
+                    String(localized: "Посетить мероприятие"),
+                    String(localized: "Присоединиться к клубу или группе"),
+                    String(localized: "Волонтёрство"),
+                    String(localized: "Написать/позвонить новому знакомому"),
+                    String(localized: "Провести время с семьёй")
                 ]
             ),
             "Productive Tasks": (
-                title: "Полезные дела",
+                title: String(localized: "Полезные дела"),
                 activities: [
-                    "Завершить рабочую задачу",
-                    "Навести порядок дома",
-                    "Изучить что-то новое",
-                    "Продвинуть личный проект",
-                    "Спланировать неделю",
-                    "Сделать накопившиеся дела"
+                    String(localized: "Завершить рабочую задачу"),
+                    String(localized: "Навести порядок дома"),
+                    String(localized: "Изучить что-то новое"),
+                    String(localized: "Продвинуть личный проект"),
+                    String(localized: "Спланировать неделю"),
+                    String(localized: "Сделать накопившиеся дела")
                 ]
             ),
             "Physical Activities": (
-                title: "Физическая активность",
+                title: String(localized: "Физическая активность"),
                 activities: [
-                    "Пробежка или бег трусцой",
-                    "Йога или растяжка",
-                    "Тренировка в зале",
-                    "Поиграть в спорт",
-                    "Поплавать",
-                    "Танцевальная тренировка",
-                    "Поход/пешая прогулка"
+                    String(localized: "Пробежка или бег трусцой"),
+                    String(localized: "Йога или растяжка"),
+                    String(localized: "Тренировка в зале"),
+                    String(localized: "Поиграть в спорт"),
+                    String(localized: "Поплавать"),
+                    String(localized: "Танцевальная тренировка"),
+                    String(localized: "Поход/пешая прогулка")
                 ]
             )
         ]
@@ -270,9 +270,9 @@ enum SampleDataError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .fileNotFound:
-            return "Файл с тестовыми данными не найден"
+            return String(localized: "Файл с тестовыми данными не найден")
         case .invalidData:
-            return "Неверный формат данных"
+            return String(localized: "Неверный формат данных")
         }
     }
 }

@@ -28,7 +28,12 @@ struct ProgressRingView: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Прогресс")
-        .accessibilityValue("\(Int(clampedProgress * 100)) процентов")
+        .accessibilityValue(
+            String(
+                format: NSLocalizedString("%d процентов", comment: ""),
+                Int(clampedProgress * 100)
+            )
+        )
     }
 }
 

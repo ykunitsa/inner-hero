@@ -18,12 +18,22 @@ struct ChartDataPoint: Identifiable {
 
 // MARK: - Time Period
 
-enum TimePeriod: String, CaseIterable {
-    case day = "ДН"
-    case week = "НЕД"
-    case month = "МЕС"
-    case sixMonths = "6 МЕС"
-    case year = "ГОД"
+enum TimePeriod: CaseIterable {
+    case day
+    case week
+    case month
+    case sixMonths
+    case year
+    
+    var label: String {
+        switch self {
+        case .day: return String(localized: "ДН")
+        case .week: return String(localized: "НЕД")
+        case .month: return String(localized: "МЕС")
+        case .sixMonths: return String(localized: "6 МЕС")
+        case .year: return String(localized: "ГОД")
+        }
+    }
     
     var daysCount: Int {
         switch self {
@@ -69,9 +79,9 @@ struct ChartStatistics {
         
         var description: String {
             switch self {
-            case .improving: return "Улучшение"
-            case .stable: return "Стабильно"
-            case .worsening: return "Ухудшение"
+            case .improving: return String(localized: "Улучшение")
+            case .stable: return String(localized: "Стабильно")
+            case .worsening: return String(localized: "Ухудшение")
             }
         }
     }

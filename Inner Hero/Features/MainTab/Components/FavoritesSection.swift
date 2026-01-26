@@ -142,7 +142,7 @@ struct FavoritesSection: View {
                 return FavoriteExerciseItem(
                     id: favorite.id,
                     name: activityList.title,
-                    description: "Список активностей для поведенческой активации",
+                    description: String(localized: "Список активностей для поведенческой активации"),
                     icon: "figure.walk",
                     color: .green,
                     exerciseType: .behavioralActivation,

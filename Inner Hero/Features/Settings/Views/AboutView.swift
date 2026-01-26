@@ -33,7 +33,7 @@ struct AboutView: View {
                     .foregroundStyle(.secondary)
                 
                 if let mailURL = URL(string: "mailto:\(email)") {
-                    Link("Написать в поддержку: \(email)", destination: mailURL)
+                    Link(String(format: NSLocalizedString("Написать в поддержку: %@", comment: ""), email), destination: mailURL)
                 } else {
                     Text(email)
                         .font(.callout.weight(.semibold))
@@ -53,10 +53,14 @@ struct AboutView: View {
     }
     
     private var versionString: String {
-        "Версия \(shortVersion) (\(buildNumber))"
+        String(
+            format: NSLocalizedString("Версия %@ (%@)", comment: ""),
+            shortVersion,
+            buildNumber
+        )
     }
     
-    private func infoRow(title: String, value: String) -> some View {
+    private func infoRow(title: LocalizedStringKey, value: String) -> some View {
         HStack {
             Text(title)
             Spacer()

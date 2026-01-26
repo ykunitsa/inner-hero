@@ -3,14 +3,11 @@ import SwiftUI
 struct StreakWidget: View {
     let streakDays: Int
     
-    private var dayWord: String {
-        let n = abs(streakDays) % 100
-        let n1 = n % 10
-        
-        if (11...14).contains(n) { return "дней" }
-        if n1 == 1 { return "день" }
-        if (2...4).contains(n1) { return "дня" }
-        return "дней"
+    private var dayCountText: String {
+        String.localizedStringWithFormat(
+            NSLocalizedString("streak.days.count", comment: ""),
+            streakDays
+        )
     }
     
     var body: some View {
@@ -25,7 +22,7 @@ struct StreakWidget: View {
                         .font(.system(.title, design: .rounded).weight(.semibold))
                         .foregroundStyle(.primary)
                         .monospacedDigit()
-                    Text(dayWord)
+                    Text(dayCountText)
                         .font(.headline)
                         .foregroundStyle(.secondary)
                 }

@@ -33,9 +33,13 @@ struct ArticleOfTheDayWidget: View {
                                 
                                 Spacer(minLength: 0)
                                 
-                                Label("\(article.readTime) мин", systemImage: "clock")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                Label {
+                                    Text(String(format: NSLocalizedString("%d мин", comment: ""), article.readTime))
+                                } icon: {
+                                    Image(systemName: "clock")
+                                }
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                             }
                         }
                     }

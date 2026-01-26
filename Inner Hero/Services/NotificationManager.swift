@@ -47,8 +47,8 @@ final class NotificationManager {
         
         // Create notification content
         let content = UNMutableNotificationContent()
-        content.title = "Время для упражнения"
-        content.body = "Напоминание: \(exerciseName)"
+        content.title = String(localized: "Время для упражнения")
+        content.body = String(format: NSLocalizedString("Напоминание: %@", comment: ""), exerciseName)
         content.sound = .default
         content.categoryIdentifier = "EXERCISE_REMINDER"
         
@@ -109,39 +109,39 @@ final class NotificationManager {
     private func getExerciseName(for assignment: ExerciseAssignment) -> String {
         switch assignment.exerciseType {
         case .exposure:
-            return "Экспозиция"
+            return String(localized: "Экспозиция")
         case .breathing:
             if let patternType = assignment.breathingPattern {
                 switch patternType {
                 case .box:
-                    return "Box Breathing"
+                    return String(localized: "Box Breathing")
                 case .fourSix:
-                    return "4-6 Breathing"
+                    return String(localized: "4-6 Breathing")
                 case .paced:
-                    return "Paced Breathing"
+                    return String(localized: "Paced Breathing")
                 }
             }
-            return "Дыхательное упражнение"
+            return String(localized: "Дыхательное упражнение")
         case .relaxation:
             if let relaxationType = assignment.relaxation {
                 switch relaxationType {
                 case .fullBody:
-                    return "Full Body Relaxation"
+                    return String(localized: "Full Body Relaxation")
                 case .short:
-                    return "Quick Relaxation"
+                    return String(localized: "Quick Relaxation")
                 }
             }
-            return "Релаксация"
+            return String(localized: "Релаксация")
         case .grounding:
             if let groundingType = assignment.grounding {
                 switch groundingType {
                 case .fiveFourThreeTwoOne:
-                    return "5-4-3-2-1"
+                    return String(localized: "5-4-3-2-1")
                 }
             }
-            return "Заземление"
+            return String(localized: "Заземление")
         case .behavioralActivation:
-            return "Поведенческая активация"
+            return String(localized: "Поведенческая активация")
         }
     }
     

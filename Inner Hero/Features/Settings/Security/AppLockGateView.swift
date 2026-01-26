@@ -20,7 +20,7 @@ struct AppLockGateView<Content: View>: View {
             if isBlocked {
                 LockedOverlay(
                     errorMessage: lockManager.lastErrorMessage,
-                    onUnlock: { Task { await lockManager.unlockIfPossible(reason: "Разблокировать Inner Hero") } }
+                    onUnlock: { Task { await lockManager.unlockIfPossible(reason: String(localized: "Разблокировать Inner Hero")) } }
                 )
                 .transition(.opacity)
             }
@@ -41,7 +41,7 @@ struct AppLockGateView<Content: View>: View {
     private func ensureUnlockedIfNeeded() async {
         if lockManager.shouldRequireUnlockAtLaunch(enabled: appLockEnabled) {
             lockManager.isUnlocked = false
-            await lockManager.unlockIfPossible(reason: "Разблокировать Inner Hero")
+            await lockManager.unlockIfPossible(reason: String(localized: "Разблокировать Inner Hero"))
             return
         }
         

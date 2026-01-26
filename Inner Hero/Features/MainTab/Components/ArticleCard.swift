@@ -54,7 +54,7 @@ struct ArticleCard: View {
                     Image(systemName: "clock")
                         .font(.caption2)
                         .foregroundStyle(TextColors.tertiary)
-                    Text("\(article.readTime) мин")
+                    Text(String(format: NSLocalizedString("%d мин", comment: ""), article.readTime))
                         .font(.caption2)
                         .foregroundStyle(TextColors.tertiary)
                 }
