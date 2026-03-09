@@ -32,7 +32,7 @@ struct ExerciseScheduleView: View {
                                 scheduleRow(assignment: assignment)
                             }
                         } header: {
-                            Text("Активные расписания")
+                            Text("Active schedules")
                         }
                     }
                     
@@ -42,12 +42,12 @@ struct ExerciseScheduleView: View {
                                 scheduleRow(assignment: assignment)
                             }
                         } header: {
-                            Text("Неактивные расписания")
+                            Text("Inactive schedules")
                         }
                     }
                 }
             }
-            .navigationTitle("Расписание")
+            .navigationTitle("Schedule")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -59,21 +59,21 @@ struct ExerciseScheduleView: View {
                             .font(.headline)
                             .foregroundStyle(TextColors.toolbar)
                     }
-                    .accessibilityLabel("Добавить расписание")
+                    .accessibilityLabel("Add schedule")
                 }
             }
             .sheet(isPresented: $showingEditSheet) {
                 ScheduleExerciseView(assignment: assignmentToEdit)
             }
-            .alert("Удалить расписание?", isPresented: $showingDeleteAlert, presenting: assignmentToDelete) { assignment in
-                Button("Отмена", role: .cancel) {
+            .alert("Delete schedule?", isPresented: $showingDeleteAlert, presenting: assignmentToDelete) { assignment in
+                Button("Cancel", role: .cancel) {
                     assignmentToDelete = nil
                 }
-                Button("Удалить", role: .destructive) {
+                Button("Delete", role: .destructive) {
                     deleteAssignment(assignment)
                 }
             } message: { assignment in
-                Text("Вы уверены, что хотите удалить это расписание?")
+                Text("Are you sure you want to delete this schedule?")
             }
         }
     }
@@ -92,11 +92,11 @@ struct ExerciseScheduleView: View {
                 .accessibilityHidden(true)
             
             VStack(spacing: 12) {
-                Text("Нет расписаний")
+                Text("No schedules")
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
                 
-                Text("Создайте расписание для регулярных напоминаний о упражнениях")
+                Text("Create a schedule for regular exercise reminders")
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
@@ -145,7 +145,7 @@ struct ExerciseScheduleView: View {
                 assignmentToDelete = assignment
                 showingDeleteAlert = true
             } label: {
-                Label("Удалить", systemImage: "trash")
+                Label("Delete", systemImage: "trash")
             }
         }
     }
@@ -157,7 +157,7 @@ struct ExerciseScheduleView: View {
                let exposure = exposures.first(where: { $0.id == exposureId }) {
                 return exposure.localizedTitle
             }
-            return "Экспозиция"
+            return "Exposure"
             
         case .breathing:
             if let patternType = assignment.breathingPattern {
@@ -165,7 +165,7 @@ struct ExerciseScheduleView: View {
                     return pattern.name
                 }
             }
-            return "Дыхательное упражнение"
+            return "Breathing exercise"
             
         case .relaxation:
             if let relaxationType = assignment.relaxation {
@@ -173,21 +173,21 @@ struct ExerciseScheduleView: View {
                     return exercise.name
                 }
             }
-            return "Релаксация"
+            return "Relaxation"
             
         case .grounding:
             if let groundingType = assignment.grounding,
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
                 return exercise.name
             }
-            return "Заземление"
+            return "Grounding"
             
         case .behavioralActivation:
             if let activityListId = assignment.activityListId,
                let activityList = activityLists.first(where: { $0.id == activityListId }) {
                 return activityList.localizedTitle
             }
-            return "Поведенческая активация"
+            return "Behavioral activation"
         }
     }
     

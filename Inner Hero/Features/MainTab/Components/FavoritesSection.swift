@@ -25,7 +25,7 @@ struct FavoritesSection: View {
                 Image(systemName: "heart.fill")
                     .font(.body)
                     .foregroundStyle(accent)
-                Text("Любимые упражнения")
+                Text("Favorite exercises")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(accent)
             }
@@ -58,11 +58,11 @@ struct FavoritesSection: View {
     
     private var emptyStateView: some View {
         VStack(spacing: 8) {
-            Text("Нет избранных упражнений")
+            Text("No favorite exercises")
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
             
-            Text("Добавьте упражнения в избранное для быстрого доступа")
+            Text("Add exercises to favorites for quick access")
                 .font(.caption)
                 .foregroundStyle(TextColors.tertiary)
                 .multilineTextAlignment(.center)
@@ -142,7 +142,7 @@ struct FavoritesSection: View {
                 return FavoriteExerciseItem(
                     id: favorite.id,
                     name: activityList.localizedTitle,
-                    description: String(localized: "Список активностей для поведенческой активации"),
+                    description: String(localized: "Activity list for behavioral activation"),
                     icon: "figure.walk",
                     color: .green,
                     exerciseType: .behavioralActivation,
@@ -256,7 +256,7 @@ struct FavoriteExerciseCard: View {
                let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == patternType }) {
                 BreathingSessionView(pattern: pattern)
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
             
         case .relaxation:
@@ -265,7 +265,7 @@ struct FavoriteExerciseCard: View {
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == relaxationType }) {
                 RelaxationExerciseDetailView(exercise: exercise)
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
             
         case .grounding:
@@ -274,7 +274,7 @@ struct FavoriteExerciseCard: View {
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
                 GroundingSessionView(exercise: exercise)
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
             
         case .behavioralActivation:
@@ -295,7 +295,7 @@ struct ExposureNavigationView: View {
                let exposure = exposures.first(where: { $0.id == exerciseId }) {
                 ExposureDetailView(exposure: exposure, onStartSession: {})
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
         }
     }

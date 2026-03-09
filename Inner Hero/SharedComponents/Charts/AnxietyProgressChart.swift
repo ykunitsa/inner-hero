@@ -50,7 +50,7 @@ struct AnxietyProgressChart: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: Layout.headerSpacing) {
-            Label("Динамика тревожности", systemImage: "chart.line.uptrend.xyaxis")
+            Label("Anxiety dynamics", systemImage: "chart.line.uptrend.xyaxis")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
@@ -77,7 +77,7 @@ struct AnxietyProgressChart: View {
                                 height: chartHeight * beforeHeight,
                                 maxHeight: chartHeight,
                                 color: .blue,
-                                label: "До"
+                                label: "Before"
                             )
                             
                             VStack {
@@ -93,7 +93,7 @@ struct AnxietyProgressChart: View {
                                 height: chartHeight * afterHeight,
                                 maxHeight: chartHeight,
                                 color: changeColor,
-                                label: "После"
+                                label: "After"
                             )
                         }
                         .frame(maxWidth: .infinity)
@@ -101,12 +101,12 @@ struct AnxietyProgressChart: View {
                 }
                 .frame(height: Layout.chartHeight)
                 .accessibilityElement(children: .contain)
-                .accessibilityLabel("График динамики тревожности")
+                .accessibilityLabel("Anxiety dynamics chart")
                 
                 HStack {
-                    ScaleLabelView(value: "0", description: "Нет тревоги", alignment: .leading)
+                    ScaleLabelView(value: "0", description: "No anxiety", alignment: .leading)
                     Spacer()
-                    ScaleLabelView(value: "10", description: "Максимум", alignment: .trailing)
+                    ScaleLabelView(value: "10", description: "Maximum", alignment: .trailing)
                 }
                 .accessibilityHidden(true)
             }
@@ -117,7 +117,7 @@ struct AnxietyProgressChart: View {
             )
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Динамика тревожности от \(anxietyBefore) до \(anxietyAfter)")
+        .accessibilityLabel("Anxiety dynamics from \(anxietyBefore) to \(anxietyAfter)")
     }
 }
 

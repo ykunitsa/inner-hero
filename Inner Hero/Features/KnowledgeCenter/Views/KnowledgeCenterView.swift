@@ -9,7 +9,7 @@ struct KnowledgeCenterView: View {
             List {
                 if groupedArticles.isEmpty {
                     ContentUnavailableView {
-                        Label("Нет статей", systemImage: "book")
+                        Label("No articles", systemImage: "book")
                     } description: {
                         Text(query.isEmpty ? "Статьи пока недоступны" : "По запросу ничего не найдено")
                     }
@@ -26,7 +26,7 @@ struct KnowledgeCenterView: View {
             .listStyle(.insetGrouped)
             .scrollContentBackground(.hidden)
             .background(TopMeshGradientBackground())
-            .navigationTitle("Центр знаний")
+            .navigationTitle("Knowledge center")
             .navigationBarTitleDisplayMode(.large)
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Поиск")
         }
@@ -96,7 +96,7 @@ private struct KnowledgeCenterArticleRow: View {
                         .lineLimit(2)
                     
                     HStack(spacing: 10) {
-                        Label(String(format: NSLocalizedString("%d мин", comment: ""), article.readTime), systemImage: "clock")
+                        Label(String(format: NSLocalizedString("%d min", comment: ""), article.readTime), systemImage: "clock")
                             .labelStyle(.titleAndIcon)
                         
                         Text(article.category)

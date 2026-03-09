@@ -31,7 +31,7 @@ struct GroundingExerciseCardView: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(exercise.name)
-        .accessibilityHint("Нажмите дважды, чтобы открыть детали. Запуск сеанса доступен внутри.")
+        .accessibilityHint("Double-tap to open details. Starting a session is available inside.")
     }
     
     private var header: some View {
@@ -85,7 +85,7 @@ struct GroundingExerciseCardView: View {
                     Image(systemName: "calendar.badge.checkmark")
                         .font(.caption2)
                         .foregroundStyle(.orange)
-                        .accessibilityLabel("Запланировано")
+                        .accessibilityLabel("Scheduled")
                 }
             }
         }
@@ -94,7 +94,7 @@ struct GroundingExerciseCardView: View {
     
     private var formattedDuration: String {
         let minutes = max(1, Int(exercise.estimatedDuration / 60))
-        return "\(minutes) мин"
+        return String(format: String(localized: "%d min"), minutes)
     }
     
     private func statItem(systemName: String, value: Int) -> some View {

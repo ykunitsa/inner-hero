@@ -27,11 +27,11 @@ enum TimePeriod: CaseIterable {
     
     var label: String {
         switch self {
-        case .day: return String(localized: "ДН")
-        case .week: return String(localized: "НЕД")
-        case .month: return String(localized: "МЕС")
-        case .sixMonths: return String(localized: "6 МЕС")
-        case .year: return String(localized: "ГОД")
+        case .day: return String(localized: "D")
+        case .week: return String(localized: "WK")
+        case .month: return String(localized: "MO")
+        case .sixMonths: return String(localized: "6 MO")
+        case .year: return String(localized: "YR")
         }
     }
     
@@ -79,9 +79,9 @@ struct ChartStatistics {
         
         var description: String {
             switch self {
-            case .improving: return String(localized: "Улучшение")
-            case .stable: return String(localized: "Стабильно")
-            case .worsening: return String(localized: "Ухудшение")
+            case .improving: return String(localized: "Improving")
+            case .stable: return String(localized: "Stable")
+            case .worsening: return String(localized: "Worsening")
             }
         }
     }

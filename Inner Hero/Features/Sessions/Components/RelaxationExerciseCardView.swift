@@ -82,7 +82,7 @@ struct RelaxationExerciseCardView: View {
                     Image(systemName: "calendar.badge.checkmark")
                         .font(.caption2)
                         .foregroundStyle(.orange)
-                        .accessibilityLabel("Запланировано")
+                        .accessibilityLabel("Scheduled")
                 }
             }
         }
@@ -95,12 +95,12 @@ struct RelaxationExerciseCardView: View {
     
     private var formattedDuration: String {
         let minutes = Int(exercise.duration / 60)
-        return "\(minutes) мин"
+        return String(format: String(localized: "%d min"), minutes)
     }
     
     private var formattedDurationPlain: String {
         let minutes = Int(exercise.duration / 60)
-        return "\(minutes) мин"
+        return String(format: String(localized: "%d min"), minutes)
     }
     
     private func statItem(systemName: String, value: Int) -> some View {

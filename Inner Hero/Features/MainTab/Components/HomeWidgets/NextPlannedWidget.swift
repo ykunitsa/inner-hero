@@ -5,8 +5,8 @@ struct NextPlannedWidget: View {
     
     private func relativeDayLabel(for date: Date) -> String {
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return String(localized: "Сегодня") }
-        if calendar.isDateInTomorrow(date) { return String(localized: "Завтра") }
+        if calendar.isDateInToday(date) { return String(localized: "Today") }
+        if calendar.isDateInTomorrow(date) { return String(localized: "Tomorrow") }
         return date.formatted(.dateTime.day().month(.abbreviated))
     }
     
@@ -19,7 +19,7 @@ struct NextPlannedWidget: View {
                     WidgetCard(minHeight: 120) {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack(alignment: .firstTextBaseline) {
-                                Label("Следующее", systemImage: "calendar.badge.clock")
+                                Label("Next", systemImage: "calendar.badge.clock")
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(.blue)
                                 Spacer()
@@ -49,15 +49,15 @@ struct NextPlannedWidget: View {
                 } label: {
                     WidgetCard(minHeight: 120) {
                         VStack(alignment: .leading, spacing: 10) {
-                            Label("Следующее", systemImage: "calendar.badge.clock")
+                            Label("Next", systemImage: "calendar.badge.clock")
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(.blue)
                             
-                            Text("Нет задач")
+                            Text("No tasks")
                                 .font(.title3.weight(.semibold))
                                 .foregroundStyle(.primary)
                             
-                            Text("Открыть расписание")
+                            Text("Open schedule")
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(.blue)
                         }

@@ -77,11 +77,11 @@ struct CompleteSessionView: View {
                     praiseCard
                     
                     VStack(alignment: .leading, spacing: 16) {
-                        Label("Уровень тревоги после сеанса", systemImage: "gauge")
+                        Label("Anxiety level after session", systemImage: "gauge")
                             .font(.headline)
                             .foregroundStyle(TextColors.primary)
                         
-                        Text("Оцените ваш уровень тревоги сейчас (0–10)")
+                        Text("Rate your anxiety level now (0–10)")
                             .font(.subheadline)
                             .foregroundStyle(TextColors.secondary)
                         
@@ -113,16 +113,16 @@ struct CompleteSessionView: View {
                     }
                     .padding(.horizontal, 20)
                     .accessibilityElement(children: .contain)
-                    .accessibilityLabel("Уровень тревоги после сеанса")
+                    .accessibilityLabel("Anxiety level after session")
                     
                     progressCard
                     
                     VStack(alignment: .leading, spacing: 12) {
-                        Label("Опишите ваше состояние", systemImage: "note.text")
+                        Label("Describe how you feel", systemImage: "note.text")
                             .font(.headline)
                             .foregroundStyle(TextColors.primary)
                         
-                        Text("Что вы чувствуете сейчас? Какие мысли/ощущения были во время сеанса? Что помогло?")
+                        Text("What do you feel now? What thoughts/sensations were there during the session? What helped?")
                             .font(.subheadline)
                             .foregroundStyle(TextColors.secondary)
                         
@@ -162,30 +162,30 @@ struct CompleteSessionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Сохранить") {
+                    Button("Save") {
                         completeSession()
                     }
                     .fontWeight(.semibold)
                     .foregroundStyle(TextColors.toolbar)
-                    .accessibilityLabel("Сохранить результат сеанса")
-                    .accessibilityHint("Дважды нажмите чтобы сохранить и завершить")
+                    .accessibilityLabel("Save session result")
+                    .accessibilityHint("Double-tap to save and finish")
                 }
                 
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Готово") {
+                    Button("Done") {
                         focusedField = nil
                     }
                 }
             }
-            .alert("Ошибка", isPresented: $showError) {
+            .alert("Error", isPresented: $showError) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(errorMessage)
@@ -198,23 +198,23 @@ struct CompleteSessionView: View {
     
     private var praiseCard: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Вы молодец!", systemImage: "sparkles")
+            Label("Well done!", systemImage: "sparkles")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
-            Text("Вы завершили сеанс — это уже важный шаг. Даже если тревога была высокой, вы тренировались оставаться рядом с ощущениями и двигаться вперёд.")
+            Text("You completed the session—that's already a big step. Even if anxiety was high, you practiced staying with the feelings and moving forward.")
                 .font(.body)
                 .foregroundStyle(TextColors.secondary)
             
             VStack(alignment: .leading, spacing: 12) {
                 PraiseTipRow(
                     iconSystemName: "checkmark.seal",
-                    text: "Отметьте любой маленький прогресс — он накапливается."
+                    text: "Note any small progress—it adds up."
                 )
                 
                 PraiseTipRow(
                     iconSystemName: "heart.text.square",
-                    text: "Запишите, что помогло (дыхание, фокус на задаче, поддерживающая мысль) — это пригодится в следующий раз."
+                    text: "Write down what helped (breathing, focus on the task, supportive thought)—it will be useful next time."
                 )
             }
             .font(.subheadline)
@@ -228,13 +228,13 @@ struct CompleteSessionView: View {
         )
         .padding(.horizontal, 20)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Похвала за выполнение сеанса")
-        .accessibilityHint("Короткое поддерживающее сообщение и подсказки")
+        .accessibilityLabel("Praise for completing the session")
+        .accessibilityHint("Short supportive message and tips")
     }
     
     private var sessionSummaryCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Результаты сеанса", systemImage: "chart.bar.fill")
+            Label("Session results", systemImage: "chart.bar.fill")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
@@ -253,13 +253,13 @@ struct CompleteSessionView: View {
                     Text("\(session.completedStepIndices.count)")
                         .font(.title2.weight(.bold))
                         .foregroundStyle(TextColors.primary)
-                    Text("шагов")
+                    Text("steps")
                         .font(.caption)
                         .foregroundStyle(TextColors.secondary)
                 }
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("\(session.completedStepIndices.count) шагов выполнено")
+                .accessibilityLabel(String(format: String(localized: "%d steps completed"), session.completedStepIndices.count))
                 
                 Divider()
                 
@@ -278,13 +278,13 @@ struct CompleteSessionView: View {
                         .font(.title3.weight(.bold))
                         .foregroundStyle(TextColors.primary)
                         .monospacedDigit()
-                    Text("время")
+                    Text("time")
                         .font(.caption)
                         .foregroundStyle(TextColors.secondary)
                 }
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Время выполнения: \(formatTime(session.getTotalStepsTime()))")
+                .accessibilityLabel("Completion time: \(formatTime(session.getTotalStepsTime()))")
             }
         }
         .padding(20)
@@ -298,12 +298,12 @@ struct CompleteSessionView: View {
     
     private var progressCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Прогресс", systemImage: "chart.line.uptrend.xyaxis")
+            Label("Progress", systemImage: "chart.line.uptrend.xyaxis")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
             HStack(spacing: 14) {
-                progressGauge(title: "До", value: session.anxietyBefore)
+                progressGauge(title: "Before", value: session.anxietyBefore)
                 
                 Image(systemName: "arrow.right")
                     .font(.caption)
@@ -311,12 +311,12 @@ struct CompleteSessionView: View {
                     .padding(.horizontal, 2)
                     .accessibilityHidden(true)
                 
-                progressGauge(title: "После", value: Int(anxietyAfter))
+                progressGauge(title: "After", value: Int(anxietyAfter))
                 
                 Spacer(minLength: 8)
                 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text("Изменение")
+                    Text("Change")
                         .font(.caption)
                         .foregroundStyle(TextColors.secondary)
                     
@@ -338,7 +338,7 @@ struct CompleteSessionView: View {
         )
         .padding(.horizontal, 20)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Прогресс тревоги")
+        .accessibilityLabel("Anxiety progress")
         .accessibilityValue(accessibilityProgressValue)
     }
 
@@ -369,7 +369,7 @@ struct CompleteSessionView: View {
         let after = Int(anxietyAfter)
         let change = before - after
         let changeText = change == 0 ? "0" : "\(change > 0 ? "-" : "+")\(abs(change))"
-        return "До: \(before) из 10, После: \(after) из 10, Изменение: \(changeText)"
+        return "Before: \(before) of 10, After: \(after) of 10, Change: \(changeText)"
     }
     
     private struct PraiseTipRow: View {
@@ -423,7 +423,7 @@ struct CompleteSessionView: View {
             }
             onComplete()
         } catch {
-            errorMessage = "Не удалось сохранить результат: \(error.localizedDescription)"
+            errorMessage = String(localized: "Failed to save result.") + " \(error.localizedDescription)"
             showError = true
         }
     }

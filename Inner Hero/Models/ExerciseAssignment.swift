@@ -108,13 +108,13 @@ final class ExerciseAssignment {
     func getDayNamesString() -> String {
         let names = getLocalizedDayNames()
         if names.isEmpty {
-            return String(localized: "Не выбрано")
+            return String(localized: "Not selected")
         } else if names.count == 7 {
-            return String(localized: "Каждый день")
+            return String(localized: "Every day")
         } else if daysOfWeek.sorted() == [2, 3, 4, 5, 6] {
-            return String(localized: "Будни")
+            return String(localized: "Weekdays")
         } else if daysOfWeek.sorted() == [1, 7] {
-            return String(localized: "Выходные")
+            return String(localized: "Weekends")
         } else {
             return names.joined(separator: ", ")
         }

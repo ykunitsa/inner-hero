@@ -28,7 +28,7 @@ struct ActivationCompletionView: View {
                             )
                             .accessibilityHidden(true)
                         
-                        Text("Активность завершена")
+                        Text("Activity completed")
                             .font(.title2.weight(.semibold))
                             .foregroundStyle(TextColors.primary)
                     }
@@ -43,24 +43,24 @@ struct ActivationCompletionView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 40)
             }
-            .navigationTitle("Завершение сеанса")
+            .navigationTitle("Ending session")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Сохранить") {
+                    Button("Save") {
                         completeSession()
                     }
                     .foregroundStyle(TextColors.toolbar)
                     .fontWeight(.semibold)
-                    .accessibilityLabel("Сохранить сеанс")
-                    .accessibilityHint("Сохранит сеанс и оценку впечатления")
+                    .accessibilityLabel("Save session")
+                    .accessibilityHint("Will save the session and enjoyment rating")
                 }
             }
         }
@@ -74,7 +74,7 @@ struct ActivationCompletionView: View {
                 Image(systemName: "info.circle.fill")
                     .font(.title3)
                     .foregroundStyle(.green)
-                Text("Итоги сеанса")
+                Text("Session summary")
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
             }
@@ -83,25 +83,25 @@ struct ActivationCompletionView: View {
             
             VStack(spacing: 12) {
                 SummaryRow(
-                    label: "Активность",
+                    label: "Activity",
                     value: activityName,
                     icon: "figure.walk"
                 )
                 
                 SummaryRow(
-                    label: "Начало",
+                    label: "Start",
                     value: formatTime(startedAt),
                     icon: "clock"
                 )
                 
                 SummaryRow(
-                    label: "Завершено",
+                    label: "Completed",
                     value: formatTime(Date()),
                     icon: "checkmark.circle"
                 )
                 
                 SummaryRow(
-                    label: "Длительность",
+                    label: "Duration",
                     value: formatDuration(Date().timeIntervalSince(startedAt)),
                     icon: "timer"
                 )
@@ -118,7 +118,7 @@ struct ActivationCompletionView: View {
                 .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Итоги сеанса: \(activityName), начало в \(formatTime(startedAt))")
+        .accessibilityLabel(String(format: String(localized: "Session summary: %1$@, started at %2$@"), activityName, formatTime(startedAt)))
     }
     
     // MARK: - Rating Section
@@ -129,12 +129,12 @@ struct ActivationCompletionView: View {
                 Image(systemName: "star.fill")
                     .font(.title3)
                     .foregroundStyle(.green)
-                Text("Насколько понравилось?")
+                Text("How much did you like it?")
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
             }
             
-            Text("Оцените, насколько приятной была эта активность (1–5)")
+            Text("Rate how enjoyable this activity was (1–5)")
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
             
@@ -161,21 +161,21 @@ struct ActivationCompletionView: View {
                 VStack(spacing: 8) {
                     Slider(value: $rating, in: 1...5, step: 1)
                         .tint(ratingColor(for: Int(rating)))
-                        .accessibilityLabel("Оценка впечатления")
-                        .accessibilityValue("\(Int(rating)) из 5")
+                        .accessibilityLabel(String(localized: "Enjoyment rating"))
+                        .accessibilityValue(String(format: String(localized: "%d of 5"), Int(rating)))
                     
                     HStack {
-                        Text("1\nСовсем не понравилось")
+                        Text("1\nDid not like at all")
                             .font(.caption)
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(TextColors.secondary)
                         Spacer()
-                        Text("3\nНормально")
+                        Text("3\nOkay")
                             .font(.caption)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(TextColors.secondary)
                         Spacer()
-                        Text("5\nОчень понравилось")
+                        Text("5\nLiked very much")
                             .font(.caption)
                             .multilineTextAlignment(.trailing)
                             .foregroundStyle(TextColors.secondary)
@@ -242,15 +242,15 @@ struct ActivationCompletionView: View {
     private func ratingLabel(for value: Int) -> String {
         switch value {
         case 1:
-            return "Совсем не понравилось"
+            return String(localized: "Did not like at all")
         case 2:
-            return "Скорее нет"
+            return String(localized: "Rather not")
         case 3:
-            return "Нормально"
+            return String(localized: "Okay")
         case 4:
-            return "Скорее да"
+            return String(localized: "Rather yes")
         case 5:
-            return "Очень понравилось"
+            return String(localized: "Liked very much")
         default:
             return ""
         }
@@ -288,7 +288,7 @@ struct SummaryRow: View {
 
 #Preview {
     ActivationCompletionView(
-        activityName: "Утренняя прогулка в парке",
+            activityName: "Morning walk in the park",
         startedAt: Date().addingTimeInterval(-900), // 15 minutes ago
         onComplete: { rating in
             print("Завершено, оценка: \(rating?.description ?? "нет")")

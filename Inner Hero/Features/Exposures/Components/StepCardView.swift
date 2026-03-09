@@ -336,7 +336,6 @@ struct StepsProgressView: View {
                     .disabled(onStepTap == nil)
                     .frame(minHeight: 44)
                     .accessibilityAddTraits(onStepTap != nil ? .isButton : [])
-                    .accessibilityHint(onStepTap != nil ? "Дважды нажмите для перехода к этому шагу" : "")
                 }
             }
             .padding(.horizontal, 20)

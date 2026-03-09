@@ -35,12 +35,12 @@ struct EditActivationView: View {
                 basicInfoSection
                 activitiesSection
             }
-            .navigationTitle("Редактировать список")
+            .navigationTitle("Edit list")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)
             .scrollDismissesKeyboard(.interactively)
-            .alert("Ошибка", isPresented: $showingError) {
-                Button("ОК", role: .cancel) { }
+            .alert("Error", isPresented: $showingError) {
+                Button("OK", role: .cancel) { }
             } message: {
                 Text(errorMessage)
             }
@@ -49,12 +49,12 @@ struct EditActivationView: View {
     
     private var basicInfoSection: some View {
         Section {
-            TextField("Название списка", text: $title)
+            TextField("List name", text: $title)
                 .font(.body)
                 .focused($focusedField, equals: .title)
-                .accessibilityLabel("Название списка активностей")
+                .accessibilityLabel("Activity list name")
         } header: {
-            Text("Основная информация")
+            Text("Basic information")
                 .font(.footnote)
                 .fontWeight(.medium)
         }
@@ -65,7 +65,7 @@ struct EditActivationView: View {
             activitiesListView
         } header: {
             HStack {
-                Text("Активности")
+                Text("Activities")
                     .font(.footnote)
                     .fontWeight(.medium)
                 
@@ -80,11 +80,11 @@ struct EditActivationView: View {
                 }
                 .buttonStyle(.plain)
                 .frame(minWidth: TouchTarget.minimum, minHeight: TouchTarget.minimum)
-                .accessibilityLabel("Добавить активность")
-                .accessibilityHint("Добавляет пустую активность в конец списка")
+                .accessibilityLabel("Add activity")
+                .accessibilityHint("Adds an empty activity to the end of the list")
             }
         } footer: {
-            Text("Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления.")
+            Text("Hold the ☰ icon to reorder or swipe left to delete.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -110,7 +110,7 @@ struct EditActivationView: View {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button("Отмена") {
+            Button("Cancel") {
                 dismiss()
             }
             .font(.body)
@@ -123,20 +123,20 @@ struct EditActivationView: View {
         }
         
         ToolbarItem(placement: .confirmationAction) {
-            Button("Сохранить") {
+            Button("Save") {
                 saveChanges()
             }
             .font(.body)
             .fontWeight(.semibold)
             .disabled(!canSave)
             .opacity(canSave ? 1.0 : 0.5)
-            .accessibilityLabel("Сохранить изменения")
-            .accessibilityHint(canSave ? "Сохраняет список активностей и закрывает редактор" : "Заполните все обязательные поля")
+            .accessibilityLabel(String(localized: "Save changes"))
+            .accessibilityHint(canSave ? String(localized: "Saves the activity list and closes the editor") : String(localized: "Fill in all required fields"))
         }
         
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
-            Button("Готово") {
+            Button("Done") {
                 focusedField = nil
             }
             .font(.headline)
@@ -178,7 +178,7 @@ struct EditActivationView: View {
             .filter { !$0.isEmpty }
         
         guard !trimmedTitle.isEmpty, !validActivities.isEmpty else {
-            errorMessage = "Введите название и добавьте хотя бы одну активность"
+            errorMessage = String(localized: "Enter name and add at least one activity")
             showingError = true
             return
         }
@@ -192,7 +192,7 @@ struct EditActivationView: View {
             dismiss()
         } catch {
             HapticFeedback.error()
-            errorMessage = "Не удалось сохранить изменения: \(error.localizedDescription)"
+            errorMessage = String(localized: "Failed to save changes.") + " \(error.localizedDescription)"
             showingError = true
         }
     }
@@ -201,8 +201,8 @@ struct EditActivationView: View {
 #Preview {
     EditActivationView(
         activation: ActivityList(
-            title: "Утренняя рутина",
-            activities: ["Разминка", "Медитация"],
+            title: "Morning routine",
+            activities: ["Warm-up", "Meditation"],
             isPredefined: false
         )
     )

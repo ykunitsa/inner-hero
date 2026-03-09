@@ -62,12 +62,12 @@ struct ExposureProgressChart: View {
                 )
         )
         .accessibilityElement(children: .contain)
-                .accessibilityLabel("График прогресса тревожности")
+                .accessibilityLabel("Anxiety progress chart")
     }
     
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label("Динамика тревожности", systemImage: "chart.line.uptrend.xyaxis")
+            Label("Anxiety dynamics", systemImage: "chart.line.uptrend.xyaxis")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
                 .accessibilityAddTraits(.isHeader)
@@ -98,14 +98,14 @@ struct ExposureProgressChart: View {
                             .monospacedDigit()
                     }
                     
-                    Text("уровень")
+                    Text("level")
                         .font(.title3)
                         .foregroundStyle(TextColors.secondary)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(
                     String(
-                        format: NSLocalizedString("Текущий уровень тревожности: %d", comment: ""),
+                        format: NSLocalizedString("Current anxiety level: %d", comment: ""),
                         latest.anxietyAfter ?? latest.anxietyBefore
                     )
                 )
@@ -115,12 +115,12 @@ struct ExposureProgressChart: View {
                     .foregroundStyle(TextColors.tertiary)
                     .accessibilityLabel(
                         String(
-                            format: NSLocalizedString("Дата: %@", comment: ""),
+                            format: NSLocalizedString("Date: %@", comment: ""),
                             latest.date.formatted(date: .long, time: .omitted)
                         )
                     )
             } else {
-                Text("Нет данных")
+                Text("No data")
                     .font(.system(size: 48, weight: .medium))
                     .foregroundStyle(TextColors.tertiary)
             }
@@ -167,16 +167,16 @@ struct ExposureProgressChart: View {
                 .fill(Color(red: 0.95, green: 0.96, blue: 0.98))
         )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Выбор периода отображения")
+        .accessibilityLabel("Display period selection")
     }
     
     private func periodAccessibilityLabel(for period: TimePeriod) -> String {
         switch period {
-        case .day: return String(localized: "Один день")
-        case .week: return String(localized: "Неделя")
-        case .month: return String(localized: "Месяц")
-        case .sixMonths: return String(localized: "Шесть месяцев")
-        case .year: return String(localized: "Год")
+        case .day: return String(localized: "One day")
+        case .week: return String(localized: "Week")
+        case .month: return String(localized: "Month")
+        case .sixMonths: return String(localized: "Six months")
+        case .year: return String(localized: "Year")
         }
     }
     
@@ -192,12 +192,12 @@ struct ExposureProgressChart: View {
                         )
                     )
                     .frame(width: 10, height: 10)
-                Text("До сеанса")
+                Text("Before session")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Синяя линия: тревожность до сеанса")
+            .accessibilityLabel("Blue line: anxiety before session")
             
             HStack(spacing: 6) {
                 Circle()
@@ -209,12 +209,12 @@ struct ExposureProgressChart: View {
                         )
                     )
                     .frame(width: 10, height: 10)
-                Text("После сеанса")
+                Text("After session")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Голубая линия: тревожность после сеанса")
+            .accessibilityLabel("Blue line: anxiety after session")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -223,13 +223,13 @@ struct ExposureProgressChart: View {
         Chart {
             // Reference lines (average)
             if let stats = statistics, !filteredDataPoints.isEmpty {
-            RuleMark(y: .value(String(localized: "Среднее До"), stats.averageAnxietyBefore))
+            RuleMark(y: .value(String(localized: "Avg Before"), stats.averageAnxietyBefore))
                     .foregroundStyle(.blue.opacity(0.25))
                     .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
                     .accessibilityHidden(true)
                 
                 if stats.averageAnxietyAfter != stats.averageAnxietyBefore {
-                RuleMark(y: .value(String(localized: "Среднее После"), stats.averageAnxietyAfter))
+                RuleMark(y: .value(String(localized: "Avg After"), stats.averageAnxietyAfter))
                         .foregroundStyle(.cyan.opacity(0.25))
                         .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
                         .accessibilityHidden(true)
@@ -239,17 +239,17 @@ struct ExposureProgressChart: View {
             // Anxiety Before line - continuous line through all points
             ForEach(filteredDataPoints) { point in
                 LineMark(
-                    x: .value(String(localized: "Дата"), point.date),
-                    y: .value(String(localized: "До сеанса"), point.anxietyBefore),
-                    series: .value(String(localized: "Серия"), String(localized: "До"))
+                    x: .value(String(localized: "Date"), point.date),
+                    y: .value(String(localized: "Before session"), point.anxietyBefore),
+                    series: .value(String(localized: "Streak"), String(localized: "Before"))
                 )
                 .foregroundStyle(.blue)
                 .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                 .interpolationMethod(.catmullRom)
                 
                 PointMark(
-                    x: .value(String(localized: "Дата"), point.date),
-                    y: .value(String(localized: "До сеанса"), point.anxietyBefore)
+                    x: .value(String(localized: "Date"), point.date),
+                    y: .value(String(localized: "Before session"), point.anxietyBefore)
                 )
                 .foregroundStyle(.blue)
                 .symbolSize(80)
@@ -259,17 +259,17 @@ struct ExposureProgressChart: View {
             ForEach(filteredDataPoints.filter { $0.anxietyAfter != nil }) { point in
                 if let after = point.anxietyAfter {
                     LineMark(
-                        x: .value(String(localized: "Дата"), point.date),
-                        y: .value(String(localized: "После сеанса"), after),
-                        series: .value(String(localized: "Серия"), String(localized: "После"))
+                        x: .value(String(localized: "Date"), point.date),
+                        y: .value(String(localized: "After session"), after),
+                        series: .value(String(localized: "Streak"), String(localized: "After"))
                     )
                     .foregroundStyle(.cyan)
                     .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                     .interpolationMethod(.catmullRom)
                     
                     PointMark(
-                        x: .value(String(localized: "Дата"), point.date),
-                        y: .value(String(localized: "После сеанса"), after)
+                        x: .value(String(localized: "Date"), point.date),
+                        y: .value(String(localized: "After session"), after)
                     )
                     .foregroundStyle(.cyan)
                     .symbolSize(80)
@@ -298,20 +298,20 @@ struct ExposureProgressChart: View {
         .frame(height: 220)
         .padding(.vertical, 8)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("График динамики тревожности по датам")
+        .accessibilityLabel("Anxiety dynamics chart by date")
     }
     
     private func statisticsSection(stats: ChartStatistics) -> some View {
         HStack(spacing: 20) {
             StatItemView(
-                title: "Среднее До",
+                title: "Avg Before",
                 value: String(format: "%.1f", stats.averageAnxietyBefore),
                 color: .blue
             )
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
                 String(
-                    format: NSLocalizedString("Средняя тревожность до сеанса: %@", comment: ""),
+                    format: NSLocalizedString("Average anxiety before session: %@", comment: ""),
                     String(format: "%.1f", stats.averageAnxietyBefore)
                 )
             )
@@ -321,14 +321,14 @@ struct ExposureProgressChart: View {
                 .accessibilityHidden(true)
             
             StatItemView(
-                title: "Среднее После",
+                title: "Avg After",
                 value: String(format: "%.1f", stats.averageAnxietyAfter),
                 color: .cyan
             )
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
                 String(
-                    format: NSLocalizedString("Средняя тревожность после сеанса: %@", comment: ""),
+                    format: NSLocalizedString("Average anxiety after session: %@", comment: ""),
                     String(format: "%.1f", stats.averageAnxietyAfter)
                 )
             )
@@ -353,7 +353,7 @@ struct ExposureProgressChart: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
                 String(
-                    format: NSLocalizedString("Тренд: %@, изменение %@", comment: ""),
+                    format: NSLocalizedString("Trend: %1$@, change %2$@", comment: ""),
                     stats.trendDirection.description,
                     String(format: "%.1f", abs(stats.averageChange))
                 )

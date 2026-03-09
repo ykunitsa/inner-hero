@@ -86,7 +86,7 @@ struct BreathingSessionView: View {
                             .foregroundStyle(.teal)
                             .frame(width: 30)
                         
-                        Text("Длительность")
+                        Text("Duration")
                             .font(.headline)
                             .foregroundStyle(TextColors.primary)
                         
@@ -111,7 +111,7 @@ struct BreathingSessionView: View {
                     Image(systemName: "xmark")
                         .font(.headline.weight(.semibold))
                 }
-                .accessibilityLabel("Выйти")
+                .accessibilityLabel("Sign out")
                 .tint(.teal)
             }
             
@@ -120,23 +120,23 @@ struct BreathingSessionView: View {
                     togglePlayPause()
                 } label: {
                     Label(
-                        controller.isBreathing && !controller.isPaused ? "Пауза" : "Пуск",
+                        controller.isBreathing && !controller.isPaused ? "Pause" : "Start",
                         systemImage: controller.isBreathing && !controller.isPaused ? "pause.fill" : "play.fill"
                     )
                 }
                 .tint(.teal)
                 .disabled(!controller.isBreathing && controller.elapsedTime > 0)
-                .accessibilityLabel(controller.isBreathing && !controller.isPaused ? "Пауза" : "Пуск")
+                .accessibilityLabel(controller.isBreathing && !controller.isPaused ? "Pause" : "Start")
                 
                 Spacer()
                 
                 Button {
                     showingFinishConfirmation = true
                 } label: {
-                    Label("Финиш", systemImage: "flag.checkered")
+                    Label("Finish", systemImage: "flag.checkered")
                 }
                 .tint(.teal)
-                .accessibilityLabel("Финиш")
+                .accessibilityLabel("Finish")
             }
         }
         .onAppear {
@@ -158,13 +158,13 @@ struct BreathingSessionView: View {
                 duration: newPhase.duration(for: controller.patternType)
             )
         }
-        .alert("Завершить сессию?", isPresented: $showingFinishConfirmation) {
-            Button("Отмена", role: .cancel) { }
-            Button("Завершить") {
+        .alert("End session?", isPresented: $showingFinishConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Finish") {
                 finishSession()
             }
         } message: {
-            Text("Вы уверены, что хотите завершить дыхательную сессию?")
+            Text("Are you sure you want to end the breathing session?")
         }
         .sheet(isPresented: $showingCongratsSheet, onDismiss: {
             guard shouldDismissAfterCongrats else { return }
@@ -185,7 +185,7 @@ struct BreathingSessionView: View {
     // MARK: - Helper Properties
     
     private var displayedInstruction: String {
-        controller.isPaused ? "Пауза" : controller.breathPhase.instruction
+        controller.isPaused ? "Pause" : controller.breathPhase.instruction
     }
     
     private var phaseIcon: String {

@@ -34,7 +34,7 @@ struct StartSessionSheet: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
@@ -65,7 +65,7 @@ struct StartSessionSheet: View {
                     .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.center)
                 
-                Text("Сеанс экспозиции")
+                Text("Exposure session")
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
             }
@@ -76,11 +76,11 @@ struct StartSessionSheet: View {
     
     private var guidanceSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Ты справишься", systemImage: "sparkles")
+            Label("You've got this", systemImage: "sparkles")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
-            Text("Экспозиция — это мягкая тренировка смелости: ты учишься оставаться рядом с тревогой и замечать, что с ней можно быть — она неприятная, но переносимая. Иногда тревога снижается во время шага, иногда — позже. И так, и так нормально.")
+            Text("Exposure is a gentle courage practice: you learn to stay with anxiety and notice that you can be with it—it's unpleasant but bearable. Sometimes anxiety goes down during the step, sometimes later. Both are okay.")
                 .font(.body)
                 .foregroundStyle(TextColors.secondary)
             
@@ -124,11 +124,11 @@ struct StartSessionSheet: View {
     
     private var anxietySliderSection: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Label("Уровень тревоги", systemImage: "gauge")
+            Label("Anxiety level", systemImage: "gauge")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
-            Text("Оцените ваш текущий уровень тревоги до начала сеанса (0–10)")
+            Text("Rate your current anxiety level before the session (0–10)")
                 .font(.body)
                 .foregroundStyle(TextColors.secondary)
             
@@ -201,7 +201,7 @@ struct StartSessionSheet: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Начать сеанс")
+                Text("Start session")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -220,7 +220,7 @@ struct StartSessionSheet: View {
             )
         }
         .padding(.horizontal, 20)
-        .accessibilityLabel("Начать сеанс")
+        .accessibilityLabel("Start session")
     }
     
     // MARK: - Helpers

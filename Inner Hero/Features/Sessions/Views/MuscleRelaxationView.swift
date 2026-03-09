@@ -36,7 +36,7 @@ struct MuscleRelaxationListView: View {
                 .padding(.bottom, 40)
             }
             .background(TopMeshGradientBackground(palette: .mint))
-            .navigationTitle("Мышечная релаксация")
+            .navigationTitle("Muscle relaxation")
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -48,7 +48,7 @@ struct MuscleRelaxationListView: View {
                 .foregroundStyle(.mint.gradient)
                 .accessibilityHidden(true)
             
-            Text("Техники прогрессивной мышечной релаксации помогают снять телесное напряжение и вернуть спокойствие")
+            Text("Progressive muscle relaxation techniques help release bodily tension and restore calm")
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
                 .multilineTextAlignment(.center)

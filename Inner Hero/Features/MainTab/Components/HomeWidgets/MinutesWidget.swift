@@ -7,7 +7,7 @@ struct MinutesWidget: View {
     var body: some View {
         WidgetCard(minHeight: 120) {
             VStack(alignment: .leading, spacing: 10) {
-                Label("Минуты практик", systemImage: "timer")
+                Label("Practice minutes", systemImage: "timer")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.teal)
                 
@@ -16,21 +16,21 @@ struct MinutesWidget: View {
                         .font(.system(.title, design: .rounded).weight(.semibold))
                         .foregroundStyle(.primary)
                         .monospacedDigit()
-                    Text("мин")
+                    Text("min")
                         .font(.headline)
                         .foregroundStyle(.secondary)
                 }
                 
-                Text(String(format: NSLocalizedString("За 7 дней: %d мин", comment: ""), weekMinutes))
+                Text(String(format: NSLocalizedString("In 7 days: %d min", comment: ""), weekMinutes))
                     .font(.subheadline.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Минуты практик")
+        .accessibilityLabel("Practice minutes")
         .accessibilityValue(
             String(
-                format: NSLocalizedString("Сегодня %d минут. За 7 дней %d минут.", comment: ""),
+                format: NSLocalizedString("Today %1$d minutes. In 7 days %2$d minutes.", comment: ""),
                 todayMinutes,
                 weekMinutes
             )

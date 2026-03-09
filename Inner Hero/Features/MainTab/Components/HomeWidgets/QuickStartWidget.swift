@@ -9,12 +9,12 @@ struct QuickStartWidget: View {
     var body: some View {
         WidgetCard(minHeight: 120) {
             VStack(alignment: .leading, spacing: 12) {
-                Label("Быстрый старт", systemImage: "bolt.fill")
+                Label("Quick start", systemImage: "bolt.fill")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.orange)
                 
                 if favorites.isEmpty {
-                    Text("Добавьте упражнения в избранное")
+                    Text("Add exercises to favorites")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -59,7 +59,7 @@ struct QuickStartWidget: View {
                let exposure = exposures.first(where: { $0.id == id }) {
                 return exposure.localizedTitle
             }
-            return String(localized: "Экспозиция")
+            return String(localized: "Exposure")
             
         case .breathing:
             if let raw = favorite.exerciseIdentifier,
@@ -67,7 +67,7 @@ struct QuickStartWidget: View {
                let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == type }) {
                 return pattern.name
             }
-            return String(localized: "Дыхание")
+            return String(localized: "Breathing")
             
         case .relaxation:
             if let raw = favorite.exerciseIdentifier,
@@ -75,7 +75,7 @@ struct QuickStartWidget: View {
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == type }) {
                 return exercise.name
             }
-            return String(localized: "Релаксация")
+            return String(localized: "Relaxation")
             
         case .grounding:
             if let raw = favorite.exerciseIdentifier,
@@ -83,10 +83,10 @@ struct QuickStartWidget: View {
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == type }) {
                 return exercise.name
             }
-            return String(localized: "Заземление")
+            return String(localized: "Grounding")
             
         case .behavioralActivation:
-            return String(localized: "Поведенческая активация")
+            return String(localized: "Behavioral activation")
         }
     }
     
@@ -122,7 +122,7 @@ struct QuickStartWidget: View {
                let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == type }) {
                 BreathingSessionView(pattern: pattern)
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
             
         case .relaxation:
@@ -131,7 +131,7 @@ struct QuickStartWidget: View {
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == type }) {
                 RelaxationExerciseDetailView(exercise: exercise)
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
             
         case .grounding:
@@ -140,7 +140,7 @@ struct QuickStartWidget: View {
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == type }) {
                 GroundingSessionView(exercise: exercise)
             } else {
-                Text("Упражнение не найдено")
+                Text("Exercise not found")
             }
             
         case .behavioralActivation:

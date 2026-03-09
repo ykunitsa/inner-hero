@@ -14,9 +14,9 @@ struct AllSessionsHistoryView: View {
             Group {
                 if completedSessions.isEmpty {
                     ContentUnavailableView {
-                        Label("Нет сеансов", systemImage: "chart.line.uptrend.xyaxis")
+                        Label("No sessions", systemImage: "chart.line.uptrend.xyaxis")
                     } description: {
-                        Text("Завершите первый сеанс терапии,\nчтобы увидеть историю")
+                        Text("Complete your first therapy session,\nto see history")
                             .multilineTextAlignment(.center)
                     }
                 } else {
@@ -30,7 +30,7 @@ struct AllSessionsHistoryView: View {
                     .listStyle(.insetGrouped)
                 }
             }
-            .navigationTitle("История")
+            .navigationTitle("History")
             .navigationBarTitleDisplayMode(.large)
         }
     }

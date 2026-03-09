@@ -158,7 +158,7 @@ struct HomeView: View {
                 .padding(.bottom, Spacing.xxl)
             }
             .homeBackground()
-            .navigationTitle("Сводка")
+            .navigationTitle("Summary")
             .navigationBarTitleDisplayMode(.large)
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -202,35 +202,35 @@ struct HomeView: View {
                let exposure = exposures.first(where: { $0.id == id }) {
                 return exposure.localizedTitle
             }
-            return String(localized: "Экспозиция")
+            return String(localized: "Exposure")
             
         case .breathing:
             if let type = assignment.breathingPattern,
                let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == type }) {
                 return pattern.name
             }
-            return String(localized: "Дыхание")
+            return String(localized: "Breathing")
             
         case .relaxation:
             if let type = assignment.relaxation,
                let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == type }) {
                 return exercise.name
             }
-            return String(localized: "Релаксация")
+            return String(localized: "Relaxation")
             
         case .grounding:
             if let type = assignment.grounding,
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == type }) {
                 return exercise.name
             }
-            return String(localized: "Заземление")
+            return String(localized: "Grounding")
             
         case .behavioralActivation:
             if let id = assignment.activityListId,
                let list = activityLists.first(where: { $0.id == id }) {
                 return list.localizedTitle
             }
-            return String(localized: "Поведенческая активация")
+            return String(localized: "Behavioral activation")
         }
     }
 }

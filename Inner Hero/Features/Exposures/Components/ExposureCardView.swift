@@ -67,7 +67,7 @@ struct ExposureCardView: View {
                     Image(systemName: "calendar.badge.checkmark")
                         .font(.caption2)
                         .foregroundStyle(.orange)
-                        .accessibilityLabel("Запланировано")
+                        .accessibilityLabel("Scheduled")
                 }
             }
             .frame(alignment: .trailing)

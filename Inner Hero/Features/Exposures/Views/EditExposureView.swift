@@ -54,7 +54,7 @@ struct EditExposureView: View {
             
             ZStack(alignment: .topLeading) {
                 if exposureDescription.isEmpty {
-                    Text("Описание ситуации, вызывающей тревогу")
+                    Text("Description of the anxiety-provoking situation")
                         .font(.body)
                         .foregroundStyle(.tertiary)
                         .padding(.top, 8)
@@ -69,7 +69,7 @@ struct EditExposureView: View {
                     .scrollContentBackground(.hidden)
             }
         } header: {
-            Text("Основная информация")
+            Text("Basic information")
                 .font(.footnote)
                 .fontWeight(.medium)
         }
@@ -80,7 +80,7 @@ struct EditExposureView: View {
             stepsListView
         } header: {
             HStack {
-                Text("Шаги выполнения")
+                Text("Steps")
                     .font(.footnote)
                     .fontWeight(.medium)
                 
@@ -99,7 +99,7 @@ struct EditExposureView: View {
                 .accessibilityHint("Добавляет пустой шаг в конец списка")
             }
         } footer: {
-            Text("Опишите последовательность действий. Каждый шаг может иметь свой таймер. Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления.")
+            Text("Describe the sequence of actions. Each step can have its own timer. Hold the ☰ icon to reorder or swipe left to delete.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -124,7 +124,7 @@ struct EditExposureView: View {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button("Отмена") {
+            Button("Cancel") {
                 dismiss()
             }
             .font(.body)
@@ -137,7 +137,7 @@ struct EditExposureView: View {
         }
         
         ToolbarItem(placement: .confirmationAction) {
-            Button("Сохранить") {
+            Button("Save") {
                 saveChanges()
             }
             .font(.body)

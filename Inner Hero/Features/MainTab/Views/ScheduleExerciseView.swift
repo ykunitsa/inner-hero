@@ -88,37 +88,37 @@ struct ScheduleExerciseView: View {
                 daysSection
                 activeToggleSection
             }
-            .navigationTitle(assignmentToEdit == nil ? "Новое расписание" : "Редактировать расписание")
+            .navigationTitle(assignmentToEdit == nil ? "New schedule" : "Edit schedule")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Сохранить") {
+                    Button("Save") {
                         saveSchedule()
                     }
                     .disabled(!canSave)
                 }
             }
-            .alert("Разрешения на уведомления", isPresented: $showingPermissionAlert) {
+            .alert("Notification permissions", isPresented: $showingPermissionAlert) {
                 if permissionDenied {
-                    Button("Настройки") {
+                    Button("Settings") {
                         if let url = URL(string: "app-settings:") {
                             openURL(url)
                         }
                     }
-                    Button("Отмена", role: .cancel) { }
+                    Button("Cancel", role: .cancel) { }
                 } else {
                     Button("OK", role: .cancel) { }
                 }
             } message: {
                 if permissionDenied {
-                    Text("Для напоминаний о расписании необходимо разрешение на уведомления. Пожалуйста, включите их в настройках.")
+                    Text("Notification permission is required for schedule reminders. Please enable them in settings.")
                 } else {
-                    Text("Для напоминаний о расписании необходимо разрешение на уведомления.")
+                    Text("Notification permission is required for schedule reminders.")
                 }
             }
         }
@@ -126,12 +126,12 @@ struct ScheduleExerciseView: View {
     
     private var exerciseTypeSection: some View {
         Section {
-            Picker("Тип упражнения", selection: $exerciseType) {
-                Text("Экспозиция").tag(ExerciseType.exposure)
-                Text("Дыхание").tag(ExerciseType.breathing)
-                Text("Релаксация").tag(ExerciseType.relaxation)
-                Text("Заземление").tag(ExerciseType.grounding)
-                Text("Поведенческая активация").tag(ExerciseType.behavioralActivation)
+            Picker("Exercise type", selection: $exerciseType) {
+                Text("Exposure").tag(ExerciseType.exposure)
+                Text("Breathing").tag(ExerciseType.breathing)
+                Text("Relaxation").tag(ExerciseType.relaxation)
+                Text("Grounding").tag(ExerciseType.grounding)
+                Text("Behavioral activation").tag(ExerciseType.behavioralActivation)
             }
             .onChange(of: exerciseType) {
                 // Reset specific selections when type changes
@@ -142,7 +142,7 @@ struct ScheduleExerciseView: View {
                 selectedActivityListId = nil
             }
         } header: {
-            Text("Тип упражнения")
+            Text("Exercise type")
         }
     }
     
@@ -152,80 +152,80 @@ struct ScheduleExerciseView: View {
         case .exposure:
             Section {
                 if exposures.isEmpty {
-                    Text("Нет доступных экспозиций")
+                    Text("No exposures available")
                         .foregroundStyle(TextColors.secondary)
                 } else {
-                    Picker("Экспозиция", selection: $selectedExposureId) {
-                        Text("Выберите экспозицию").tag(nil as UUID?)
+                    Picker("Exposure", selection: $selectedExposureId) {
+                        Text("Choose exposure").tag(nil as UUID?)
                         ForEach(exposures) { exposure in
                             Text(exposure.localizedTitle).tag(exposure.id as UUID?)
                         }
                     }
                 }
             } header: {
-                Text("Экспозиция")
+                Text("Exposure")
             }
             
         case .breathing:
             Section {
-                Picker("Дыхательная техника", selection: $selectedBreathingPattern) {
-                    Text("Выберите технику").tag(nil as BreathingPatternType?)
+                Picker("Breathing technique", selection: $selectedBreathingPattern) {
+                    Text("Choose technique").tag(nil as BreathingPatternType?)
                     ForEach(BreathingPattern.predefinedPatterns) { pattern in
                         Text(pattern.name).tag(pattern.type as BreathingPatternType?)
                     }
                 }
             } header: {
-                Text("Дыхательная техника")
+                Text("Breathing technique")
             }
             
         case .relaxation:
             Section {
-                Picker("Релаксация", selection: $selectedRelaxationType) {
-                    Text("Выберите упражнение").tag(nil as RelaxationType?)
+                Picker("Relaxation", selection: $selectedRelaxationType) {
+                    Text("Choose exercise").tag(nil as RelaxationType?)
                     ForEach(RelaxationExercise.predefinedExercises) { exercise in
                         Text(exercise.name).tag(exercise.type as RelaxationType?)
                     }
                 }
             } header: {
-                Text("Релаксация")
+                Text("Relaxation")
             }
             
         case .grounding:
             Section {
-                Picker("Заземление", selection: $selectedGroundingType) {
-                    Text("Выберите упражнение").tag(nil as GroundingType?)
+                Picker("Grounding", selection: $selectedGroundingType) {
+                    Text("Choose exercise").tag(nil as GroundingType?)
                     ForEach(GroundingExercise.predefinedExercises) { exercise in
                         Text(exercise.name).tag(exercise.type as GroundingType?)
                     }
                 }
             } header: {
-                Text("Заземление")
+                Text("Grounding")
             }
             
         case .behavioralActivation:
             Section {
                 if activityLists.isEmpty {
-                    Text("Нет доступных списков активностей")
+                    Text("No activity lists available")
                         .foregroundStyle(TextColors.secondary)
                 } else {
-                    Picker("Список активностей", selection: $selectedActivityListId) {
-                        Text("Выберите список").tag(nil as UUID?)
+                    Picker("Activity list", selection: $selectedActivityListId) {
+                        Text("Choose list").tag(nil as UUID?)
                         ForEach(activityLists) { list in
                             Text(list.localizedTitle).tag(list.id as UUID?)
                         }
                     }
                 }
             } header: {
-                Text("Список активностей")
+                Text("Activity list")
             }
         }
     }
     
     private var timeSection: some View {
         Section {
-            DatePicker("Время", selection: $selectedTime, displayedComponents: .hourAndMinute)
+            DatePicker("Time", selection: $selectedTime, displayedComponents: .hourAndMinute)
         } header: {
-            Text("Время")
+            Text("Time")
         }
     }
     
@@ -233,10 +233,10 @@ struct ScheduleExerciseView: View {
         Section {
             DayOfWeekSelector(selectedDays: $selectedDays)
         } header: {
-            Text("Дни недели")
+            Text("Days of week")
         } footer: {
             if selectedDays.isEmpty {
-                Text("Выберите хотя бы один день")
+                Text("Select at least one day")
                     .foregroundStyle(.red)
             }
         }
@@ -244,9 +244,9 @@ struct ScheduleExerciseView: View {
     
     private var activeToggleSection: some View {
         Section {
-            Toggle("Активно", isOn: $isActive)
+            Toggle("Active", isOn: $isActive)
         } footer: {
-            Text("Когда активно, вы будете получать напоминания в выбранное время")
+            Text("When active, you will receive reminders at the selected time")
         }
     }
     

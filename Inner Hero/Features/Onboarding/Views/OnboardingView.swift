@@ -28,11 +28,11 @@ struct OnboardingView: View {
                 VStack(alignment: .leading, spacing: Spacing.lg) {
                     // Brief Explanation
                     VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text("Добро пожаловать")
+                        Text("Welcome")
                             .font(.title2.weight(.semibold))
                             .foregroundStyle(TextColors.primary)
                         
-                        Text("Inner Hero поможет вам практиковать экспозиционную терапию для работы с тревогой. Создавайте сценарии, проводите сеансы и отслеживайте свой прогресс.")
+                        Text("Inner Hero helps you practice exposure therapy for anxiety. Create scenarios, run sessions, and track your progress.")
                             .font(.body)
                             .foregroundStyle(TextColors.secondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -47,7 +47,7 @@ struct OnboardingView: View {
                                 .foregroundStyle(AppTheme.State.warning)
                                 .accessibilityHidden(true)
                             
-                            Text("Важное предупреждение")
+                            Text("Important notice")
                                 .font(.headline)
                                 .foregroundStyle(TextColors.primary)
                         }
@@ -55,15 +55,15 @@ struct OnboardingView: View {
                         
                         // Warning Content
                         VStack(alignment: .leading, spacing: Spacing.xs) {
-                            Text("Это приложение **не заменяет** профессиональную психотерапию или медицинскую помощь.")
+                            Text("This app **does not replace** professional psychotherapy or medical care.")
                                 .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
                             
-                            Text("Если вы испытываете серьёзные симптомы тревоги или других психических состояний, пожалуйста, обратитесь к квалифицированному специалисту.")
+                            Text("If you experience serious symptoms of anxiety or other mental health conditions, please contact a qualified professional.")
                                 .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
                             
-                            Text("Используйте это приложение как дополнительный инструмент в рамках комплексного подхода к заботе о своём психическом здоровье.")
+                            Text("Use this app as an additional tool as part of a comprehensive approach to your mental health care.")
                                 .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
@@ -95,7 +95,7 @@ struct OnboardingView: View {
                         hasCompletedOnboarding = true
                     }
                 } label: {
-                    Text("Продолжить")
+                    Text("Continue")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: TouchTarget.minimum)
@@ -103,8 +103,8 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.blue)
-                .accessibilityLabel("Продолжить")
-                .accessibilityHint("Завершить онбординг и перейти к приложению")
+                .accessibilityLabel("Continue")
+                .accessibilityHint("Finish onboarding and go to the app")
                 .padding(.horizontal, Spacing.md)
                 .padding(.bottom, Spacing.xxl)
             }

@@ -68,7 +68,7 @@ struct PauseSessionModal: View {
                 
                 // Title and subtitle
                 VStack(spacing: 10) {
-                    Text("Вы делаете отлично!")
+                    Text("You're doing great!")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundStyle(TextColors.primary)
                         .multilineTextAlignment(.center)
@@ -80,9 +80,9 @@ struct PauseSessionModal: View {
             
             // Supportive messages
             VStack(spacing: 12) {
-                supportiveMessage(icon: "checkmark.circle.fill", text: "Делайте перерывы когда нужно")
-                supportiveMessage(icon: "heart.circle.fill", text: "Забота о себе - это не слабость")
-                supportiveMessage(icon: "star.circle.fill", text: "Каждый шаг - это прогресс")
+                supportiveMessage(icon: "checkmark.circle.fill", text: "Take breaks when you need them")
+                supportiveMessage(icon: "heart.circle.fill", text: "Self-care is not weakness")
+                supportiveMessage(icon: "star.circle.fill", text: "Every step is progress")
             }
             .padding(.horizontal, 20)
             
@@ -94,7 +94,7 @@ struct PauseSessionModal: View {
                 Button {
                     onEnd()
                 } label: {
-                    Text("Завершить")
+                    Text("Finish")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(TextColors.secondary)
                         .frame(maxWidth: .infinity)
@@ -104,8 +104,8 @@ struct PauseSessionModal: View {
                                 .fill(secondaryButtonBackground)
                         )
                 }
-                .accessibilityLabel("Завершить на сегодня")
-                .accessibilityHint("Дважды нажмите чтобы завершить сеанс без сохранения")
+                .accessibilityLabel("Finish for today")
+                .accessibilityHint("Double-tap to end session without saving")
                 
                 // Primary button - Resume
                 Button {
@@ -115,7 +115,7 @@ struct PauseSessionModal: View {
                         Image(systemName: "play.fill")
                             .font(.system(size: 15, weight: .semibold))
                             .accessibilityHidden(true)
-                        Text("Продолжить")
+                        Text("Continue")
                             .font(.system(size: 16, weight: .semibold))
                     }
                     .foregroundStyle(.white)
@@ -133,8 +133,8 @@ struct PauseSessionModal: View {
                     )
                     .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
                 }
-                .accessibilityLabel("Продолжить сеанс")
-                .accessibilityHint("Дважды нажмите чтобы вернуться к сеансу")
+                .accessibilityLabel("Continue session")
+                .accessibilityHint("Double-tap to return to session")
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
@@ -163,7 +163,7 @@ struct PauseSessionModal: View {
                 .frame(width: 24)
                 .accessibilityHidden(true)
             
-            Text(text)
+            Text(LocalizedStringKey(text))
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(TextColors.primary)
             

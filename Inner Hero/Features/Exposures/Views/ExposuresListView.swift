@@ -68,7 +68,7 @@ struct ExposuresListView: View {
                 .padding(.bottom, 40)
             }
             .background(TopMeshGradientBackground())
-            .navigationTitle("Экспозиции")
+            .navigationTitle("Exposures")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -99,10 +99,10 @@ struct ExposuresListView: View {
                 }
             }
             .alert("Удалить экспозицию?", isPresented: $showingDeleteAlert, presenting: exposureToDelete) { exposure in
-                Button("Отмена", role: .cancel) {
+                Button("Cancel", role: .cancel) {
                     exposureToDelete = nil
                 }
-                Button("Удалить", role: .destructive) {
+                Button("Delete", role: .destructive) {
                     deleteExposure(exposure)
                 }
             } message: { exposure in
@@ -195,14 +195,14 @@ struct ExposuresListView: View {
             Button {
                 startSession(for: exposure)
             } label: {
-                Label("Начать сеанс", systemImage: "play.fill")
+                Label("Start session", systemImage: "play.fill")
             }
             
             Button {
                 exposureToSchedule = exposure
             } label: {
                 Label(
-                    assignment?.isActive == true ? "Редактировать расписание" : "Создать расписание",
+                    assignment?.isActive == true ? "Edit schedule" : "Создать расписание",
                     systemImage: "calendar"
                 )
             }
@@ -211,7 +211,7 @@ struct ExposuresListView: View {
                 exposureToDelete = exposure
                 showingDeleteAlert = true
             } label: {
-                Label("Удалить", systemImage: "trash")
+                Label("Delete", systemImage: "trash")
             }
         }
         .accessibilityElement(children: .combine)

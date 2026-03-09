@@ -33,7 +33,7 @@ struct CreateExposureView: View {
                             .accessibilityLabel("Описание экспозиции")
                         
                         if exposureDescription.isEmpty {
-                            Text("Описание ситуации, вызывающей тревогу")
+                            Text("Description of the anxiety-provoking situation")
                                 .font(.body)
                                 .foregroundStyle(.secondary)
                                 .padding(.top, Spacing.xxs)
@@ -43,7 +43,7 @@ struct CreateExposureView: View {
                         }
                     }
                 } header: {
-                    Text("Основная информация")
+                    Text("Basic information")
                         .font(.caption)
                         .fontWeight(.medium)
                         .foregroundStyle(.secondary)
@@ -69,7 +69,7 @@ struct CreateExposureView: View {
                     }
                 } header: {
                     HStack {
-                        Text("Шаги выполнения")
+                        Text("Steps")
                             .font(.caption)
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
@@ -89,7 +89,7 @@ struct CreateExposureView: View {
                         .accessibilityHint("Добавляет пустой шаг в конец списка")
                     }
                 } footer: {
-                    Text("Опишите последовательность действий. Каждый шаг может иметь свой таймер.")
+                    Text("Describe the sequence of actions. Each step can have its own timer.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -99,14 +99,14 @@ struct CreateExposureView: View {
             .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
-                    .accessibilityLabel("Отмена")
+                    .accessibilityLabel("Cancel")
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Сохранить") {
+                    Button("Save") {
                         saveExposure()
                     }
                     .disabled(title.isEmpty || exposureDescription.isEmpty)
@@ -117,7 +117,7 @@ struct CreateExposureView: View {
                 
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Готово") {
+                    Button("Done") {
                         focusedField = nil
                     }
                     .font(.headline)

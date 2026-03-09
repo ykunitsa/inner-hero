@@ -25,19 +25,19 @@ struct CreateActivationView: View {
                 basicInfoSection
                 activitiesSection
             }
-            .navigationTitle("Новый список активностей")
+            .navigationTitle("New activity list")
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
                     .foregroundStyle(TextColors.toolbar)
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Сохранить") {
+                    Button("Save") {
                         saveActivation()
                     }
                     .disabled(!canSave)
@@ -46,14 +46,14 @@ struct CreateActivationView: View {
                 
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Готово") {
+                    Button("Done") {
                         focusedField = nil
                     }
                     .font(.headline)
                 }
             }
-            .alert("Ошибка", isPresented: $showingError) {
-                Button("ОК", role: .cancel) { }
+            .alert("Error", isPresented: $showingError) {
+                Button("OK", role: .cancel) { }
             } message: {
                 Text(errorMessage)
             }
@@ -65,17 +65,17 @@ struct CreateActivationView: View {
     
     private var basicInfoSection: some View {
         Section {
-            TextField("Название списка", text: $title)
+            TextField("List name", text: $title)
                 .font(.body)
                 .focused($focusedField, equals: .title)
-                .accessibilityLabel("Название списка активностей")
+                .accessibilityLabel(String(localized: "Activity list name"))
         } header: {
-            Text("Основная информация")
+            Text("Basic information")
                 .font(.caption)
                 .fontWeight(.medium)
                 .foregroundStyle(.secondary)
         } footer: {
-            Text("Дайте короткое название вашему списку активностей")
+            Text("Give your activity list a short name")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -96,7 +96,7 @@ struct CreateActivationView: View {
             }
         } header: {
             HStack {
-                Text("Активности")
+                Text("Activities")
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundStyle(.secondary)
@@ -112,11 +112,11 @@ struct CreateActivationView: View {
                 }
                 .buttonStyle(.plain)
                 .frame(minWidth: TouchTarget.minimum, minHeight: TouchTarget.minimum)
-                .accessibilityLabel("Добавить активность")
-                .accessibilityHint("Добавляет пустую активность в конец списка")
+                .accessibilityLabel(String(localized: "Add activity"))
+                .accessibilityHint(String(localized: "Adds an empty activity to the end of the list"))
             }
         } footer: {
-            Text("Добавьте одну или несколько активностей. Пустые строки не сохраняются.")
+            Text("Add one or more activities. Empty lines are not saved.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -151,7 +151,7 @@ struct CreateActivationView: View {
             .filter { !$0.isEmpty }
         
         guard !trimmedTitle.isEmpty, !validActivities.isEmpty else {
-            errorMessage = "Введите название и добавьте хотя бы одну активность"
+            errorMessage = String(localized: "Enter name and add at least one activity")
             showingError = true
             return
         }
@@ -168,7 +168,7 @@ struct CreateActivationView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = "Не удалось сохранить: \(error.localizedDescription)"
+            errorMessage = String(localized: "Failed to save.") + " \(error.localizedDescription)"
             showingError = true
         }
     }

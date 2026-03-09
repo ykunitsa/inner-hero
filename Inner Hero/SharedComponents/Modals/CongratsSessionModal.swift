@@ -58,14 +58,14 @@ struct CongratsSessionModal: View {
     struct Configuration: Hashable {
         var palette: Palette = .tealMint
         var topIconSystemName: String = "sparkles"
-        var title: String = "Ты молодец!"
-        var subtitle: String = "Ты только что сделал(а) полезный шаг для себя."
+        var title: String = "Well done!"
+        var subtitle: String = "You just took a helpful step for yourself."
         var messages: [Message] = [
-            Message(iconSystemName: "heart.circle.fill", text: "Пусть это станет маленькой хорошей привычкой"),
-            Message(iconSystemName: "checkmark.circle.fill", text: "Стабильность важнее идеальности"),
-            Message(iconSystemName: "sparkles", text: "Ты справляешься — шаг за шагом")
+            Message(iconSystemName: "heart.circle.fill", text: "Let this become a small good habit"),
+            Message(iconSystemName: "checkmark.circle.fill", text: "Consistency matters more than perfection"),
+            Message(iconSystemName: "sparkles", text: "You're managing—step by step")
         ]
-        var primaryButtonTitle: String = "Отлично"
+        var primaryButtonTitle: String = "Great"
     }
     
     let configuration: Configuration
@@ -126,7 +126,7 @@ struct CongratsSessionModal: View {
                         .lineLimit(nil)
                         .fixedSize(horizontal: false, vertical: true)
 
-                    Text(configuration.subtitle)
+                    Text(LocalizedStringKey(configuration.subtitle))
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(TextColors.secondary)
                         .multilineTextAlignment(.center)
@@ -169,7 +169,7 @@ struct CongratsSessionModal: View {
             .padding(.horizontal, 20)
             .padding(.top, 24)
             .padding(.bottom, 32)
-            .accessibilityLabel("Закрыть")
+            .accessibilityLabel("Close")
         }
         .background(
             LinearGradient(
@@ -188,7 +188,7 @@ struct CongratsSessionModal: View {
                 .frame(width: 24)
                 .accessibilityHidden(true)
 
-            Text(text)
+            Text(LocalizedStringKey(text))
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)

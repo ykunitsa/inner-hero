@@ -159,7 +159,7 @@ struct ExposureDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Описание")
+                Text("Description")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
@@ -195,7 +195,7 @@ struct ExposureDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Шаги выполнения")
+                Text("Steps")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
@@ -227,7 +227,7 @@ struct ExposureDetailView: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                    Text("История сеансов")
+                    Text("Session history")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(TextColors.primary)
                     Spacer()
@@ -239,7 +239,7 @@ struct ExposureDetailView: View {
                 if exposure.sessionResults.count > 0 {
                     HStack(spacing: 20) {
                         VStack(alignment: .center, spacing: 4) {
-                            Text("Всего")
+                            Text("Total")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
                             Text("\(exposure.sessionResults.count)")
@@ -251,7 +251,7 @@ struct ExposureDetailView: View {
                         Divider()
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Последний")
+                            Text("Last")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
                             if let lastSession = exposure.sessionResults.sorted(by: { $0.startAt > $1.startAt }).first {
@@ -269,7 +269,7 @@ struct ExposureDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
-                    Text("Нет завершенных сеансов")
+                    Text("No completed sessions")
                         .font(.body)
                         .foregroundStyle(TextColors.secondary)
                 }
@@ -307,7 +307,7 @@ struct ExposureDetailView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Начать сеанс")
+                Text("Start session")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -325,7 +325,7 @@ struct ExposureDetailView: View {
                     .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
             )
         }
-        .accessibilityLabel("Начать сеанс")
+        .accessibilityLabel("Start session")
     }
     
     private func toggleFavorite() {

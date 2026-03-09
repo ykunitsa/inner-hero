@@ -89,7 +89,7 @@ private struct CompactTimerView: View {
                         )
                     )
                     .monospacedDigit()
-                    .accessibilityLabel("Осталось времени: \(formatTime(remaining))")
+                    .accessibilityLabel("Time remaining: \(formatTime(remaining))")
                 
                 Spacer()
                 
@@ -121,7 +121,7 @@ private struct CompactTimerView: View {
                             )
                             .shadow(color: .blue.opacity(0.3), radius: 4, x: 0, y: 2)
                     }
-                    .accessibilityLabel(isTimerRunning ? "Пауза" : (isTimerPaused ? "Продолжить таймер" : "Запустить таймер"))
+                    .accessibilityLabel(isTimerRunning ? "Pause" : (isTimerPaused ? "Resume timer" : "Start timer"))
                     
                     // Reset button
                     Button {
@@ -136,7 +136,7 @@ private struct CompactTimerView: View {
                                     .fill(secondaryControlBackgroundColor)
                             )
                     }
-                    .accessibilityLabel("Сбросить таймер")
+                    .accessibilityLabel("Reset timer")
                 }
             }
             .padding(.horizontal, 12)
@@ -258,7 +258,7 @@ private struct TimerSectionContent: View {
                         .fixedSize(horizontal: true, vertical: false)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel(isExpired ? "Время истекло" : "Осталось времени: \(formatTime(remaining))")
+                .accessibilityLabel(isExpired ? "Time's up" : "Time remaining: \(formatTime(remaining))")
                 
                 Spacer()
                 
@@ -290,7 +290,7 @@ private struct TimerSectionContent: View {
                             )
                             .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
                     }
-                    .accessibilityLabel(isTimerRunning ? "Пауза" : (isTimerPaused ? "Продолжить таймер" : "Запустить таймер"))
+                    .accessibilityLabel(isTimerRunning ? "Pause" : (isTimerPaused ? "Resume timer" : "Start timer"))
                     
                     // Reset button
                     Button {
@@ -305,7 +305,7 @@ private struct TimerSectionContent: View {
                                     .fill(secondaryControlBackgroundColor)
                             )
                     }
-                    .accessibilityLabel("Сбросить таймер")
+                    .accessibilityLabel("Reset timer")
                 }
             }
             .padding(.horizontal, 20)
@@ -483,7 +483,7 @@ struct ActiveSessionView: View {
                             .foregroundStyle(TextColors.toolbar)
                     }
                 }
-                .accessibilityLabel("Вернуться на главную")
+                .accessibilityLabel("Back to home")
             }
             
             // Close/Pause button (top right)
@@ -495,7 +495,7 @@ struct ActiveSessionView: View {
                         .font(.title3)
                         .foregroundStyle(TextColors.toolbar)
                 }
-                .accessibilityLabel("Пауза")
+                .accessibilityLabel("Pause")
             }
             
             ToolbarItem(placement: .principal) {
@@ -516,7 +516,7 @@ struct ActiveSessionView: View {
                         .foregroundStyle(TextColors.toolbar)
                         .symbolEffect(.bounce, value: showAllSteps)
                 }
-                .accessibilityLabel(showAllSteps ? "Скрыть все шаги" : "Показать все шаги")
+                .accessibilityLabel(showAllSteps ? "Hide all steps" : "Show all steps")
                 
                 Spacer()
             }
@@ -550,7 +550,7 @@ struct ActiveSessionView: View {
                             .symbolEffect(.bounce, value: completedSteps.contains(currentStepIndex))
                     }
                 }
-                .accessibilityLabel(currentStepIndex == steps.count - 1 ? "Завершить сессию" : "Завершить текущий шаг")
+                .accessibilityLabel(currentStepIndex == steps.count - 1 ? "End session" : "Complete current step")
             }
         }
         .onAppear {
@@ -589,14 +589,14 @@ struct ActiveSessionView: View {
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }
-        .alert("Прервать сеанс?", isPresented: $showingInterruptAlert) {
-            Button("Отмена", role: .cancel) { }
-            Button("Прервать", role: .destructive) {
+        .alert("Interrupt session?", isPresented: $showingInterruptAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Interrupt", role: .destructive) {
                 cleanupSession()
                 dismiss()
             }
         } message: {
-            Text("Вы уверены, что хотите прервать сеанс? Прогресс не будет сохранён.")
+            Text("Are you sure you want to interrupt the session? Progress will not be saved.")
         }
     }
     
@@ -659,16 +659,16 @@ struct ActiveSessionView: View {
             }
         }
         .frame(minWidth: 36, minHeight: 36)
-        .accessibilityLabel("Шаг \(index + 1)")
-        .accessibilityValue(isCurrent ? "Текущий шаг" : (isCompleted ? "Выполнен" : "Не выполнен"))
+        .accessibilityLabel("Step \(index + 1)")
+        .accessibilityValue(isCurrent ? "Current step" : (isCompleted ? "Completed" : "Not completed"))
     }
     
     private var stepProgressIndicator: some View {
         VStack(spacing: 12) {
-            Text("Шаг \(currentStepIndex + 1) из \(steps.count)")
+            Text("Step \(currentStepIndex + 1) of \(steps.count)")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(TextColors.secondary)
-                .accessibilityLabel("Шаг \(currentStepIndex + 1) из \(steps.count)")
+                .accessibilityLabel("Step \(currentStepIndex + 1) of \(steps.count)")
             
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
@@ -693,8 +693,8 @@ struct ActiveSessionView: View {
             }
             .frame(height: 5)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Прогресс")
-            .accessibilityValue("\(completedSteps.count) из \(steps.count) шагов выполнено")
+            .accessibilityLabel("Progress")
+            .accessibilityValue("\(completedSteps.count) of \(steps.count) steps completed")
         }
     }
     
@@ -840,12 +840,12 @@ struct ActiveSessionView: View {
                 .accessibilityHidden(true)
             
             VStack(spacing: 6) {
-                Text("Все шаги выполнены!")
+                Text("All steps completed!")
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.center)
                 
-                Text("Вы проделали отличную работу")
+                Text("You did a great job")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
@@ -883,13 +883,13 @@ struct ActiveSessionView: View {
                             )
                             .monospacedDigit()
                         
-                        Text(isExpired ? "Время истекло" : "")
+                        Text(isExpired ? "Time's up" : "")
                             .font(.caption)
                             .foregroundStyle(TextColors.secondary)
                             .frame(height: 16)
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel(isExpired ? "Время истекло" : "Осталось времени: \(formatTime(remaining))")
+                    .accessibilityLabel(isExpired ? "Time's up" : "Time remaining: \(formatTime(remaining))")
                     
                     // Minimal progress bar
                     GeometryReader { geometry in
@@ -915,8 +915,8 @@ struct ActiveSessionView: View {
                     }
                     .frame(height: 5)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Прогресс таймера")
-                    .accessibilityValue("\(Int((remaining / duration) * 100)) процентов")
+                    .accessibilityLabel("Timer progress")
+                    .accessibilityValue("\(Int((remaining / duration) * 100)) percent")
                     
                     // Timer controls
                     Button {
@@ -932,7 +932,7 @@ struct ActiveSessionView: View {
                             Image(systemName: timerController.isRunning && !timerController.isPaused ? "pause.fill" : "play.fill")
                                 .font(.body)
                                 .accessibilityHidden(true)
-                            Text(timerController.isRunning && !timerController.isPaused ? "Пауза" : (timerController.isPaused ? "Продолжить" : "Старт"))
+                            Text(timerController.isRunning && !timerController.isPaused ? "Pause" : (timerController.isPaused ? "Continue" : "Start"))
                                 .font(.system(size: 17, weight: .semibold))
                         }
                         .foregroundStyle(.white)
@@ -949,7 +949,7 @@ struct ActiveSessionView: View {
                                 )
                         )
                     }
-                    .accessibilityLabel(timerController.isRunning && !timerController.isPaused ? "Пауза" : (timerController.isPaused ? "Продолжить таймер" : "Запустить таймер"))
+                    .accessibilityLabel(timerController.isRunning && !timerController.isPaused ? "Pause" : (timerController.isPaused ? "Resume timer" : "Start timer"))
                 }
                 .padding(28)
                 .background(
@@ -969,7 +969,7 @@ struct ActiveSessionView: View {
                     HStack(spacing: 6) {
                         Image(systemName: showTimer ? "eye.slash.fill" : "eye.fill")
                             .font(.caption)
-                        Text(showTimer ? "Скрыть" : "Показать")
+                        Text(showTimer ? "Hide" : "Show")
                             .font(.caption.weight(.medium))
                     }
                     .foregroundStyle(TextColors.secondary)
@@ -980,7 +980,7 @@ struct ActiveSessionView: View {
                             .fill(Color(.systemGray6))
                     )
                 }
-                .accessibilityLabel(showTimer ? "Скрыть таймер" : "Показать таймер")
+                .accessibilityLabel(showTimer ? "Hide timer" : "Show timer")
                 
                 Button {
                     timerController.reset()
@@ -988,7 +988,7 @@ struct ActiveSessionView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.counterclockwise")
                             .font(.caption)
-                        Text("Сброс")
+                        Text("Reset")
                             .font(.caption.weight(.medium))
                     }
                     .foregroundStyle(TextColors.secondary)
@@ -999,7 +999,7 @@ struct ActiveSessionView: View {
                             .fill(Color(.systemGray6))
                     )
                 }
-                .accessibilityLabel("Сбросить таймер")
+                .accessibilityLabel("Reset timer")
             }
         }
         .animation(.spring(response: 0.3), value: showTimer)
@@ -1016,7 +1016,7 @@ struct ActiveSessionView: View {
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .accessibilityHidden(true)
-                Text(showAllSteps ? "Скрыть все шаги" : "Показать все шаги")
+                Text(showAllSteps ? "Hide all steps" : "Show all steps")
                     .font(.system(size: 15, weight: .medium))
                 Spacer()
                 Text("\(completedSteps.count)/\(steps.count)")
@@ -1031,8 +1031,8 @@ struct ActiveSessionView: View {
             )
         }
         .frame(minHeight: 44)
-        .accessibilityLabel(showAllSteps ? "Скрыть все шаги" : "Показать все шаги")
-        .accessibilityValue("\(completedSteps.count) из \(steps.count) шагов выполнено")
+        .accessibilityLabel(showAllSteps ? "Hide all steps" : "Show all steps")
+        .accessibilityValue("\(completedSteps.count) of \(steps.count) steps completed")
     }
     
     private var allStepsSection: some View {
@@ -1064,7 +1064,7 @@ struct ActiveSessionView: View {
                 endPoint: .bottomTrailing
             )
         let strokeColor = isCurrent ? Color.blue.opacity(0.3) : Color.clear
-        let accessibilityValue = isCompleted ? "Выполнено" : (isCurrent ? "Текущий шаг" : "Не выполнено")
+        let accessibilityValue = isCompleted ? "Completed" : (isCurrent ? "Current step" : "Not completed")
         
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 16) {
@@ -1104,7 +1104,7 @@ struct ActiveSessionView: View {
                 .stroke(strokeColor, lineWidth: 1.5)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Шаг \(index + 1): \(localizedStepText(at: index, fallback: step))")
+        .accessibilityLabel("Step \(index + 1): \(localizedStepText(at: index, fallback: step))")
         .accessibilityValue(accessibilityValue)
     }
     
@@ -1159,7 +1159,7 @@ struct ActiveSessionView: View {
             }
         }
         .frame(minWidth: 44, minHeight: 44)
-        .accessibilityLabel(isCompleted ? "Отменить выполнение шага" : "Отметить шаг как выполненное")
+        .accessibilityLabel(isCompleted ? "Undo step completion" : "Mark step as completed")
     }
     
     // MARK: - Timer Section View

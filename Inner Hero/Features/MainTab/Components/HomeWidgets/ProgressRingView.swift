@@ -27,10 +27,10 @@ struct ProgressRingView: View {
                 .animation(.easeInOut(duration: 0.45), value: clampedProgress)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Прогресс")
+        .accessibilityLabel("Progress")
         .accessibilityValue(
             String(
-                format: NSLocalizedString("%d процентов", comment: ""),
+                format: NSLocalizedString("%d percent", comment: ""),
                 Int(clampedProgress * 100)
             )
         )

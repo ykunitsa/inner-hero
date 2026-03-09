@@ -75,12 +75,12 @@ struct SessionHistoryView: View {
             )
             .ignoresSafeArea()
         )
-        .navigationTitle("История сеансов")
+        .navigationTitle("Session history")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             loadSessions()
         }
-        .alert("Ошибка", isPresented: $showingError) {
+        .alert("Error", isPresented: $showingError) {
             Button("OK") {
                 errorMessage = nil
             }
@@ -94,9 +94,9 @@ struct SessionHistoryView: View {
     
     private var emptyStateView: some View {
         ContentUnavailableView(
-            "Нет сеансов",
+            "No sessions",
             systemImage: "clock.badge.xmark",
-            description: Text("История сеансов для этой экспозиции пуста")
+            description: Text("Session history for this exposure is empty")
                 .font(.body)
         )
     }
@@ -106,7 +106,7 @@ struct SessionHistoryView: View {
         do {
             sessions = try dataManager.fetchSessionResults(for: exposure)
         } catch {
-            errorMessage = "Не удалось загрузить сеансы: \(error.localizedDescription)"
+            errorMessage = String(localized: "Failed to load sessions.") + " \(error.localizedDescription)"
             showingError = true
         }
     }
@@ -117,8 +117,8 @@ struct SessionHistoryView: View {
 #Preview("Session History") {
     NavigationStack {
         SessionHistoryView(exposure: Exposure(
-            title: "Тестовая экспозиция",
-            exposureDescription: "Описание"
+            title: "Test exposure",
+            exposureDescription: "Description"
         ))
     }
     .modelContainer(for: [Exposure.self, ExposureSessionResult.self], inMemory: true)

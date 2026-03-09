@@ -108,7 +108,7 @@ private struct StepTimerControlsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xxs) {
-            Text("Длительность")
+            Text("Duration")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(.secondary)
             
