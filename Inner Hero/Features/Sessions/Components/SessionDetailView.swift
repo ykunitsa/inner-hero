@@ -23,7 +23,7 @@ struct SessionDetailView: View {
     }
     
     private var duration: String {
-        guard let endAt = session.endAt else { return "Не завершён" }
+        guard let endAt = session.endAt else { return "Not completed" }
         let interval = endAt.timeIntervalSince(session.startAt)
         let minutes = Int(interval / 60)
         let seconds = Int(interval.truncatingRemainder(dividingBy: 60))
@@ -39,7 +39,7 @@ struct SessionDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Layout.sectionSpacing) {
                 VStack(alignment: .leading, spacing: Layout.tightSpacing) {
-                    Text("Дата сеанса")
+                    Text("Session date")
                         .font(.caption.weight(.medium))
                         .foregroundStyle(.secondary)
                         .textCase(nil)
@@ -48,7 +48,7 @@ struct SessionDetailView: View {
                         .foregroundStyle(.primary)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Дата сеанса: \(formattedDate)")
+                .accessibilityLabel("Session date: \(formattedDate)")
                 
                 if let anxietyAfter = session.anxietyAfter {
                     AnxietyProgressChart(
@@ -60,21 +60,21 @@ struct SessionDetailView: View {
                 VStack(spacing: Layout.contentSpacing) {
                     HStack(spacing: Layout.contentSpacing) {
                         StatCard(
-                            title: "Тревога до",
+                            title: "Anxiety before",
                             value: "\(session.anxietyBefore)",
                             color: .blue
                         )
                         
                         if let anxietyAfter = session.anxietyAfter {
                             StatCard(
-                                title: "Тревога после",
+                                title: "Anxiety after",
                                 value: "\(anxietyAfter)",
                                 color: anxietyAfter < session.anxietyBefore ? .green : .red
                             )
                             
                             if let change = anxietyChange {
                                 StatCard(
-                                    title: "Изменение",
+                                    title: "Change",
                                     value: "\(change > 0 ? "-" : "+")\(abs(change))",
                                     color: change > 0 ? .green : (change < 0 ? .red : .gray)
                                 )
@@ -84,7 +84,7 @@ struct SessionDetailView: View {
                     
                     HStack {
                         VStack(alignment: .leading, spacing: Layout.tightSpacing) {
-                            Text("Длительность")
+                            Text("Duration")
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(.secondary)
                             Text(duration)
@@ -99,12 +99,12 @@ struct SessionDetailView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.title2)
                                 .foregroundStyle(.green)
-                                .accessibilityLabel("Завершён")
+                                .accessibilityLabel("Completed")
                         } else {
                             Image(systemName: "ellipsis.circle")
                                 .font(.title2)
                                 .foregroundStyle(.gray)
-                                .accessibilityLabel("В процессе")
+                                .accessibilityLabel("In progress")
                         }
                     }
                     .padding(Layout.cardPadding)
@@ -113,13 +113,13 @@ struct SessionDetailView: View {
                             .fill(.background.tertiary)
                     )
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Длительность: \(duration), " + 
-                        (session.endAt != nil ? "Завершён" : "В процессе"))
+                    .accessibilityLabel("Duration: \(duration), " + 
+                        (session.endAt != nil ? "Completed" : "In progress"))
                 }
                 
                 if !session.notes.isEmpty {
                     VStack(alignment: .leading, spacing: Layout.contentSpacing) {
-                        Text("Заметки")
+                        Text("Notes")
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.primary)
                         
@@ -134,12 +134,12 @@ struct SessionDetailView: View {
                             )
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Заметки: \(session.notes)")
+                    .accessibilityLabel("Notes: \(session.notes)")
                 }
                 
                 if let exposure = session.exposure {
                     VStack(alignment: .leading, spacing: Layout.contentSpacing) {
-                        Text("Экспозиция")
+                        Text("Exposure")
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.primary)
                         
@@ -160,7 +160,7 @@ struct SessionDetailView: View {
                         )
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Экспозиция: \(exposure.localizedTitle). \(exposure.localizedDescription)")
+                    .accessibilityLabel("Exposure: \(exposure.localizedTitle). \(exposure.localizedDescription)")
                 }
             }
             .padding(.horizontal, Layout.screenHorizontalPadding)
@@ -168,7 +168,7 @@ struct SessionDetailView: View {
         }
         .background(.background.secondary)
         .ignoresSafeArea(.all)
-        .navigationTitle("Детали сеанса")
+        .navigationTitle("Session details")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

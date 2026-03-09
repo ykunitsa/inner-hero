@@ -31,7 +31,7 @@ struct GroundingExercise: Identifiable {
                 type: .fiveFourThreeTwoOne,
                 name: String(localized: "5-4-3-2-1"),
                 description: String(
-                    localized: "Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус."
+                    localized: "Grounding technique: find 5 things you see, 4 things you touch, 3 sounds, 2 smells (or air sensations), and 1 taste."
                 ),
                 icon: "brain.head.profile",
                 estimatedDuration: 120
@@ -45,28 +45,28 @@ struct GroundingExercise: Identifiable {
             return [
                 GroundingInstructionStep(
                     number: 5,
-                    title: String(localized: "Осмотритесь"),
-                    prompt: String(localized: "Найдите 5 предметов вокруг и задержите на каждом взгляд на секунду.")
+                    title: String(localized: "Look around"),
+                    prompt: String(localized: "Find 5 objects around you and hold your gaze on each for a second.")
                 ),
                 GroundingInstructionStep(
                     number: 4,
-                    title: String(localized: "Опора"),
-                    prompt: String(localized: "Найдите 4 ощущения от прикосновения: одежда, стул, пол, предмет в руках.")
+                    title: String(localized: "Support"),
+                    prompt: String(localized: "Find 4 touch sensations: clothes, chair, floor, object in your hands.")
                 ),
                 GroundingInstructionStep(
                     number: 3,
-                    title: String(localized: "Звуки"),
-                    prompt: String(localized: "Отметьте 3 звука: ближний, дальний и самый тихий.")
+                    title: String(localized: "Sounds"),
+                    prompt: String(localized: "Notice 3 sounds: near, far, and the quietest.")
                 ),
                 GroundingInstructionStep(
                     number: 2,
-                    title: String(localized: "Запахи"),
-                    prompt: String(localized: "Поймайте 2 запаха или просто 2 ощущения воздуха.")
+                    title: String(localized: "Smells"),
+                    prompt: String(localized: "Catch 2 smells or just 2 sensations of the air.")
                 ),
                 GroundingInstructionStep(
                     number: 1,
-                    title: String(localized: "Вкус"),
-                    prompt: String(localized: "Заметьте 1 вкус во рту или сделайте маленький глоток воды и почувствуйте вкус.")
+                    title: String(localized: "Taste"),
+                    prompt: String(localized: "Notice 1 taste in your mouth or take a small sip of water and notice the taste.")
                 )
             ]
         }

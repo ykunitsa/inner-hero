@@ -15,9 +15,9 @@ struct BreathingSessionHistoryView: View {
         Group {
             if sessions.isEmpty {
                 ContentUnavailableView(
-                    "Нет сеансов",
+                    "No sessions",
                     systemImage: "clock.badge.xmark",
-                    description: Text("История сеансов для \"\(title)\" пуста")
+                    description: Text("Session history for \"\(title)\" is empty")
                 )
                 .padding(.top, 60)
             } else {
@@ -31,7 +31,7 @@ struct BreathingSessionHistoryView: View {
             }
         }
         .background(TopMeshGradientBackground(palette: .teal))
-        .navigationTitle("История")
+        .navigationTitle("History")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -74,13 +74,13 @@ private struct BreathingSessionHistoryRowView: View {
         }
         .padding(.vertical, 6)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Сеанс: \(formattedDate), длительность \(durationText)")
+        .accessibilityLabel("Session: \(formattedDate), duration \(durationText)")
     }
 }
 
 #Preview {
     NavigationStack {
-        BreathingSessionHistoryView(patternType: .box, title: "Квадратное дыхание")
+        BreathingSessionHistoryView(patternType: .box, title: "Box breathing")
     }
     .modelContainer(for: [BreathingSessionResult.self], inMemory: true)
 }

@@ -62,7 +62,7 @@ struct WeekStripView: View {
                 selectedDate = Date()
                 HapticFeedback.selection()
             } label: {
-                Text("Сегодня")
+                Text("Today")
                     .font(.subheadline.weight(.semibold))
             }
             .buttonStyle(.bordered)

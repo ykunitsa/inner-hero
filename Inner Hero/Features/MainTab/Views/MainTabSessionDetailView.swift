@@ -7,30 +7,30 @@ struct MainTabSessionDetailView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Экспозиция")
+                    Text("Exposure")
                         .font(.headline)
                         .foregroundStyle(.secondary)
                     
-                    Text(session.exposure?.title ?? "Без названия")
+                    Text(session.exposure?.title ?? "Untitled")
                         .font(.title2.weight(.semibold))
                 }
                 
                 VStack(alignment: .leading, spacing: 12) {
-                    DetailRow(icon: "calendar", title: "Начало", value: session.startAt.formatted(date: .long, time: .shortened))
+                    DetailRow(icon: "calendar", title: "Start", value: session.startAt.formatted(date: .long, time: .shortened))
                     
                     if let endAt = session.endAt {
-                        DetailRow(icon: "checkmark.circle", title: "Окончание", value: endAt.formatted(date: .long, time: .shortened))
+                        DetailRow(icon: "checkmark.circle", title: "End", value: endAt.formatted(date: .long, time: .shortened))
                     }
                 }
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Уровни тревоги")
+                    Text("Anxiety levels")
                         .font(.headline)
                         .foregroundStyle(.secondary)
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("До сеанса")
+                            Text("Before session")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             Text("\(session.anxietyBefore)/10")
@@ -47,7 +47,7 @@ struct MainTabSessionDetailView: View {
                             Spacer()
                             
                             VStack(alignment: .trailing, spacing: 4) {
-                                Text("После сеанса")
+                                Text("After session")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                 Text("\(anxietyAfter)/10")
@@ -65,7 +65,7 @@ struct MainTabSessionDetailView: View {
                 
                 if !session.notes.isEmpty {
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Заметки")
+                        Text("Notes")
                             .font(.headline)
                             .foregroundStyle(.secondary)
                         
@@ -79,7 +79,7 @@ struct MainTabSessionDetailView: View {
             .padding(.vertical, 24)
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
-        .navigationTitle("Детали сеанса")
+        .navigationTitle("Session details")
         .navigationBarTitleDisplayMode(.inline)
     }
     

@@ -39,7 +39,7 @@ struct ScheduleTabView: View {
                 .padding(.bottom, 40)
             }
             .background(TopMeshGradientBackground())
-            .navigationTitle("Расписание")
+            .navigationTitle("Schedule")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -50,7 +50,7 @@ struct ScheduleTabView: View {
                             .font(.headline)
                             .foregroundStyle(TextColors.toolbar)
                     }
-                    .accessibilityLabel("Добавить расписание")
+                    .accessibilityLabel("Add schedule")
                 }
             }
             .sheet(isPresented: $showingNewScheduleSheet) {
@@ -59,15 +59,15 @@ struct ScheduleTabView: View {
             .sheet(item: $editingAssignment) { assignment in
                 ScheduleExerciseView(assignment: assignment)
             }
-            .alert("Удалить расписание?", isPresented: $showingDeleteAlert, presenting: assignmentToDelete) { assignment in
-                Button("Отмена", role: .cancel) {
+            .alert("Delete schedule?", isPresented: $showingDeleteAlert, presenting: assignmentToDelete) { assignment in
+                Button("Cancel", role: .cancel) {
                     assignmentToDelete = nil
                 }
-                Button("Удалить", role: .destructive) {
+                Button("Delete", role: .destructive) {
                     deleteAssignment(assignment)
                 }
             } message: { _ in
-                Text("Это действие нельзя отменить.")
+                Text("This action cannot be undone.")
             }
             .onAppear {
                 refreshDayData()
@@ -90,20 +90,20 @@ struct ScheduleTabView: View {
                     .foregroundStyle(
                         LinearGradient(colors: [.blue, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
-                Text("Прогресс")
+                Text("Progress")
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
                 Spacer()
             }
             
             HStack(spacing: 16) {
-                stat(title: "Выполнено (нед.)", value: "\(weekProgress.completedThisWeek)")
+                stat(title: "Completed (wk.)", value: "\(weekProgress.completedThisWeek)")
                 Divider()
-                stat(title: "По плану (нед.)", value: "\(weekProgress.plannedDoneThisWeek)")
+                stat(title: "On schedule (wk.)", value: "\(weekProgress.plannedDoneThisWeek)")
                 Divider()
                 stat(
-                    title: "Серия",
-                    value: String(format: NSLocalizedString("%d д", comment: ""), weekProgress.streakDays)
+                    title: "Streak",
+                    value: String(format: NSLocalizedString("%d d", comment: ""), weekProgress.streakDays)
                 )
             }
         }
@@ -125,7 +125,7 @@ struct ScheduleTabView: View {
     private var plannedSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Запланировано")
+                Text("Scheduled")
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
                 Spacer()
@@ -133,7 +133,7 @@ struct ScheduleTabView: View {
                 Button {
                     showingNewScheduleSheet = true
                 } label: {
-                    Label("Добавить", systemImage: "plus")
+                    Label("Add", systemImage: "plus")
                         .font(.subheadline.weight(.semibold))
                 }
                 .buttonStyle(.borderless)
@@ -141,9 +141,9 @@ struct ScheduleTabView: View {
             
             if plannedAssignmentsForSelectedDay.isEmpty {
                 ContentUnavailableView(
-                    "Нет расписаний на день",
+                    "No schedules for the day",
                     systemImage: "calendar.badge.exclamationmark",
-                    description: Text("Добавьте упражнение в расписание — оно появится здесь")
+                    description: Text("Add an exercise to the schedule—it will appear here")
                 )
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
@@ -179,7 +179,7 @@ struct ScheduleTabView: View {
                 Image(systemName: isDone ? "checkmark.circle.fill" : "circle")
                     .font(.title3)
                     .foregroundStyle(isDone ? .green : TextColors.tertiary)
-                    .accessibilityLabel(Text(isDone ? "Снять отметку выполнения" : "Отметить выполненным"))
+                    .accessibilityLabel(Text(isDone ? "Remove completion mark" : "Mark as completed"))
             }
             .buttonStyle(.plain)
             
@@ -195,7 +195,7 @@ struct ScheduleTabView: View {
                         .foregroundStyle(TextColors.secondary)
                     
                     if !assignment.isActive {
-                        Text("Неактивно")
+                        Text("Inactive")
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(.orange)
                     }
@@ -208,20 +208,20 @@ struct ScheduleTabView: View {
                 Button {
                     editingAssignment = assignment
                 } label: {
-                    Label("Редактировать", systemImage: "pencil")
+                    Label("Edit", systemImage: "pencil")
                 }
                 
                 Button(role: .destructive) {
                     assignmentToDelete = assignment
                     showingDeleteAlert = true
                 } label: {
-                    Label("Удалить", systemImage: "trash")
+                    Label("Delete", systemImage: "trash")
                 }
             } label: {
                 Image(systemName: "ellipsis")
                     .foregroundStyle(TextColors.tertiary)
                     .touchTarget()
-                    .accessibilityLabel("Действия")
+                    .accessibilityLabel("Actions")
             }
         }
         .contentShape(Rectangle())
@@ -232,15 +232,15 @@ struct ScheduleTabView: View {
     
     private var completedSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Выполнено")
+            Text("Completed")
                 .font(.headline)
                 .foregroundStyle(TextColors.primary)
             
             if completedEntries.isEmpty {
                 ContentUnavailableView(
-                    "Пока нет выполненного",
+                    "Nothing completed yet",
                     systemImage: "checkmark.seal",
-                    description: Text("Здесь появятся завершённые сессии и ручные отметки за выбранный день")
+                    description: Text("Completed sessions and manual entries for the selected day will appear here")
                 )
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
@@ -391,8 +391,8 @@ struct ScheduleTabView: View {
                     id: "manual|\(completion.id.uuidString)",
                     title: completionTitle(completion),
                     time: completion.createdAt,
-                    detail: String(localized: "по плану"),
-                    sourceLabel: String(localized: "Отметка"),
+                    detail: String(localized: "on schedule"),
+                    sourceLabel: String(localized: "Entry"),
                     systemImage: "checkmark.circle.fill",
                     tint: .green
                 )
@@ -413,10 +413,10 @@ struct ScheduleTabView: View {
                     ?? result.patternType.rawValue
                 return CompletedEntry(
                     id: "breathing|\(result.id.uuidString)",
-                    title: String(format: NSLocalizedString("Дыхание: %@", comment: ""), name),
+                    title: String(format: NSLocalizedString("Breathing: %@", comment: ""), name),
                     time: result.performedAt,
                     detail: formatDuration(result.duration),
-                    sourceLabel: String(localized: "Сессия"),
+                    sourceLabel: String(localized: "Session"),
                     systemImage: "wind",
                     tint: .cyan
                 )
@@ -436,10 +436,10 @@ struct ScheduleTabView: View {
                 let name = RelaxationExercise.predefinedExercises.first(where: { $0.type == result.type })?.name ?? result.type.rawValue
                 return CompletedEntry(
                     id: "relaxation|\(result.id.uuidString)",
-                    title: String(format: NSLocalizedString("Релаксация: %@", comment: ""), name),
+                    title: String(format: NSLocalizedString("Relaxation: %@", comment: ""), name),
                     time: result.performedAt,
                     detail: formatDuration(result.duration),
-                    sourceLabel: String(localized: "Сессия"),
+                    sourceLabel: String(localized: "Session"),
                     systemImage: "figure.mind.and.body",
                     tint: .blue
                 )
@@ -459,10 +459,10 @@ struct ScheduleTabView: View {
                 let name = GroundingExercise.predefinedExercises.first(where: { $0.type == result.type })?.name ?? result.type.rawValue
                 return CompletedEntry(
                     id: "grounding|\(result.id.uuidString)",
-                    title: String(format: NSLocalizedString("Заземление: %@", comment: ""), name),
+                    title: String(format: NSLocalizedString("Grounding: %@", comment: ""), name),
                     time: result.performedAt,
                     detail: formatDuration(result.duration),
-                    sourceLabel: String(localized: "Сессия"),
+                    sourceLabel: String(localized: "Session"),
                     systemImage: "brain.head.profile",
                     tint: .indigo
                 )
@@ -479,17 +479,17 @@ struct ScheduleTabView: View {
             )
             let results = try modelContext.fetch(descriptor)
             entries.append(contentsOf: results.map { result in
-                let title = result.exposure?.localizedTitle ?? String(localized: "Экспозиция")
+                let title = result.exposure?.localizedTitle ?? String(localized: "Exposure")
                 let duration: TimeInterval = {
                     guard let endAt = result.endAt else { return 0 }
                     return max(0, endAt.timeIntervalSince(result.startAt))
                 }()
                 return CompletedEntry(
                     id: "exposure|\(result.id.uuidString)",
-                    title: String(format: NSLocalizedString("Экспозиция: %@", comment: ""), title),
+                    title: String(format: NSLocalizedString("Exposure: %@", comment: ""), title),
                     time: result.startAt,
                     detail: duration > 0 ? formatDuration(duration) : nil,
-                    sourceLabel: String(localized: "Сессия"),
+                    sourceLabel: String(localized: "Session"),
                     systemImage: "shield.lefthalf.filled",
                     tint: .orange
                 )
@@ -512,10 +512,10 @@ struct ScheduleTabView: View {
                 }()
                 return CompletedEntry(
                     id: "ba|\(result.id.uuidString)",
-                    title: String(format: NSLocalizedString("Активация: %@", comment: ""), result.selectedActivity),
+                    title: String(format: NSLocalizedString("Activation: %@", comment: ""), result.selectedActivity),
                     time: result.startedAt,
                     detail: duration > 0 ? formatDuration(duration) : nil,
-                    sourceLabel: String(localized: "Сессия"),
+                    sourceLabel: String(localized: "Session"),
                     systemImage: "sparkles",
                     tint: .mint
                 )
@@ -691,40 +691,40 @@ struct ScheduleTabView: View {
         case .exposure:
             if let id = completion.exposureId,
                let exposure = exposures.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Экспозиция: %@", comment: ""), exposure.localizedTitle)
+                return String(format: NSLocalizedString("Exposure: %@", comment: ""), exposure.localizedTitle)
             }
-            return String(localized: "Экспозиция")
+            return String(localized: "Exposure")
             
         case .breathing:
             if let raw = completion.breathingPatternType,
                let type = BreathingPatternType(rawValue: raw) {
                 let name = BreathingPattern.predefinedPatterns.first(where: { $0.type == type })?.localizedName ?? type.rawValue
-                return String(format: NSLocalizedString("Дыхание: %@", comment: ""), name)
+                return String(format: NSLocalizedString("Breathing: %@", comment: ""), name)
             }
-            return String(localized: "Дыхание")
+            return String(localized: "Breathing")
             
         case .relaxation:
             if let raw = completion.relaxationType,
                let type = RelaxationType(rawValue: raw) {
                 let name = RelaxationExercise.predefinedExercises.first(where: { $0.type == type })?.name ?? type.rawValue
-                return String(format: NSLocalizedString("Релаксация: %@", comment: ""), name)
+                return String(format: NSLocalizedString("Relaxation: %@", comment: ""), name)
             }
-            return String(localized: "Релаксация")
+            return String(localized: "Relaxation")
             
         case .grounding:
             if let raw = completion.groundingType,
                let type = GroundingType(rawValue: raw) {
                 let name = GroundingExercise.predefinedExercises.first(where: { $0.type == type })?.name ?? type.rawValue
-                return String(format: NSLocalizedString("Заземление: %@", comment: ""), name)
+                return String(format: NSLocalizedString("Grounding: %@", comment: ""), name)
             }
-            return String(localized: "Заземление")
+            return String(localized: "Grounding")
             
         case .behavioralActivation:
             if let id = completion.activityListId,
                let list = activityLists.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Активация: %@", comment: ""), list.localizedTitle)
+                return String(format: NSLocalizedString("Activation: %@", comment: ""), list.localizedTitle)
             }
-            return String(localized: "Поведенческая активация")
+            return String(localized: "Behavioral activation")
         }
     }
     
@@ -739,34 +739,34 @@ struct ScheduleTabView: View {
         case .exposure:
             if let id = assignment.exposureId,
                let exposure = exposures.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Экспозиция: %@", comment: ""), exposure.localizedTitle)
+                return String(format: NSLocalizedString("Exposure: %@", comment: ""), exposure.localizedTitle)
             }
-            return String(localized: "Экспозиция")
+            return String(localized: "Exposure")
             
         case .breathing:
             if let type = assignment.breathingPattern {
-                return String(format: NSLocalizedString("Дыхание: %@", comment: ""), breathingName(type))
+                return String(format: NSLocalizedString("Breathing: %@", comment: ""), breathingName(type))
             }
-            return String(localized: "Дыхание")
+            return String(localized: "Breathing")
             
         case .relaxation:
             if let type = assignment.relaxation {
-                return String(format: NSLocalizedString("Релаксация: %@", comment: ""), relaxationName(type))
+                return String(format: NSLocalizedString("Relaxation: %@", comment: ""), relaxationName(type))
             }
-            return String(localized: "Релаксация")
+            return String(localized: "Relaxation")
             
         case .grounding:
             if let type = assignment.grounding {
-                return String(format: NSLocalizedString("Заземление: %@", comment: ""), groundingName(type))
+                return String(format: NSLocalizedString("Grounding: %@", comment: ""), groundingName(type))
             }
-            return String(localized: "Заземление")
+            return String(localized: "Grounding")
             
         case .behavioralActivation:
             if let id = assignment.activityListId,
                let list = activityLists.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Активация: %@", comment: ""), list.localizedTitle)
+                return String(format: NSLocalizedString("Activation: %@", comment: ""), list.localizedTitle)
             }
-            return String(localized: "Поведенческая активация")
+            return String(localized: "Behavioral activation")
         }
     }
     

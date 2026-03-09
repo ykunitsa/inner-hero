@@ -35,7 +35,7 @@ struct GroundingExercisesView: View {
                 .padding(.bottom, 40)
             }
             .background(TopMeshGradientBackground(palette: .purple))
-            .navigationTitle("Заземление")
+            .navigationTitle("Grounding")
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -47,7 +47,7 @@ struct GroundingExercisesView: View {
                 .foregroundStyle(.purple.gradient)
                 .accessibilityHidden(true)
             
-            Text("Техники заземления помогают быстро снизить тревогу и вернуть внимание в настоящий момент")
+            Text("Grounding techniques help quickly reduce anxiety and bring attention to the present moment")
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
                 .multilineTextAlignment(.center)

@@ -47,11 +47,11 @@ struct ActivationsListView: View {
                         emptyStateView
                     } else {
                         if !pinnedActivations.isEmpty {
-                            activationsSection(title: "Закреплённые", activations: pinnedActivations)
+                            activationsSection(title: String(localized: "Pinned"), activations: pinnedActivations)
                         }
                         
                         if !userCreatedActivations.isEmpty {
-                            activationsSection(title: "Созданные мной", activations: userCreatedActivations)
+                            activationsSection(title: String(localized: "Created by me"), activations: userCreatedActivations)
                         }
                         
                         if !predefinedActivations.isEmpty {
@@ -64,7 +64,7 @@ struct ActivationsListView: View {
                 .padding(.bottom, 40)
             }
             .background(TopMeshGradientBackground(palette: .green))
-            .navigationTitle("Поведенческая активация")
+            .navigationTitle("Behavioral activation")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -82,10 +82,10 @@ struct ActivationsListView: View {
                 CreateActivationView()
             }
             .alert("Удалить список активностей?", isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
-                Button("Отмена", role: .cancel) {
+                Button("Cancel", role: .cancel) {
                     activationToDelete = nil
                 }
-                Button("Удалить", role: .destructive) {
+                Button("Delete", role: .destructive) {
                     deleteActivation(activation)
                 }
             } message: { activation in
@@ -155,7 +155,7 @@ struct ActivationsListView: View {
                     activationToDelete = activation
                     showingDeleteAlert = true
                 } label: {
-                    Label("Удалить", systemImage: "trash")
+                    Label("Delete", systemImage: "trash")
                 }
             }
         }

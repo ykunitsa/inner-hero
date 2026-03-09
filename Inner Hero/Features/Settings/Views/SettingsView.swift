@@ -4,7 +4,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Настройки") {
+                Section("Settings") {
                     NavigationLink {
                         AppearanceSettingsView()
                     } label: {
@@ -20,7 +20,7 @@ struct SettingsView: View {
                     NavigationLink {
                         DataSettingsView()
                     } label: {
-                        Label("Данные", systemImage: "tray.full")
+                        Label("Data", systemImage: "tray.full")
                     }
                 }
                 
@@ -32,7 +32,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("Настройки")
+            .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
         }
     }

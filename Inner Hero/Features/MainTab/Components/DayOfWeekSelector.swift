@@ -28,7 +28,7 @@ struct DayOfWeekSelector: View {
     private var quickOptionsSection: some View {
         HStack(spacing: 12) {
             quickOptionButton(
-                title: String(localized: "Все дни"),
+                title: String(localized: "All days"),
                 isSelected: selectedDays.sorted() == [1, 2, 3, 4, 5, 6, 7]
             ) {
                 if selectedDays.sorted() == [1, 2, 3, 4, 5, 6, 7] {
@@ -40,7 +40,7 @@ struct DayOfWeekSelector: View {
             }
             
             quickOptionButton(
-                title: String(localized: "Будни"),
+                title: String(localized: "Weekdays"),
                 isSelected: selectedDays.sorted() == [2, 3, 4, 5, 6]
             ) {
                 if selectedDays.sorted() == [2, 3, 4, 5, 6] {
@@ -52,7 +52,7 @@ struct DayOfWeekSelector: View {
             }
             
             quickOptionButton(
-                title: String(localized: "Выходные"),
+                title: String(localized: "Weekends"),
                 isSelected: selectedDays.sorted() == [1, 7]
             ) {
                 if selectedDays.sorted() == [1, 7] {

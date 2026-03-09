@@ -68,14 +68,14 @@ struct GroundingSessionView: View {
             return CongratsSessionModal.Configuration(
                 palette: .purpleIndigo,
                 topIconSystemName: "sparkles",
-                title: "Ты молодец!",
-                subtitle: "Ты вернул(а) внимание в настоящий момент — это реально помогает.",
+                title: "Well done!",
+                subtitle: "You brought your attention to the present moment—that really helps.",
                 messages: [
-                    .init(iconSystemName: "eye.circle.fill", text: "Если хочется, повтори ещё один круг — можно в своём темпе."),
-                    .init(iconSystemName: "hand.raised.circle.fill", text: "Ты опирался(ась) на ощущения — это навык, который укрепляется практикой."),
-                    .init(iconSystemName: "heart.circle.fill", text: "Даже маленький шаг — это забота о себе.")
+                    .init(iconSystemName: "eye.circle.fill", text: "If you like, repeat another round—at your own pace."),
+                    .init(iconSystemName: "hand.raised.circle.fill", text: "You relied on your senses—that's a skill that strengthens with practice."),
+                    .init(iconSystemName: "heart.circle.fill", text: "Even a small step is self-care.")
                 ],
-                primaryButtonTitle: "Отлично"
+                primaryButtonTitle: "Great"
             )
         }
     }
@@ -100,7 +100,7 @@ struct GroundingSessionView: View {
                         .multilineTextAlignment(.center)
                     
                     HStack {
-                        Text("Шаг \(currentStepIndex + 1) из \(steps.count)")
+                        Text("Step \(currentStepIndex + 1) of \(steps.count)")
                             .font(.caption.weight(.medium))
                             .foregroundStyle(TextColors.tertiary)
                         
@@ -153,7 +153,7 @@ struct GroundingSessionView: View {
                             Text("\(currentStep.number)")
                                 .font(.system(size: 64, weight: .bold, design: .rounded))
                                 .foregroundStyle(.white)
-                                .accessibilityLabel("Шаг \(currentStep.number)")
+                                .accessibilityLabel("Step \(currentStep.number)")
                         }
                     }
                     
@@ -183,7 +183,7 @@ struct GroundingSessionView: View {
                     Image(systemName: "xmark")
                         .font(.headline.weight(.semibold))
                 }
-                .accessibilityLabel("Выйти")
+                .accessibilityLabel("Sign out")
                 .tint(.purple)
             }
             
@@ -192,24 +192,24 @@ struct GroundingSessionView: View {
                     Button {
                         goBack()
                     } label: {
-                        Label("Назад", systemImage: "chevron.left")
+                        Label("Back", systemImage: "chevron.left")
                             .padding(.leading, 8)
                             .padding(.trailing, 4)
                     }
                     .disabled(isFirstStep)
-                    .accessibilityLabel("Назад")
+                    .accessibilityLabel("Back")
                     
                     Divider()
 
                     Button {
                         goNext()
                     } label: {
-                        Label("Вперёд", systemImage: "chevron.right")
+                        Label("Next", systemImage: "chevron.right")
                             .padding(.leading, 4)
                             .padding(.trailing, 8)
                     }
                     .disabled(isLastStep)
-                    .accessibilityLabel("Вперёд")
+                    .accessibilityLabel("Next")
                 }
                 .tint(.purple)
                 
@@ -218,23 +218,23 @@ struct GroundingSessionView: View {
                 Button {
                     showingFinishConfirmation = true
                 } label: {
-                    Label("Финиш", systemImage: "flag.checkered")
+                    Label("Finish", systemImage: "flag.checkered")
                 }
                 .disabled(!isLastStep)
-                .accessibilityLabel("Финиш")
+                .accessibilityLabel("Finish")
                 .tint(.purple)
             }
         }
         .onAppear {
             sessionStartTime = Date()
         }
-        .alert("Завершить упражнение?", isPresented: $showingFinishConfirmation) {
-            Button("Отмена", role: .cancel) { }
-            Button("Завершить") {
+        .alert("End exercise?", isPresented: $showingFinishConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Finish") {
                 finishSession()
             }
         } message: {
-            Text("Вы уверены, что хотите завершить это упражнение?")
+            Text("Are you sure you want to end this exercise?")
         }
         .sheet(isPresented: $showingCongratsSheet, onDismiss: {
             guard shouldDismissAfterCongrats else { return }

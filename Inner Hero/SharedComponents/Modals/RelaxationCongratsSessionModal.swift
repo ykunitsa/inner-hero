@@ -56,12 +56,12 @@ struct RelaxationCongratsSessionModal: View {
                 .accessibilityHidden(true)
                 
                 VStack(spacing: 10) {
-                    Text("Ты молодец!")
+                    Text("Well done!")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundStyle(TextColors.primary)
                         .multilineTextAlignment(.center)
                     
-                    Text("Ты завершил(а) упражнение на расслабление — это забота о себе.")
+                    Text("You completed a relaxation exercise—that's self-care.")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(TextColors.secondary)
                         .multilineTextAlignment(.center)
@@ -72,9 +72,9 @@ struct RelaxationCongratsSessionModal: View {
             
             // Supportive messages
             VStack(spacing: 12) {
-                supportiveMessage(icon: "hand.raised.fill", text: "Ты заметил(а) напряжение и позволил(а) ему уйти.")
-                supportiveMessage(icon: "leaf.fill", text: "Не нужно идеально — важно регулярно возвращаться к спокойствию.")
-                supportiveMessage(icon: "heart.circle.fill", text: "Пусть телу станет чуть легче — шаг за шагом.")
+                supportiveMessage(icon: "hand.raised.fill", text: "You noticed the tension and allowed it to leave.")
+                supportiveMessage(icon: "leaf.fill", text: "You don't need to be perfect—what matters is regularly returning to calm.")
+                supportiveMessage(icon: "heart.circle.fill", text: "Let your body feel a little lighter—step by step.")
             }
             .padding(.horizontal, 20)
             
@@ -88,7 +88,7 @@ struct RelaxationCongratsSessionModal: View {
                         .font(.system(size: 15, weight: .semibold))
                         .accessibilityHidden(true)
                     
-                    Text("Отлично")
+                    Text("Great")
                         .font(.system(size: 16, weight: .semibold))
                 }
                 .foregroundStyle(.white)
@@ -109,7 +109,7 @@ struct RelaxationCongratsSessionModal: View {
             .padding(.horizontal, 20)
             .padding(.top, 24)
             .padding(.bottom, 32)
-            .accessibilityLabel("Закрыть")
+            .accessibilityLabel("Close")
         }
         .background(
             LinearGradient(
@@ -134,7 +134,7 @@ struct RelaxationCongratsSessionModal: View {
                 .frame(width: 24)
                 .accessibilityHidden(true)
             
-            Text(text)
+            Text(LocalizedStringKey(text))
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(TextColors.primary)
             

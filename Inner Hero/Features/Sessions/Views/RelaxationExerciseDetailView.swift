@@ -57,7 +57,7 @@ struct RelaxationExerciseDetailView: View {
             .padding(.bottom, 40)
         }
         .background(TopMeshGradientBackground(palette: .mint))
-        .navigationTitle("Детали")
+        .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -74,7 +74,7 @@ struct RelaxationExerciseDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    .accessibilityLabel(isFavorite ? "Remove from favorites" : "Add to favorites")
                     
                     Button {
                         showScheduleSheet = true
@@ -90,7 +90,7 @@ struct RelaxationExerciseDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel("Запланировать")
+                    .accessibilityLabel("Schedule")
                 }
             }
         }
@@ -142,21 +142,21 @@ struct RelaxationExerciseDetailView: View {
             QuickStatCard(
                 icon: "chart.bar.fill",
                 value: "\(sessions.count)",
-                label: "Сеансов",
+                label: "Sessions",
                 color: .mint
             )
             
             QuickStatCard(
                 icon: "timer",
                 value: averageDuration.map(formatDurationShort) ?? "—",
-                label: "Среднее",
+                label: "Average",
                 color: .orange
             )
             
             QuickStatCard(
                 icon: "clock.fill",
                 value: lastSessionDate.map(formatRelativeShort) ?? "—",
-                label: "Последний",
+                label: "Last",
                 color: .mint
             )
         }
@@ -233,7 +233,7 @@ struct RelaxationExerciseDetailView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Начать сеанс")
+                Text("Start session")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -252,7 +252,7 @@ struct RelaxationExerciseDetailView: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Начать сеанс")
+        .accessibilityLabel("Start session")
     }
     
     private var stepsSection: some View {
@@ -267,7 +267,7 @@ struct RelaxationExerciseDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Шаги выполнения")
+                Text("Steps")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
@@ -383,35 +383,35 @@ struct RelaxationExerciseDetailView: View {
     
     private func durationString(_ duration: TimeInterval) -> String {
         let seconds = Int(duration.rounded())
-        return "\(seconds)с"
+        return String(format: String(localized: "%d s"), seconds)
     }
     
     private func localizedStepName(_ step: MuscleGroup) -> String {
         switch step.name {
         case "Hands & Forearms":
-            return "Кисти и предплечья"
+            return String(localized: "Hands & Forearms")
         case "Upper Arms":
-            return "Плечи и бицепсы"
+            return String(localized: "Upper Arms")
         case "Shoulders":
-            return "Плечи"
+            return String(localized: "Shoulders")
         case "Face & Jaw":
-            return "Лицо и челюсть"
+            return String(localized: "Face & Jaw")
         case "Chest & Back":
-            return "Грудь и спина"
+            return String(localized: "Chest & Back")
         case "Stomach":
-            return "Живот"
+            return String(localized: "Stomach")
         case "Legs & Thighs":
-            return "Ноги и бёдра"
+            return String(localized: "Legs & Thighs")
         case "Feet & Calves":
-            return "Стопы и икры"
+            return String(localized: "Feet & Calves")
         case "Upper Body":
-            return "Верхняя часть тела"
+            return String(localized: "Upper Body")
         case "Face":
-            return "Лицо"
+            return String(localized: "Face")
         case "Core":
-            return "Кор"
+            return String(localized: "Core")
         case "Lower Body":
-            return "Нижняя часть тела"
+            return String(localized: "Lower Body")
         default:
             return step.name
         }
@@ -420,64 +420,64 @@ struct RelaxationExerciseDetailView: View {
     private func localizedStepInstruction(_ step: MuscleGroup) -> String {
         switch (step.name, step.phase) {
         case ("Hands & Forearms", .tension):
-            return "Сожмите обе кисти в кулаки. Почувствуйте напряжение в кистях и предплечьях."
+            return String(localized: "Clench both hands into fists. Feel the tension in your hands and forearms.")
         case ("Hands & Forearms", .relaxation):
-            return "Разожмите кулаки. Полностью расслабьте руки и отметьте разницу между напряжением и расслаблением."
+            return String(localized: "Unclench your fists. Fully relax your arms and notice the difference between tension and relaxation.")
             
         case ("Upper Arms", .tension):
-            return "Согните руки и напрягите бицепсы. Сожмите мышцы настолько, насколько комфортно."
+            return String(localized: "Bend your arms and tense your biceps. Squeeze as much as is comfortable.")
         case ("Upper Arms", .relaxation):
-            return "Опустите руки и расслабьте их. Почувствуйте, как напряжение уходит из верхней части рук."
+            return String(localized: "Lower your arms and relax them. Feel the tension leave your upper arms.")
             
         case ("Shoulders", .tension):
-            return "Поднимите плечи к ушам. Удерживайте и ощущайте напряжение."
+            return String(localized: "Raise your shoulders toward your ears. Hold and feel the tension.")
         case ("Shoulders", .relaxation):
-            return "Опустите плечи в естественное положение. Дайте им стать тяжёлыми и расслабленными."
+            return String(localized: "Lower your shoulders to a natural position. Let them feel heavy and relaxed.")
             
         case ("Face & Jaw", .tension):
-            return "Сильно наморщите лицо: зажмурьте глаза и сожмите челюсть."
+            return String(localized: "Scrunch your face: squeeze your eyes shut and clench your jaw.")
         case ("Face & Jaw", .relaxation):
-            return "Отпустите напряжение в лице. Челюсть слегка разожмите, глаза расслабьте."
+            return String(localized: "Release the tension in your face. Relax your jaw and eyes.")
             
         case ("Chest & Back", .tension):
-            return "Сделайте глубокий вдох и отведите плечи назад. Слегка прогните спину."
+            return String(localized: "Take a deep breath and pull your shoulders back. Slightly arch your back.")
         case ("Chest & Back", .relaxation):
-            return "Выдохните и расслабьте грудь и спину. Дышите спокойно и естественно."
+            return String(localized: "Exhale and relax your chest and back. Breathe calmly and naturally.")
             
         case ("Stomach", .tension):
-            return "Напрягите мышцы живота. Сделайте живот твёрдым."
+            return String(localized: "Tense your stomach muscles. Make your belly firm.")
         case ("Stomach", .relaxation):
-            return "Расслабьте мышцы живота. Пусть живот станет мягким."
+            return String(localized: "Relax your stomach muscles. Let your belly go soft.")
             
         case ("Legs & Thighs", .tension):
-            return "Напрягите мышцы бёдер. Выпрямите ноги и сделайте их более жёсткими."
+            return String(localized: "Tense your thigh muscles. Straighten your legs and make them stiff.")
         case ("Legs & Thighs", .relaxation):
-            return "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и свободными."
+            return String(localized: "Fully relax your legs. Feel them become heavy and loose.")
             
         case ("Feet & Calves", .tension):
-            return "Опустите носки вниз и напрягите икры и стопы."
+            return String(localized: "Point your toes down and tense your calves and feet.")
         case ("Feet & Calves", .relaxation):
-            return "Отпустите напряжение в стопах и икрах. Дайте им расслабиться естественно."
+            return String(localized: "Release the tension in your feet and calves. Let them relax naturally.")
             
         case ("Upper Body", .tension):
-            return "Сожмите кулаки, напрягите руки и поднимите плечи. Удерживайте общее напряжение."
+            return String(localized: "Clench your fists, tense your arms, and raise your shoulders. Hold the overall tension.")
         case ("Upper Body", .relaxation):
-            return "Отпустите всё. Пусть руки опустятся, а плечи расслабятся. Почувствуйте облегчение."
+            return String(localized: "Let everything go. Let your arms drop and shoulders relax. Feel the relief.")
             
         case ("Face", .tension):
-            return "Наморщите лицо: зажмурьте глаза и сожмите челюсть."
+            return String(localized: "Scrunch your face: squeeze your eyes shut and clench your jaw.")
         case ("Face", .relaxation):
-            return "Пусть напряжение уйдёт из лица. Расслабьте челюсть и глаза."
+            return String(localized: "Let the tension leave your face. Relax your jaw and eyes.")
             
         case ("Core", .tension):
-            return "Сделайте глубокий вдох. Слегка прогните спину и напрягите живот."
+            return String(localized: "Take a deep breath. Slightly arch your back and tense your stomach.")
         case ("Core", .relaxation):
-            return "Выдохните и отпустите напряжение. Пусть спина и живот расслабятся."
+            return String(localized: "Exhale and release the tension. Let your back and stomach relax.")
             
         case ("Lower Body", .tension):
-            return "Выпрямите ноги и направьте носки вниз. Напрягите бёдра, икры и стопы."
+            return String(localized: "Straighten your legs and point your toes down. Tense your thighs, calves, and feet.")
         case ("Lower Body", .relaxation):
-            return "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и спокойными."
+            return String(localized: "Fully relax your legs. Feel them become heavy and calm.")
             
         default:
             return step.instruction
@@ -487,9 +487,9 @@ struct RelaxationExerciseDetailView: View {
     private func phaseTitle(for phase: MuscleGroup.Phase) -> String {
         switch phase {
         case .tension:
-            return "Напрячь"
+            return String(localized: "Tense")
         case .relaxation:
-            return "Расслабить"
+            return String(localized: "Relax")
         }
     }
     
@@ -498,7 +498,7 @@ struct RelaxationExerciseDetailView: View {
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
         if minutes == 0 {
-            return "\(seconds)с"
+        return String(format: String(localized: "%d s"), seconds)
         }
         return "\(minutes):\(String(format: "%02d", seconds))"
     }

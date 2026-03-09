@@ -18,29 +18,29 @@ struct DataSettingsView: View {
                 Button {
                     Task { await prepareExport() }
                 } label: {
-                    Label("Экспортировать данные (JSON)", systemImage: "square.and.arrow.up")
+                    Label("Export data (JSON)", systemImage: "square.and.arrow.up")
                 }
                 .disabled(isExporting || isResetting)
             } header: {
-                Text("Экспорт")
+                Text("Export")
             } footer: {
-                Text("Файл содержит упражнения, расписания и результаты сессий.")
+                Text("The file contains exercises, schedules, and session results.")
             }
             
             Section {
                 Button(role: .destructive) {
                     showingResetConfirmation = true
                 } label: {
-                    Label("Сбросить все данные", systemImage: "trash")
+                    Label("Reset all data", systemImage: "trash")
                 }
                 .disabled(isExporting || isResetting)
             } header: {
-                Text("Сброс")
+                Text("Reset")
             } footer: {
-                Text("Удаляет все данные из приложения. Действие нельзя отменить.")
+                Text("Removes all data from the app. This action cannot be undone.")
             }
         }
-        .navigationTitle("Данные")
+        .navigationTitle("Data")
         .navigationBarTitleDisplayMode(.inline)
         .fileExporter(
             isPresented: $showingExporter,
@@ -56,16 +56,16 @@ struct DataSettingsView: View {
             }
         }
         .confirmationDialog(
-            "Сбросить все данные?",
+            "Reset all data?",
             isPresented: $showingResetConfirmation,
             titleVisibility: .visible
         ) {
-            Button("Сбросить", role: .destructive) {
+            Button("Reset", role: .destructive) {
                 Task { await resetAllData() }
             }
-            Button("Отмена", role: .cancel) { }
+            Button("Cancel", role: .cancel) { }
         } message: {
-            Text("Это удалит все упражнения, расписания и результаты сессий.")
+            Text("This will delete all exercises, schedules, and session results.")
         }
         .overlay {
             if isExporting || isResetting {

@@ -27,19 +27,19 @@ struct TodayPlanHeroWidget: View {
                         .frame(width: 56, height: 56)
                     
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("План на сегодня")
+                        Text("Today's plan")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(accent)
                         
                         if planned == 0 {
-                            Text("Нет задач")
+                            Text("No tasks")
                                 .font(.title3.weight(.semibold))
                                 .foregroundStyle(.primary)
                             
                             NavigationLink {
                                 ExerciseScheduleView()
                             } label: {
-                                Label("Открыть расписание", systemImage: "calendar")
+                                Label("Open schedule", systemImage: "calendar")
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(accent)
                                     .padding(.horizontal, 10)
@@ -51,15 +51,15 @@ struct TodayPlanHeroWidget: View {
                             }
                             .buttonStyle(.plain)
                         } else {
-                            Text(String(format: NSLocalizedString("Выполнено %d из %d", comment: ""), done, planned))
+                            Text(String(format: NSLocalizedString("Completed %1$d of %2$d", comment: ""), done, planned))
                                 .font(.title3.weight(.semibold))
                                 .foregroundStyle(.primary)
                                 .monospacedDigit()
                             
                             Text(
                                 remaining == 0
-                                ? String(localized: "Готово")
-                                : String(format: NSLocalizedString("Осталось %d", comment: ""), remaining)
+                                ? String(localized: "Done")
+                                : String(format: NSLocalizedString("(%d) left", comment: ""), remaining)
                             )
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
@@ -104,7 +104,7 @@ struct TodayPlanHeroWidget: View {
                                 }
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("Начать следующее упражнение")
+                        .accessibilityLabel("Start next exercise")
                     }
                 }
                 

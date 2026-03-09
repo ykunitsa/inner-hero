@@ -14,18 +14,18 @@ struct RelaxationExercise: Identifiable {
         [
             RelaxationExercise(
                 type: .fullBody,
-                name: String(localized: "Расслабление всего тела"),
+                name: String(localized: "Full Body Relaxation"),
                 description: String(
-                    localized: "Полная последовательность прогрессивной мышечной релаксации для всех основных групп мышц. Помогает снять глубокое напряжение по всему телу."
+                    localized: "Full sequence of progressive muscle relaxation for all major muscle groups. Helps release deep tension throughout the body."
                 ),
                 icon: "figure.mind.and.body",
                 duration: 900 // 15 minutes
             ),
             RelaxationExercise(
                 type: .short,
-                name: String(localized: "Быстрая релаксация"),
+                name: String(localized: "Quick Relaxation"),
                 description: String(
-                    localized: "Короткая версия прогрессивной мышечной релаксации с фокусом на ключевых зонах напряжения. Подходит для быстрого снятия стресса в течение дня."
+                    localized: "Short version of progressive muscle relaxation focusing on key tension areas. Good for quick stress relief during the day."
                 ),
                 icon: "figure.stand",
                 duration: 300 // 5 minutes

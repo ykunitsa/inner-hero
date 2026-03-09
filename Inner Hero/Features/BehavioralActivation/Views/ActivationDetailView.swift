@@ -44,7 +44,7 @@ struct ActivationDetailView: View {
             .padding(.bottom, 40)
         }
         .background(TopMeshGradientBackground(palette: .green))
-        .navigationTitle("Детали")
+        .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -69,7 +69,7 @@ struct ActivationDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    .accessibilityLabel(isFavorite ? String(localized: "Remove from favorites") : String(localized: "Add to favorites"))
                     
                     Button {
                         showScheduleSheet = true
@@ -85,7 +85,7 @@ struct ActivationDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel("Запланировать")
+                    .accessibilityLabel(String(localized: "Schedule"))
                     
                     if !activation.isPredefined {
                         Button {
@@ -102,7 +102,7 @@ struct ActivationDetailView: View {
                                 )
                         }
                         .frame(minWidth: 44, minHeight: 44)
-                        .accessibilityLabel("Редактировать")
+                        .accessibilityLabel("Edit")
                     }
                 }
             }
@@ -151,7 +151,7 @@ struct ActivationDetailView: View {
                     .multilineTextAlignment(.center)
                 
                 if activation.isPredefined {
-                    Text("Предустановленный список")
+                    Text("Preset list")
                         .font(.subheadline)
                         .foregroundStyle(TextColors.tertiary)
                 }
@@ -165,14 +165,14 @@ struct ActivationDetailView: View {
             QuickStatCard(
                 icon: "list.bullet",
                 value: "\(activation.localizedActivities.count)",
-                label: "Активности",
+                label: "Activities",
                 color: .green
             )
             
             QuickStatCard(
                 icon: activation.isPredefined ? "lock.fill" : "person.fill",
-                value: activation.isPredefined ? "Предустановленный" : "Созданный",
-                label: "Тип",
+                value: activation.isPredefined ? String(localized: "Preset") : String(localized: "User-created"),
+                label: String(localized: "Type"),
                 color: .mint
             )
         }
@@ -180,16 +180,12 @@ struct ActivationDetailView: View {
     
     private var purposeCard: some View {
         infoCard(
-            title: "Для чего это",
+            title: String(localized: "What it's for"),
             icon: "target",
             accent: LinearGradient(colors: [.green, .mint], startPoint: .topLeading, endPoint: .bottomTrailing)
         ) {
             Text(
-                """
-                Поведенческая активация помогает мягко «включаться» в жизнь, когда нет сил, настроения или мотивации. \
-                Вы заранее выбираете простые действия (приятные или значимые), делаете их маленькими шагами и замечаете, \
-                как меняются состояние и уровень удовольствия.
-                """
+                String(localized: "Behavioral activation helps you gently \"turn on\" to life when you have no energy, mood, or motivation. You choose simple actions (pleasant or meaningful) in advance, do them in small steps, and notice how your state and level of enjoyment change.")
             )
         }
     }
@@ -242,13 +238,13 @@ struct ActivationDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Активности")
+                Text("Activities")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
             
             if activation.localizedActivities.isEmpty {
-                Text("Пока нет активностей")
+                Text("No activities yet")
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -276,7 +272,7 @@ struct ActivationDetailView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Начать сеанс")
+                Text("Start session")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -297,7 +293,7 @@ struct ActivationDetailView: View {
         .buttonStyle(.plain)
         .disabled(activation.localizedActivities.isEmpty)
         .opacity(activation.localizedActivities.isEmpty ? 0.5 : 1.0)
-        .accessibilityLabel("Начать сеанс поведенческой активации")
+        .accessibilityLabel(String(localized: "Start behavioral activation session"))
     }
     
     private func toggleFavorite() {
@@ -361,7 +357,7 @@ struct ActivityRowCard: View {
                 .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Активность \(index + 1): \(activity)")
+        .accessibilityLabel(String(format: String(localized: "Activity %d: %@"), index + 1, activity))
     }
 }
 
@@ -404,7 +400,7 @@ struct ActivityGroupCard: View {
                 .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
         )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Список активностей")
+        .accessibilityLabel("Activity list")
     }
 }
 
@@ -462,7 +458,7 @@ struct StartActivationView: View {
                             .multilineTextAlignment(.center)
                         
                         if isRouletteRunning {
-                            Text("Выбираем активность…")
+                            Text("Selecting activity…")
                                 .font(.subheadline)
                                 .foregroundStyle(TextColors.secondary)
                                 .multilineTextAlignment(.center)
@@ -476,7 +472,7 @@ struct StartActivationView: View {
                                     .transition(.opacity.combined(with: .scale(scale: 0.98)))
                             }
                         } else {
-                            Text("Выберите способ выбора активности")
+                            Text("Choose how to select activity")
                                 .font(.subheadline)
                                 .foregroundStyle(TextColors.secondary)
                                 .multilineTextAlignment(.center)
@@ -490,7 +486,7 @@ struct StartActivationView: View {
                 Spacer()
             }
         }
-        .navigationTitle("Начать сеанс")
+        .navigationTitle("Start session")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
         .tint(.green)
@@ -503,13 +499,13 @@ struct StartActivationView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "list.bullet")
                             .font(.body)
-                        Text("Список")
+                        Text("List")
                     }
                     .foregroundStyle(.green)
                 }
                 .disabled(activation.localizedActivities.isEmpty || isRouletteRunning)
-                .accessibilityLabel("Выбрать из списка")
-                .accessibilityHint("Открывает список активностей для выбора")
+                .accessibilityLabel(String(localized: "Select from list"))
+                .accessibilityHint(String(localized: "Opens the activity list to choose from"))
                 
                 Spacer()
                 
@@ -520,19 +516,19 @@ struct StartActivationView: View {
                         if isRouletteRunning {
                             ProgressView()
                                 .tint(.green)
-                            Text("Выбираем…")
+                            Text("Selecting…")
                         } else {
                             Image(systemName: "shuffle")
                                 .font(.body)
-                            Text("Случайно")
+                            Text("Random")
                         }
                     }
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.green)
                 }
                 .disabled(activation.localizedActivities.isEmpty || isRouletteRunning)
-                .accessibilityLabel("Случайная активность")
-                .accessibilityHint("Выбирает случайную активность и начинает сеанс")
+                .accessibilityLabel(String(localized: "Random activity"))
+                .accessibilityHint(String(localized: "Picks a random activity and starts the session"))
             }
         }
         .sheet(isPresented: $showingActivityList) {
@@ -656,16 +652,16 @@ struct ActivitySelectionSheet: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(activity)
-                        .accessibilityHint("Выбрать активность")
+                        .accessibilityHint(String(localized: "Select activity"))
                     }
                 }
                 .padding(20)
             }
-            .navigationTitle("Выбор активности")
+            .navigationTitle(String(localized: "Activity selection"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
@@ -745,7 +741,7 @@ struct ActivationSessionView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text("Ваша активность")
+                            Text("Your activity")
                                 .font(.subheadline)
                                 .foregroundStyle(TextColors.tertiary)
                             
@@ -760,7 +756,7 @@ struct ActivationSessionView: View {
                     // Time info card
                     HStack(spacing: 20) {
                         VStack(spacing: 4) {
-                            Text("Начало")
+                            Text("Start")
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(TextColors.tertiary)
                             Text(formattedStartTime)
@@ -774,7 +770,7 @@ struct ActivationSessionView: View {
                             .frame(height: 32)
                         
                         VStack(spacing: 4) {
-                            Text("Длительность")
+                            Text("Duration")
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(TextColors.tertiary)
                             Text(elapsedTime)
@@ -802,7 +798,7 @@ struct ActivationSessionView: View {
                             Image(systemName: "info.circle.fill")
                                 .font(.title3)
                                 .foregroundStyle(.green)
-                            Text("Инструкции")
+                            Text("Instructions")
                                 .font(.headline)
                                 .foregroundStyle(TextColors.primary)
                         }
@@ -810,19 +806,19 @@ struct ActivationSessionView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             InstructionRow(
                                 number: 1,
-                                text: "Выполняйте активность в комфортном темпе"
+                                text: String(localized: "Do the activity at a comfortable pace")
                             )
                             InstructionRow(
                                 number: 2,
-                                text: "Сконцентрируйтесь на ощущениях в настоящем моменте"
+                                text: String(localized: "Focus on sensations in the present moment")
                             )
                             InstructionRow(
                                 number: 3,
-                                text: "Отмечайте, как вы себя чувствуете во время и после"
+                                text: String(localized: "Notice how you feel during and after")
                             )
                             InstructionRow(
                                 number: 4,
-                                text: "После завершения оцените уровень удовольствия"
+                                text: String(localized: "After finishing, rate how much you enjoyed it")
                             )
                         }
                     }
@@ -846,7 +842,7 @@ struct ActivationSessionView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.body)
-                                Text("Завершить")
+                                Text("Finish")
                                     .font(.system(size: 17, weight: .semibold))
                             }
                             .foregroundStyle(.white)
@@ -950,8 +946,8 @@ struct InstructionRow: View {
     NavigationStack {
         ActivationDetailView(
             activation: ActivityList(
-                title: "Утренняя рутина",
-                activities: ["Разминка 30 минут", "Медитация", "Полезный завтрак", "Чтение 15 минут"],
+                title: "Morning routine",
+                activities: ["Warm-up 30 min", "Meditation", "Healthy breakfast", "Reading 15 min"],
                 isPredefined: false
             )
         )

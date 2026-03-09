@@ -79,7 +79,7 @@ struct MuscleRelaxationSessionView: View {
                     
                     // Progress indicator
                     HStack(spacing: Spacing.xs) {
-                        Text("Шаг \(currentStepIndex + 1) из \(muscleGroups.count)")
+                        Text("Step \(currentStepIndex + 1) of \(muscleGroups.count)")
                             .font(.caption2.weight(.medium))
                             .foregroundStyle(TextColors.tertiary)
                         
@@ -161,7 +161,7 @@ struct MuscleRelaxationSessionView: View {
                             .font(.body)
                             .foregroundStyle(.mint)
                         
-                            Text("Инструкция")
+                            Text("Instruction")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(TextColors.primary)
                     }
@@ -188,7 +188,7 @@ struct MuscleRelaxationSessionView: View {
                     Image(systemName: "xmark")
                         .font(.headline.weight(.semibold))
                 }
-                .accessibilityLabel("Выйти")
+                .accessibilityLabel("Sign out")
                 .tint(.mint)
             }
             
@@ -197,12 +197,12 @@ struct MuscleRelaxationSessionView: View {
                     togglePlayPause()
                 } label: {
                     Label(
-                        timer.isRunning && !timer.isPaused ? "Пауза" : "Пуск",
+                        timer.isRunning && !timer.isPaused ? "Pause" : "Start",
                         systemImage: timer.isRunning && !timer.isPaused ? "pause.fill" : "play.fill"
                     )
                 }
                 .tint(.mint)
-                .accessibilityLabel(timer.isRunning && !timer.isPaused ? "Пауза" : "Пуск")
+                .accessibilityLabel(timer.isRunning && !timer.isPaused ? "Pause" : "Start")
                 .disabled(sessionPhase == .readingInstruction)
                 
                 Spacer()
@@ -210,10 +210,10 @@ struct MuscleRelaxationSessionView: View {
                 Button {
                     showingFinishConfirmation = true
                 } label: {
-                    Label("Финиш", systemImage: "flag.checkered")
+                    Label("Finish", systemImage: "flag.checkered")
                 }
                 .tint(.mint)
-                .accessibilityLabel("Финиш")
+                .accessibilityLabel("Finish")
             }
         }
         .onAppear {
@@ -226,13 +226,13 @@ struct MuscleRelaxationSessionView: View {
         .onReceive(timer.$elapsedTime) { _ in
             handlePhaseCompletionIfNeeded()
         }
-        .alert("Завершить сеанс?", isPresented: $showingFinishConfirmation) {
-            Button("Отмена", role: .cancel) { }
-            Button("Завершить") {
+        .alert("End session?", isPresented: $showingFinishConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Finish") {
                 finishSession()
             }
         } message: {
-            Text("Вы уверены, что хотите завершить сеанс мышечной релаксации?")
+            Text("Are you sure you want to end the muscle relaxation session?")
         }
         .sheet(isPresented: $showingCongratsSheet, onDismiss: {
             guard shouldDismissAfterCongrats else { return }
@@ -436,38 +436,38 @@ struct MuscleRelaxationSessionView: View {
     private func phaseTitle(for phase: MuscleGroup.Phase) -> String {
         switch phase {
         case .tension:
-            return "Напрячь"
+            return String(localized: "Tense")
         case .relaxation:
-            return "Расслабить"
+            return String(localized: "Relax")
         }
     }
     
     private func localizedStepName(_ step: MuscleGroup) -> String {
         switch step.name {
         case "Hands & Forearms":
-            return "Кисти и предплечья"
+            return String(localized: "Hands & Forearms")
         case "Upper Arms":
-            return "Плечи и бицепсы"
+            return String(localized: "Upper Arms")
         case "Shoulders":
-            return "Плечи"
+            return String(localized: "Shoulders")
         case "Face & Jaw":
-            return "Лицо и челюсть"
+            return String(localized: "Face & Jaw")
         case "Chest & Back":
-            return "Грудь и спина"
+            return String(localized: "Chest & Back")
         case "Stomach":
-            return "Живот"
+            return String(localized: "Stomach")
         case "Legs & Thighs":
-            return "Ноги и бёдра"
+            return String(localized: "Legs & Thighs")
         case "Feet & Calves":
-            return "Стопы и икры"
+            return String(localized: "Feet & Calves")
         case "Upper Body":
-            return "Верхняя часть тела"
+            return String(localized: "Upper Body")
         case "Face":
-            return "Лицо"
+            return String(localized: "Face")
         case "Core":
-            return "Кор"
+            return String(localized: "Core")
         case "Lower Body":
-            return "Нижняя часть тела"
+            return String(localized: "Lower Body")
         default:
             return step.name
         }
@@ -476,64 +476,64 @@ struct MuscleRelaxationSessionView: View {
     private func localizedStepInstruction(_ step: MuscleGroup) -> String {
         switch (step.name, step.phase) {
         case ("Hands & Forearms", .tension):
-            return "Сожмите обе кисти в кулаки. Почувствуйте напряжение в кистях и предплечьях."
+            return String(localized: "Clench both hands into fists. Feel the tension in your hands and forearms.")
         case ("Hands & Forearms", .relaxation):
-            return "Разожмите кулаки. Полностью расслабьте руки и отметьте разницу между напряжением и расслаблением."
+            return String(localized: "Unclench your fists. Fully relax your arms and notice the difference between tension and relaxation.")
             
         case ("Upper Arms", .tension):
-            return "Согните руки и напрягите бицепсы. Сожмите мышцы настолько, насколько комфортно."
+            return String(localized: "Bend your arms and tense your biceps. Squeeze as much as is comfortable.")
         case ("Upper Arms", .relaxation):
-            return "Опустите руки и расслабьте их. Почувствуйте, как напряжение уходит из верхней части рук."
+            return String(localized: "Lower your arms and relax them. Feel the tension leave your upper arms.")
             
         case ("Shoulders", .tension):
-            return "Поднимите плечи к ушам. Удерживайте и ощущайте напряжение."
+            return String(localized: "Raise your shoulders toward your ears. Hold and feel the tension.")
         case ("Shoulders", .relaxation):
-            return "Опустите плечи в естественное положение. Дайте им стать тяжёлыми и расслабленными."
+            return String(localized: "Lower your shoulders to a natural position. Let them feel heavy and relaxed.")
             
         case ("Face & Jaw", .tension):
-            return "Сильно наморщите лицо: зажмурьте глаза и сожмите челюсть."
+            return String(localized: "Scrunch your face: squeeze your eyes shut and clench your jaw.")
         case ("Face & Jaw", .relaxation):
-            return "Отпустите напряжение в лице. Челюсть слегка разожмите, глаза расслабьте."
+            return String(localized: "Release the tension in your face. Relax your jaw and eyes.")
             
         case ("Chest & Back", .tension):
-            return "Сделайте глубокий вдох и отведите плечи назад. Слегка прогните спину."
+            return String(localized: "Take a deep breath and pull your shoulders back. Slightly arch your back.")
         case ("Chest & Back", .relaxation):
-            return "Выдохните и расслабьте грудь и спину. Дышите спокойно и естественно."
+            return String(localized: "Exhale and relax your chest and back. Breathe calmly and naturally.")
             
         case ("Stomach", .tension):
-            return "Напрягите мышцы живота. Сделайте живот твёрдым."
+            return String(localized: "Tense your stomach muscles. Make your belly firm.")
         case ("Stomach", .relaxation):
-            return "Расслабьте мышцы живота. Пусть живот станет мягким."
+            return String(localized: "Relax your stomach muscles. Let your belly go soft.")
             
         case ("Legs & Thighs", .tension):
-            return "Напрягите мышцы бёдер. Выпрямите ноги и сделайте их более жёсткими."
+            return String(localized: "Tense your thigh muscles. Straighten your legs and make them stiff.")
         case ("Legs & Thighs", .relaxation):
-            return "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и свободными."
+            return String(localized: "Fully relax your legs. Feel them become heavy and loose.")
             
         case ("Feet & Calves", .tension):
-            return "Опустите носки вниз и напрягите икры и стопы."
+            return String(localized: "Point your toes down and tense your calves and feet.")
         case ("Feet & Calves", .relaxation):
-            return "Отпустите напряжение в стопах и икрах. Дайте им расслабиться естественно."
+            return String(localized: "Release the tension in your feet and calves. Let them relax naturally.")
             
         case ("Upper Body", .tension):
-            return "Сожмите кулаки, напрягите руки и поднимите плечи. Удерживайте общее напряжение."
+            return String(localized: "Clench your fists, tense your arms, and raise your shoulders. Hold the overall tension.")
         case ("Upper Body", .relaxation):
-            return "Отпустите всё. Пусть руки опустятся, а плечи расслабятся. Почувствуйте облегчение."
+            return String(localized: "Let everything go. Let your arms drop and shoulders relax. Feel the relief.")
             
         case ("Face", .tension):
-            return "Наморщите лицо: зажмурьте глаза и сожмите челюсть."
+            return String(localized: "Scrunch your face: squeeze your eyes shut and clench your jaw.")
         case ("Face", .relaxation):
-            return "Пусть напряжение уйдёт из лица. Расслабьте челюсть и глаза."
+            return String(localized: "Let the tension leave your face. Relax your jaw and eyes.")
             
         case ("Core", .tension):
-            return "Сделайте глубокий вдох. Слегка прогните спину и напрягите живот."
+            return String(localized: "Take a deep breath. Slightly arch your back and tense your stomach.")
         case ("Core", .relaxation):
-            return "Выдохните и отпустите напряжение. Пусть спина и живот расслабятся."
+            return String(localized: "Exhale and release the tension. Let your back and stomach relax.")
             
         case ("Lower Body", .tension):
-            return "Выпрямите ноги и направьте носки вниз. Напрягите бёдра, икры и стопы."
+            return String(localized: "Straighten your legs and point your toes down. Tense your thighs, calves, and feet.")
         case ("Lower Body", .relaxation):
-            return "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и спокойными."
+            return String(localized: "Fully relax your legs. Feel them become heavy and calm.")
             
         default:
             return step.instruction

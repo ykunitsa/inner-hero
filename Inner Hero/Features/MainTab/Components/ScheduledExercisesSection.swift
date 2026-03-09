@@ -62,7 +62,7 @@ struct ScheduledExercisesSection: View {
                 Image(systemName: "calendar.badge.clock")
                     .font(.body)
                     .foregroundStyle(accent)
-                Text("Запланированные упражнения")
+                Text("Scheduled exercises")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(accent)
             }
@@ -95,14 +95,14 @@ struct ScheduledExercisesSection: View {
     
     private var emptyStateView: some View {
         VStack(spacing: 8) {
-            Text("Нет запланированных упражнений")
+            Text("No scheduled exercises")
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
             
             NavigationLink {
                 ExerciseScheduleView()
             } label: {
-                Text("Создать расписание")
+                Text("Create schedule")
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.orange)
             }
@@ -118,7 +118,7 @@ struct ScheduledExercisesSection: View {
                let exposure = exposures.first(where: { $0.id == exposureId }) {
                 return exposure.localizedTitle
             }
-            return String(localized: "Экспозиция")
+            return String(localized: "Exposure")
             
         case .breathing:
             if let patternType = assignment.breathingPattern {
@@ -126,7 +126,7 @@ struct ScheduledExercisesSection: View {
                     return pattern.name
                 }
             }
-            return String(localized: "Дыхательное упражнение")
+            return String(localized: "Breathing exercise")
             
         case .relaxation:
             if let relaxationType = assignment.relaxation {
@@ -134,21 +134,21 @@ struct ScheduledExercisesSection: View {
                     return exercise.name
                 }
             }
-            return String(localized: "Релаксация")
+            return String(localized: "Relaxation")
             
         case .grounding:
             if let groundingType = assignment.grounding,
                let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
                 return exercise.name
             }
-            return String(localized: "Заземление")
+            return String(localized: "Grounding")
             
         case .behavioralActivation:
             if let activityListId = assignment.activityListId,
                let activityList = activityLists.first(where: { $0.id == activityListId }) {
                 return activityList.localizedTitle
             }
-            return String(localized: "Поведенческая активация")
+            return String(localized: "Behavioral activation")
         }
     }
     
@@ -283,9 +283,9 @@ struct ScheduledExerciseCard: View {
     private func formatDate(_ date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
-            return String(localized: "Сегодня")
+            return String(localized: "Today")
         } else if calendar.isDateInTomorrow(date) {
-            return String(localized: "Завтра")
+            return String(localized: "Tomorrow")
         } else {
             let formatter = DateFormatter()
             formatter.dateFormat = "d MMM"

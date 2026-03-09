@@ -9,9 +9,9 @@ enum ThemeMode: String, CaseIterable, Identifiable {
     
     var title: String {
         switch self {
-        case .system: String(localized: "Системная")
-        case .light: String(localized: "Светлая")
-        case .dark: String(localized: "Тёмная")
+        case .system: String(localized: "System")
+        case .light: String(localized: "Light")
+        case .dark: String(localized: "Dark")
         }
     }
     

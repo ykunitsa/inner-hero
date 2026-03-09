@@ -18,56 +18,56 @@ struct MainTabView: View {
                 .tag(Tab.home)
                 .tabItem {
                     Label {
-                        Text("Сводка")
+                        Text("Summary")
                     } icon: {
                         Image(systemName: "heart.gauge.open")
                     }
                 }
-                .accessibilityLabel("Сводка")
+                .accessibilityLabel("Summary")
 
             ExercisesView()
                 .tag(Tab.exercises)
                 .tabItem {
                     Label {
-                        Text("Упражнения")
+                        Text("Exercises")
                     } icon: {
                         Image(systemName: "figure.mind.and.body")
                     }
                 }
-                .accessibilityLabel("Упражнения")
+                .accessibilityLabel("Exercises")
             
             ScheduleTabView()
                 .tag(Tab.schedule)
                 .tabItem {
                     Label {
-                        Text("Расписание")
+                        Text("Schedule")
                     } icon: {
                         Image(systemName: "calendar")
                     }
                 }
-                .accessibilityLabel("Расписание")
+                .accessibilityLabel("Schedule")
             
             KnowledgeCenterView()
                 .tag(Tab.knowledge)
                 .tabItem {
                     Label {
-                        Text("Центр знаний")
+                        Text("Knowledge center")
                     } icon: {
                         Image(systemName: "book.pages")
                     }
                 }
-                .accessibilityLabel("Центр знаний")
+                .accessibilityLabel("Knowledge center")
             
             SettingsView()
                 .tag(Tab.settings)
                 .tabItem {
                     Label {
-                        Text("Настройки")
+                        Text("Settings")
                     } icon: {
                         Image(systemName: "gear")
                     }
                 }
-                .accessibilityLabel("Настройки")
+                .accessibilityLabel("Settings")
         }
         .tint(.blue)
     }

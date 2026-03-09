@@ -47,8 +47,8 @@ final class NotificationManager {
         
         // Create notification content
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "Время для упражнения")
-        content.body = String(format: NSLocalizedString("Напоминание: %@", comment: ""), exerciseName)
+        content.title = String(localized: "Time for exercise")
+        content.body = String(format: NSLocalizedString("Reminder: %@", comment: ""), exerciseName)
         content.sound = .default
         content.categoryIdentifier = "EXERCISE_REMINDER"
         
@@ -109,7 +109,7 @@ final class NotificationManager {
     private func getExerciseName(for assignment: ExerciseAssignment) -> String {
         switch assignment.exerciseType {
         case .exposure:
-            return String(localized: "Экспозиция")
+            return String(localized: "Exposure")
         case .breathing:
             if let patternType = assignment.breathingPattern {
                 switch patternType {
@@ -121,7 +121,7 @@ final class NotificationManager {
                     return String(localized: "Paced Breathing")
                 }
             }
-            return String(localized: "Дыхательное упражнение")
+            return String(localized: "Breathing exercise")
         case .relaxation:
             if let relaxationType = assignment.relaxation {
                 switch relaxationType {
@@ -131,7 +131,7 @@ final class NotificationManager {
                     return String(localized: "Quick Relaxation")
                 }
             }
-            return String(localized: "Релаксация")
+            return String(localized: "Relaxation")
         case .grounding:
             if let groundingType = assignment.grounding {
                 switch groundingType {
@@ -139,9 +139,9 @@ final class NotificationManager {
                     return String(localized: "5-4-3-2-1")
                 }
             }
-            return String(localized: "Заземление")
+            return String(localized: "Grounding")
         case .behavioralActivation:
-            return String(localized: "Поведенческая активация")
+            return String(localized: "Behavioral activation")
         }
     }
     

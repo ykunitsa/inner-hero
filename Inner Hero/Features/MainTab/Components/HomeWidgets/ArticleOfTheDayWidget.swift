@@ -12,7 +12,7 @@ struct ArticleOfTheDayWidget: View {
                     WidgetCard(minHeight: 120) {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
-                                Label("Статья дня", systemImage: "book.pages")
+                                Label("Article of the day", systemImage: "book.pages")
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(.purple)
                                 Spacer()
@@ -34,7 +34,7 @@ struct ArticleOfTheDayWidget: View {
                                 Spacer(minLength: 0)
                                 
                                 Label {
-                                    Text(String(format: NSLocalizedString("%d мин", comment: ""), article.readTime))
+                                    Text(String(format: NSLocalizedString("%d min", comment: ""), article.readTime))
                                 } icon: {
                                     Image(systemName: "clock")
                                 }
@@ -48,15 +48,15 @@ struct ArticleOfTheDayWidget: View {
             } else {
                 WidgetCard(minHeight: 120) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Label("Статья дня", systemImage: "book.pages")
+                        Label("Article of the day", systemImage: "book.pages")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(.purple)
                         
-                        Text("Нет статей")
+                        Text("No articles")
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.primary)
                         
-                        Text("Загляните позже")
+                        Text("Check back later")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }

@@ -52,7 +52,7 @@ struct GroundingExerciseDetailView: View {
             .padding(.bottom, 40)
         }
         .background(TopMeshGradientBackground(palette: .purple))
-        .navigationTitle("Детали")
+        .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -69,7 +69,7 @@ struct GroundingExerciseDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    .accessibilityLabel(isFavorite ? "Remove from favorites" : "Add to favorites")
                     
                     Button {
                         showScheduleSheet = true
@@ -85,7 +85,7 @@ struct GroundingExerciseDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel("Запланировать")
+                    .accessibilityLabel("Schedule")
                 }
             }
         }
@@ -134,9 +134,9 @@ struct GroundingExerciseDetailView: View {
     
     private var quickStatsSection: some View {
         HStack(spacing: 16) {
-            QuickStatCard(icon: "list.number", value: "\(exercise.instructionSteps.count)", label: "Шагов", color: .purple)
-            QuickStatCard(icon: "clock.fill", value: "\(sessions.count)", label: "Сеансов", color: .purple)
-            QuickStatCard(icon: "timer", value: averageDurationText, label: "Средняя", color: .purple)
+            QuickStatCard(icon: "list.number", value: "\(exercise.instructionSteps.count)", label: "Steps", color: .purple)
+            QuickStatCard(icon: "clock.fill", value: "\(sessions.count)", label: "Sessions", color: .purple)
+            QuickStatCard(icon: "timer", value: averageDurationText, label: "Average", color: .purple)
         }
     }
     
@@ -152,7 +152,7 @@ struct GroundingExerciseDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Описание")
+                Text("Description")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
@@ -181,7 +181,7 @@ struct GroundingExerciseDetailView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Начать сеанс")
+                Text("Start session")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -200,7 +200,7 @@ struct GroundingExerciseDetailView: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Начать сеанс")
+        .accessibilityLabel("Start session")
     }
     
     private var sessionsHistoryCard: some View {
@@ -217,7 +217,7 @@ struct GroundingExerciseDetailView: View {
                             )
                         )
                     
-                    Text("История сеансов")
+                    Text("Session history")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(TextColors.primary)
                     
@@ -231,7 +231,7 @@ struct GroundingExerciseDetailView: View {
                 if sessions.count > 0 {
                     HStack(spacing: 20) {
                         VStack(alignment: .center, spacing: 4) {
-                            Text("Всего")
+                            Text("Total")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
                             Text("\(sessions.count)")
@@ -243,7 +243,7 @@ struct GroundingExerciseDetailView: View {
                         Divider()
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Последний")
+                            Text("Last")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
                             
@@ -262,7 +262,7 @@ struct GroundingExerciseDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
-                    Text("Нет завершённых сеансов")
+                    Text("No completed sessions")
                         .font(.body)
                         .foregroundStyle(TextColors.secondary)
                 }

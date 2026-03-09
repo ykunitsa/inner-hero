@@ -20,7 +20,7 @@ struct AppLockGateView<Content: View>: View {
             if isBlocked {
                 LockedOverlay(
                     errorMessage: lockManager.lastErrorMessage,
-                    onUnlock: { Task { await lockManager.unlockIfPossible(reason: String(localized: "Разблокировать Inner Hero")) } }
+                    onUnlock: { Task { await lockManager.unlockIfPossible(reason: String(localized: "Unlock Inner Hero")) } }
                 )
                 .transition(.opacity)
             }
@@ -41,7 +41,7 @@ struct AppLockGateView<Content: View>: View {
     private func ensureUnlockedIfNeeded() async {
         if lockManager.shouldRequireUnlockAtLaunch(enabled: appLockEnabled) {
             lockManager.isUnlocked = false
-            await lockManager.unlockIfPossible(reason: String(localized: "Разблокировать Inner Hero"))
+            await lockManager.unlockIfPossible(reason: String(localized: "Unlock Inner Hero"))
             return
         }
         
@@ -60,7 +60,7 @@ private struct LockedOverlay: View {
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
             
-            Text("Приложение заблокировано")
+            Text("App locked")
                 .font(.title3.weight(.semibold))
             
             if let errorMessage, !errorMessage.isEmpty {
@@ -69,7 +69,7 @@ private struct LockedOverlay: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             } else {
-                Text("Подтвердите личность, чтобы продолжить.")
+                Text("Verify your identity to continue.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

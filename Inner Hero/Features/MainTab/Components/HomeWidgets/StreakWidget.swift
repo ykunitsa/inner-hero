@@ -13,7 +13,7 @@ struct StreakWidget: View {
     var body: some View {
         WidgetCard(minHeight: 120) {
             VStack(alignment: .leading, spacing: 10) {
-                Label("Серия", systemImage: "flame.fill")
+                Label("Streak", systemImage: "flame.fill")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.orange)
                 
@@ -27,7 +27,7 @@ struct StreakWidget: View {
                         .foregroundStyle(.secondary)
                 }
                 
-                Text(streakDays == 0 ? "Начните сегодня" : "Продолжайте в том же духе")
+                Text(streakDays == 0 ? "Start today" : "Keep it up")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)

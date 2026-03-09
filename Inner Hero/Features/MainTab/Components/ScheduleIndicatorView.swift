@@ -11,7 +11,7 @@ struct ScheduleIndicatorView: View {
                 .foregroundStyle(.orange)
             
             
-            Text("Расписание")
+            Text("Schedule")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(TextColors.secondary)
         }

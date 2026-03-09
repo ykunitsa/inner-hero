@@ -21,26 +21,26 @@ struct AboutView: View {
                 .padding(.vertical, 6)
             }
             
-            Section("Информация") {
-                infoRow(title: "Версия", value: shortVersion)
-                infoRow(title: "Сборка", value: buildNumber)
+            Section("Information") {
+                infoRow(title: "Version", value: shortVersion)
+                infoRow(title: "Build", value: buildNumber)
             }
             
-            Section("Поддержка") {
+            Section("Support") {
                 let email = "support@innerhero.app"
-                Text("Если вы нашли проблему или хотите предложить улучшение — напишите нам.")
+                Text("If you found an issue or want to suggest an improvement—write to us.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 
                 if let mailURL = URL(string: "mailto:\(email)") {
-                    Link(String(format: NSLocalizedString("Написать в поддержку: %@", comment: ""), email), destination: mailURL)
+                    Link(String(format: NSLocalizedString("Contact support: %@", comment: ""), email), destination: mailURL)
                 } else {
                     Text(email)
                         .font(.callout.weight(.semibold))
                 }
             }
         }
-        .navigationTitle("О приложении")
+        .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -54,7 +54,7 @@ struct AboutView: View {
     
     private var versionString: String {
         String(
-            format: NSLocalizedString("Версия %@ (%@)", comment: ""),
+            format: NSLocalizedString("Version %1$@ (%2$@)", comment: ""),
             shortVersion,
             buildNumber
         )

@@ -52,7 +52,7 @@ struct BreathingPatternDetailView: View {
             .padding(.bottom, 40)
         }
         .background(TopMeshGradientBackground(palette: .teal))
-        .navigationTitle("Детали")
+        .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -69,7 +69,7 @@ struct BreathingPatternDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    .accessibilityLabel(isFavorite ? "Remove from favorites" : "Add to favorites")
                     
                     Button {
                         showScheduleSheet = true
@@ -85,7 +85,7 @@ struct BreathingPatternDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel("Запланировать")
+                    .accessibilityLabel("Schedule")
                 }
             }
         }
@@ -137,21 +137,21 @@ struct BreathingPatternDetailView: View {
             QuickStatCard(
                 icon: "chart.bar.fill",
                 value: "\(sessions.count)",
-                label: "Сеансов",
+                label: "Sessions",
                 color: .teal
             )
             
             QuickStatCard(
                 icon: "timer",
                 value: averageDuration.map(formatDurationShort) ?? "—",
-                label: "Среднее",
+                label: "Average",
                 color: .orange
             )
             
             QuickStatCard(
                 icon: "clock.fill",
                 value: lastSessionDate.map(formatRelativeShort) ?? "—",
-                label: "Последний",
+                label: "Last",
                 color: .teal
             )
         }
@@ -169,7 +169,7 @@ struct BreathingPatternDetailView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Описание")
+                Text("Description")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
@@ -198,7 +198,7 @@ struct BreathingPatternDetailView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
-                Text("Начать сеанс")
+                Text("Start session")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundStyle(.white)
@@ -217,7 +217,7 @@ struct BreathingPatternDetailView: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Начать сеанс")
+        .accessibilityLabel("Start session")
     }
     
     private var sessionsHistoryCard: some View {
@@ -233,7 +233,7 @@ struct BreathingPatternDetailView: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                    Text("История сеансов")
+                    Text("Session history")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(TextColors.primary)
                     Spacer()
@@ -245,7 +245,7 @@ struct BreathingPatternDetailView: View {
                 if sessions.count > 0 {
                     HStack(spacing: 20) {
                         VStack(alignment: .center, spacing: 4) {
-                            Text("Всего")
+                            Text("Total")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
                             Text("\(sessions.count)")
@@ -257,7 +257,7 @@ struct BreathingPatternDetailView: View {
                         Divider()
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Последний")
+                            Text("Last")
                                 .font(.caption)
                                 .foregroundStyle(TextColors.secondary)
                             
@@ -280,7 +280,7 @@ struct BreathingPatternDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
-                    Text("Нет завершенных сеансов")
+                    Text("No completed sessions")
                         .font(.body)
                         .foregroundStyle(TextColors.secondary)
                 }
@@ -352,7 +352,7 @@ struct BreathingPatternDetailView: View {
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
         if minutes == 0 {
-            return "\(seconds)с"
+            return String(format: String(localized: "%d s"), seconds)
         }
         return "\(minutes):\(String(format: "%02d", seconds))"
     }

@@ -31,7 +31,7 @@ struct BreathingExercisesView: View {
                 .padding(.bottom, 40)
             }
             .background(TopMeshGradientBackground(palette: .teal))
-            .navigationTitle("Дыхание")
+            .navigationTitle("Breathing")
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -70,7 +70,7 @@ private struct BreathingPatternCardView: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(pattern.localizedName)
-        .accessibilityHint("Нажмите дважды, чтобы открыть детали. Запуск сеанса доступен внутри.")
+        .accessibilityHint("Double-tap to open details. Starting a session is available inside.")
     }
     
     private var header: some View {

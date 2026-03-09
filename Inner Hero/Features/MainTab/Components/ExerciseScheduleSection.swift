@@ -29,7 +29,7 @@ struct ExerciseScheduleSection: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Text("Расписание")
+                Text("Schedule")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
@@ -58,13 +58,13 @@ struct ExerciseScheduleSection: View {
                 preSelectedActivityListId: activityListId
             )
         }
-        .alert("Удалить расписание?", isPresented: $showDeleteAlert, presenting: assignmentToDelete) { assignment in
-            Button("Отмена", role: .cancel) { }
-            Button("Удалить", role: .destructive) {
+        .alert("Delete schedule?", isPresented: $showDeleteAlert, presenting: assignmentToDelete) { assignment in
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
                 deleteSchedule(assignment)
             }
         } message: { _ in
-            Text("Вы уверены, что хотите удалить это расписание?")
+            Text("Are you sure you want to delete this schedule?")
         }
     }
     
@@ -93,7 +93,7 @@ struct ExerciseScheduleSection: View {
             HStack(spacing: 8) {
                 Image(systemName: "plus.circle.fill")
                     .font(.body)
-                Text("Создать расписание")
+                Text("Create schedule")
                     .font(.body.weight(.medium))
             }
             .foregroundStyle(.white)
@@ -121,7 +121,7 @@ struct ExerciseScheduleSection: View {
             HStack(spacing: 8) {
                 Image(systemName: "plus.circle")
                     .font(.body)
-                Text("Добавить расписание")
+                Text("Add schedule")
                     .font(.body.weight(.medium))
             }
             .foregroundStyle(.orange)
@@ -133,7 +133,7 @@ struct ExerciseScheduleSection: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Добавить расписание")
+        .accessibilityLabel("Add schedule")
     }
     
     private func scheduleRow(assignment: ExerciseAssignment) -> some View {
@@ -178,7 +178,7 @@ struct ExerciseScheduleSection: View {
                     HStack(spacing: 6) {
                         Image(systemName: "pencil")
                             .font(.caption)
-                        Text("Редактировать")
+                        Text("Edit")
                             .font(.subheadline.weight(.medium))
                     }
                     .foregroundStyle(.blue)
@@ -198,7 +198,7 @@ struct ExerciseScheduleSection: View {
                     HStack(spacing: 6) {
                         Image(systemName: "trash")
                             .font(.caption)
-                        Text("Удалить")
+                        Text("Delete")
                             .font(.subheadline.weight(.medium))
                     }
                     .foregroundStyle(.red)

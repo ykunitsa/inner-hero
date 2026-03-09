@@ -22,7 +22,7 @@ struct SessionHistoryRowView: View {
         guard let endAt = session.endAt else { return nil }
         let interval = endAt.timeIntervalSince(session.startAt)
         let minutes = Int(interval / 60)
-        return "\(minutes) мин"
+        return String(format: String(localized: "%d min"), minutes)
     }
     
     private func anxietyColor(for level: Int, comparing comparison: Int) -> Color {
@@ -41,7 +41,7 @@ struct SessionHistoryRowView: View {
                 Label(formattedDate, systemImage: "calendar")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.primary)
-                    .accessibilityLabel("Дата сеанса: \(formattedDate)")
+                    .accessibilityLabel("Session date: \(formattedDate)")
                 
                 Spacer()
                 
@@ -49,13 +49,13 @@ struct SessionHistoryRowView: View {
                     Text(duration)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                        .accessibilityLabel("Длительность: \(duration)")
+                        .accessibilityLabel("Duration: \(duration)")
                 }
             }
             
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: Layout.contentSpacing) {
-                    Text("Уровень до")
+                    Text("Before")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Text("\(session.anxietyBefore)")
@@ -64,13 +64,13 @@ struct SessionHistoryRowView: View {
                         .monospacedDigit()
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Тревога до сеанса: \(session.anxietyBefore)")
+                .accessibilityLabel("Anxiety before session: \(session.anxietyBefore)")
                 
                 Spacer()
                 
                 if let anxietyAfter = session.anxietyAfter {
                     VStack(alignment: .trailing, spacing: Layout.contentSpacing) {
-                        Text("Уровень после")
+                        Text("After")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Text("\(anxietyAfter)")
@@ -81,11 +81,11 @@ struct SessionHistoryRowView: View {
                             .monospacedDigit()
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Тревога после сеанса: \(anxietyAfter)")
+                    .accessibilityLabel("Anxiety after session: \(anxietyAfter)")
                     .accessibilityHint(
                         anxietyAfter < session.anxietyBefore 
-                            ? "Уровень снизился" 
-                            : "Уровень повысился"
+? "Level decreased"
+                            : "Level increased"
                     )
                 }
             }
@@ -95,7 +95,7 @@ struct SessionHistoryRowView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
-                    .accessibilityLabel("Заметки: \(session.notes)")
+                    .accessibilityLabel("Notes: \(session.notes)")
             }
         }
         .padding(.vertical, Layout.verticalPadding)

@@ -5,13 +5,44 @@
 
     },
     "—" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
+          }
+        }
+      }
     },
     ":" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ":"
+          }
+        }
+      }
     },
     "·" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "·"
+          }
+        }
+      }
+    },
+    "(%d) left" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Осталось %d"
+          }
+        }
+      }
     },
     "%@ %@" : {
       "localizations" : {
@@ -73,20 +104,195 @@
         }
       }
     },
-    "%d д" : {
-
+    "%1$@ %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ %@"
+          }
+        }
+      }
     },
-    "%d мин" : {
-
+    "%1$@: %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: %@"
+          }
+        }
+      }
     },
-    "%d мин чтения" : {
-
+    "%1$@: %2$lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: %lld"
+          }
+        }
+      }
     },
-    "%d процентов" : {
-
+    "%1$@. %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. %@"
+          }
+        }
+      }
+    },
+    "%1$@. %2$lld activities %3$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. %lld активностей%@"
+          }
+        }
+      }
+    },
+    "%1$@. %2$lld steps, %3$lld sessions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. %lld шагов, %lld сеансов"
+          }
+        }
+      }
+    },
+    "%1$lld / %2$lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld"
+          }
+        }
+      }
+    },
+    "%1$lld of %2$lld steps completed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld из %lld шагов выполнено"
+          }
+        }
+      }
+    },
+    "%1$lld:%2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld:%@"
+          }
+        }
+      }
+    },
+    "%1$lld/%2$lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/%lld"
+          }
+        }
+      }
+    },
+    "%d d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d д"
+          }
+        }
+      }
+    },
+    "%d min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d мин"
+          }
+        }
+      }
+    },
+    "%d min reading" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d мин чтения"
+          }
+        }
+      }
+    },
+    "%d of 5" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d из 5"
+          }
+        }
+      }
+    },
+    "%d percent" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d процентов"
+          }
+        }
+      }
+    },
+    "%d s" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d с"
+          }
+        }
+      }
+    },
+    "%d steps completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d шагов выполнено"
+          }
+        }
+      }
     },
     "%lld" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "%lld / %lld" : {
       "localizations" : {
@@ -98,23 +304,49 @@
         }
       }
     },
-    "%lld из %lld шагов выполнено" : {
+    "%lld of %lld steps completed" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$lld из %2$lld шагов выполнено"
+            "value" : "%1$lld of %2$lld steps completed"
           }
         }
       }
     },
-    "%lld из 5" : {
-
+    "%lld of 5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld из 5"
+          }
+        }
+      }
+    },
+    "%lld percent" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld процентов"
+          }
+        }
+      }
+    },
+    "%lld steps completed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld шагов выполнено"
+          }
+        }
+      }
     },
     "%lld процентов" : {
-
-    },
-    "%lld шагов выполнено" : {
 
     },
     "%lld:%@" : {
@@ -128,7 +360,14 @@
       }
     },
     "%lld." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld."
+          }
+        }
+      }
     },
     "%lld/%lld" : {
       "localizations" : {
@@ -141,61 +380,3388 @@
       }
     },
     "%lld/10" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/10"
+          }
+        }
+      }
     },
     "•" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "•"
+          }
+        }
+      }
+    },
+    "0\nNo anxiety" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0\nНет тревоги"
+          }
+        }
+      }
     },
     "0\nНет тревоги" : {
 
     },
-    "1\nСовсем не понравилось" : {
-
+    "1\nDid not like at all" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1\nСовсем не понравилось"
+          }
+        }
+      }
     },
-    "3\nНормально" : {
-
+    "3\nOkay" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3\nНормально"
+          }
+        }
+      }
     },
     "4-6 Breathing" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыхание 4–6"
+          }
+        }
+      }
     },
-    "5\nОчень понравилось" : {
-
+    "5\nLiked very much" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5\nОчень понравилось"
+          }
+        }
+      }
+    },
+    "5\nMedium" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5\nСредний"
+          }
+        }
+      }
     },
     "5\nСредний" : {
 
     },
     "5-4-3-2-1" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5-4-3-2-1"
+          }
+        }
+      }
     },
-    "6 МЕС" : {
-
+    "6 MO" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6 МЕС"
+          }
+        }
+      }
+    },
+    "10\nMaximum" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10\nМаксимум"
+          }
+        }
+      }
     },
     "10\nМаксимум" : {
 
     },
+    "About" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "О приложении"
+          }
+        }
+      }
+    },
+    "Actions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Действия"
+          }
+        }
+      }
+    },
+    "Activation: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активация: %@"
+          }
+        }
+      }
+    },
+    "Active" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активно"
+          }
+        }
+      }
+    },
+    "Active schedules" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активные расписания"
+          }
+        }
+      }
+    },
+    "Active session" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активный сеанс"
+          }
+        }
+      }
+    },
+    "Activities" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активности"
+          }
+        }
+      }
+    },
+    "Activity %1$lld: %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активность %lld: %@"
+          }
+        }
+      }
+    },
+    "Activity %d: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активность %d: %@"
+          }
+        }
+      }
+    },
+    "Activity %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активность %lld"
+          }
+        }
+      }
+    },
+    "Activity completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активность завершена"
+          }
+        }
+      }
+    },
+    "Activity list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Список активностей"
+          }
+        }
+      }
+    },
+    "Activity list for behavioral activation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Список активностей для поведенческой активации"
+          }
+        }
+      }
+    },
+    "Activity list name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название списка активностей"
+          }
+        }
+      }
+    },
+    "Activity selection" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор активности"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить"
+          }
+        }
+      }
+    },
+    "Add activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить активность"
+          }
+        }
+      }
+    },
+    "Add activity list" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить список активностей"
+          }
+        }
+      }
+    },
+    "Add an exercise to the schedule—it will appear here" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавьте упражнение в расписание — оно появится здесь"
+          }
+        }
+      }
+    },
+    "Add exercises to favorites" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавьте упражнения в избранное"
+          }
+        }
+      }
+    },
+    "Add exercises to favorites for quick access" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавьте упражнения в избранное для быстрого доступа"
+          }
+        }
+      }
+    },
+    "Add exposure" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить экспозицию"
+          }
+        }
+      }
+    },
+    "Add one or more activities. Empty lines are not saved." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавьте одну или несколько активностей. Пустые строки не сохраняются."
+          }
+        }
+      }
+    },
+    "Add schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить расписание"
+          }
+        }
+      }
+    },
+    "Add step" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить шаг"
+          }
+        }
+      }
+    },
+    "Add to favorites" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить в избранное"
+          }
+        }
+      }
+    },
+    "Adds an empty activity to the end of the list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавляет пустую активность в конец списка"
+          }
+        }
+      }
+    },
+    "Adds an empty step to the end of the list" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавляет пустой шаг в конец списка"
+          }
+        }
+      }
+    },
+    "After" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "После"
+          }
+        }
+      }
+    },
+    "After finishing, rate how much you enjoyed it" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "После завершения оцените уровень удовольствия"
+          }
+        }
+      }
+    },
+    "After session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "После сеанса"
+          }
+        }
+      }
+    },
+    "All days" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все дни"
+          }
+        }
+      }
+    },
+    "All steps completed!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все шаги выполнены!"
+          }
+        }
+      }
+    },
+    "Anxiety after session: %lld" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тревога после сеанса: %lld"
+          }
+        }
+      }
+    },
+    "Anxiety before session: %lld" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тревога до сеанса: %lld"
+          }
+        }
+      }
+    },
+    "Anxiety dynamics" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Динамика тревожности"
+          }
+        }
+      }
+    },
+    "Anxiety dynamics chart" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "График динамики тревожности"
+          }
+        }
+      }
+    },
+    "Anxiety dynamics chart by date" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "График динамики тревожности по датам"
+          }
+        }
+      }
+    },
+    "Anxiety dynamics from %1$lld to %2$lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Динамика тревожности от %lld до %lld"
+          }
+        }
+      }
+    },
+    "Anxiety dynamics from %lld to %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Anxiety dynamics from %1$lld to %2$lld"
+          }
+        }
+      }
+    },
+    "Anxiety level" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровень тревоги"
+          }
+        }
+      }
+    },
+    "Anxiety level after session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровень тревоги после сеанса"
+          }
+        }
+      }
+    },
+    "Anxiety levels" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровни тревоги"
+          }
+        }
+      }
+    },
+    "Anxiety progress" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогресс тревоги"
+          }
+        }
+      }
+    },
+    "Anxiety progress chart" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "График прогресса тревожности"
+          }
+        }
+      }
+    },
+    "App lock (Face ID)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Блокировка приложения (Face ID)"
+          }
+        }
+      }
+    },
+    "App locked" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложение заблокировано"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Внешний вид"
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete the exposure \"%@\"? This action cannot be undone." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите удалить экспозицию \"%@\"? Это действие нельзя отменить."
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete the list \"%@\"? This action cannot be undone." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите удалить список \"%@\"? Это действие нельзя отменить."
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete this schedule?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите удалить это расписание?"
+          }
+        }
+      }
+    },
+    "Are you sure you want to end the breathing session?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите завершить дыхательную сессию?"
+          }
+        }
+      }
+    },
+    "Are you sure you want to end the muscle relaxation session?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите завершить сеанс мышечной релаксации?"
+          }
+        }
+      }
+    },
+    "Are you sure you want to end this exercise?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите завершить это упражнение?"
+          }
+        }
+      }
+    },
+    "Are you sure you want to interrupt the session? Progress will not be saved." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите прервать сеанс? Прогресс не будет сохранён."
+          }
+        }
+      }
+    },
+    "Article" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статья"
+          }
+        }
+      }
+    },
+    "Article of the day" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статья дня"
+          }
+        }
+      }
+    },
+    "Articles are not available yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статьи пока недоступны"
+          }
+        }
+      }
+    },
+    "Average anxiety after session: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средняя тревожность после сеанса: %@"
+          }
+        }
+      }
+    },
+    "Average anxiety before session: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средняя тревожность до сеанса: %@"
+          }
+        }
+      }
+    },
+    "Avg After" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Среднее После"
+          }
+        }
+      }
+    },
+    "Avg Before" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Среднее До"
+          }
+        }
+      }
+    },
+    "Back" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назад"
+          }
+        }
+      }
+    },
+    "Back to home" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вернуться на главную"
+          }
+        }
+      }
+    },
+    "Basic information" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Основная информация"
+          }
+        }
+      }
+    },
+    "Before" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "До"
+          }
+        }
+      }
+    },
+    "Before session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "До сеанса"
+          }
+        }
+      }
+    },
+    "Behavioral activation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поведенческая активация"
+          }
+        }
+      }
+    },
+    "Behavioral activation helps you gently \"turn on\" to life when you have no energy, mood, or motivation. You choose simple actions (pleasant or meaningful) in advance, do them in small steps, and notice how your state and level of enjoyment change." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поведенческая активация помогает мягко «включаться» в жизнь, когда нет сил, настроения или мотивации. Вы заранее выбираете простые действия (приятные или значимые), делаете их маленькими шагами и замечаете, как меняются состояние и уровень удовольствия."
+          }
+        }
+      }
+    },
+    "Behavioral activation helps you gently re-engage with life when you have no energy, mood, or motivation. You choose simple actions (pleasant or meaningful) in advance, do them in small steps, and notice how your state and enjoyment change." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поведенческая активация помогает мягко «включаться» в жизнь, когда нет сил, настроения или мотивации. Вы заранее выбираете простые действия (приятные или значимые), делаете их маленькими шагами и замечаете, как меняются состояние и уровень удовольствия."
+          }
+        }
+      }
+    },
+    "Bend your arms and tense your biceps. Squeeze as much as is comfortable." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Согните руки и напрягите бицепсы. Сожмите мышцы настолько, насколько комфортно."
+          }
+        }
+      }
+    },
+    "Blue line: anxiety after session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Голубая линия: тревожность после сеанса"
+          }
+        }
+      }
+    },
+    "Blue line: anxiety before session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Синяя линия: тревожность до сеанса"
+          }
+        }
+      }
+    },
+    "Box breathing" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Квадратное дыхание"
+          }
+        }
+      }
+    },
     "Box Breathing" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Квадратное дыхание"
+          }
+        }
+      }
+    },
+    "Breathing" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыхание"
+          }
+        }
+      }
+    },
+    "Breathing exercise" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыхательное упражнение"
+          }
+        }
+      }
+    },
+    "Breathing technique" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыхательная техника"
+          }
+        }
+      }
+    },
+    "Breathing: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыхание: %@"
+          }
+        }
+      }
+    },
+    "Build" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сборка"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отмена"
+          }
+        }
+      }
+    },
+    "Catch 2 smells or just 2 sensations of the air." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поймайте 2 запаха или просто 2 ощущения воздуха."
+          }
+        }
+      }
+    },
+    "Change" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменение"
+          }
+        }
+      }
+    },
+    "Check back later" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загляните позже"
+          }
+        }
+      }
+    },
+    "Chest & Back" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Грудь и спина"
+          }
+        }
+      }
+    },
+    "Choose exercise" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите упражнение"
+          }
+        }
+      }
+    },
+    "Choose exposure" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите экспозицию"
+          }
+        }
+      }
+    },
+    "Choose how to select activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите способ выбора активности"
+          }
+        }
+      }
+    },
+    "Choose list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите список"
+          }
+        }
+      }
+    },
+    "Choose technique" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите технику"
+          }
+        }
+      }
+    },
+    "Clench both hands into fists. Feel the tension in your hands and forearms." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сожмите обе кисти в кулаки. Почувствуйте напряжение в кистях и предплечьях."
+          }
+        }
+      }
+    },
+    "Clench your fists, tense your arms, and raise your shoulders. Hold the overall tension." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сожмите кулаки, напрягите руки и поднимите плечи. Удерживайте общее напряжение."
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыть"
+          }
+        }
+      }
+    },
+    "Complete current step" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить текущий шаг"
+          }
+        }
+      }
+    },
+    "Complete your first therapy session\nto see history" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершите первый сеанс терапии,\nчтобы увидеть историю"
+          }
+        }
+      }
+    },
+    "Complete your first therapy session,\nto see history" : {
 
+    },
+    "Completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполнен"
+          }
+        }
+      }
+    },
+    "Completed (wk.)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполнено (нед.)"
+          }
+        }
+      }
+    },
+    "Completed %1$d of %2$d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполнено %d из %d"
+          }
+        }
+      }
+    },
+    "Completed sessions and manual entries for the selected day will appear here" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Здесь появятся завершённые сессии и ручные отметки за выбранный день"
+          }
+        }
+      }
+    },
+    "Completion progress" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогресс выполнения"
+          }
+        }
+      }
+    },
+    "Completion time: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время выполнения: %@"
+          }
+        }
+      }
+    },
+    "Consistency matters more than perfection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стабильность важнее идеальности"
+          }
+        }
+      }
+    },
+    "Contact support: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Написать в поддержку: %@"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить"
+          }
+        }
+      }
+    },
+    "Continue active session: %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить активный сеанс: %@"
+          }
+        }
+      }
+    },
+    "Continue session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить сеанс"
+          }
+        }
+      }
+    },
+    "Controlled breathing techniques to regulate the nervous system" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Техники контролируемого дыхания для регуляции нервной системы"
+          }
+        }
+      }
+    },
+    "Core" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Корпус"
+          }
+        }
+      }
+    },
+    "Create a schedule for regular exercise reminders" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создайте расписание для регулярных напоминаний о упражнениях"
+          }
+        }
+      }
+    },
+    "Create schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создать расписание"
+          }
+        }
+      }
+    },
+    "Create your first activity list for behavioral activation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создайте первый список активностей для поведенческой активации"
+          }
+        }
+      }
+    },
+    "Create your first exposure to work with anxiety" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создайте первую экспозицию для работы с тревогой"
+          }
+        }
+      }
+    },
+    "Created by me" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Созданные мной"
+          }
+        }
+      }
+    },
+    "Current anxiety level: %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Текущий уровень тревожности: %d"
+          }
+        }
+      }
+    },
+    "Current step" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Текущий шаг"
+          }
+        }
+      }
+    },
+    "D" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ДН"
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тёмная"
+          }
+        }
+      }
+    },
+    "Data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Данные"
+          }
+        }
+      }
+    },
+    "Date" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дата"
+          }
+        }
+      }
+    },
+    "Date: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дата: %@"
+          }
+        }
+      }
+    },
+    "Day of week selection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор дня недели"
+          }
+        }
+      }
+    },
+    "Days of week" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дни недели"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить"
+          }
+        }
+      }
+    },
+    "Delete activity %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить активность %lld"
+          }
+        }
+      }
+    },
+    "Delete activity list?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить список активностей?"
+          }
+        }
+      }
+    },
+    "Delete exposure?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить экспозицию?"
+          }
+        }
+      }
+    },
+    "Delete schedule?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить расписание?"
+          }
+        }
+      }
+    },
+    "Delete step %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить шаг %lld"
+          }
+        }
+      }
+    },
+    "Describe how you feel" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опишите ваше состояние"
+          }
+        }
+      }
+    },
+    "Describe the sequence of actions. Each step can have its own timer." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опишите последовательность действий. Каждый шаг может иметь свой таймер."
+          }
+        }
+      }
+    },
+    "Describe the sequence of actions. Each step can have its own timer. Hold the ☰ icon to reorder or swipe left to delete." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опишите последовательность действий. Каждый шаг может иметь свой таймер. Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления."
+          }
+        }
+      }
+    },
+    "Description" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Описание"
+          }
+        }
+      }
+    },
+    "Description of the anxiety-provoking situation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Описание ситуации, вызывающей тревогу"
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Детали"
+          }
+        }
+      }
+    },
+    "Device verification is unavailable." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверка устройства недоступна."
+          }
+        }
+      }
+    },
+    "Did not like at all" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Совсем не понравилось"
+          }
+        }
+      }
+    },
+    "Display period selection" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор периода отображения"
+          }
+        }
+      }
+    },
+    "Do the activity at a comfortable pace" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполняйте активность в комфортном темпе"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Готово"
+          }
+        }
+      }
+    },
+    "Double-tap to end session without saving" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите чтобы завершить сеанс без сохранения"
+          }
+        }
+      }
+    },
+    "Double-tap to go to this step" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите для перехода к этому шагу"
+          }
+        }
+      }
+    },
+    "Double-tap to open" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите для открытия"
+          }
+        }
+      }
+    },
+    "Double-tap to open details. Starting a session is available inside." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите дважды, чтобы открыть детали. Запуск сеанса доступен внутри."
+          }
+        }
+      }
+    },
+    "Double-tap to resume session" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите, чтобы возобновить сеанс"
+          }
+        }
+      }
+    },
+    "Double-tap to return to session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите чтобы вернуться к сеансу"
+          }
+        }
+      }
+    },
+    "Double-tap to save" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите чтобы сохранить"
+          }
+        }
+      }
+    },
+    "Double-tap to save and finish" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите чтобы сохранить и завершить"
+          }
+        }
+      }
+    },
+    "Double-tap to view details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите для просмотра деталей"
+          }
+        }
+      }
+    },
+    "Duration" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Длительность"
+          }
+        }
+      }
+    },
+    "Duration: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Длительность: %@"
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Редактировать"
+          }
+        }
+      }
+    },
+    "Edit list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Редактировать список"
+          }
+        }
+      }
+    },
+    "Edit schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Редактировать расписание"
+          }
+        }
+      }
+    },
+    "Editing" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Редактирование"
+          }
+        }
+      }
+    },
+    "Education" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Образование"
+          }
+        }
+      }
+    },
+    "End exercise?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить упражнение?"
+          }
+        }
+      }
+    },
+    "End session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить сессию"
+          }
+        }
+      }
+    },
+    "End session?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить сеанс?"
+          }
+        }
+      }
+    },
+    "Ending session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершение сеанса"
+          }
+        }
+      }
+    },
+    "Enjoyment rating" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оценка впечатления"
+          }
+        }
+      }
+    },
+    "Enter name and add at least one activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите название и добавьте хотя бы одну активность"
+          }
+        }
+      }
+    },
+    "Entry" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отметка"
+          }
+        }
+      }
     },
     "Equal-length inhale, hold, exhale, and hold phases. Used by Navy SEALs to maintain calm under pressure and improve focus." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Равные фазы вдоха, задержки, выдоха и задержки. Используется для сохранения спокойствия и концентрации."
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка"
+          }
+        }
+      }
+    },
+    "Even a small step is self-care." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Даже маленький шаг — это забота о себе."
+          }
+        }
+      }
+    },
+    "Every day" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Каждый день"
+          }
+        }
+      }
+    },
+    "Every step is progress" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Каждый шаг - это прогресс"
+          }
+        }
+      }
+    },
+    "Exercise not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Упражнение не найдено"
+          }
+        }
+      }
+    },
+    "Exercise type" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тип упражнения"
+          }
+        }
+      }
+    },
+    "Exercise unavailable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Упражнение недоступно"
+          }
+        }
+      }
+    },
+    "Exercises" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Упражнения"
+          }
+        }
+      }
+    },
+    "Exhale and relax your chest and back. Breathe calmly and naturally." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдохните и расслабьте грудь и спину. Дышите спокойно и естественно."
+          }
+        }
+      }
+    },
+    "Exhale and release the tension. Let your back and stomach relax." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдохните и отпустите напряжение. Пусть спина и живот расслабятся."
+          }
+        }
+      }
+    },
+    "Export" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспорт"
+          }
+        }
+      }
+    },
+    "Export data (JSON)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспортировать данные (JSON)"
+          }
+        }
+      }
+    },
+    "Exposure" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиция"
+          }
+        }
+      }
+    },
+    "Exposure description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Описание экспозиции"
+          }
+        }
+      }
+    },
+    "Exposure is a gentle courage practice: you learn to stay with anxiety and notice that you can be with it—it's unpleasant but bearable. Sometimes anxiety goes down during the step, sometimes later. Both are okay." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиция — это мягкая тренировка смелости: ты учишься оставаться рядом с тревогой и замечать, что с ней можно быть — она неприятная, но переносимая. Иногда тревога снижается во время шага, иногда — позже. И так, и так нормально."
+          }
+        }
+      }
+    },
+    "Exposure name" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название экспозиции"
+          }
+        }
+      }
+    },
+    "Exposure session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеанс экспозиции"
+          }
+        }
+      }
+    },
+    "Exposure steps" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаги экспозиции"
+          }
+        }
+      }
+    },
+    "Exposure steps. %1$lld of %2$lld completed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаги экспозиции. Выполнено %lld из %lld"
+          }
+        }
+      }
+    },
+    "Exposure: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиция: %@"
+          }
+        }
+      }
+    },
+    "Exposure: %@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Exposure: %1$@. %2$@"
+          }
+        }
+      }
+    },
+    "Exposure: %1$@. %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиция: %@. %@"
+          }
+        }
+      }
+    },
+    "Exposures" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиции"
+          }
+        }
+      }
+    },
+    "Face" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лицо"
+          }
+        }
+      }
+    },
+    "Face & Jaw" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лицо и челюсть"
+          }
+        }
+      }
+    },
+    "Failed to find data to start the exercise." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось найти данные для запуска упражнения."
+          }
+        }
+      }
+    },
+    "Failed to load sessions." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось загрузить сеансы."
+          }
+        }
+      }
+    },
+    "Failed to save changes." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить изменения."
+          }
+        }
+      }
+    },
+    "Failed to save result." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить результат."
+          }
+        }
+      }
+    },
+    "Failed to save." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить."
+          }
+        }
+      }
+    },
+    "Failed to verify identity." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось подтвердить личность."
+          }
+        }
+      }
+    },
+    "Favorite exercises" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Любимые упражнения"
+          }
+        }
+      }
+    },
+    "Feet & Calves" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стопы и икры"
+          }
+        }
+      }
+    },
+    "Fill in all required fields" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заполните все обязательные поля"
+          }
+        }
+      }
+    },
+    "Find 4 touch sensations: clothes, chair, floor, object in your hands." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найдите 4 ощущения от прикосновения: одежда, стул, пол, предмет в руках."
+          }
+        }
+      }
+    },
+    "Find 5 objects around you and hold your gaze on each for a second." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найдите 5 предметов вокруг и задержите на каждом взгляд на секунду."
+          }
+        }
+      }
+    },
+    "Finish" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить"
+          }
+        }
+      }
+    },
+    "Finish for today" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить на сегодня"
+          }
+        }
+      }
+    },
+    "Finish onboarding and go to the app" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить онбординг и перейти к приложению"
+          }
+        }
+      }
+    },
+    "Focus on sensations in the present moment" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сконцентрируйтесь на ощущениях в настоящем моменте"
+          }
+        }
+      }
     },
     "Full Body Relaxation" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Релаксация всего тела"
+          }
+        }
+      }
+    },
+    "Full sequence of progressive muscle relaxation for all major muscle groups. Helps release deep tension throughout the body." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полная последовательность прогрессивной мышечной релаксации для всех основных групп мышц. Помогает снять глубокое напряжение по всему телу."
+          }
+        }
+      }
+    },
+    "Fully relax your legs. Feel them become heavy and calm." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и спокойными."
+          }
+        }
+      }
+    },
+    "Fully relax your legs. Feel them become heavy and loose." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полностью расслабьте ноги. Почувствуйте, как они становятся тяжёлыми и свободными."
+          }
+        }
+      }
+    },
+    "Get comfortable. On the «Tense» phase, tense the indicated muscle group moderately (without pain) and hold. On the «Release» phase, fully release the muscles and notice the sensations. Breathe evenly and calmly.\n\nTip: if tensing is difficult, do it more gently or skip the step—staying comfortable matters." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Устройтесь удобно. На этапе «Напрячь» напрягайте указанную группу мышц умеренно (без боли) и удерживайте напряжение. На этапе «Расслабить» полностью отпустите мышцы и обратите внимание на ощущения. Дышите ровно и спокойно.\n\nСовет: если вам сложно напрягать мышцу, делайте это мягче или пропускайте шаг — важно оставаться в комфорте."
+          }
+        }
+      }
+    },
+    "Give a short name and describe the situation that causes anxiety" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дайте короткое название и опишите ситуацию, которая вызывает тревогу"
+          }
+        }
+      }
+    },
+    "Give your activity list a short name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дайте короткое название вашему списку активностей"
+          }
+        }
+      }
+    },
+    "Go to today" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перейти к сегодняшнему дню"
+          }
+        }
+      }
+    },
+    "Gradually facing fears and anxieties" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Постепенное преодоление страхов и тревог"
+          }
+        }
+      }
+    },
+    "Great" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отлично"
+          }
+        }
+      }
+    },
+    "Grounding" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заземление"
+          }
+        }
+      }
+    },
+    "Grounding and awareness techniques to reduce anxiety" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заземление и техники внимания для снижения тревоги"
+          }
+        }
+      }
+    },
+    "Grounding technique: find 5 things you see, 4 things you touch, 3 sounds, 2 smells (or air sensations), and 1 taste." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус."
+          }
+        }
+      }
+    },
+    "Grounding techniques help quickly reduce anxiety and bring attention to the present moment" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Техники заземления помогают быстро снизить тревогу и вернуть внимание в настоящий момент"
+          }
+        }
+      }
+    },
+    "Grounding: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заземление: %@"
+          }
+        }
+      }
+    },
+    "Hands & Forearms" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кисти и предплечья"
+          }
+        }
+      }
+    },
+    "Hide" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скрыть"
+          }
+        }
+      }
+    },
+    "Hide all steps" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скрыть все шаги"
+          }
+        }
+      }
+    },
+    "Hide timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скрыть таймер"
+          }
+        }
+      }
+    },
+    "History" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "История"
+          }
+        }
+      }
+    },
+    "Hold the ☰ icon to reorder or swipe left to delete." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления."
+          }
+        }
+      }
+    },
+    "How much did you like it?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Насколько понравилось?"
+          }
+        }
+      }
+    },
+    "How to do it" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как выполнять"
+          }
+        }
+      }
+    },
+    "If you experience serious symptoms of anxiety or other mental health conditions, please contact a qualified professional." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если вы испытываете серьёзные симптомы тревоги или других психических состояний, пожалуйста, обратитесь к квалифицированному специалисту."
+          }
+        }
+      }
+    },
+    "If you found an issue or want to suggest an improvement—write to us." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если вы нашли проблему или хотите предложить улучшение — напишите нам."
+          }
+        }
+      }
+    },
+    "If you like, repeat another round—at your own pace." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если хочется, повтори ещё один круг — можно в своём темпе."
+          }
+        }
+      }
+    },
+    "Important notice" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Важное предупреждение"
+          }
+        }
+      }
+    },
+    "Improving" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Улучшение"
+          }
+        }
+      }
+    },
+    "In 7 days: %d min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "За 7 дней: %d мин"
+          }
+        }
+      }
+    },
+    "In progress" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В процессе"
+          }
+        }
+      }
+    },
+    "Inactive" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неактивно"
+          }
+        }
+      }
+    },
+    "Inactive schedules" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неактивные расписания"
+          }
+        }
+      }
+    },
+    "Increasing activity through meaningful actions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повышение активности через осмысленные действия"
+          }
+        }
+      }
+    },
+    "Information" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация"
+          }
+        }
+      }
     },
     "Inhale for 4 seconds, exhale for 6 seconds. Activates the parasympathetic nervous system to reduce anxiety and promote relaxation." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вдох 4 секунды, выдох 6 секунд. Активирует парасимпатическую нервную систему, снижает тревогу и способствует расслаблению."
+          }
+        }
+      }
     },
     "Inner Hero" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Внутренний герой"
+          }
+        }
+      }
     },
-    "Inner Hero поможет вам практиковать экспозиционную терапию для работы с тревогой. Создавайте сценарии, проводите сеансы и отслеживайте свой прогресс." : {
-
+    "Inner Hero helps you practice exposure therapy for anxiety. Create scenarios, run sessions, and track your progress." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inner Hero поможет вам практиковать экспозиционную терапию для работы с тревогой. Создавайте сценарии, проводите сеансы и отслеживайте свой прогресс."
+          }
+        }
+      }
+    },
+    "Instruction" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Инструкция"
+          }
+        }
+      }
+    },
+    "Instructions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Инструкции"
+          }
+        }
+      }
+    },
+    "Interrupt" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прервать"
+          }
+        }
+      }
+    },
+    "Interrupt session?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прервать сеанс?"
+          }
+        }
+      }
+    },
+    "Keep it up" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжайте в том же духе"
+          }
+        }
+      }
+    },
+    "Knowledge center" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Центр знаний"
+          }
+        }
+      }
+    },
+    "Last" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Последний"
+          }
+        }
+      }
+    },
+    "Legs & Thighs" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ноги и бёдра"
+          }
+        }
+      }
+    },
+    "Let everything go. Let your arms drop and shoulders relax. Feel the relief." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отпустите всё. Пусть руки опустятся, а плечи расслабятся. Почувствуйте облегчение."
+          }
+        }
+      }
+    },
+    "Let the tension leave your face. Relax your jaw and eyes." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пусть напряжение уйдёт из лица. Расслабьте челюсть и глаза."
+          }
+        }
+      }
+    },
+    "Let this become a small good habit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пусть это станет маленькой хорошей привычкой"
+          }
+        }
+      }
+    },
+    "Let your body feel a little lighter—step by step." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пусть телу станет чуть легче — шаг за шагом."
+          }
+        }
+      }
+    },
+    "level" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "уровень"
+          }
+        }
+      }
+    },
+    "Level decreased" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровень снизился"
+          }
+        }
+      }
+    },
+    "Level increased" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровень повысился"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Светлая"
+          }
+        }
+      }
+    },
+    "Liked very much" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очень понравилось"
+          }
+        }
+      }
+    },
+    "List" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Список"
+          }
+        }
+      }
+    },
+    "List name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название списка"
+          }
+        }
+      }
+    },
+    "Look around" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Осмотритесь"
+          }
+        }
+      }
+    },
+    "Lower Body" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нижняя часть тела"
+          }
+        }
+      }
+    },
+    "Lower your arms and relax them. Feel the tension leave your upper arms." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опустите руки и расслабьте их. Почувствуйте, как напряжение уходит из верхней части рук."
+          }
+        }
+      }
+    },
+    "Lower your shoulders to a natural position. Let them feel heavy and relaxed." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опустите плечи в естественное положение. Дайте им стать тяжёлыми и расслабленными."
+          }
+        }
+      }
+    },
+    "Mark as completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отметить выполненным"
+          }
+        }
+      }
+    },
+    "Mark step as completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отметить шаг как выполненное"
+          }
+        }
+      }
+    },
+    "min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "мин"
+          }
+        }
+      }
+    },
+    "MO" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "МЕС"
+          }
+        }
+      }
+    },
+    "Month" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Месяц"
+          }
+        }
+      }
+    },
+    "Morning walk in the park" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Утренняя прогулка в парке"
+          }
+        }
+      }
+    },
+    "Move activity" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переместить активность"
+          }
+        }
+      }
+    },
+    "Move step" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переместить шаг"
+          }
+        }
+      }
+    },
+    "Muscle relaxation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мышечная релаксация"
+          }
+        }
+      }
+    },
+    "New activity list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новый список активностей"
+          }
+        }
+      }
+    },
+    "New exposure" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новая экспозиция"
+          }
+        }
+      }
+    },
+    "New schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новое расписание"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вперёд"
+          }
+        }
+      }
+    },
+    "Next week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Следующая неделя"
+          }
+        }
+      }
+    },
+    "No activities" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет активностей"
+          }
+        }
+      }
+    },
+    "No activities yet" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пока нет активностей"
+          }
+        }
+      }
+    },
+    "No activity lists available" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет доступных списков активностей"
+          }
+        }
+      }
+    },
+    "No articles" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет статей"
+          }
+        }
+      }
+    },
+    "No completed sessions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет завершенных сеансов"
+          }
+        }
+      }
+    },
+    "No data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет данных"
+          }
+        }
+      }
+    },
+    "No exposures available" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет доступных экспозиций"
+          }
+        }
+      }
+    },
+    "No favorite exercises" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет избранных упражнений"
+          }
+        }
+      }
+    },
+    "No scheduled exercises" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет запланированных упражнений"
+          }
+        }
+      }
+    },
+    "No schedules" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет расписаний"
+          }
+        }
+      }
+    },
+    "No schedules for the day" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет расписаний на день"
+          }
+        }
+      }
+    },
+    "No sessions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет сеансов"
+          }
+        }
+      }
+    },
+    "No tasks" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет задач"
+          }
+        }
+      }
+    },
+    "Not completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не выполнен"
+          }
+        }
+      }
+    },
+    "Not selected" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не выбрано"
+          }
+        }
+      }
+    },
+    "Note any small progress—it adds up." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отметьте любой маленький прогресс — он накапливается."
+          }
+        }
+      }
+    },
+    "Notes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заметки"
+          }
+        }
+      }
+    },
+    "Notes: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заметки: %@"
+          }
+        }
+      }
+    },
+    "Nothing completed yet" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пока нет выполненного"
+          }
+        }
+      }
+    },
+    "Nothing found for your request" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По запросу ничего не найдено"
+          }
+        }
+      }
+    },
+    "Notice 1 taste in your mouth or take a small sip of water and notice the taste." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заметьте 1 вкус во рту или сделайте маленький глоток воды и почувствуйте вкус."
+          }
+        }
+      }
+    },
+    "Notice 3 sounds: near, far, and the quietest." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отметьте 3 звука: ближний, дальний и самый тихий."
+          }
+        }
+      }
+    },
+    "Notice how you feel during and after" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отмечайте, как вы себя чувствуете во время и после"
+          }
+        }
+      }
+    },
+    "Notification permission is required for schedule reminders." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для напоминаний о расписании необходимо разрешение на уведомления."
+          }
+        }
+      }
+    },
+    "Notification permission is required for schedule reminders. Please enable them in settings." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для напоминаний о расписании необходимо разрешение на уведомления. Пожалуйста, включите их в настройках."
+          }
+        }
+      }
+    },
+    "Notification permissions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешения на уведомления"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключен"
+          }
+        }
+      }
     },
     "OK" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ОК"
+          }
+        }
+      }
+    },
+    "Okay" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нормально"
+          }
+        }
+      }
+    },
+    "On" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включен"
+          }
+        }
+      }
+    },
+    "on schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "по плану"
+          }
+        }
+      }
+    },
+    "On schedule (wk.)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По плану (нед.)"
+          }
+        }
+      }
+    },
+    "One day" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Один день"
+          }
+        }
+      }
+    },
+    "Open schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть расписание"
+          }
+        }
+      }
+    },
+    "Opens the activity list for selection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открывает список активностей для выбора"
+          }
+        }
+      }
+    },
+    "Opens the activity list to choose from" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открывает список активностей для выбора"
+          }
+        }
+      }
     },
     "Paced Breathing" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ритмичное дыхание"
+          }
+        }
+      }
+    },
+    "Pause" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пауза"
+          }
+        }
+      }
+    },
+    "Picks a random activity and starts the session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбирает случайную активность и начинает сеанс"
+          }
+        }
+      }
+    },
+    "Pinned" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закреплённые"
+          }
+        }
+      }
+    },
+    "Point your toes down and tense your calves and feet." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опустите носки вниз и напрягите икры и стопы."
+          }
+        }
+      }
+    },
+    "Practice minutes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Минуты практик"
+          }
+        }
+      }
+    },
+    "Praise for completing the session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Похвала за выполнение сеанса"
+          }
+        }
+      }
     },
     "predefined.activation.morning_routine.activity1" : {
       "extractionState" : "stale",
@@ -204,6 +3770,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Warm-up for 20–30 minutes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разминка 20–30 минут"
           }
         }
       }
@@ -216,6 +3788,12 @@
             "state" : "translated",
             "value" : "Take a shower"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Принять душ"
+          }
         }
       }
     },
@@ -226,6 +3804,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Healthy breakfast"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полезный завтрак"
           }
         }
       }
@@ -238,6 +3822,12 @@
             "state" : "translated",
             "value" : "Review goals for the day"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Просмотреть цели на день"
+          }
         }
       }
     },
@@ -248,6 +3838,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meditation for 10 minutes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Медитация 10 минут"
           }
         }
       }
@@ -260,6 +3856,12 @@
             "state" : "translated",
             "value" : "Morning routine"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Утренняя рутина"
+          }
         }
       }
     },
@@ -270,6 +3872,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jog or run"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пробежка или бег"
           }
         }
       }
@@ -282,6 +3890,12 @@
             "state" : "translated",
             "value" : "Yoga or stretching"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Йога или растяжка"
+          }
         }
       }
     },
@@ -292,6 +3906,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gym workout"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренировка в зале"
           }
         }
       }
@@ -304,6 +3924,12 @@
             "state" : "translated",
             "value" : "Play a sport"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заняться спортом"
+          }
         }
       }
     },
@@ -314,6 +3940,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go swimming"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Плавание"
           }
         }
       }
@@ -326,6 +3958,12 @@
             "state" : "translated",
             "value" : "Dance workout"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Танцевальная тренировка"
+          }
         }
       }
     },
@@ -336,6 +3974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hike or long walk"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поход или длительная прогулка"
           }
         }
       }
@@ -348,6 +3992,12 @@
             "state" : "translated",
             "value" : "Physical activity"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Физическая активность"
+          }
         }
       }
     },
@@ -358,6 +4008,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finish a work task"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завершить рабочую задачу"
           }
         }
       }
@@ -370,6 +4026,12 @@
             "state" : "translated",
             "value" : "Tidy up at home"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Навести порядок дома"
+          }
         }
       }
     },
@@ -380,6 +4042,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Learn something new"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выучить что-то новое"
           }
         }
       }
@@ -392,6 +4060,12 @@
             "state" : "translated",
             "value" : "Move a personal project forward"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продвинуть личный проект"
+          }
         }
       }
     },
@@ -402,6 +4076,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plan the week"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спланировать неделю"
           }
         }
       }
@@ -414,6 +4094,12 @@
             "state" : "translated",
             "value" : "Handle pending tasks"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разобрать накопившиеся дела"
+          }
         }
       }
     },
@@ -424,6 +4110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Productive tasks"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полезные дела"
           }
         }
       }
@@ -436,6 +4128,12 @@
             "state" : "translated",
             "value" : "Take a relaxing bath"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Принять расслабляющую ванну"
+          }
         }
       }
     },
@@ -446,6 +4144,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Read for pleasure"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почитать для удовольствия"
           }
         }
       }
@@ -458,6 +4162,12 @@
             "state" : "translated",
             "value" : "Listen to favorite music"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Послушать любимую музыку"
+          }
         }
       }
     },
@@ -468,6 +4178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do a hobby"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заняться хобби"
           }
         }
       }
@@ -480,6 +4196,12 @@
             "state" : "translated",
             "value" : "Call a friend or loved one"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Позвонить другу или близкому"
+          }
         }
       }
     },
@@ -490,6 +4212,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Walk in nature"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогулка на природе"
           }
         }
       }
@@ -502,6 +4230,12 @@
             "state" : "translated",
             "value" : "Self-care"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Забота о себе"
+          }
         }
       }
     },
@@ -512,6 +4246,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meet a friend for coffee"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Встретиться с другом за чашкой кофе"
           }
         }
       }
@@ -524,6 +4264,12 @@
             "state" : "translated",
             "value" : "Attend an event"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сходить на мероприятие"
+          }
         }
       }
     },
@@ -534,6 +4280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Join a club or group"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вступить в клуб или группу"
           }
         }
       }
@@ -546,6 +4298,12 @@
             "state" : "translated",
             "value" : "Volunteering"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Волонтёрство"
+          }
         }
       }
     },
@@ -556,6 +4314,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Message or call a new acquaintance"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Написать или позвонить новому знакомому"
           }
         }
       }
@@ -568,6 +4332,12 @@
             "state" : "translated",
             "value" : "Spend time with family"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Провести время с семьёй"
+          }
         }
       }
     },
@@ -578,6 +4348,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Social connections"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Социальные контакты"
           }
         }
       }
@@ -590,6 +4366,12 @@
             "state" : "translated",
             "value" : "Asking a store associate for help in a shop"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обратиться за помощью к продавцу в магазине"
+          }
         }
       }
     },
@@ -600,6 +4382,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter a clothing or electronics store"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зайти в магазин одежды или электроники"
           }
         }
       }
@@ -612,6 +4400,12 @@
             "state" : "translated",
             "value" : "Find a store associate"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найти продавца-консультанта"
+          }
         }
       }
     },
@@ -622,6 +4416,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Approach and say hello"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подойти и поздороваться"
           }
         }
       }
@@ -634,6 +4434,12 @@
             "state" : "translated",
             "value" : "Ask a question about a product"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Задать вопрос о товаре"
+          }
         }
       }
     },
@@ -644,6 +4450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask to see 2–3 options"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попросить показать 2–3 варианта"
           }
         }
       }
@@ -656,6 +4468,12 @@
             "state" : "translated",
             "value" : "Thank them, even if you do not buy anything"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поблагодарить, даже если ничего не купите"
+          }
         }
       }
     },
@@ -666,6 +4484,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Asking a Salesperson a Question"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вопрос продавцу в магазине"
           }
         }
       }
@@ -678,6 +4502,12 @@
             "state" : "translated",
             "value" : "Starting a conversation with someone new in a public place"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать разговор с незнакомым человеком в общественном месте"
+          }
         }
       }
     },
@@ -688,6 +4518,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go to a cafe or coworking space"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прийти в кафе или коворкинг"
           }
         }
       }
@@ -700,6 +4536,12 @@
             "state" : "translated",
             "value" : "Choose someone who is not busy"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать человека, который не занят"
+          }
         }
       }
     },
@@ -710,6 +4552,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Approach with a smile"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подойти с улыбкой"
           }
         }
       }
@@ -722,6 +4570,12 @@
             "state" : "translated",
             "value" : "Start with a simple question (for example, about Wi-Fi)"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать с простого вопроса (например, про Wi‑Fi)"
+          }
         }
       }
     },
@@ -732,6 +4586,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "If the person is open to conversation, introduce yourself"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если человек настроен на разговор — представьтесь"
           }
         }
       }
@@ -744,6 +4604,12 @@
             "state" : "translated",
             "value" : "Keep a short dialogue for 2–3 minutes"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поддержать короткий диалог 2–3 минуты"
+          }
         }
       }
     },
@@ -754,6 +4620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Politely end the conversation"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вежливо завершить разговор"
           }
         }
       }
@@ -766,6 +4638,12 @@
             "state" : "translated",
             "value" : "Introducing Yourself in a Cafe"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Знакомство в кафе"
+          }
         }
       }
     },
@@ -776,6 +4654,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calling an organization to ask for information"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звонок в организацию с вопросом"
           }
         }
       }
@@ -788,6 +4672,12 @@
             "state" : "translated",
             "value" : "Choose an organization (bank, store, clinic)"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать организацию (банк, магазин, клиника)"
+          }
         }
       }
     },
@@ -798,6 +4688,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prepare your question in advance"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подготовить вопрос заранее"
           }
         }
       }
@@ -810,6 +4706,12 @@
             "state" : "translated",
             "value" : "Find the phone number"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найти номер телефона"
+          }
         }
       }
     },
@@ -820,6 +4722,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dial the number"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Набрать номер"
           }
         }
       }
@@ -832,6 +4740,12 @@
             "state" : "translated",
             "value" : "Wait for the operator to answer"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дождаться ответа оператора"
+          }
         }
       }
     },
@@ -842,6 +4756,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask your question in a calm voice"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Задать вопрос спокойным голосом"
           }
         }
       }
@@ -854,6 +4774,12 @@
             "state" : "translated",
             "value" : "Thank them and say goodbye"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поблагодарить и попрощаться"
+          }
         }
       }
     },
@@ -864,6 +4790,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calling a Stranger"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звонок незнакомцу"
           }
         }
       }
@@ -876,6 +4808,12 @@
             "state" : "translated",
             "value" : "Going to a movie theater by yourself"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поход в кинотеатр в одиночку"
+          }
         }
       }
     },
@@ -886,6 +4824,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose a movie and showtime"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать фильм и сеанс"
           }
         }
       }
@@ -898,6 +4842,12 @@
             "state" : "translated",
             "value" : "Buy a ticket online or at the box office"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Купить билет онлайн или в кассе"
+          }
         }
       }
     },
@@ -908,6 +4858,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arrive at the theater 15 minutes early"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прийти в кинотеатр за 15 минут до сеанса"
           }
         }
       }
@@ -920,6 +4876,12 @@
             "state" : "translated",
             "value" : "Buy popcorn or a drink (optional)"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Купить попкорн или напиток (по желанию)"
+          }
         }
       }
     },
@@ -930,6 +4892,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Find your seat"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найти своё место"
           }
         }
       }
@@ -942,6 +4910,12 @@
             "state" : "translated",
             "value" : "Watch the movie on your own"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотреть фильм самостоятельно"
+          }
         }
       }
     },
@@ -952,6 +4926,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leave the theater calmly after the show"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спокойно выйти из зала после сеанса"
           }
         }
       }
@@ -964,6 +4944,12 @@
             "state" : "translated",
             "value" : "Going to the Movies Alone"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поход в кино в одиночку"
+          }
         }
       }
     },
@@ -974,6 +4960,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Walking in a mall or on a main street during busy hours"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогулка по торговому центру или главной улице в час пик"
           }
         }
       }
@@ -986,6 +4978,12 @@
             "state" : "translated",
             "value" : "Choose a crowded place (mall, park)"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать людное место (ТЦ, парк)"
+          }
         }
       }
     },
@@ -996,6 +4994,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go during peak time (weekend, lunch hour)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прийти в час пик (выходной, обеденное время)"
           }
         }
       }
@@ -1008,6 +5012,12 @@
             "state" : "translated",
             "value" : "Walk at a slow pace"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Идти неспешным шагом"
+          }
         }
       }
     },
@@ -1018,6 +5028,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notice the people around you"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Замечать людей вокруг"
           }
         }
       }
@@ -1030,6 +5046,12 @@
             "state" : "translated",
             "value" : "If needed, ask someone to move a little"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "При необходимости вежливо попросить посторониться"
+          }
         }
       }
     },
@@ -1040,6 +5062,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sit on a bench or in a cafe among people"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посидеть на скамейке или в кафе среди людей"
           }
         }
       }
@@ -1052,6 +5080,12 @@
             "state" : "translated",
             "value" : "Walking in a Crowded Place"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогулка в людном месте"
+          }
         }
       }
     },
@@ -1062,6 +5096,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Taking an elevator ride alone in a multi-story building"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поездка в лифте в одиночку в многоэтажном здании"
           }
         }
       }
@@ -1074,6 +5114,12 @@
             "state" : "translated",
             "value" : "Walk up to an elevator in a mall or office building"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подойти к лифту в ТЦ или офисном здании"
+          }
         }
       }
     },
@@ -1084,6 +5130,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Press the call button"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажать кнопку вызова"
           }
         }
       }
@@ -1096,6 +5148,12 @@
             "state" : "translated",
             "value" : "Enter the elevator and press the 5th-floor button"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти в лифт и нажать кнопку 5-го этажа"
+          }
         }
       }
     },
@@ -1106,6 +5164,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stand in the elevator with the doors closed"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стоять в лифте при закрытых дверях"
           }
         }
       }
@@ -1118,6 +5182,12 @@
             "state" : "translated",
             "value" : "Exit on the desired floor"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выйти на нужном этаже"
+          }
         }
       }
     },
@@ -1128,6 +5198,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Repeat the ride down"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проехать обратно вниз"
           }
         }
       }
@@ -1140,6 +5216,12 @@
             "state" : "translated",
             "value" : "Riding an Elevator"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поездка в лифте"
+          }
         }
       }
     },
@@ -1150,6 +5232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Turning on your camera and microphone to share your opinion"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить камеру и микрофон, чтобы высказать своё мнение"
           }
         }
       }
@@ -1162,6 +5250,12 @@
             "state" : "translated",
             "value" : "Join the video conference"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подключиться к видеоконференции"
+          }
         }
       }
     },
@@ -1172,6 +5266,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Turn on your camera"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить камеру"
           }
         }
       }
@@ -1184,6 +5284,12 @@
             "state" : "translated",
             "value" : "Wait for the right moment"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дождаться подходящего момента"
+          }
         }
       }
     },
@@ -1194,6 +5300,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Turn on your microphone"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить микрофон"
           }
         }
       }
@@ -1206,6 +5318,12 @@
             "state" : "translated",
             "value" : "Share your opinion or ask a question"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Высказать мнение или задать вопрос"
+          }
         }
       }
     },
@@ -1216,6 +5334,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Engage in a short dialogue"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поддержать короткий диалог"
           }
         }
       }
@@ -1228,6 +5352,12 @@
             "state" : "translated",
             "value" : "Turn off your microphone after finishing"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключить микрофон после выступления"
+          }
         }
       }
     },
@@ -1238,6 +5368,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speaking at an Online Meeting"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выступление на онлайн-встрече"
           }
         }
       }
@@ -1250,6 +5386,12 @@
             "state" : "translated",
             "value" : "Speaking to a small group with a short introduction about yourself"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Короткое выступление перед небольшой группой с представлением о себе"
+          }
         }
       }
     },
@@ -1260,6 +5402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prepare a short introduction about yourself (2–3 minutes)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подготовить короткое представление о себе (2–3 минуты)"
           }
         }
       }
@@ -1272,6 +5420,12 @@
             "state" : "translated",
             "value" : "Find a group of 5–10 people (friends, colleagues)"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Собрать группу из 5–10 человек (друзья, коллеги)"
+          }
         }
       }
     },
@@ -1282,6 +5436,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stand in front of the group and introduce yourself"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Встать перед группой и представиться"
           }
         }
       }
@@ -1294,6 +5454,12 @@
             "state" : "translated",
             "value" : "Share a few of your interests"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рассказать о нескольких своих увлечениях"
+          }
         }
       }
     },
@@ -1304,6 +5470,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Answer 2–3 questions from the audience"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ответить на 2–3 вопроса от слушателей"
           }
         }
       }
@@ -1316,59 +5488,1830 @@
             "state" : "translated",
             "value" : "Public Speaking"
           }
-        }
-      }
-    },
-    "Quick Relaxation" : {
-
-    },
-    "sample.session.note1" : {
-
-    },
-    "sample.session.note2" : {
-
-    },
-    "sample.session.note3" : {
-
-    },
-    "sample.session.note4" : {
-
-    },
-    "sample.session.note5" : {
-
-    },
-    "Slow, rhythmic breathing at a controlled rate. Helps regulate heart rate variability and reduces physiological arousal." : {
-
-    },
-    "streak.days.count" : {
-
-    },
-    "Активация: %@" : {
-
-    },
-    "Активно" : {
-
-    },
-    "Активности" : {
-
-    },
-    "Активность %lld" : {
-
-    },
-    "Активность %lld: %@" : {
-      "localizations" : {
-        "en" : {
+        },
+        "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Активность %1$lld: %2$@"
+            "state" : "translated",
+            "value" : "Публичное выступление"
           }
         }
       }
     },
-    "Активность завершена" : {
-
+    "Preset" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предустановленный"
+          }
+        }
+      }
     },
-    "Активные расписания" : {
+    "Preset list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предустановленный список"
+          }
+        }
+      }
+    },
+    "Previous week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предыдущая неделя"
+          }
+        }
+      }
+    },
+    "Privacy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конфиденциальность"
+          }
+        }
+      }
+    },
+    "Progress" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогресс"
+          }
+        }
+      }
+    },
+    "Progressive muscle relaxation for tension relief" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогрессивная мышечная релаксация для снятия напряжения"
+          }
+        }
+      }
+    },
+    "Progressive muscle relaxation helps reduce anxiety and bodily tension through mindful tensing and releasing. You learn to notice faster where stress builds up in your body and gently release it." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогрессивная мышечная релаксация помогает снизить тревогу и телесное напряжение через осознанное чередование «напрячь» → «расслабить». Вы учитесь быстрее замечать, где в теле накапливается стресс, и мягко отпускать его."
+          }
+        }
+      }
+    },
+    "Progressive muscle relaxation techniques help release bodily tension and restore calm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Техники прогрессивной мышечной релаксации помогают снять телесное напряжение и вернуть спокойствие"
+          }
+        }
+      }
+    },
+    "Quick Relaxation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Быстрая релаксация"
+          }
+        }
+      }
+    },
+    "Quick start" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Быстрый старт"
+          }
+        }
+      }
+    },
+    "Raise your shoulders toward your ears. Hold and feel the tension." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поднимите плечи к ушам. Удерживайте и ощущайте напряжение."
+          }
+        }
+      }
+    },
+    "Random" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Случайно"
+          }
+        }
+      }
+    },
+    "Random activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Случайная активность"
+          }
+        }
+      }
+    },
+    "Rate how enjoyable this activity was (1–5)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оцените, насколько приятной была эта активность (1–5)"
+          }
+        }
+      }
+    },
+    "Rate your anxiety level now (0–10)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оцените ваш уровень тревоги сейчас (0–10)"
+          }
+        }
+      }
+    },
+    "Rate your current anxiety level before the session (0–10)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оцените ваш текущий уровень тревоги до начала сеанса (0–10)"
+          }
+        }
+      }
+    },
+    "Rather not" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скорее нет"
+          }
+        }
+      }
+    },
+    "Rather yes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скорее да"
+          }
+        }
+      }
+    },
+    "Relax" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабить"
+          }
+        }
+      }
+    },
+    "Relax your stomach muscles. Let your belly go soft." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабьте мышцы живота. Пусть живот станет мягким."
+          }
+        }
+      }
+    },
+    "Relaxation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Релаксация"
+          }
+        }
+      }
+    },
+    "Relaxation: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Релаксация: %@"
+          }
+        }
+      }
+    },
+    "Release the tension in your face. Relax your jaw and eyes." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отпустите напряжение в лице. Челюсть слегка разожмите, глаза расслабьте."
+          }
+        }
+      }
+    },
+    "Release the tension in your feet and calves. Let them relax naturally." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отпустите напряжение в стопах и икрах. Дайте им расслабиться естественно."
+          }
+        }
+      }
+    },
+    "Reminder: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напоминание: %@"
+          }
+        }
+      }
+    },
+    "Remove completion mark" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Снять отметку выполнения"
+          }
+        }
+      }
+    },
+    "Remove from favorites" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить из избранного"
+          }
+        }
+      }
+    },
+    "Removes all data from the app. This action cannot be undone." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удаляет все данные из приложения. Действие нельзя отменить."
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сброс"
+          }
+        }
+      }
+    },
+    "Reset all data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить все данные"
+          }
+        }
+      }
+    },
+    "Reset all data?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить все данные?"
+          }
+        }
+      }
+    },
+    "Reset timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить таймер"
+          }
+        }
+      }
+    },
+    "Resume timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить таймер"
+          }
+        }
+      }
+    },
+    "sample.session.note1" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеанс прошёл спокойно."
+          }
+        }
+      }
+    },
+    "sample.session.note2" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тревога снизилась к концу."
+          }
+        }
+      }
+    },
+    "sample.session.note3" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторю на следующей неделе."
+          }
+        }
+      }
+    },
+    "sample.session.note4" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чувствую себя увереннее."
+          }
+        }
+      }
+    },
+    "sample.session.note5" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Небольшой шаг вперёд."
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
+    },
+    "Save changes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить изменения"
+          }
+        }
+      }
+    },
+    "Save exposure" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить экспозицию"
+          }
+        }
+      }
+    },
+    "Save session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить сеанс"
+          }
+        }
+      }
+    },
+    "Save session result" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить результат сеанса"
+          }
+        }
+      }
+    },
+    "Saves the activity list and closes the editor" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохраняет список активностей и закрывает редактор"
+          }
+        }
+      }
+    },
+    "Saves the exposure and closes the editor" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохраняет экспозицию и закрывает редактор"
+          }
+        }
+      }
+    },
+    "Schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запланировать"
+          }
+        }
+      }
+    },
+    "Scheduled" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запланировано"
+          }
+        }
+      }
+    },
+    "Scheduled exercises" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запланированные упражнения"
+          }
+        }
+      }
+    },
+    "Scrunch your face: squeeze your eyes shut and clench your jaw." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сильно наморщите лицо: зажмурьте глаза и сожмите челюсть."
+          }
+        }
+      }
+    },
+    "Search" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиск"
+          }
+        }
+      }
+    },
+    "Select activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать активность"
+          }
+        }
+      }
+    },
+    "Select at least one day" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите хотя бы один день"
+          }
+        }
+      }
+    },
+    "Select from list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать из списка"
+          }
+        }
+      }
+    },
+    "Selecting activity…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбираем активность…"
+          }
+        }
+      }
+    },
+    "Selecting…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбираем…"
+          }
+        }
+      }
+    },
+    "Selects a random activity and starts the session" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбирает случайную активность и начинает сеанс"
+          }
+        }
+      }
+    },
+    "Self-care is not weakness" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Забота о себе - это не слабость"
+          }
+        }
+      }
+    },
+    "Session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сессия"
+          }
+        }
+      }
+    },
+    "Session date" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дата сеанса"
+          }
+        }
+      }
+    },
+    "Session date: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дата сеанса: %@"
+          }
+        }
+      }
+    },
+    "Session details" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Детали сеанса"
+          }
+        }
+      }
+    },
+    "Session history" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "История сеансов"
+          }
+        }
+      }
+    },
+    "Session history for \"%@\" is empty" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "История сеансов для \"%@\" пуста"
+          }
+        }
+      }
+    },
+    "Session history for this exposure is empty" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "История сеансов для этой экспозиции пуста"
+          }
+        }
+      }
+    },
+    "Session results" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Результаты сеанса"
+          }
+        }
+      }
+    },
+    "Session summary" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Итоги сеанса"
+          }
+        }
+      }
+    },
+    "Session summary: %@, started at %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Итоги сеанса: %@, начало в %@"
+          }
+        }
+      }
+    },
+    "Session summary: %1$@, started at %2$@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Итоги сеанса: %@, начало в %@"
+          }
+        }
+      }
+    },
+    "Session: %@, duration %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Session: %1$@, duration %2$@"
+          }
+        }
+      }
+    },
+    "Session: %1$@, duration %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеанс: %@, длительность %@"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        }
+      }
+    },
+    "Short supportive message and tips" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Короткое поддерживающее сообщение и подсказки"
+          }
+        }
+      }
+    },
+    "Short version of progressive muscle relaxation focusing on key tension areas. Good for quick stress relief during the day." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Короткая версия прогрессивной мышечной релаксации с фокусом на ключевых зонах напряжения. Подходит для быстрого снятия стресса в течение дня."
+          }
+        }
+      }
+    },
+    "Shoulders" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Плечи"
+          }
+        }
+      }
+    },
+    "Show" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать"
+          }
+        }
+      }
+    },
+    "Show all steps" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать все шаги"
+          }
+        }
+      }
+    },
+    "Show timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать таймер"
+          }
+        }
+      }
+    },
+    "Sign out" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выйти"
+          }
+        }
+      }
+    },
+    "Six months" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шесть месяцев"
+          }
+        }
+      }
+    },
+    "Slow, rhythmic breathing at a controlled rate. Helps regulate heart rate variability and reduces physiological arousal." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Медленное ритмичное дыхание в заданном темпе. Помогает регулировать вариабельность пульса и снижает возбуждение."
+          }
+        }
+      }
+    },
+    "Smells" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запахи"
+          }
+        }
+      }
+    },
+    "Sounds" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звуки"
+          }
+        }
+      }
+    },
+    "Stable" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стабильно"
+          }
+        }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начало"
+          }
+        }
+      }
+    },
+    "Start behavioral activation session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать сеанс поведенческой активации"
+          }
+        }
+      }
+    },
+    "Start next exercise" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать следующее упражнение"
+          }
+        }
+      }
+    },
+    "Start session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать сеанс"
+          }
+        }
+      }
+    },
+    "Start taking action" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начните действовать"
+          }
+        }
+      }
+    },
+    "Start timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запустить таймер"
+          }
+        }
+      }
+    },
+    "Start today" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начните сегодня"
+          }
+        }
+      }
+    },
+    "Start your journey" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начните свой путь"
+          }
+        }
+      }
+    },
+    "Step %1$lld of %2$lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг %lld из %lld"
+          }
+        }
+      }
+    },
+    "Step %1$lld: %2$@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг %lld: %@"
+          }
+        }
+      }
+    },
+    "Step %lld" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг %lld"
+          }
+        }
+      }
+    },
+    "Step %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "Step %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "steps" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "шагов"
+          }
+        }
+      }
+    },
+    "Steps" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаги выполнения"
+          }
+        }
+      }
+    },
+    "Stomach" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Живот"
+          }
+        }
+      }
+    },
+    "Straighten your legs and point your toes down. Tense your thighs, calves, and feet." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выпрямите ноги и направьте носки вниз. Напрягите бёдра, икры и стопы."
+          }
+        }
+      }
+    },
+    "Streak" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия"
+          }
+        }
+      }
+    },
+    "streak.days.count" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d дней"
+          }
+        }
+      }
+    },
+    "Summary" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сводка"
+          }
+        }
+      }
+    },
+    "Support" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опора"
+          }
+        }
+      }
+    },
+    "System" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системная"
+          }
+        }
+      }
+    },
+    "Take a deep breath and pull your shoulders back. Slightly arch your back." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сделайте глубокий вдох и отведите плечи назад. Слегка прогните спину."
+          }
+        }
+      }
+    },
+    "Take a deep breath. Slightly arch your back and tense your stomach." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сделайте глубокий вдох. Слегка прогните спину и напрягите живот."
+          }
+        }
+      }
+    },
+    "Take breaks when you need them" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Делайте перерывы когда нужно"
+          }
+        }
+      }
+    },
+    "Task not found" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Задание не найдено"
+          }
+        }
+      }
+    },
+    "Taste" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вкус"
+          }
+        }
+      }
+    },
+    "Tense" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напрячь"
+          }
+        }
+      }
+    },
+    "Tense your stomach muscles. Make your belly firm." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напрягите мышцы живота. Сделайте живот твёрдым."
+          }
+        }
+      }
+    },
+    "Tense your thigh muscles. Straighten your legs and make them stiff." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напрягите мышцы бёдер. Выпрямите ноги и сделайте их более жёсткими."
+          }
+        }
+      }
+    },
+    "Test exposure" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тестовая экспозиция"
+          }
+        }
+      }
+    },
+    "The file contains exercises, schedules, and session results." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файл содержит упражнения, расписания и результаты сессий."
+          }
+        }
+      }
+    },
+    "The schedule may have been deleted or changed." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возможно, расписание было удалено или изменено."
+          }
+        }
+      }
+    },
+    "Theme" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тема"
+          }
+        }
+      }
+    },
+    "This action cannot be undone." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это действие нельзя отменить."
+          }
+        }
+      }
+    },
+    "This app **does not replace** professional psychotherapy or medical care." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это приложение **не заменяет** профессиональную психотерапию или медицинскую помощь."
+          }
+        }
+      }
+    },
+    "This will delete all exercises, schedules, and session results." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это удалит все упражнения, расписания и результаты сессий."
+          }
+        }
+      }
+    },
+    "time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "время"
+          }
+        }
+      }
+    },
+    "Time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время"
+          }
+        }
+      }
+    },
+    "Time for exercise" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время для упражнения"
+          }
+        }
+      }
+    },
+    "Time remaining: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Осталось времени: %@"
+          }
+        }
+      }
+    },
+    "Time's up" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время истекло"
+          }
+        }
+      }
+    },
+    "Timer" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таймер"
+          }
+        }
+      }
+    },
+    "Timer %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таймер %@"
+          }
+        }
+      }
+    },
+    "Timer for step %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таймер для шага %lld"
+          }
+        }
+      }
+    },
+    "Timer progress" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогресс таймера"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня"
+          }
+        }
+      }
+    },
+    "Today %1$d minutes. In 7 days %2$d minutes." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня %d минут. За 7 дней %d минут."
+          }
+        }
+      }
+    },
+    "Today's plan" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "План на сегодня"
+          }
+        }
+      }
+    },
+    "Tomorrow" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завтра"
+          }
+        }
+      }
+    },
+    "Total" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всего"
+          }
+        }
+      }
+    },
+    "Total time: %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Общее время: %@"
+          }
+        }
+      }
+    },
+    "Trend: %1$@, change %2$@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренд: %@, изменение %@"
+          }
+        }
+      }
+    },
+    "Type" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тип"
+          }
+        }
+      }
+    },
+    "Unavailable. Enter description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Недоступно. Введите описание"
+          }
+        }
+      }
+    },
+    "Unavailable. Enter name" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Недоступно. Введите название"
+          }
+        }
+      }
+    },
+    "Unclench your fists. Fully relax your arms and notice the difference between tension and relaxation." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разожмите кулаки. Полностью расслабьте руки и отметьте разницу между напряжением и расслаблением."
+          }
+        }
+      }
+    },
+    "Undo step completion" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить выполнение шага"
+          }
+        }
+      }
+    },
+    "Unlock" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разблокировать"
+          }
+        }
+      }
+    },
+    "Unlock Inner Hero" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разблокировать Inner Hero"
+          }
+        }
+      }
+    },
+    "Upper Arms" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Плечи и бицепсы"
+          }
+        }
+      }
+    },
+    "Upper Body" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Верхняя часть тела"
+          }
+        }
+      }
+    },
+    "Use this app as an additional tool as part of a comprehensive approach to your mental health care." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Используйте это приложение как дополнительный инструмент в рамках комплексного подхода к заботе о своём психическом здоровье."
+          }
+        }
+      }
+    },
+    "User-created" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Созданный"
+          }
+        }
+      }
+    },
+    "Verification error: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка проверки: %@"
+          }
+        }
+      }
+    },
+    "Verify your identity to continue." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подтвердите личность, чтобы продолжить."
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версия"
+          }
+        }
+      }
+    },
+    "Version %1$@ (%2$@)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версия %@ (%@)"
+          }
+        }
+      }
+    },
+    "Week" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неделя"
+          }
+        }
+      }
+    },
+    "Weekdays" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будни"
+          }
+        }
+      }
+    },
+    "Weekends" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выходные"
+          }
+        }
+      }
+    },
+    "Welcome" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добро пожаловать"
+          }
+        }
+      }
+    },
+    "Well done!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы молодец!"
+          }
+        }
+      }
+    },
+    "What do you feel now? What thoughts/sensations were there during the session? What helped?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что вы чувствуете сейчас? Какие мысли/ощущения были во время сеанса? Что помогло?"
+          }
+        }
+      }
+    },
+    "What it's for" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для чего это"
+          }
+        }
+      }
+    },
+    "When active, you will receive reminders at the selected time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Когда активно, вы будете получать напоминания в выбранное время"
+          }
+        }
+      }
+    },
+    "When enabled, the app will ask for identity verification only on launch." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "При включении приложение будет запрашивать подтверждение личности только при запуске."
+          }
+        }
+      }
+    },
+    "Will save the session and enjoyment rating" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранит сеанс и оценку впечатления"
+          }
+        }
+      }
+    },
+    "WK" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "НЕД"
+          }
+        }
+      }
+    },
+    "Worsening" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ухудшение"
+          }
+        }
+      }
+    },
+    "Write down what helped (breathing, focus on the task, supportive thought)—it will be useful next time." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запишите, что помогло (дыхание, фокус на задаче, поддерживающая мысль) — это пригодится в следующий раз."
+          }
+        }
+      }
+    },
+    "Year" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Год"
+          }
+        }
+      }
+    },
+    "You brought your attention to the present moment—that really helps." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты вернул(а) внимание в настоящий момент — это реально помогает."
+          }
+        }
+      }
+    },
+    "You completed a relaxation exercise—that's self-care." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты завершил(а) упражнение на расслабление — это забота о себе."
+          }
+        }
+      }
+    },
+    "You completed the session—that's already a big step. Even if anxiety was high, you practiced staying with the feelings and moving forward." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы завершили сеанс — это уже важный шаг. Даже если тревога была высокой, вы тренировались оставаться рядом с ощущениями и двигаться вперёд."
+          }
+        }
+      }
+    },
+    "You did a great job" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы проделали отличную работу"
+          }
+        }
+      }
+    },
+    "You don't need to be perfect—what matters is regularly returning to calm." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не нужно идеально — важно регулярно возвращаться к спокойствию"
+          }
+        }
+      }
+    },
+    "You just took a helpful step for yourself." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты только что сделал(а) полезный шаг для себя."
+          }
+        }
+      }
+    },
+    "You noticed the tension and allowed it to leave." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты заметил(а) напряжение и позволил(а) ему уйти."
+          }
+        }
+      }
+    },
+    "You relied on your senses—that's a skill that strengthens with practice." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты опирался(ась) на ощущения — это навык, который укрепляется практикой."
+          }
+        }
+      }
+    },
+    "You're doing great!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы делаете отлично!"
+          }
+        }
+      }
+    },
+    "You're managing—step by step" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты справляешься — шаг за шагом"
+          }
+        }
+      }
+    },
+    "You've got this" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты справишься"
+          }
+        }
+      }
+    },
+    "Your activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваша активность"
+          }
+        }
+      }
+    },
+    "YR" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ГОД"
+          }
+        }
+      }
+    },
+    "Активность %lld" : {
 
     },
     "Активный сеанс" : {
@@ -1377,44 +7320,7 @@
     "Блокировка приложения (Face ID)" : {
 
     },
-    "Будни" : {
-
-    },
-    "Быстрая релаксация" : {
-
-    },
-    "Быстрый старт" : {
-
-    },
-    "В процессе" : {
-
-    },
-    "Важное предупреждение" : {
-
-    },
-    "Ваша активность" : {
-
-    },
-    "Вернуться на главную" : {
-
-    },
-    "Версия" : {
-
-    },
-    "Версия %@ (%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Версия %1$@ (%2$@)"
-          }
-        }
-      }
-    },
     "Включен" : {
-
-    },
-    "Вкус" : {
 
     },
     "Внешний вид" : {
@@ -1423,258 +7329,34 @@
     "Возможно, расписание было удалено или изменено." : {
 
     },
-    "Вперёд" : {
-
-    },
-    "время" : {
-
-    },
-    "Время" : {
-
-    },
-    "Время выполнения: %@" : {
-
-    },
-    "Время для упражнения" : {
-
-    },
-    "Время истекло" : {
-
-    },
-    "Все дни" : {
-
-    },
-    "Все шаги выполнены!" : {
-
-    },
-    "Всего" : {
-
-    },
-    "Вы делаете отлично!" : {
-
-    },
-    "Вы завершили сеанс — это уже важный шаг. Даже если тревога была высокой, вы тренировались оставаться рядом с ощущениями и двигаться вперёд." : {
-
-    },
-    "Вы молодец!" : {
-
-    },
-    "Вы проделали отличную работу" : {
-
-    },
-    "Вы уверены, что хотите завершить дыхательную сессию?" : {
-
-    },
-    "Вы уверены, что хотите завершить сеанс мышечной релаксации?" : {
-
-    },
-    "Вы уверены, что хотите завершить это упражнение?" : {
-
-    },
-    "Вы уверены, что хотите прервать сеанс? Прогресс не будет сохранён." : {
-
-    },
     "Вы уверены, что хотите удалить список \"%@\"? Это действие нельзя отменить." : {
 
     },
     "Вы уверены, что хотите удалить экспозицию \"%@\"? Это действие нельзя отменить." : {
 
     },
-    "Вы уверены, что хотите удалить это расписание?" : {
-
-    },
-    "Выберите список" : {
-
-    },
-    "Выберите способ выбора активности" : {
-
-    },
-    "Выберите технику" : {
-
-    },
-    "Выберите упражнение" : {
-
-    },
-    "Выберите хотя бы один день" : {
-
-    },
-    "Выберите экспозицию" : {
-
-    },
-    "Выбираем активность…" : {
-
-    },
-    "Выбираем…" : {
-
-    },
-    "Выбирает случайную активность и начинает сеанс" : {
-
-    },
-    "Выбор активности" : {
-
-    },
     "Выбор дня недели" : {
-
-    },
-    "Выбор периода отображения" : {
-
-    },
-    "Выбрать активность" : {
-
-    },
-    "Выбрать из списка" : {
-
-    },
-    "Выйти" : {
 
     },
     "Выключен" : {
 
     },
-    "Выполнен" : {
-
-    },
-    "Выполнено" : {
-
-    },
-    "Выполнено (нед.)" : {
-
-    },
-    "Выполнено %d из %d" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Выполнено %1$d из %2$d"
-          }
-        }
-      }
-    },
-    "Выходные" : {
-
-    },
-    "Год" : {
-
-    },
-    "ГОД" : {
-
-    },
-    "Голубая линия: тревожность после сеанса" : {
-
-    },
-    "Готово" : {
-
-    },
-    "График динамики тревожности" : {
-
-    },
-    "График динамики тревожности по датам" : {
-
-    },
-    "График прогресса тревожности" : {
-
-    },
-    "Дайте короткое название вашему списку активностей" : {
-
-    },
     "Дайте короткое название и опишите ситуацию, которая вызывает тревогу" : {
-
-    },
-    "Данные" : {
-
-    },
-    "Дата" : {
-
-    },
-    "Дата сеанса" : {
-
-    },
-    "Дата сеанса: %@" : {
-
-    },
-    "Дата: %@" : {
-
-    },
-    "Дважды нажмите для открытия" : {
-
-    },
-    "Дважды нажмите для перехода к этому шагу" : {
 
     },
     "Дважды нажмите для просмотра деталей" : {
 
     },
-    "Дважды нажмите чтобы вернуться к сеансу" : {
-
-    },
-    "Дважды нажмите чтобы завершить сеанс без сохранения" : {
-
-    },
     "Дважды нажмите чтобы сохранить" : {
-
-    },
-    "Дважды нажмите чтобы сохранить и завершить" : {
 
     },
     "Дважды нажмите, чтобы возобновить сеанс" : {
 
     },
-    "Действия" : {
-
-    },
     "Детали" : {
 
     },
-    "Детали сеанса" : {
-
-    },
-    "Динамика тревожности" : {
-
-    },
-    "Динамика тревожности от %lld до %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Динамика тревожности от %1$lld до %2$lld"
-          }
-        }
-      }
-    },
-    "Длительность" : {
-
-    },
-    "Длительность: %@" : {
-
-    },
-    "Для напоминаний о расписании необходимо разрешение на уведомления." : {
-
-    },
-    "Для напоминаний о расписании необходимо разрешение на уведомления. Пожалуйста, включите их в настройках." : {
-
-    },
-    "ДН" : {
-
-    },
-    "Дни недели" : {
-
-    },
-    "До" : {
-
-    },
-    "До сеанса" : {
-
-    },
-    "Добавить" : {
-
-    },
-    "Добавить активность" : {
-
-    },
     "Добавить в избранное" : {
-
-    },
-    "Добавить расписание" : {
 
     },
     "Добавить список активностей" : {
@@ -1689,115 +7371,7 @@
     "Добавляет пустой шаг в конец списка" : {
 
     },
-    "Добавляет пустую активность в конец списка" : {
-
-    },
-    "Добавьте одну или несколько активностей. Пустые строки не сохраняются." : {
-
-    },
-    "Добавьте упражнение в расписание — оно появится здесь" : {
-
-    },
-    "Добавьте упражнения в избранное" : {
-
-    },
-    "Добавьте упражнения в избранное для быстрого доступа" : {
-
-    },
-    "Добро пожаловать" : {
-
-    },
-    "Дыхание" : {
-
-    },
-    "Дыхание: %@" : {
-
-    },
-    "Дыхательная техника" : {
-
-    },
-    "Дыхательное упражнение" : {
-
-    },
-    "Если вы испытываете серьёзные симптомы тревоги или других психических состояний, пожалуйста, обратитесь к квалифицированному специалисту." : {
-
-    },
-    "Если вы нашли проблему или хотите предложить улучшение — напишите нам." : {
-
-    },
-    "За 7 дней: %d мин" : {
-
-    },
-    "Завершён" : {
-
-    },
-    "Завершение сеанса" : {
-
-    },
-    "Завершите первый сеанс терапии,\nчтобы увидеть историю" : {
-
-    },
-    "Завершить" : {
-
-    },
-    "Завершить на сегодня" : {
-
-    },
-    "Завершить онбординг и перейти к приложению" : {
-
-    },
-    "Завершить сеанс?" : {
-
-    },
-    "Завершить сессию" : {
-
-    },
-    "Завершить сессию?" : {
-
-    },
-    "Завершить текущий шаг" : {
-
-    },
-    "Завершить упражнение?" : {
-
-    },
-    "Завтра" : {
-
-    },
-    "Загляните позже" : {
-
-    },
     "Задание не найдено" : {
-
-    },
-    "Заземление" : {
-
-    },
-    "Заземление и техники внимания для снижения тревоги" : {
-
-    },
-    "Заземление: %@" : {
-
-    },
-    "Закрыть" : {
-
-    },
-    "Заметки" : {
-
-    },
-    "Заметки: %@" : {
-
-    },
-    "Заметьте 1 вкус во рту или сделайте маленький глоток воды и почувствуйте вкус." : {
-
-    },
-    "Запахи" : {
-
-    },
-    "Запланированные упражнения" : {
-
-    },
-    "Запланировано" : {
 
     },
     "Запланировать" : {
@@ -1806,131 +7380,10 @@
     "Заполните все обязательные поля" : {
 
     },
-    "Запустить таймер" : {
-
-    },
-    "Звуки" : {
-
-    },
-    "Здесь появятся завершённые сессии и ручные отметки за выбранный день" : {
-
-    },
-    "Изменение" : {
-
-    },
-    "Инструкции" : {
-
-    },
-    "Инструкция" : {
-
-    },
-    "Информация" : {
-
-    },
-    "Используйте это приложение как дополнительный инструмент в рамках комплексного подхода к заботе о своём психическом здоровье." : {
-
-    },
-    "История" : {
-
-    },
-    "История сеансов" : {
-
-    },
-    "История сеансов для \"%@\" пуста" : {
-
-    },
-    "История сеансов для этой экспозиции пуста" : {
-
-    },
-    "Итоги сеанса" : {
-
-    },
-    "Итоги сеанса: %@, начало в %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Итоги сеанса: %1$@, начало в %2$@"
-          }
-        }
-      }
-    },
-    "Каждый день" : {
-
-    },
-    "Когда активно, вы будете получать напоминания в выбранное время" : {
-
-    },
     "Конфиденциальность" : {
 
     },
-    "Короткая версия прогрессивной мышечной релаксации с фокусом на ключевых зонах напряжения. Подходит для быстрого снятия стресса в течение дня." : {
-
-    },
-    "Короткое поддерживающее сообщение и подсказки" : {
-
-    },
-    "Любимые упражнения" : {
-
-    },
-    "МЕС" : {
-
-    },
-    "Месяц" : {
-
-    },
-    "мин" : {
-
-    },
-    "Минуты практик" : {
-
-    },
-    "Мышечная релаксация" : {
-
-    },
-    "Нажмите дважды, чтобы открыть детали. Запуск сеанса доступен внутри." : {
-
-    },
-    "Назад" : {
-
-    },
-    "Название списка" : {
-
-    },
-    "Название списка активностей" : {
-
-    },
     "Название экспозиции" : {
-
-    },
-    "Найдите 4 ощущения от прикосновения: одежда, стул, пол, предмет в руках." : {
-
-    },
-    "Найдите 5 предметов вокруг и задержите на каждом взгляд на секунду." : {
-
-    },
-    "Написать в поддержку: %@" : {
-
-    },
-    "Напоминание: %@" : {
-
-    },
-    "Насколько понравилось?" : {
-
-    },
-    "Настройки" : {
-
-    },
-    "Начало" : {
-
-    },
-    "Начать сеанс" : {
-
-    },
-    "Начать сеанс поведенческой активации" : {
-
-    },
-    "Начать следующее упражнение" : {
 
     },
     "Начните действовать" : {
@@ -1939,31 +7392,7 @@
     "Начните свой путь" : {
 
     },
-    "Начните сегодня" : {
-
-    },
-    "Не выбрано" : {
-
-    },
-    "Не выполнен" : {
-
-    },
     "Не удалось найти данные для запуска упражнения." : {
-
-    },
-    "Не удалось подтвердить личность." : {
-
-    },
-    "Неактивно" : {
-
-    },
-    "Неактивные расписания" : {
-
-    },
-    "НЕД" : {
-
-    },
-    "Неделя" : {
 
     },
     "Недоступно. Введите название" : {
@@ -1975,145 +7404,19 @@
     "Нет активностей" : {
 
     },
-    "Нет данных" : {
-
-    },
-    "Нет доступных списков активностей" : {
-
-    },
-    "Нет доступных экспозиций" : {
-
-    },
-    "Нет завершенных сеансов" : {
-
-    },
-    "Нет завершённых сеансов" : {
-
-    },
-    "Нет задач" : {
-
-    },
-    "Нет запланированных упражнений" : {
-
-    },
-    "Нет избранных упражнений" : {
-
-    },
-    "Нет расписаний" : {
-
-    },
-    "Нет расписаний на день" : {
-
-    },
-    "Нет сеансов" : {
-
-    },
-    "Нет статей" : {
-
-    },
     "Новая экспозиция" : {
-
-    },
-    "Новое расписание" : {
-
-    },
-    "Новый список активностей" : {
 
     },
     "О приложении" : {
 
     },
-    "Образование" : {
-
-    },
     "Общее время: %@" : {
-
-    },
-    "Один день" : {
-
-    },
-    "ОК" : {
-
-    },
-    "Описание" : {
-
-    },
-    "Описание ситуации, вызывающей тревогу" : {
 
     },
     "Описание экспозиции" : {
 
     },
-    "Опишите ваше состояние" : {
-
-    },
-    "Опишите последовательность действий. Каждый шаг может иметь свой таймер." : {
-
-    },
-    "Опишите последовательность действий. Каждый шаг может иметь свой таймер. Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления." : {
-
-    },
-    "Опора" : {
-
-    },
-    "Осмотритесь" : {
-
-    },
-    "Основная информация" : {
-
-    },
-    "Осталось %d" : {
-
-    },
-    "Осталось времени: %@" : {
-
-    },
-    "Открывает список активностей для выбора" : {
-
-    },
-    "Открыть расписание" : {
-
-    },
-    "Отлично" : {
-
-    },
-    "Отмена" : {
-
-    },
-    "Отменить выполнение шага" : {
-
-    },
-    "Отметить выполненным" : {
-
-    },
-    "Отметить шаг как выполненное" : {
-
-    },
-    "Отметка" : {
-
-    },
-    "Отметьте 3 звука: ближний, дальний и самый тихий." : {
-
-    },
-    "Оцените ваш текущий уровень тревоги до начала сеанса (0–10)" : {
-
-    },
-    "Оцените ваш уровень тревоги сейчас (0–10)" : {
-
-    },
-    "Оцените, насколько приятной была эта активность (1–5)" : {
-
-    },
-    "Оценка впечатления" : {
-
-    },
     "Ошибка" : {
-
-    },
-    "Ошибка проверки: %@" : {
-
-    },
-    "Пауза" : {
 
     },
     "Перейти к сегодняшнему дню" : {
@@ -2125,249 +7428,37 @@
     "Переместить шаг" : {
 
     },
-    "План на сегодня" : {
-
-    },
     "По запросу ничего не найдено" : {
-
-    },
-    "по плану" : {
-
-    },
-    "По плану (нед.)" : {
-
-    },
-    "Поведенческая активация" : {
-
-    },
-    "Поведенческая активация помогает мягко «включаться» в жизнь, когда нет сил, настроения или мотивации. Вы заранее выбираете простые действия (приятные или значимые), делаете их маленькими шагами и замечаете, как меняются состояние и уровень удовольствия." : {
-
-    },
-    "Повышение активности через осмысленные действия" : {
 
     },
     "Поддержка" : {
 
     },
-    "Подтвердите личность, чтобы продолжить." : {
-
-    },
     "Поиск" : {
-
-    },
-    "Поймайте 2 запаха или просто 2 ощущения воздуха." : {
-
-    },
-    "Пока нет активностей" : {
-
-    },
-    "Пока нет выполненного" : {
-
-    },
-    "Показать" : {
-
-    },
-    "Показать все шаги" : {
-
-    },
-    "Показать таймер" : {
-
-    },
-    "Полная последовательность прогрессивной мышечной релаксации для всех основных групп мышц. Помогает снять глубокое напряжение по всему телу." : {
-
-    },
-    "После" : {
-
-    },
-    "После сеанса" : {
-
-    },
-    "Последний" : {
-
-    },
-    "Постепенное преодоление страхов и тревог" : {
-
-    },
-    "Похвала за выполнение сеанса" : {
-
-    },
-    "Предустановленный список" : {
 
     },
     "Предыдущая неделя" : {
 
     },
-    "Прервать" : {
-
-    },
-    "Прервать сеанс?" : {
-
-    },
     "При включении приложение будет запрашивать подтверждение личности только при запуске." : {
-
-    },
-    "Приложение заблокировано" : {
-
-    },
-    "Проверка устройства недоступна." : {
-
-    },
-    "Прогресс" : {
 
     },
     "Прогресс выполнения" : {
 
     },
-    "Прогресс таймера" : {
-
-    },
-    "Прогресс тревоги" : {
-
-    },
-    "Прогрессивная мышечная релаксация для снятия напряжения" : {
-
-    },
     "Прогрессивная мышечная релаксация помогает снизить тревогу и телесное напряжение через осознанное чередование «напрячь» → «расслабить». Вы учитесь быстрее замечать, где в теле накапливается стресс, и мягко отпускать его." : {
-
-    },
-    "Продолжайте в том же духе" : {
-
-    },
-    "Продолжить" : {
 
     },
     "Продолжить активный сеанс: %@" : {
 
     },
-    "Продолжить сеанс" : {
-
-    },
-    "Продолжить таймер" : {
-
-    },
-    "Пуск" : {
-
-    },
     "Разблокировать" : {
-
-    },
-    "Разблокировать Inner Hero" : {
-
-    },
-    "Разрешения на уведомления" : {
-
-    },
-    "Расписание" : {
-
-    },
-    "Расслабление всего тела" : {
 
     },
     "Редактирование" : {
 
     },
-    "Редактировать" : {
-
-    },
-    "Редактировать расписание" : {
-
-    },
-    "Редактировать список" : {
-
-    },
-    "Результаты сеанса" : {
-
-    },
-    "Релаксация" : {
-
-    },
-    "Релаксация: %@" : {
-
-    },
-    "Сборка" : {
-
-    },
-    "Сброс" : {
-
-    },
-    "Сбросить" : {
-
-    },
-    "Сбросить все данные" : {
-
-    },
-    "Сбросить все данные?" : {
-
-    },
-    "Сбросить таймер" : {
-
-    },
-    "Светлая" : {
-
-    },
-    "Сводка" : {
-
-    },
-    "Сеанс экспозиции" : {
-
-    },
-    "Сеанс: %@, длительность %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Сеанс: %1$@, длительность %2$@"
-          }
-        }
-      }
-    },
-    "Сегодня" : {
-
-    },
-    "Сегодня %d минут. За 7 дней %d минут." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Сегодня %1$d минут. За 7 дней %2$d минут."
-          }
-        }
-      }
-    },
-    "Серия" : {
-
-    },
-    "Сессия" : {
-
-    },
-    "Синяя линия: тревожность до сеанса" : {
-
-    },
-    "Системная" : {
-
-    },
-    "Скрыть" : {
-
-    },
-    "Скрыть все шаги" : {
-
-    },
-    "Скрыть таймер" : {
-
-    },
     "Следующая неделя" : {
-
-    },
-    "Следующее" : {
-
-    },
-    "Случайная активность" : {
-
-    },
-    "Случайно" : {
-
-    },
-    "Снять отметку выполнения" : {
 
     },
     "Создайте первую экспозицию для работы с тревогой" : {
@@ -2376,70 +7467,22 @@
     "Создайте первый список активностей для поведенческой активации" : {
 
     },
-    "Создайте расписание для регулярных напоминаний о упражнениях" : {
-
-    },
     "Создать расписание" : {
-
-    },
-    "Сохранит сеанс и оценку впечатления" : {
-
-    },
-    "Сохранить" : {
 
     },
     "Сохранить изменения" : {
 
     },
-    "Сохранить результат сеанса" : {
-
-    },
-    "Сохранить сеанс" : {
-
-    },
     "Сохранить экспозицию" : {
 
     },
-    "Сохраняет список активностей и закрывает редактор" : {
-
-    },
     "Сохраняет экспозицию и закрывает редактор" : {
-
-    },
-    "Список" : {
-
-    },
-    "Список активностей" : {
-
-    },
-    "Список активностей для поведенческой активации" : {
-
-    },
-    "Среднее До" : {
-
-    },
-    "Среднее После" : {
-
-    },
-    "Средняя тревожность до сеанса: %@" : {
-
-    },
-    "Средняя тревожность после сеанса: %@" : {
-
-    },
-    "Стабильно" : {
-
-    },
-    "Старт" : {
 
     },
     "Статьи пока недоступны" : {
 
     },
     "Статья" : {
-
-    },
-    "Статья дня" : {
 
     },
     "Таймер" : {
@@ -2451,68 +7494,16 @@
     "Таймер для шага %lld" : {
 
     },
-    "Текущий уровень тревожности: %d" : {
-
-    },
     "Текущий шаг" : {
 
     },
     "Тема" : {
 
     },
-    "Тёмная" : {
-
-    },
-    "Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус." : {
-
-    },
-    "Техники заземления помогают быстро снизить тревогу и вернуть внимание в настоящий момент" : {
-
-    },
-    "Техники контролируемого дыхания для регуляции нервной системы" : {
-
-    },
-    "Техники прогрессивной мышечной релаксации помогают снять телесное напряжение и вернуть спокойствие" : {
-
-    },
-    "Тип упражнения" : {
-
-    },
-    "Тревога до сеанса: %lld" : {
-
-    },
-    "Тревога после сеанса: %lld" : {
-
-    },
-    "Тренд: %@, изменение %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Тренд: %1$@, изменение %2$@"
-          }
-        }
-      }
-    },
-    "Ты завершил(а) упражнение на расслабление — это забота о себе." : {
-
-    },
-    "Ты молодец!" : {
-
-    },
-    "Ты справишься" : {
-
-    },
-    "Удалить" : {
-
-    },
     "Удалить активность %lld" : {
 
     },
     "Удалить из избранного" : {
-
-    },
-    "Удалить расписание?" : {
 
     },
     "Удалить список активностей?" : {
@@ -2524,64 +7515,10 @@
     "Удалить экспозицию?" : {
 
     },
-    "Удаляет все данные из приложения. Действие нельзя отменить." : {
-
-    },
-    "Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления." : {
-
-    },
-    "Улучшение" : {
-
-    },
-    "Упражнение не найдено" : {
-
-    },
     "Упражнение недоступно" : {
 
     },
-    "Упражнения" : {
-
-    },
-    "уровень" : {
-
-    },
-    "Уровень до" : {
-
-    },
-    "Уровень повысился" : {
-
-    },
-    "Уровень после" : {
-
-    },
-    "Уровень снизился" : {
-
-    },
-    "Уровень тревоги" : {
-
-    },
-    "Уровень тревоги после сеанса" : {
-
-    },
-    "Уровни тревоги" : {
-
-    },
     "Устройтесь удобно. На этапе «Напрячь» напрягайте указанную группу мышц умеренно (без боли) и удерживайте напряжение. На этапе «Расслабить» полностью отпустите мышцы и обратите внимание на ощущения. Дышите ровно и спокойно.\n\nСовет: если вам сложно напрягать мышцу, делайте это мягче или пропускайте шаг — важно оставаться в комфорте." : {
-
-    },
-    "Ухудшение" : {
-
-    },
-    "Файл содержит упражнения, расписания и результаты сессий." : {
-
-    },
-    "Финиш" : {
-
-    },
-    "Центр знаний" : {
-
-    },
-    "Что вы чувствуете сейчас? Какие мысли/ощущения были во время сеанса? Что помогло?" : {
 
     },
     "Шаг %lld" : {
@@ -2607,9 +7544,6 @@
         }
       }
     },
-    "Шаги выполнения" : {
-
-    },
     "Шаги экспозиции" : {
 
     },
@@ -2622,49 +7556,6 @@
           }
         }
       }
-    },
-    "шагов" : {
-
-    },
-    "Шесть месяцев" : {
-
-    },
-    "Экспозиции" : {
-
-    },
-    "Экспозиция" : {
-
-    },
-    "Экспозиция — это мягкая тренировка смелости: ты учишься оставаться рядом с тревогой и замечать, что с ней можно быть — она неприятная, но переносимая. Иногда тревога снижается во время шага, иногда — позже. И так, и так нормально." : {
-
-    },
-    "Экспозиция: %@" : {
-
-    },
-    "Экспозиция: %@. %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Экспозиция: %1$@. %2$@"
-          }
-        }
-      }
-    },
-    "Экспорт" : {
-
-    },
-    "Экспортировать данные (JSON)" : {
-
-    },
-    "Это действие нельзя отменить." : {
-
-    },
-    "Это приложение **не заменяет** профессиональную психотерапию или медицинскую помощь." : {
-
-    },
-    "Это удалит все упражнения, расписания и результаты сессий." : {
-
     }
   },
   "version" : "1.0"
