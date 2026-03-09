@@ -200,7 +200,7 @@ struct HomeView: View {
         case .exposure:
             if let id = assignment.exposureId,
                let exposure = exposures.first(where: { $0.id == id }) {
-                return exposure.title
+                return exposure.localizedTitle
             }
             return String(localized: "Экспозиция")
             
@@ -228,7 +228,7 @@ struct HomeView: View {
         case .behavioralActivation:
             if let id = assignment.activityListId,
                let list = activityLists.first(where: { $0.id == id }) {
-                return list.title
+                return list.localizedTitle
             }
             return String(localized: "Поведенческая активация")
         }

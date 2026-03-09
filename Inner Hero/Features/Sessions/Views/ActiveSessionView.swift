@@ -392,6 +392,15 @@ struct ActiveSessionView: View {
         exposure.steps.sorted(by: { $0.order < $1.order })
     }
     
+    private var localizedStepTexts: [String] {
+        exposure.localizedStepTexts
+    }
+    
+    private func localizedStepText(at index: Int, fallback step: ExposureStep) -> String {
+        guard index >= 0, index < localizedStepTexts.count else { return step.text }
+        return localizedStepTexts[index]
+    }
+    
     private var currentStepIndex: Int {
         if let selected = selectedStepIndex {
             return selected
@@ -490,7 +499,7 @@ struct ActiveSessionView: View {
             }
             
             ToolbarItem(placement: .principal) {
-                Text(exposure.title)
+                Text(exposure.localizedTitle)
                     .font(.headline)
                     .foregroundStyle(TextColors.toolbar)
             }
@@ -732,7 +741,7 @@ struct ActiveSessionView: View {
                     // Top section: step text (2/3 of card)
                     ZStack(alignment: .center) {
                         // Step text (centered vertically and horizontally)
-                        Text(step.text)
+                        Text(localizedStepText(at: index, fallback: step))
                             .font(.system(size: 32, weight: .semibold))
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
@@ -1095,7 +1104,7 @@ struct ActiveSessionView: View {
                 .stroke(strokeColor, lineWidth: 1.5)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Шаг \(index + 1): \(step.text)")
+        .accessibilityLabel("Шаг \(index + 1): \(localizedStepText(at: index, fallback: step))")
         .accessibilityValue(accessibilityValue)
     }
     
@@ -1115,7 +1124,7 @@ struct ActiveSessionView: View {
     
     @ViewBuilder
     private func compactStepTextContent(step: ExposureStep, index: Int, isCompleted: Bool) -> some View {
-        Text(step.text)
+        Text(localizedStepText(at: index, fallback: step))
             .font(.system(size: 17, weight: .semibold))
             .foregroundStyle(isCompleted ? TextColors.secondary : TextColors.primary)
             .strikethrough(isCompleted)

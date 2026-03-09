@@ -32,13 +32,13 @@ struct ActivationCardView: View {
     
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(activation.title)
+            Text(activation.localizedTitle)
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
             
-            if !activation.activities.isEmpty {
-                Text(activation.activities.prefix(2).joined(separator: ", "))
+            if !activation.localizedActivities.isEmpty {
+                Text(activation.localizedActivities.prefix(2).joined(separator: ", "))
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .lineLimit(2)
@@ -57,7 +57,7 @@ struct ActivationCardView: View {
             
             statItem(
                 systemName: "list.bullet",
-                valueText: activitiesCountText(for: activation.activities.count)
+                valueText: activitiesCountText(for: activation.localizedActivities.count)
             )
         }
         .accessibilityElement(children: .combine)

@@ -40,7 +40,7 @@ struct ActiveSessionCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Продолжить активный сеанс: \(exposure.title)")
+        .accessibilityLabel("Продолжить активный сеанс: \(exposure.localizedTitle)")
         .accessibilityHint("Дважды нажмите, чтобы возобновить сеанс")
     }
     
@@ -61,7 +61,7 @@ struct ActiveSessionCard: View {
     
     private var content: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(exposure.title)
+            Text(exposure.localizedTitle)
                 .font(.title2.weight(.semibold))
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
@@ -83,9 +83,9 @@ struct ActiveSessionCard: View {
                         )
                 }
                 
-                if !exposure.steps.isEmpty {
+                if !exposure.localizedStepTexts.isEmpty {
                     Label {
-                        Text("\(session.completedStepIndices.count)/\(exposure.steps.count)")
+                        Text("\(session.completedStepIndices.count)/\(exposure.localizedStepTexts.count)")
                             .font(.body)
                             .foregroundStyle(TextColors.secondary)
                     } icon: {

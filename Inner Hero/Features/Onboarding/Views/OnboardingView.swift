@@ -9,52 +9,52 @@ struct OnboardingView: View {
         ScrollView {
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(minHeight: 48)
+                    .frame(minHeight: Spacing.xxxl)
                 
                 // App Icon/Title Section
-                VStack(spacing: 20) {
+                VStack(spacing: Spacing.md) {
                     Image(systemName: "heart.circle.fill")
                         .font(.system(size: 80))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.blue)
                         .accessibilityHidden(true)
                     
                     Text("Inner Hero")
                         .font(.largeTitle.weight(.bold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(TextColors.primary)
                 }
-                .padding(.bottom, 32)
+                .padding(.bottom, Spacing.xl)
                 
                 // Main Content Section
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: Spacing.lg) {
                     // Brief Explanation
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text("Добро пожаловать")
                             .font(.title2.weight(.semibold))
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(TextColors.primary)
                         
                         Text("Inner Hero поможет вам практиковать экспозиционную терапию для работы с тревогой. Создавайте сценарии, проводите сеансы и отслеживайте свой прогресс.")
                             .font(.body)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(TextColors.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     
                     // Warning Section
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
                         // Warning Header
                         HStack(spacing: 8) {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.body)
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(AppTheme.State.warning)
                                 .accessibilityHidden(true)
                             
                             Text("Важное предупреждение")
                                 .font(.headline)
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(TextColors.primary)
                         }
                         .accessibilityElement(children: .combine)
                         
                         // Warning Content
-                        VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: Spacing.xs) {
                             Text("Это приложение **не заменяет** профессиональную психотерапию или медицинскую помощь.")
                                 .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -67,22 +67,22 @@ struct OnboardingView: View {
                                 .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TextColors.secondary)
                     }
-                    .padding(20)
+                    .padding(Spacing.md)
                     .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.orange.opacity(0.08))
+                        RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                            .fill(AppTheme.State.warning.opacity(Opacity.softBackground))
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(Color.orange.opacity(0.3), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                            .stroke(AppTheme.State.warning.opacity(Opacity.standardBorder), lineWidth: 1)
                     )
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, Spacing.md)
                 
                 Spacer()
-                    .frame(minHeight: 32)
+                    .frame(minHeight: Spacing.xl)
                 
                 // Continue Button
                 Button {
@@ -98,17 +98,18 @@ struct OnboardingView: View {
                     Text("Продолжить")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
-                        .frame(minHeight: 56)
+                        .frame(minHeight: TouchTarget.minimum)
+                        .padding(.vertical, Spacing.xs)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.primary)
+                .tint(.blue)
                 .accessibilityLabel("Продолжить")
                 .accessibilityHint("Завершить онбординг и перейти к приложению")
-                .padding(.horizontal, 20)
-                .padding(.bottom, 40)
+                .padding(.horizontal, Spacing.md)
+                .padding(.bottom, Spacing.xxl)
             }
         }
-        .background(Color(uiColor: .systemBackground).ignoresSafeArea())
+        .homeBackground()
         .scrollDismissesKeyboard(.interactively)
     }
 }

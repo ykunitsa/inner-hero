@@ -144,11 +144,11 @@ struct SessionDetailView: View {
                             .foregroundStyle(.primary)
                         
                         VStack(alignment: .leading, spacing: Layout.tightSpacing) {
-                            Text(exposure.title)
+                            Text(exposure.localizedTitle)
                                 .font(.body.weight(.semibold))
                                 .foregroundStyle(.primary)
                             
-                            Text(exposure.exposureDescription)
+                            Text(exposure.localizedDescription)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -160,7 +160,7 @@ struct SessionDetailView: View {
                         )
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Экспозиция: \(exposure.title). \(exposure.exposureDescription)")
+                    .accessibilityLabel("Экспозиция: \(exposure.localizedTitle). \(exposure.localizedDescription)")
                 }
             }
             .padding(.horizontal, Layout.screenHorizontalPadding)

@@ -78,8 +78,8 @@ struct FavoritesSection: View {
                let exposure = exposures.first(where: { $0.id == exerciseId }) {
                 return FavoriteExerciseItem(
                     id: favorite.id,
-                    name: exposure.title,
-                    description: exposure.exposureDescription,
+                    name: exposure.localizedTitle,
+                    description: exposure.localizedDescription,
                     icon: "leaf",
                     color: .blue,
                     exerciseType: .exposure,
@@ -141,7 +141,7 @@ struct FavoritesSection: View {
                let activityList = activityLists.first(where: { $0.id == exerciseId }) {
                 return FavoriteExerciseItem(
                     id: favorite.id,
-                    name: activityList.title,
+                    name: activityList.localizedTitle,
                     description: String(localized: "Список активностей для поведенческой активации"),
                     icon: "figure.walk",
                     color: .green,

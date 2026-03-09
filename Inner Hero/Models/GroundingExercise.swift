@@ -25,17 +25,19 @@ struct GroundingExercise: Identifiable {
     let icon: String
     let estimatedDuration: TimeInterval
     
-    static let predefinedExercises: [GroundingExercise] = [
-        GroundingExercise(
-            type: .fiveFourThreeTwoOne,
-            name: String(localized: "5-4-3-2-1"),
-            description: String(
-                localized: "Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус."
-            ),
-            icon: "brain.head.profile",
-            estimatedDuration: 120
-        )
-    ]
+    static var predefinedExercises: [GroundingExercise] {
+        [
+            GroundingExercise(
+                type: .fiveFourThreeTwoOne,
+                name: String(localized: "5-4-3-2-1"),
+                description: String(
+                    localized: "Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус."
+                ),
+                icon: "brain.head.profile",
+                estimatedDuration: 120
+            )
+        ]
+    }
     
     var instructionSteps: [GroundingInstructionStep] {
         switch type {

@@ -155,7 +155,7 @@ struct ExerciseScheduleView: View {
         case .exposure:
             if let exposureId = assignment.exposureId,
                let exposure = exposures.first(where: { $0.id == exposureId }) {
-                return exposure.title
+                return exposure.localizedTitle
             }
             return "Экспозиция"
             
@@ -185,7 +185,7 @@ struct ExerciseScheduleView: View {
         case .behavioralActivation:
             if let activityListId = assignment.activityListId,
                let activityList = activityLists.first(where: { $0.id == activityListId }) {
-                return activityList.title
+                return activityList.localizedTitle
             }
             return "Поведенческая активация"
         }

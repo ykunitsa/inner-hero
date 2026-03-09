@@ -106,7 +106,7 @@ struct ExposuresListView: View {
                     deleteExposure(exposure)
                 }
             } message: { exposure in
-                Text("Вы уверены, что хотите удалить экспозицию \"\(exposure.title)\"? Это действие нельзя отменить.")
+                Text("Вы уверены, что хотите удалить экспозицию \"\(exposure.localizedTitle)\"? Это действие нельзя отменить.")
             }
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -215,7 +215,7 @@ struct ExposuresListView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(exposure.title). \(exposure.steps.count) шагов, \(exposure.sessionResults.count) сеансов")
+        .accessibilityLabel("\(exposure.localizedTitle). \(exposure.localizedStepTexts.count) шагов, \(exposure.sessionResults.count) сеансов")
         .accessibilityHint("Дважды нажмите для просмотра деталей")
     }
     

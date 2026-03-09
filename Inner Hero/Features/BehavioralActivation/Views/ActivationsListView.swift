@@ -89,7 +89,7 @@ struct ActivationsListView: View {
                     deleteActivation(activation)
                 }
             } message: { activation in
-                Text("Вы уверены, что хотите удалить список \"\(activation.title)\"? Это действие нельзя отменить.")
+                Text("Вы уверены, что хотите удалить список \"\(activation.localizedTitle)\"? Это действие нельзя отменить.")
             }
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -160,7 +160,7 @@ struct ActivationsListView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(activation.title). \(activation.activities.count) активностей\(activation.isPredefined ? ". Предустановленный список" : "")")
+        .accessibilityLabel("\(activation.localizedTitle). \(activation.localizedActivities.count) активностей\(activation.isPredefined ? ". Предустановленный список" : "")")
         .accessibilityHint("Дважды нажмите для просмотра деталей")
     }
     

@@ -479,7 +479,7 @@ struct ScheduleTabView: View {
             )
             let results = try modelContext.fetch(descriptor)
             entries.append(contentsOf: results.map { result in
-                let title = result.exposure?.title ?? String(localized: "Экспозиция")
+                let title = result.exposure?.localizedTitle ?? String(localized: "Экспозиция")
                 let duration: TimeInterval = {
                     guard let endAt = result.endAt else { return 0 }
                     return max(0, endAt.timeIntervalSince(result.startAt))
@@ -691,7 +691,7 @@ struct ScheduleTabView: View {
         case .exposure:
             if let id = completion.exposureId,
                let exposure = exposures.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Экспозиция: %@", comment: ""), exposure.title)
+                return String(format: NSLocalizedString("Экспозиция: %@", comment: ""), exposure.localizedTitle)
             }
             return String(localized: "Экспозиция")
             
@@ -722,7 +722,7 @@ struct ScheduleTabView: View {
         case .behavioralActivation:
             if let id = completion.activityListId,
                let list = activityLists.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Активация: %@", comment: ""), list.title)
+                return String(format: NSLocalizedString("Активация: %@", comment: ""), list.localizedTitle)
             }
             return String(localized: "Поведенческая активация")
         }
@@ -739,7 +739,7 @@ struct ScheduleTabView: View {
         case .exposure:
             if let id = assignment.exposureId,
                let exposure = exposures.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Экспозиция: %@", comment: ""), exposure.title)
+                return String(format: NSLocalizedString("Экспозиция: %@", comment: ""), exposure.localizedTitle)
             }
             return String(localized: "Экспозиция")
             
@@ -764,7 +764,7 @@ struct ScheduleTabView: View {
         case .behavioralActivation:
             if let id = assignment.activityListId,
                let list = activityLists.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Активация: %@", comment: ""), list.title)
+                return String(format: NSLocalizedString("Активация: %@", comment: ""), list.localizedTitle)
             }
             return String(localized: "Поведенческая активация")
         }

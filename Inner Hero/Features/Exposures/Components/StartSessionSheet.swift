@@ -60,7 +60,7 @@ struct StartSessionSheet: View {
                     )
                 )
             VStack(spacing: 6) {
-                Text(exposure.title)
+                Text(exposure.localizedTitle)
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.center)

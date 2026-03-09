@@ -2,50 +2,38 @@ import Foundation
 import SwiftData
 
 struct SampleDataLoader {
-    
-    // MARK: - Sample Data Structure
-    
-    private struct SampleExposureData: Codable {
-        let title: String
-        let description: String
-        let steps: [String]
-    }
-    
-    private struct SampleData: Codable {
-        let exposures: [SampleExposureData]
-    }
-    
-    // MARK: - Loading Methods
-    
-    static func loadSampleExposures(
-        into modelContext: ModelContext,
-        from fileName: String = "SampleData"
-    ) throws {
-        let sampleData = try loadSampleData(from: fileName)
-        
-        for exposureData in sampleData.exposures {
+    static func loadPredefinedExposures(into modelContext: ModelContext) throws {
+        for exposureData in PredefinedExposures.all {
             let steps = exposureData.steps.enumerated().map { index, text in
                 ExposureStep(text: text, hasTimer: false, timerDuration: 0, order: index)
             }
-            
+
             let exposure = Exposure(
                 title: exposureData.title,
                 exposureDescription: exposureData.description,
+                predefinedKey: exposureData.key.rawValue,
                 steps: steps,
                 isPredefined: true
             )
             modelContext.insert(exposure)
         }
-        
+
         try modelContext.save()
     }
-    
+
     static func loadSampleSessions(
         for exposures: [Exposure],
         into modelContext: ModelContext
     ) throws {
         let calendar = Calendar.current
         let now = Date()
+        let sampleNotes = [
+            String(localized: "sample.session.note1"),
+            String(localized: "sample.session.note2"),
+            String(localized: "sample.session.note3"),
+            String(localized: "sample.session.note4"),
+            String(localized: "sample.session.note5")
+        ]
         
         for exposure in exposures {
             let sessionCount = Int.random(in: 3...5)
@@ -62,13 +50,7 @@ struct SampleDataLoader {
                 let duration = TimeInterval(Int.random(in: 10...30) * 60)
                 let endDate = startDate.addingTimeInterval(duration)
                 
-                let notes = [
-                    "Сначала было тяжело, но постепенно стало легче",
-                    "Использовал дыхательные техники",
-                    "Удалось справиться с тревогой",
-                    "Было проще, чем ожидал",
-                    "Потребовалось больше времени, чем планировал"
-                ].randomElement() ?? ""
+                let notes = sampleNotes.randomElement() ?? ""
                 
                 let session = ExposureSessionResult(
                     exposure: exposure,
@@ -82,197 +64,27 @@ struct SampleDataLoader {
                 modelContext.insert(session)
             }
         }
-        
+
         try modelContext.save()
     }
-    
+
     static func isDatabaseEmpty(_ modelContext: ModelContext) throws -> Bool {
         let descriptor = FetchDescriptor<Exposure>()
         let exposures = try modelContext.fetch(descriptor)
         return exposures.isEmpty
     }
-    
+
     static func loadPredefinedActivationLists(into modelContext: ModelContext) throws {
-        let predefinedLists: [(title: String, activities: [String])] = [
-            (
-                title: String(localized: "Утренняя рутина"),
-                activities: [
-                    String(localized: "Разминка 20–30 минут"),
-                    String(localized: "Принять душ"),
-                    String(localized: "Полезный завтрак"),
-                    String(localized: "Просмотреть цели на день"),
-                    String(localized: "Медитация 10 минут")
-                ]
-            ),
-            (
-                title: String(localized: "Забота о себе"),
-                activities: [
-                    String(localized: "Принять расслабляющую ванну"),
-                    String(localized: "Почитать для удовольствия"),
-                    String(localized: "Послушать любимую музыку"),
-                    String(localized: "Заняться хобби"),
-                    String(localized: "Позвонить другу или близкому"),
-                    String(localized: "Прогулка на природе")
-                ]
-            ),
-            (
-                title: String(localized: "Социальные контакты"),
-                activities: [
-                    String(localized: "Встретиться с другом за кофе"),
-                    String(localized: "Посетить мероприятие"),
-                    String(localized: "Присоединиться к клубу или группе"),
-                    String(localized: "Волонтёрство"),
-                    String(localized: "Написать/позвонить новому знакомому"),
-                    String(localized: "Провести время с семьёй")
-                ]
-            ),
-            (
-                title: String(localized: "Полезные дела"),
-                activities: [
-                    String(localized: "Завершить рабочую задачу"),
-                    String(localized: "Навести порядок дома"),
-                    String(localized: "Изучить что-то новое"),
-                    String(localized: "Продвинуть личный проект"),
-                    String(localized: "Спланировать неделю"),
-                    String(localized: "Сделать накопившиеся дела")
-                ]
-            ),
-            (
-                title: String(localized: "Физическая активность"),
-                activities: [
-                    String(localized: "Пробежка или бег трусцой"),
-                    String(localized: "Йога или растяжка"),
-                    String(localized: "Тренировка в зале"),
-                    String(localized: "Поиграть в спорт"),
-                    String(localized: "Поплавать"),
-                    String(localized: "Танцевальная тренировка"),
-                    String(localized: "Поход/пешая прогулка")
-                ]
-            )
-        ]
-        
-        for list in predefinedLists {
+        for list in PredefinedActivationLists.all {
             let activationList = ActivityList(
                 title: list.title,
+                predefinedKey: list.key.rawValue,
                 activities: list.activities,
                 isPredefined: true
             )
             modelContext.insert(activationList)
         }
-        
+
         try modelContext.save()
-    }
-
-    /// Updates previously inserted predefined activation lists that were created in English.
-    /// Safe to call repeatedly; it only updates lists that match known old titles.
-    static func backfillPredefinedActivationListsIfNeeded(into modelContext: ModelContext) throws {
-        let oldTitleToNew: [String: (title: String, activities: [String])] = [
-            "Morning Routine": (
-                title: String(localized: "Утренняя рутина"),
-                activities: [
-                    String(localized: "Разминка 20–30 минут"),
-                    String(localized: "Принять душ"),
-                    String(localized: "Полезный завтрак"),
-                    String(localized: "Просмотреть цели на день"),
-                    String(localized: "Медитация 10 минут")
-                ]
-            ),
-            "Self-Care Activities": (
-                title: String(localized: "Забота о себе"),
-                activities: [
-                    String(localized: "Принять расслабляющую ванну"),
-                    String(localized: "Почитать для удовольствия"),
-                    String(localized: "Послушать любимую музыку"),
-                    String(localized: "Заняться хобби"),
-                    String(localized: "Позвонить другу или близкому"),
-                    String(localized: "Прогулка на природе")
-                ]
-            ),
-            "Social Connections": (
-                title: String(localized: "Социальные контакты"),
-                activities: [
-                    String(localized: "Встретиться с другом за кофе"),
-                    String(localized: "Посетить мероприятие"),
-                    String(localized: "Присоединиться к клубу или группе"),
-                    String(localized: "Волонтёрство"),
-                    String(localized: "Написать/позвонить новому знакомому"),
-                    String(localized: "Провести время с семьёй")
-                ]
-            ),
-            "Productive Tasks": (
-                title: String(localized: "Полезные дела"),
-                activities: [
-                    String(localized: "Завершить рабочую задачу"),
-                    String(localized: "Навести порядок дома"),
-                    String(localized: "Изучить что-то новое"),
-                    String(localized: "Продвинуть личный проект"),
-                    String(localized: "Спланировать неделю"),
-                    String(localized: "Сделать накопившиеся дела")
-                ]
-            ),
-            "Physical Activities": (
-                title: String(localized: "Физическая активность"),
-                activities: [
-                    String(localized: "Пробежка или бег трусцой"),
-                    String(localized: "Йога или растяжка"),
-                    String(localized: "Тренировка в зале"),
-                    String(localized: "Поиграть в спорт"),
-                    String(localized: "Поплавать"),
-                    String(localized: "Танцевальная тренировка"),
-                    String(localized: "Поход/пешая прогулка")
-                ]
-            )
-        ]
-        
-        let lists = try modelContext.fetch(FetchDescriptor<ActivityList>())
-        var didUpdate = false
-        
-        for list in lists where list.isPredefined {
-            guard let replacement = oldTitleToNew[list.title] else { continue }
-            list.title = replacement.title
-            list.activities = replacement.activities
-            didUpdate = true
-        }
-        
-        if didUpdate {
-            try modelContext.save()
-        }
-    }
-    
-    // MARK: - Predefined Exposure Helpers
-    
-    static func exposureKey(title: String, description: String) -> String {
-        "\(title)|\(description)"
-    }
-    
-    static func sampleExposureKeys(from fileName: String = "SampleData") throws -> Set<String> {
-        let sampleData = try loadSampleData(from: fileName)
-        return Set(sampleData.exposures.map { exposureKey(title: $0.title, description: $0.description) })
-    }
-    
-    private static func loadSampleData(from fileName: String) throws -> SampleData {
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
-            throw SampleDataError.fileNotFound
-        }
-        
-        let data = try Data(contentsOf: url)
-        let decoder = JSONDecoder()
-        return try decoder.decode(SampleData.self, from: data)
-    }
-}
-
-// MARK: - Errors
-
-enum SampleDataError: LocalizedError {
-    case fileNotFound
-    case invalidData
-    
-    var errorDescription: String? {
-        switch self {
-        case .fileNotFound:
-            return String(localized: "Файл с тестовыми данными не найден")
-        case .invalidData:
-            return String(localized: "Неверный формат данных")
-        }
     }
 }

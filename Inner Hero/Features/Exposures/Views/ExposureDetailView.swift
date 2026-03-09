@@ -15,8 +15,9 @@ struct ExposureDetailView: View {
         DataManager(modelContext: modelContext)
     }
     
-    private var totalSteps: Int { exposure.steps.count }
+    private var totalSteps: Int { exposure.localizedStepTexts.count }
     private var stepsWithTimer: Int { exposure.steps.filter { $0.hasTimer }.count }
+    private var orderedStoredSteps: [ExposureStep] { exposure.steps.sorted { $0.order < $1.order } }
     
     private var assignments: [ExerciseAssignment] {
         allAssignments.filter { assignment in
@@ -31,7 +32,7 @@ struct ExposureDetailView: View {
                 quickStatsSection
                 descriptionCard
                 startSessionButton
-                if !exposure.steps.isEmpty {
+                if !exposure.localizedStepTexts.isEmpty {
                     stepsSection
                 }
                 sessionsHistoryCard
@@ -130,7 +131,7 @@ struct ExposureDetailView: View {
                         )
                     )
             }
-            Text(exposure.title)
+            Text(exposure.localizedTitle)
                 .font(.title.weight(.semibold))
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.center)
@@ -163,7 +164,7 @@ struct ExposureDetailView: View {
                     .foregroundStyle(TextColors.primary)
             }
             
-            Text(exposure.exposureDescription)
+            Text(exposure.localizedDescription)
                 .font(.body)
                 .foregroundStyle(TextColors.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -200,8 +201,14 @@ struct ExposureDetailView: View {
             }
             
             VStack(spacing: 12) {
-                ForEach(Array(exposure.steps.enumerated()), id: \.offset) { index, step in
-                    StepDetailCard(step: step, index: index)
+                ForEach(Array(exposure.localizedStepTexts.enumerated()), id: \.offset) { index, stepText in
+                    let storedStep = index < orderedStoredSteps.count ? orderedStoredSteps[index] : nil
+                    StepDetailCard(
+                        stepText: stepText,
+                        index: index,
+                        hasTimer: storedStep?.hasTimer ?? false,
+                        timerDuration: storedStep?.timerDuration ?? 0
+                    )
                 }
             }
         }
@@ -394,8 +401,10 @@ struct QuickStatCard: View {
 }
 
 struct StepDetailCard: View {
-    let step: ExposureStep
+    let stepText: String
     let index: Int
+    let hasTimer: Bool
+    let timerDuration: Int
     
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
@@ -409,16 +418,16 @@ struct StepDetailCard: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(step.text)
+                Text(stepText)
                     .font(.body)
                     .foregroundStyle(TextColors.primary)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                if step.hasTimer {
+                if hasTimer {
                     HStack(spacing: 6) {
                         Image(systemName: "timer")
                             .font(.caption)
-                        Text("\(step.timerDuration / 60):\(String(format: "%02d", step.timerDuration % 60))")
+                        Text("\(timerDuration / 60):\(String(format: "%02d", timerDuration % 60))")
                             .font(.caption.weight(.medium))
                     }
                     .foregroundStyle(.white)
@@ -444,6 +453,6 @@ struct StepDetailCard: View {
                 .fill(.thinMaterial)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Шаг \(index + 1): \(step.text)")
+        .accessibilityLabel("Шаг \(index + 1): \(stepText)")
     }
 }
