@@ -21,14 +21,15 @@ struct ArticlesContainer: Codable {
 // MARK: - Articles Loader
 
 enum ArticlesLoader {
-    private static var cachedArticles: [Article]?
+    private static var cachedArticlesByLocalization: [String: [Article]] = [:]
     
     static func loadArticles() -> [Article] {
-        if let cached = cachedArticles {
+        let localizationKey = resolvedLocalizationKey()
+        if let cached = cachedArticlesByLocalization[localizationKey] {
             return cached
         }
         
-        guard let url = Bundle.main.url(forResource: "Articles", withExtension: "json") else {
+        guard let url = localizedArticlesURL(for: localizationKey) else {
             print("⚠️ Articles.json not found in bundle")
             return []
         }
@@ -37,7 +38,7 @@ enum ArticlesLoader {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
             let container = try decoder.decode(ArticlesContainer.self, from: data)
-            cachedArticles = container.articles
+            cachedArticlesByLocalization[localizationKey] = container.articles
             return container.articles
         } catch {
             print("⚠️ Error loading articles: \(error)")
@@ -51,6 +52,38 @@ enum ArticlesLoader {
     
     static func getArticles(by category: String) -> [Article] {
         return loadArticles().filter { $0.category == category }
+    }
+
+    private static func resolvedLocalizationKey() -> String {
+        let available = Bundle.main.localizations
+        for preferred in Locale.preferredLanguages {
+            if available.contains(preferred) {
+                return preferred
+            }
+            if let languageCode = Locale(identifier: preferred).languageCode,
+               available.contains(languageCode) {
+                return languageCode
+            }
+        }
+        
+        if available.contains("Base") {
+            return "Base"
+        }
+        
+        return available.first ?? "Base"
+    }
+    
+    private static func localizedArticlesURL(for localizationKey: String) -> URL? {
+        if let localizedURL = Bundle.main.url(
+            forResource: "Articles",
+            withExtension: "json",
+            subdirectory: nil,
+            localization: localizationKey
+        ) {
+            return localizedURL
+        }
+        
+        return Bundle.main.url(forResource: "Articles", withExtension: "json")
     }
 }
 

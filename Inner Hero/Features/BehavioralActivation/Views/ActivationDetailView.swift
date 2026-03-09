@@ -145,7 +145,7 @@ struct ActivationDetailView: View {
             }
             
             VStack(spacing: 8) {
-                Text(activation.title)
+                Text(activation.localizedTitle)
                     .font(.title.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.center)
@@ -164,7 +164,7 @@ struct ActivationDetailView: View {
         HStack(spacing: 16) {
             QuickStatCard(
                 icon: "list.bullet",
-                value: "\(activation.activities.count)",
+                value: "\(activation.localizedActivities.count)",
                 label: "Активности",
                 color: .green
             )
@@ -247,14 +247,14 @@ struct ActivationDetailView: View {
                     .foregroundStyle(TextColors.primary)
             }
             
-            if activation.activities.isEmpty {
+            if activation.localizedActivities.isEmpty {
                 Text("Пока нет активностей")
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 32)
             } else {
-                ActivityGroupCard(activities: activation.activities)
+                ActivityGroupCard(activities: activation.localizedActivities)
             }
         }
     }
@@ -295,8 +295,8 @@ struct ActivationDetailView: View {
             )
         }
         .buttonStyle(.plain)
-        .disabled(activation.activities.isEmpty)
-        .opacity(activation.activities.isEmpty ? 0.5 : 1.0)
+        .disabled(activation.localizedActivities.isEmpty)
+        .opacity(activation.localizedActivities.isEmpty ? 0.5 : 1.0)
         .accessibilityLabel("Начать сеанс поведенческой активации")
     }
     
@@ -456,7 +456,7 @@ struct StartActivationView: View {
                     }
                     
                     VStack(spacing: 8) {
-                        Text(activation.title)
+                        Text(activation.localizedTitle)
                             .font(.title2.weight(.semibold))
                             .foregroundStyle(TextColors.primary)
                             .multilineTextAlignment(.center)
@@ -507,7 +507,7 @@ struct StartActivationView: View {
                     }
                     .foregroundStyle(.green)
                 }
-                .disabled(activation.activities.isEmpty || isRouletteRunning)
+                .disabled(activation.localizedActivities.isEmpty || isRouletteRunning)
                 .accessibilityLabel("Выбрать из списка")
                 .accessibilityHint("Открывает список активностей для выбора")
                 
@@ -530,14 +530,14 @@ struct StartActivationView: View {
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.green)
                 }
-                .disabled(activation.activities.isEmpty || isRouletteRunning)
+                .disabled(activation.localizedActivities.isEmpty || isRouletteRunning)
                 .accessibilityLabel("Случайная активность")
                 .accessibilityHint("Выбирает случайную активность и начинает сеанс")
             }
         }
         .sheet(isPresented: $showingActivityList) {
             ActivitySelectionSheet(
-                activities: activation.activities,
+                activities: activation.localizedActivities,
                 onSelect: { activity in
                     selectedActivity = activity
                     showingActivityList = false
@@ -561,7 +561,7 @@ struct StartActivationView: View {
     }
 
     private func runRouletteRandomPick() {
-        guard !activation.activities.isEmpty else { return }
+        guard !activation.localizedActivities.isEmpty else { return }
         guard !isRouletteRunning else { return }
 
         rouletteTask?.cancel()
@@ -569,11 +569,11 @@ struct StartActivationView: View {
         isRouletteRunning = true
 
         withAnimation(.easeInOut(duration: 0.12)) {
-            rouletteActivity = activation.activities.randomElement()
+            rouletteActivity = activation.localizedActivities.randomElement()
         }
 
         rouletteTask = Task { @MainActor in
-            let pool = activation.activities
+            let pool = activation.localizedActivities
             let totalSteps = min(max(12, pool.count * 2), 20)
 
             var delay: UInt64 = 60_000_000
@@ -871,7 +871,7 @@ struct ActivationSessionView: View {
                 .padding(.bottom, 40)
             }
         }
-        .navigationTitle(activation.title)
+        .navigationTitle(activation.localizedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
         .onReceive(timer) { _ in

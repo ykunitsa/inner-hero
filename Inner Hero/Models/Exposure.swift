@@ -25,6 +25,7 @@ final class Exposure {
     @Attribute(.unique) var id: UUID
     var title: String
     var exposureDescription: String
+    var predefinedKey: String? = nil
     var steps: [ExposureStep]
     var createdAt: Date
     var isPredefined: Bool = false
@@ -38,6 +39,7 @@ final class Exposure {
         id: UUID = UUID(),
         title: String,
         exposureDescription: String,
+        predefinedKey: String? = nil,
         steps: [ExposureStep] = [],
         createdAt: Date = Date(),
         isPredefined: Bool = false
@@ -45,6 +47,7 @@ final class Exposure {
         self.id = id
         self.title = title
         self.exposureDescription = exposureDescription
+        self.predefinedKey = predefinedKey
         self.steps = steps
         self.createdAt = createdAt
         self.isPredefined = isPredefined

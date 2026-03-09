@@ -158,7 +158,7 @@ struct ScheduleExerciseView: View {
                     Picker("Экспозиция", selection: $selectedExposureId) {
                         Text("Выберите экспозицию").tag(nil as UUID?)
                         ForEach(exposures) { exposure in
-                            Text(exposure.title).tag(exposure.id as UUID?)
+                            Text(exposure.localizedTitle).tag(exposure.id as UUID?)
                         }
                     }
                 }
@@ -211,7 +211,7 @@ struct ScheduleExerciseView: View {
                     Picker("Список активностей", selection: $selectedActivityListId) {
                         Text("Выберите список").tag(nil as UUID?)
                         ForEach(activityLists) { list in
-                            Text(list.title).tag(list.id as UUID?)
+                            Text(list.localizedTitle).tag(list.id as UUID?)
                         }
                     }
                 }

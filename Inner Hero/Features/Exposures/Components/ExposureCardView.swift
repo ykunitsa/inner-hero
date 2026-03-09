@@ -38,12 +38,12 @@ struct ExposureCardView: View {
     
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(exposure.title)
+            Text(exposure.localizedTitle)
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
             
-            Text(exposure.exposureDescription)
+            Text(exposure.localizedDescription)
                 .font(.body)
                 .foregroundStyle(TextColors.secondary)
                 .lineLimit(2)
@@ -60,7 +60,7 @@ struct ExposureCardView: View {
             Spacer(minLength: 0)
             
             HStack(spacing: 10) {
-                statItem(systemName: "list.bullet", value: exposure.steps.count)
+                statItem(systemName: "list.bullet", value: exposure.localizedStepTexts.count)
                 statItem(systemName: "chart.bar", value: exposure.sessionResults.count)
                 
                 if let assignment = assignment, assignment.isActive {

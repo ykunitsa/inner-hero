@@ -57,7 +57,7 @@ struct QuickStartWidget: View {
         case .exposure:
             if let id = favorite.exerciseId,
                let exposure = exposures.first(where: { $0.id == id }) {
-                return exposure.title
+                return exposure.localizedTitle
             }
             return String(localized: "Экспозиция")
             

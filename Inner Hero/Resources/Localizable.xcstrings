@@ -1,0 +1,2671 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "—" : {
+
+    },
+    ":" : {
+
+    },
+    "·" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$lld"
+          }
+        }
+      }
+    },
+    "%@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@. %2$@"
+          }
+        }
+      }
+    },
+    "%@. %lld активностей%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@. %2$lld активностей%3$@"
+          }
+        }
+      }
+    },
+    "%@. %lld шагов, %lld сеансов" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@. %2$lld шагов, %3$lld сеансов"
+          }
+        }
+      }
+    },
+    "%d д" : {
+
+    },
+    "%d мин" : {
+
+    },
+    "%d мин чтения" : {
+
+    },
+    "%d процентов" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld / %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "%lld из %lld шагов выполнено" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld из %2$lld шагов выполнено"
+          }
+        }
+      }
+    },
+    "%lld из 5" : {
+
+    },
+    "%lld процентов" : {
+
+    },
+    "%lld шагов выполнено" : {
+
+    },
+    "%lld:%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld:%2$@"
+          }
+        }
+      }
+    },
+    "%lld." : {
+
+    },
+    "%lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "%lld/10" : {
+
+    },
+    "•" : {
+
+    },
+    "0\nНет тревоги" : {
+
+    },
+    "1\nСовсем не понравилось" : {
+
+    },
+    "3\nНормально" : {
+
+    },
+    "4-6 Breathing" : {
+
+    },
+    "5\nОчень понравилось" : {
+
+    },
+    "5\nСредний" : {
+
+    },
+    "5-4-3-2-1" : {
+
+    },
+    "6 МЕС" : {
+
+    },
+    "10\nМаксимум" : {
+
+    },
+    "Box Breathing" : {
+
+    },
+    "Equal-length inhale, hold, exhale, and hold phases. Used by Navy SEALs to maintain calm under pressure and improve focus." : {
+
+    },
+    "Full Body Relaxation" : {
+
+    },
+    "Inhale for 4 seconds, exhale for 6 seconds. Activates the parasympathetic nervous system to reduce anxiety and promote relaxation." : {
+
+    },
+    "Inner Hero" : {
+
+    },
+    "Inner Hero поможет вам практиковать экспозиционную терапию для работы с тревогой. Создавайте сценарии, проводите сеансы и отслеживайте свой прогресс." : {
+
+    },
+    "OK" : {
+
+    },
+    "Paced Breathing" : {
+
+    },
+    "predefined.activation.morning_routine.activity1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warm-up for 20–30 minutes"
+          }
+        }
+      }
+    },
+    "predefined.activation.morning_routine.activity2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a shower"
+          }
+        }
+      }
+    },
+    "predefined.activation.morning_routine.activity3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Healthy breakfast"
+          }
+        }
+      }
+    },
+    "predefined.activation.morning_routine.activity4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review goals for the day"
+          }
+        }
+      }
+    },
+    "predefined.activation.morning_routine.activity5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meditation for 10 minutes"
+          }
+        }
+      }
+    },
+    "predefined.activation.morning_routine.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morning routine"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jog or run"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yoga or stretching"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gym workout"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play a sport"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go swimming"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dance workout"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.activity7" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hike or long walk"
+          }
+        }
+      }
+    },
+    "predefined.activation.physical_activity.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Physical activity"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.activity1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish a work task"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.activity2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidy up at home"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.activity3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn something new"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.activity4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move a personal project forward"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.activity5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan the week"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.activity6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handle pending tasks"
+          }
+        }
+      }
+    },
+    "predefined.activation.productive_tasks.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Productive tasks"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.activity1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a relaxing bath"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.activity2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read for pleasure"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.activity3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listen to favorite music"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.activity4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do a hobby"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.activity5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Call a friend or loved one"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.activity6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walk in nature"
+          }
+        }
+      }
+    },
+    "predefined.activation.self_care.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Self-care"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.activity1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meet a friend for coffee"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.activity2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attend an event"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.activity3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join a club or group"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.activity4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volunteering"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.activity5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message or call a new acquaintance"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.activity6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spend time with family"
+          }
+        }
+      }
+    },
+    "predefined.activation.social_contacts.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social connections"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asking a store associate for help in a shop"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a clothing or electronics store"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find a store associate"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approach and say hello"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask a question about a product"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask to see 2–3 options"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank them, even if you do not buy anything"
+          }
+        }
+      }
+    },
+    "predefined.exposure.asking_salesperson.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asking a Salesperson a Question"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting a conversation with someone new in a public place"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to a cafe or coworking space"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose someone who is not busy"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approach with a smile"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start with a simple question (for example, about Wi-Fi)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If the person is open to conversation, introduce yourself"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep a short dialogue for 2–3 minutes"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.step7" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Politely end the conversation"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cafe_introduction.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introducing Yourself in a Cafe"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calling an organization to ask for information"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose an organization (bank, store, clinic)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prepare your question in advance"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find the phone number"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dial the number"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wait for the operator to answer"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask your question in a calm voice"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.step7" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank them and say goodbye"
+          }
+        }
+      }
+    },
+    "predefined.exposure.calling_stranger.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calling a Stranger"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Going to a movie theater by yourself"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a movie and showtime"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy a ticket online or at the box office"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrive at the theater 15 minutes early"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy popcorn or a drink (optional)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find your seat"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch the movie on your own"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.step7" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave the theater calmly after the show"
+          }
+        }
+      }
+    },
+    "predefined.exposure.cinema_alone.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Going to the Movies Alone"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walking in a mall or on a main street during busy hours"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a crowded place (mall, park)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go during peak time (weekend, lunch hour)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walk at a slow pace"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notice the people around you"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If needed, ask someone to move a little"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sit on a bench or in a cafe among people"
+          }
+        }
+      }
+    },
+    "predefined.exposure.crowded_place.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walking in a Crowded Place"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taking an elevator ride alone in a multi-story building"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walk up to an elevator in a mall or office building"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press the call button"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter the elevator and press the 5th-floor button"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stand in the elevator with the doors closed"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exit on the desired floor"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeat the ride down"
+          }
+        }
+      }
+    },
+    "predefined.exposure.elevator.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riding an Elevator"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turning on your camera and microphone to share your opinion"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join the video conference"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn on your camera"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wait for the right moment"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn on your microphone"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your opinion or ask a question"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step6" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engage in a short dialogue"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.step7" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn off your microphone after finishing"
+          }
+        }
+      }
+    },
+    "predefined.exposure.online_meeting.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speaking at an Online Meeting"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speaking to a small group with a short introduction about yourself"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.step1" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prepare a short introduction about yourself (2–3 minutes)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.step2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find a group of 5–10 people (friends, colleagues)"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.step3" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stand in front of the group and introduce yourself"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.step4" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share a few of your interests"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.step5" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Answer 2–3 questions from the audience"
+          }
+        }
+      }
+    },
+    "predefined.exposure.public_speaking.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public Speaking"
+          }
+        }
+      }
+    },
+    "Quick Relaxation" : {
+
+    },
+    "sample.session.note1" : {
+
+    },
+    "sample.session.note2" : {
+
+    },
+    "sample.session.note3" : {
+
+    },
+    "sample.session.note4" : {
+
+    },
+    "sample.session.note5" : {
+
+    },
+    "Slow, rhythmic breathing at a controlled rate. Helps regulate heart rate variability and reduces physiological arousal." : {
+
+    },
+    "streak.days.count" : {
+
+    },
+    "Активация: %@" : {
+
+    },
+    "Активно" : {
+
+    },
+    "Активности" : {
+
+    },
+    "Активность %lld" : {
+
+    },
+    "Активность %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Активность %1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "Активность завершена" : {
+
+    },
+    "Активные расписания" : {
+
+    },
+    "Активный сеанс" : {
+
+    },
+    "Блокировка приложения (Face ID)" : {
+
+    },
+    "Будни" : {
+
+    },
+    "Быстрая релаксация" : {
+
+    },
+    "Быстрый старт" : {
+
+    },
+    "В процессе" : {
+
+    },
+    "Важное предупреждение" : {
+
+    },
+    "Ваша активность" : {
+
+    },
+    "Вернуться на главную" : {
+
+    },
+    "Версия" : {
+
+    },
+    "Версия %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Версия %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Включен" : {
+
+    },
+    "Вкус" : {
+
+    },
+    "Внешний вид" : {
+
+    },
+    "Возможно, расписание было удалено или изменено." : {
+
+    },
+    "Вперёд" : {
+
+    },
+    "время" : {
+
+    },
+    "Время" : {
+
+    },
+    "Время выполнения: %@" : {
+
+    },
+    "Время для упражнения" : {
+
+    },
+    "Время истекло" : {
+
+    },
+    "Все дни" : {
+
+    },
+    "Все шаги выполнены!" : {
+
+    },
+    "Всего" : {
+
+    },
+    "Вы делаете отлично!" : {
+
+    },
+    "Вы завершили сеанс — это уже важный шаг. Даже если тревога была высокой, вы тренировались оставаться рядом с ощущениями и двигаться вперёд." : {
+
+    },
+    "Вы молодец!" : {
+
+    },
+    "Вы проделали отличную работу" : {
+
+    },
+    "Вы уверены, что хотите завершить дыхательную сессию?" : {
+
+    },
+    "Вы уверены, что хотите завершить сеанс мышечной релаксации?" : {
+
+    },
+    "Вы уверены, что хотите завершить это упражнение?" : {
+
+    },
+    "Вы уверены, что хотите прервать сеанс? Прогресс не будет сохранён." : {
+
+    },
+    "Вы уверены, что хотите удалить список \"%@\"? Это действие нельзя отменить." : {
+
+    },
+    "Вы уверены, что хотите удалить экспозицию \"%@\"? Это действие нельзя отменить." : {
+
+    },
+    "Вы уверены, что хотите удалить это расписание?" : {
+
+    },
+    "Выберите список" : {
+
+    },
+    "Выберите способ выбора активности" : {
+
+    },
+    "Выберите технику" : {
+
+    },
+    "Выберите упражнение" : {
+
+    },
+    "Выберите хотя бы один день" : {
+
+    },
+    "Выберите экспозицию" : {
+
+    },
+    "Выбираем активность…" : {
+
+    },
+    "Выбираем…" : {
+
+    },
+    "Выбирает случайную активность и начинает сеанс" : {
+
+    },
+    "Выбор активности" : {
+
+    },
+    "Выбор дня недели" : {
+
+    },
+    "Выбор периода отображения" : {
+
+    },
+    "Выбрать активность" : {
+
+    },
+    "Выбрать из списка" : {
+
+    },
+    "Выйти" : {
+
+    },
+    "Выключен" : {
+
+    },
+    "Выполнен" : {
+
+    },
+    "Выполнено" : {
+
+    },
+    "Выполнено (нед.)" : {
+
+    },
+    "Выполнено %d из %d" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Выполнено %1$d из %2$d"
+          }
+        }
+      }
+    },
+    "Выходные" : {
+
+    },
+    "Год" : {
+
+    },
+    "ГОД" : {
+
+    },
+    "Голубая линия: тревожность после сеанса" : {
+
+    },
+    "Готово" : {
+
+    },
+    "График динамики тревожности" : {
+
+    },
+    "График динамики тревожности по датам" : {
+
+    },
+    "График прогресса тревожности" : {
+
+    },
+    "Дайте короткое название вашему списку активностей" : {
+
+    },
+    "Дайте короткое название и опишите ситуацию, которая вызывает тревогу" : {
+
+    },
+    "Данные" : {
+
+    },
+    "Дата" : {
+
+    },
+    "Дата сеанса" : {
+
+    },
+    "Дата сеанса: %@" : {
+
+    },
+    "Дата: %@" : {
+
+    },
+    "Дважды нажмите для открытия" : {
+
+    },
+    "Дважды нажмите для перехода к этому шагу" : {
+
+    },
+    "Дважды нажмите для просмотра деталей" : {
+
+    },
+    "Дважды нажмите чтобы вернуться к сеансу" : {
+
+    },
+    "Дважды нажмите чтобы завершить сеанс без сохранения" : {
+
+    },
+    "Дважды нажмите чтобы сохранить" : {
+
+    },
+    "Дважды нажмите чтобы сохранить и завершить" : {
+
+    },
+    "Дважды нажмите, чтобы возобновить сеанс" : {
+
+    },
+    "Действия" : {
+
+    },
+    "Детали" : {
+
+    },
+    "Детали сеанса" : {
+
+    },
+    "Динамика тревожности" : {
+
+    },
+    "Динамика тревожности от %lld до %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Динамика тревожности от %1$lld до %2$lld"
+          }
+        }
+      }
+    },
+    "Длительность" : {
+
+    },
+    "Длительность: %@" : {
+
+    },
+    "Для напоминаний о расписании необходимо разрешение на уведомления." : {
+
+    },
+    "Для напоминаний о расписании необходимо разрешение на уведомления. Пожалуйста, включите их в настройках." : {
+
+    },
+    "ДН" : {
+
+    },
+    "Дни недели" : {
+
+    },
+    "До" : {
+
+    },
+    "До сеанса" : {
+
+    },
+    "Добавить" : {
+
+    },
+    "Добавить активность" : {
+
+    },
+    "Добавить в избранное" : {
+
+    },
+    "Добавить расписание" : {
+
+    },
+    "Добавить список активностей" : {
+
+    },
+    "Добавить шаг" : {
+
+    },
+    "Добавить экспозицию" : {
+
+    },
+    "Добавляет пустой шаг в конец списка" : {
+
+    },
+    "Добавляет пустую активность в конец списка" : {
+
+    },
+    "Добавьте одну или несколько активностей. Пустые строки не сохраняются." : {
+
+    },
+    "Добавьте упражнение в расписание — оно появится здесь" : {
+
+    },
+    "Добавьте упражнения в избранное" : {
+
+    },
+    "Добавьте упражнения в избранное для быстрого доступа" : {
+
+    },
+    "Добро пожаловать" : {
+
+    },
+    "Дыхание" : {
+
+    },
+    "Дыхание: %@" : {
+
+    },
+    "Дыхательная техника" : {
+
+    },
+    "Дыхательное упражнение" : {
+
+    },
+    "Если вы испытываете серьёзные симптомы тревоги или других психических состояний, пожалуйста, обратитесь к квалифицированному специалисту." : {
+
+    },
+    "Если вы нашли проблему или хотите предложить улучшение — напишите нам." : {
+
+    },
+    "За 7 дней: %d мин" : {
+
+    },
+    "Завершён" : {
+
+    },
+    "Завершение сеанса" : {
+
+    },
+    "Завершите первый сеанс терапии,\nчтобы увидеть историю" : {
+
+    },
+    "Завершить" : {
+
+    },
+    "Завершить на сегодня" : {
+
+    },
+    "Завершить онбординг и перейти к приложению" : {
+
+    },
+    "Завершить сеанс?" : {
+
+    },
+    "Завершить сессию" : {
+
+    },
+    "Завершить сессию?" : {
+
+    },
+    "Завершить текущий шаг" : {
+
+    },
+    "Завершить упражнение?" : {
+
+    },
+    "Завтра" : {
+
+    },
+    "Загляните позже" : {
+
+    },
+    "Задание не найдено" : {
+
+    },
+    "Заземление" : {
+
+    },
+    "Заземление и техники внимания для снижения тревоги" : {
+
+    },
+    "Заземление: %@" : {
+
+    },
+    "Закрыть" : {
+
+    },
+    "Заметки" : {
+
+    },
+    "Заметки: %@" : {
+
+    },
+    "Заметьте 1 вкус во рту или сделайте маленький глоток воды и почувствуйте вкус." : {
+
+    },
+    "Запахи" : {
+
+    },
+    "Запланированные упражнения" : {
+
+    },
+    "Запланировано" : {
+
+    },
+    "Запланировать" : {
+
+    },
+    "Заполните все обязательные поля" : {
+
+    },
+    "Запустить таймер" : {
+
+    },
+    "Звуки" : {
+
+    },
+    "Здесь появятся завершённые сессии и ручные отметки за выбранный день" : {
+
+    },
+    "Изменение" : {
+
+    },
+    "Инструкции" : {
+
+    },
+    "Инструкция" : {
+
+    },
+    "Информация" : {
+
+    },
+    "Используйте это приложение как дополнительный инструмент в рамках комплексного подхода к заботе о своём психическом здоровье." : {
+
+    },
+    "История" : {
+
+    },
+    "История сеансов" : {
+
+    },
+    "История сеансов для \"%@\" пуста" : {
+
+    },
+    "История сеансов для этой экспозиции пуста" : {
+
+    },
+    "Итоги сеанса" : {
+
+    },
+    "Итоги сеанса: %@, начало в %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Итоги сеанса: %1$@, начало в %2$@"
+          }
+        }
+      }
+    },
+    "Каждый день" : {
+
+    },
+    "Когда активно, вы будете получать напоминания в выбранное время" : {
+
+    },
+    "Конфиденциальность" : {
+
+    },
+    "Короткая версия прогрессивной мышечной релаксации с фокусом на ключевых зонах напряжения. Подходит для быстрого снятия стресса в течение дня." : {
+
+    },
+    "Короткое поддерживающее сообщение и подсказки" : {
+
+    },
+    "Любимые упражнения" : {
+
+    },
+    "МЕС" : {
+
+    },
+    "Месяц" : {
+
+    },
+    "мин" : {
+
+    },
+    "Минуты практик" : {
+
+    },
+    "Мышечная релаксация" : {
+
+    },
+    "Нажмите дважды, чтобы открыть детали. Запуск сеанса доступен внутри." : {
+
+    },
+    "Назад" : {
+
+    },
+    "Название списка" : {
+
+    },
+    "Название списка активностей" : {
+
+    },
+    "Название экспозиции" : {
+
+    },
+    "Найдите 4 ощущения от прикосновения: одежда, стул, пол, предмет в руках." : {
+
+    },
+    "Найдите 5 предметов вокруг и задержите на каждом взгляд на секунду." : {
+
+    },
+    "Написать в поддержку: %@" : {
+
+    },
+    "Напоминание: %@" : {
+
+    },
+    "Насколько понравилось?" : {
+
+    },
+    "Настройки" : {
+
+    },
+    "Начало" : {
+
+    },
+    "Начать сеанс" : {
+
+    },
+    "Начать сеанс поведенческой активации" : {
+
+    },
+    "Начать следующее упражнение" : {
+
+    },
+    "Начните действовать" : {
+
+    },
+    "Начните свой путь" : {
+
+    },
+    "Начните сегодня" : {
+
+    },
+    "Не выбрано" : {
+
+    },
+    "Не выполнен" : {
+
+    },
+    "Не удалось найти данные для запуска упражнения." : {
+
+    },
+    "Не удалось подтвердить личность." : {
+
+    },
+    "Неактивно" : {
+
+    },
+    "Неактивные расписания" : {
+
+    },
+    "НЕД" : {
+
+    },
+    "Неделя" : {
+
+    },
+    "Недоступно. Введите название" : {
+
+    },
+    "Недоступно. Введите описание" : {
+
+    },
+    "Нет активностей" : {
+
+    },
+    "Нет данных" : {
+
+    },
+    "Нет доступных списков активностей" : {
+
+    },
+    "Нет доступных экспозиций" : {
+
+    },
+    "Нет завершенных сеансов" : {
+
+    },
+    "Нет завершённых сеансов" : {
+
+    },
+    "Нет задач" : {
+
+    },
+    "Нет запланированных упражнений" : {
+
+    },
+    "Нет избранных упражнений" : {
+
+    },
+    "Нет расписаний" : {
+
+    },
+    "Нет расписаний на день" : {
+
+    },
+    "Нет сеансов" : {
+
+    },
+    "Нет статей" : {
+
+    },
+    "Новая экспозиция" : {
+
+    },
+    "Новое расписание" : {
+
+    },
+    "Новый список активностей" : {
+
+    },
+    "О приложении" : {
+
+    },
+    "Образование" : {
+
+    },
+    "Общее время: %@" : {
+
+    },
+    "Один день" : {
+
+    },
+    "ОК" : {
+
+    },
+    "Описание" : {
+
+    },
+    "Описание ситуации, вызывающей тревогу" : {
+
+    },
+    "Описание экспозиции" : {
+
+    },
+    "Опишите ваше состояние" : {
+
+    },
+    "Опишите последовательность действий. Каждый шаг может иметь свой таймер." : {
+
+    },
+    "Опишите последовательность действий. Каждый шаг может иметь свой таймер. Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления." : {
+
+    },
+    "Опора" : {
+
+    },
+    "Осмотритесь" : {
+
+    },
+    "Основная информация" : {
+
+    },
+    "Осталось %d" : {
+
+    },
+    "Осталось времени: %@" : {
+
+    },
+    "Открывает список активностей для выбора" : {
+
+    },
+    "Открыть расписание" : {
+
+    },
+    "Отлично" : {
+
+    },
+    "Отмена" : {
+
+    },
+    "Отменить выполнение шага" : {
+
+    },
+    "Отметить выполненным" : {
+
+    },
+    "Отметить шаг как выполненное" : {
+
+    },
+    "Отметка" : {
+
+    },
+    "Отметьте 3 звука: ближний, дальний и самый тихий." : {
+
+    },
+    "Оцените ваш текущий уровень тревоги до начала сеанса (0–10)" : {
+
+    },
+    "Оцените ваш уровень тревоги сейчас (0–10)" : {
+
+    },
+    "Оцените, насколько приятной была эта активность (1–5)" : {
+
+    },
+    "Оценка впечатления" : {
+
+    },
+    "Ошибка" : {
+
+    },
+    "Ошибка проверки: %@" : {
+
+    },
+    "Пауза" : {
+
+    },
+    "Перейти к сегодняшнему дню" : {
+
+    },
+    "Переместить активность" : {
+
+    },
+    "Переместить шаг" : {
+
+    },
+    "План на сегодня" : {
+
+    },
+    "По запросу ничего не найдено" : {
+
+    },
+    "по плану" : {
+
+    },
+    "По плану (нед.)" : {
+
+    },
+    "Поведенческая активация" : {
+
+    },
+    "Поведенческая активация помогает мягко «включаться» в жизнь, когда нет сил, настроения или мотивации. Вы заранее выбираете простые действия (приятные или значимые), делаете их маленькими шагами и замечаете, как меняются состояние и уровень удовольствия." : {
+
+    },
+    "Повышение активности через осмысленные действия" : {
+
+    },
+    "Поддержка" : {
+
+    },
+    "Подтвердите личность, чтобы продолжить." : {
+
+    },
+    "Поиск" : {
+
+    },
+    "Поймайте 2 запаха или просто 2 ощущения воздуха." : {
+
+    },
+    "Пока нет активностей" : {
+
+    },
+    "Пока нет выполненного" : {
+
+    },
+    "Показать" : {
+
+    },
+    "Показать все шаги" : {
+
+    },
+    "Показать таймер" : {
+
+    },
+    "Полная последовательность прогрессивной мышечной релаксации для всех основных групп мышц. Помогает снять глубокое напряжение по всему телу." : {
+
+    },
+    "После" : {
+
+    },
+    "После сеанса" : {
+
+    },
+    "Последний" : {
+
+    },
+    "Постепенное преодоление страхов и тревог" : {
+
+    },
+    "Похвала за выполнение сеанса" : {
+
+    },
+    "Предустановленный список" : {
+
+    },
+    "Предыдущая неделя" : {
+
+    },
+    "Прервать" : {
+
+    },
+    "Прервать сеанс?" : {
+
+    },
+    "При включении приложение будет запрашивать подтверждение личности только при запуске." : {
+
+    },
+    "Приложение заблокировано" : {
+
+    },
+    "Проверка устройства недоступна." : {
+
+    },
+    "Прогресс" : {
+
+    },
+    "Прогресс выполнения" : {
+
+    },
+    "Прогресс таймера" : {
+
+    },
+    "Прогресс тревоги" : {
+
+    },
+    "Прогрессивная мышечная релаксация для снятия напряжения" : {
+
+    },
+    "Прогрессивная мышечная релаксация помогает снизить тревогу и телесное напряжение через осознанное чередование «напрячь» → «расслабить». Вы учитесь быстрее замечать, где в теле накапливается стресс, и мягко отпускать его." : {
+
+    },
+    "Продолжайте в том же духе" : {
+
+    },
+    "Продолжить" : {
+
+    },
+    "Продолжить активный сеанс: %@" : {
+
+    },
+    "Продолжить сеанс" : {
+
+    },
+    "Продолжить таймер" : {
+
+    },
+    "Пуск" : {
+
+    },
+    "Разблокировать" : {
+
+    },
+    "Разблокировать Inner Hero" : {
+
+    },
+    "Разрешения на уведомления" : {
+
+    },
+    "Расписание" : {
+
+    },
+    "Расслабление всего тела" : {
+
+    },
+    "Редактирование" : {
+
+    },
+    "Редактировать" : {
+
+    },
+    "Редактировать расписание" : {
+
+    },
+    "Редактировать список" : {
+
+    },
+    "Результаты сеанса" : {
+
+    },
+    "Релаксация" : {
+
+    },
+    "Релаксация: %@" : {
+
+    },
+    "Сборка" : {
+
+    },
+    "Сброс" : {
+
+    },
+    "Сбросить" : {
+
+    },
+    "Сбросить все данные" : {
+
+    },
+    "Сбросить все данные?" : {
+
+    },
+    "Сбросить таймер" : {
+
+    },
+    "Светлая" : {
+
+    },
+    "Сводка" : {
+
+    },
+    "Сеанс экспозиции" : {
+
+    },
+    "Сеанс: %@, длительность %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Сеанс: %1$@, длительность %2$@"
+          }
+        }
+      }
+    },
+    "Сегодня" : {
+
+    },
+    "Сегодня %d минут. За 7 дней %d минут." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Сегодня %1$d минут. За 7 дней %2$d минут."
+          }
+        }
+      }
+    },
+    "Серия" : {
+
+    },
+    "Сессия" : {
+
+    },
+    "Синяя линия: тревожность до сеанса" : {
+
+    },
+    "Системная" : {
+
+    },
+    "Скрыть" : {
+
+    },
+    "Скрыть все шаги" : {
+
+    },
+    "Скрыть таймер" : {
+
+    },
+    "Следующая неделя" : {
+
+    },
+    "Следующее" : {
+
+    },
+    "Случайная активность" : {
+
+    },
+    "Случайно" : {
+
+    },
+    "Снять отметку выполнения" : {
+
+    },
+    "Создайте первую экспозицию для работы с тревогой" : {
+
+    },
+    "Создайте первый список активностей для поведенческой активации" : {
+
+    },
+    "Создайте расписание для регулярных напоминаний о упражнениях" : {
+
+    },
+    "Создать расписание" : {
+
+    },
+    "Сохранит сеанс и оценку впечатления" : {
+
+    },
+    "Сохранить" : {
+
+    },
+    "Сохранить изменения" : {
+
+    },
+    "Сохранить результат сеанса" : {
+
+    },
+    "Сохранить сеанс" : {
+
+    },
+    "Сохранить экспозицию" : {
+
+    },
+    "Сохраняет список активностей и закрывает редактор" : {
+
+    },
+    "Сохраняет экспозицию и закрывает редактор" : {
+
+    },
+    "Список" : {
+
+    },
+    "Список активностей" : {
+
+    },
+    "Список активностей для поведенческой активации" : {
+
+    },
+    "Среднее До" : {
+
+    },
+    "Среднее После" : {
+
+    },
+    "Средняя тревожность до сеанса: %@" : {
+
+    },
+    "Средняя тревожность после сеанса: %@" : {
+
+    },
+    "Стабильно" : {
+
+    },
+    "Старт" : {
+
+    },
+    "Статьи пока недоступны" : {
+
+    },
+    "Статья" : {
+
+    },
+    "Статья дня" : {
+
+    },
+    "Таймер" : {
+
+    },
+    "Таймер %@" : {
+
+    },
+    "Таймер для шага %lld" : {
+
+    },
+    "Текущий уровень тревожности: %d" : {
+
+    },
+    "Текущий шаг" : {
+
+    },
+    "Тема" : {
+
+    },
+    "Тёмная" : {
+
+    },
+    "Техника заземления: найдите 5 предметов, которые видите, 4 ощущения от прикосновения, 3 звука, 2 запаха (или ощущения воздуха) и 1 вкус." : {
+
+    },
+    "Техники заземления помогают быстро снизить тревогу и вернуть внимание в настоящий момент" : {
+
+    },
+    "Техники контролируемого дыхания для регуляции нервной системы" : {
+
+    },
+    "Техники прогрессивной мышечной релаксации помогают снять телесное напряжение и вернуть спокойствие" : {
+
+    },
+    "Тип упражнения" : {
+
+    },
+    "Тревога до сеанса: %lld" : {
+
+    },
+    "Тревога после сеанса: %lld" : {
+
+    },
+    "Тренд: %@, изменение %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Тренд: %1$@, изменение %2$@"
+          }
+        }
+      }
+    },
+    "Ты завершил(а) упражнение на расслабление — это забота о себе." : {
+
+    },
+    "Ты молодец!" : {
+
+    },
+    "Ты справишься" : {
+
+    },
+    "Удалить" : {
+
+    },
+    "Удалить активность %lld" : {
+
+    },
+    "Удалить из избранного" : {
+
+    },
+    "Удалить расписание?" : {
+
+    },
+    "Удалить список активностей?" : {
+
+    },
+    "Удалить шаг %lld" : {
+
+    },
+    "Удалить экспозицию?" : {
+
+    },
+    "Удаляет все данные из приложения. Действие нельзя отменить." : {
+
+    },
+    "Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления." : {
+
+    },
+    "Улучшение" : {
+
+    },
+    "Упражнение не найдено" : {
+
+    },
+    "Упражнение недоступно" : {
+
+    },
+    "Упражнения" : {
+
+    },
+    "уровень" : {
+
+    },
+    "Уровень до" : {
+
+    },
+    "Уровень повысился" : {
+
+    },
+    "Уровень после" : {
+
+    },
+    "Уровень снизился" : {
+
+    },
+    "Уровень тревоги" : {
+
+    },
+    "Уровень тревоги после сеанса" : {
+
+    },
+    "Уровни тревоги" : {
+
+    },
+    "Устройтесь удобно. На этапе «Напрячь» напрягайте указанную группу мышц умеренно (без боли) и удерживайте напряжение. На этапе «Расслабить» полностью отпустите мышцы и обратите внимание на ощущения. Дышите ровно и спокойно.\n\nСовет: если вам сложно напрягать мышцу, делайте это мягче или пропускайте шаг — важно оставаться в комфорте." : {
+
+    },
+    "Ухудшение" : {
+
+    },
+    "Файл содержит упражнения, расписания и результаты сессий." : {
+
+    },
+    "Финиш" : {
+
+    },
+    "Центр знаний" : {
+
+    },
+    "Что вы чувствуете сейчас? Какие мысли/ощущения были во время сеанса? Что помогло?" : {
+
+    },
+    "Шаг %lld" : {
+
+    },
+    "Шаг %lld из %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Шаг %1$lld из %2$lld"
+          }
+        }
+      }
+    },
+    "Шаг %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Шаг %1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "Шаги выполнения" : {
+
+    },
+    "Шаги экспозиции" : {
+
+    },
+    "Шаги экспозиции. Выполнено %lld из %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Шаги экспозиции. Выполнено %1$lld из %2$lld"
+          }
+        }
+      }
+    },
+    "шагов" : {
+
+    },
+    "Шесть месяцев" : {
+
+    },
+    "Экспозиции" : {
+
+    },
+    "Экспозиция" : {
+
+    },
+    "Экспозиция — это мягкая тренировка смелости: ты учишься оставаться рядом с тревогой и замечать, что с ней можно быть — она неприятная, но переносимая. Иногда тревога снижается во время шага, иногда — позже. И так, и так нормально." : {
+
+    },
+    "Экспозиция: %@" : {
+
+    },
+    "Экспозиция: %@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Экспозиция: %1$@. %2$@"
+          }
+        }
+      }
+    },
+    "Экспорт" : {
+
+    },
+    "Экспортировать данные (JSON)" : {
+
+    },
+    "Это действие нельзя отменить." : {
+
+    },
+    "Это приложение **не заменяет** профессиональную психотерапию или медицинскую помощь." : {
+
+    },
+    "Это удалит все упражнения, расписания и результаты сессий." : {
+
+    }
+  },
+  "version" : "1.0"
+}
