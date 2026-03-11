@@ -7,7 +7,7 @@ struct Inner_HeroApp: App {
     @AppStorage("hasLoadedSampleData") private var hasLoadedSampleData = false
     @AppStorage(AppStorageKeys.themeMode) private var themeModeRawValue: String = ThemeMode.system.rawValue
     
-    @StateObject private var articlesStore = ArticlesStore()
+    @State private var articlesStore = ArticlesStore()
     
     var sharedModelContainer: ModelContainer = {
         do {
@@ -39,7 +39,7 @@ struct Inner_HeroApp: App {
                 RootAppView(hasCompletedOnboarding: hasCompletedOnboarding)
             }
             .preferredColorScheme((ThemeMode(rawValue: themeModeRawValue) ?? .system).preferredColorScheme)
-            .environmentObject(articlesStore)
+            .environment(articlesStore)
         }
         .modelContainer(sharedModelContainer)
     }

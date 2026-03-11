@@ -5,7 +5,7 @@ import SwiftData
 
 private struct CompactTimerView: View {
     @Environment(\.colorScheme) private var colorScheme
-    @ObservedObject var timerController: StepTimerController
+    let timerController: StepTimerController
     let duration: TimeInterval
     let formatTime: (TimeInterval) -> String
     
@@ -97,12 +97,14 @@ private struct CompactTimerView: View {
                 HStack(spacing: 8) {
                     // Play/Pause button
                     Button {
-                        if isTimerRunning {
-                            timerController.pause()
-                        } else if isTimerPaused {
-                            timerController.resume()
-                        } else {
-                            timerController.start()
+                        Task { @MainActor in
+                            if isTimerRunning {
+                                timerController.pause()
+                            } else if isTimerPaused {
+                                timerController.resume()
+                            } else {
+                                timerController.start()
+                            }
                         }
                     } label: {
                         Image(systemName: isTimerRunning ? "pause.fill" : "play.fill")
@@ -125,7 +127,9 @@ private struct CompactTimerView: View {
                     
                     // Reset button
                     Button {
-                        timerController.reset()
+                        Task { @MainActor in
+                            timerController.reset()
+                        }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                             .font(.system(size: 12, weight: .bold))
@@ -166,7 +170,7 @@ private struct CompactTimerView: View {
 
 private struct TimerSectionContent: View {
     @Environment(\.colorScheme) private var colorScheme
-    @ObservedObject var timerController: StepTimerController
+    let timerController: StepTimerController
     let duration: TimeInterval
     let formatTime: (TimeInterval) -> String
     
@@ -266,12 +270,14 @@ private struct TimerSectionContent: View {
                 HStack(spacing: 12) {
                     // Play/Pause button
                     Button {
-                        if isTimerRunning {
-                            timerController.pause()
-                        } else if isTimerPaused {
-                            timerController.resume()
-                        } else {
-                            timerController.start()
+                        Task { @MainActor in
+                            if isTimerRunning {
+                                timerController.pause()
+                            } else if isTimerPaused {
+                                timerController.resume()
+                            } else {
+                                timerController.start()
+                            }
                         }
                     } label: {
                         Image(systemName: isTimerRunning ? "pause.fill" : "play.fill")
@@ -294,7 +300,9 @@ private struct TimerSectionContent: View {
                     
                     // Reset button
                     Button {
-                        timerController.reset()
+                        Task { @MainActor in
+                            timerController.reset()
+                        }
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                             .font(.system(size: 18, weight: .bold))
@@ -348,6 +356,15 @@ struct ActiveSessionView: View {
         self.session = session
         self.exposure = exposure
         self.assignment = assignment
+        
+        let steps = exposure.steps.sorted(by: { $0.order < $1.order })
+        var timers: [Int: StepTimerController] = [:]
+        for (index, step) in steps.enumerated() {
+            if step.hasTimer {
+                timers[index] = StepTimerController()
+            }
+        }
+        self._stepTimers = State(initialValue: timers)
     }
     
     @State private var notes: String = ""
@@ -920,12 +937,14 @@ struct ActiveSessionView: View {
                     
                     // Timer controls
                     Button {
-                        if timerController.isRunning && !timerController.isPaused {
-                            timerController.pause()
-                        } else if timerController.isPaused {
-                            timerController.resume()
-                        } else {
-                            timerController.start()
+                        Task { @MainActor in
+                            if timerController.isRunning && !timerController.isPaused {
+                                timerController.pause()
+                            } else if timerController.isPaused {
+                                timerController.resume()
+                            } else {
+                                timerController.start()
+                            }
                         }
                     } label: {
                         HStack(spacing: 8) {
@@ -983,7 +1002,9 @@ struct ActiveSessionView: View {
                 .accessibilityLabel(showTimer ? "Hide timer" : "Show timer")
                 
                 Button {
-                    timerController.reset()
+                    Task { @MainActor in
+                        timerController.reset()
+                    }
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.counterclockwise")
@@ -1352,7 +1373,7 @@ struct ActiveSessionView: View {
         }
         let newTimer = StepTimerController()
         // No need for onTimeUpdate callback - TimerSectionContent observes the timer directly
-        // via @ObservedObject and uses elapsedTime from the timer controller
+        // via its @Observable properties (elapsedTime)
         stepTimers[index] = newTimer
         return newTimer
     }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct KnowledgeCenterView: View {
-    @EnvironmentObject private var articlesStore: ArticlesStore
+    @Environment(ArticlesStore.self) private var articlesStore
     @State private var query = ""
     
     var body: some View {
@@ -112,7 +112,7 @@ private struct KnowledgeCenterArticleRow: View {
 
 #Preview {
     KnowledgeCenterView()
-        .environmentObject(ArticlesStore())
+        .environment(ArticlesStore())
 }
 
 
