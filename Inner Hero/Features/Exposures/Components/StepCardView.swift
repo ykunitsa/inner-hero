@@ -32,11 +32,11 @@ enum StepStatus {
     var accessibilityLabel: String {
         switch self {
         case .notDone:
-            return "Не выполнен"
+            return String(localized: "Not done")
         case .current:
-            return "Текущий шаг"
+            return String(localized: "Current step")
         case .done:
-            return "Выполнен"
+            return String(localized: "Done")
         }
     }
 }
@@ -142,7 +142,7 @@ struct StepCardView: View {
     // MARK: - Subviews
     
     private var stepBadge: some View {
-        Text("Шаг \(stepNumber)")
+        Text(String(format: String(localized: "Step %d"), stepNumber))
             .font(.caption)
             .fontWeight(.semibold)
             .foregroundStyle(status.color)
@@ -166,14 +166,14 @@ struct StepCardView: View {
         .background(Color.orange.opacity(0.15))
         .clipShape(Capsule())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Таймер \(formatDuration(step.timerDuration))")
+        .accessibilityLabel(String(format: String(localized: "Timer %@"), formatDuration(step.timerDuration)))
     }
     
     private var currentStepIndicator: some View {
         HStack(spacing: 6) {
             Image(systemName: "arrow.right.circle.fill")
                 .font(.caption)
-            Text("Текущий шаг")
+            Text(String(localized: "Current step"))
                 .font(.caption)
                 .fontWeight(.semibold)
         }
@@ -202,27 +202,28 @@ struct StepCardView: View {
         let minutes = seconds / 60
         let secs = seconds % 60
         if minutes > 0 {
-            return secs > 0 ? "\(minutes)м \(secs)с" : "\(minutes)м"
+            return secs > 0 ? String(format: String(localized: "%d m %d s"), minutes, secs) : String(format: String(localized: "%d m"), minutes)
         }
-        return "\(secs)с"
+        return String(format: String(localized: "%d s"), secs)
     }
     
     private var accessibilityLabel: String {
-        var label = "Шаг \(stepNumber), \(status.accessibilityLabel). "
+        let stepLabel = String(format: String(localized: "Step %d"), stepNumber)
+        var label = "\(stepLabel), \(status.accessibilityLabel). "
         label += step.text
         if step.hasTimer {
-            label += ". Таймер \(formatDuration(step.timerDuration))"
+            label += ". " + String(format: String(localized: "Timer %@"), formatDuration(step.timerDuration))
         }
         return label
     }
     
     private var accessibilityHint: String {
         if status == .current {
-            return "Текущий активный шаг"
+            return String(localized: "Current active step")
         } else if status == .done {
-            return "Шаг выполнен"
+            return String(localized: "Step completed")
         } else {
-            return "Шаг еще не выполнен"
+            return String(localized: "Step not yet completed")
         }
     }
 }
@@ -257,7 +258,7 @@ struct StepsProgressView: View {
     
     private var headerView: some View {
         HStack {
-            Label("Шаги экспозиции", systemImage: "list.number")
+            Label(String(localized: "Exposure steps"), systemImage: "list.number")
                 .font(.headline)
                 .foregroundStyle(.primary)
             
@@ -266,7 +267,7 @@ struct StepsProgressView: View {
             progressSummaryBadge
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Шаги экспозиции. Выполнено \(currentStepIndex) из \(steps.count)")
+        .accessibilityLabel(String(format: String(localized: "Exposure steps. %d of %d completed"), currentStepIndex, steps.count))
     }
     
     private var progressSummaryBadge: some View {
@@ -312,8 +313,8 @@ struct StepsProgressView: View {
         }
         .frame(height: 8)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Прогресс выполнения")
-        .accessibilityValue("\(Int(Double(currentStepIndex + 1) / Double(max(steps.count, 1)) * 100)) процентов")
+        .accessibilityLabel(String(localized: "Completion progress"))
+        .accessibilityValue(String(format: String(localized: "%d percent"), Int(Double(currentStepIndex + 1) / Double(max(steps.count, 1)) * 100)))
     }
     
     // MARK: - Steps List
@@ -412,7 +413,7 @@ struct CompactStepsProgressView: View {
         
         return HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Шаг \(currentStepIndex + 1) из \(steps.count)")
+                Text(String(format: String(localized: "Step %d of %d"), currentStepIndex + 1, steps.count))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Text(currentStep.text)
@@ -428,7 +429,7 @@ struct CompactStepsProgressView: View {
                 Image(systemName: "timer.circle.fill")
                     .font(.title2)
                     .foregroundStyle(.orange)
-                    .accessibilityLabel("Таймер")
+                    .accessibilityLabel(String(localized: "Timer"))
             }
         }
         .padding(20)
@@ -459,14 +460,14 @@ struct CompactStepsProgressView: View {
     private var accessibilityLabel: String {
         if currentStepIndex < steps.count {
             let currentStep = steps[currentStepIndex]
-            var label = "Шаг \(currentStepIndex + 1) из \(steps.count). "
+            var label = String(format: String(localized: "Step %d of %d"), currentStepIndex + 1, steps.count) + ". "
             label += currentStep.text
             if currentStep.hasTimer {
-                label += ". С таймером"
+                label += ". " + String(localized: "With timer")
             }
             return label
         }
-        return "Все шаги выполнены"
+        return String(localized: "All steps completed")
     }
 }
 
@@ -475,7 +476,7 @@ struct CompactStepsProgressView: View {
 #Preview("Single Step - Not Done") {
     ScrollView {
         StepCardView(
-            step: ExposureStep(text: "Посмотрите на фотографию паука в течение 30 секунд", hasTimer: true, timerDuration: 30, order: 0),
+            step: ExposureStep(text: String(localized: "Look at a spider photo for 30 seconds"), hasTimer: true, timerDuration: 30, order: 0),
             stepNumber: 1,
             status: .notDone
         )
@@ -487,7 +488,7 @@ struct CompactStepsProgressView: View {
 #Preview("Single Step - Current") {
     ScrollView {
         StepCardView(
-            step: ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения", hasTimer: true, timerDuration: 120, order: 1),
+            step: ExposureStep(text: String(localized: "Watch a spider video for 2 minutes, noting your sensations"), hasTimer: true, timerDuration: 120, order: 1),
             stepNumber: 2,
             status: .current
         )
@@ -499,7 +500,7 @@ struct CompactStepsProgressView: View {
 #Preview("Single Step - Done") {
     ScrollView {
         StepCardView(
-            step: ExposureStep(text: "Представьте, что держите паука в руках", hasTimer: false, timerDuration: 0, order: 2),
+            step: ExposureStep(text: String(localized: "Imagine holding a spider in your hands"), hasTimer: false, timerDuration: 0, order: 2),
             stepNumber: 3,
             status: .done
         )
@@ -510,11 +511,11 @@ struct CompactStepsProgressView: View {
 
 #Preview("Full Steps Progress") {
     let sampleSteps = [
-        ExposureStep(text: "Посмотрите на фотографию паука в течение 30 секунд", hasTimer: true, timerDuration: 30, order: 0),
-        ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут", hasTimer: true, timerDuration: 120, order: 1),
-        ExposureStep(text: "Представьте, что держите паука в руках. Закройте глаза и визуализируйте эту ситуацию как можно подробнее", hasTimer: false, timerDuration: 0, order: 2),
-        ExposureStep(text: "Посмотрите на живого паука в террариуме", hasTimer: false, timerDuration: 0, order: 3),
-        ExposureStep(text: "Подержите паука в руках (с помощью специалиста)", hasTimer: false, timerDuration: 0, order: 4)
+        ExposureStep(text: String(localized: "Look at a spider photo for 30 seconds"), hasTimer: true, timerDuration: 30, order: 0),
+        ExposureStep(text: String(localized: "Watch a spider video for 2 minutes"), hasTimer: true, timerDuration: 120, order: 1),
+        ExposureStep(text: String(localized: "Imagine holding a spider in your hands. Close your eyes and visualize the situation in as much detail as possible"), hasTimer: false, timerDuration: 0, order: 2),
+        ExposureStep(text: String(localized: "Look at a live spider in a terrarium"), hasTimer: false, timerDuration: 0, order: 3),
+        ExposureStep(text: String(localized: "Hold a spider in your hands (with a specialist's help)"), hasTimer: false, timerDuration: 0, order: 4)
     ]
     
     ScrollView {
@@ -531,10 +532,10 @@ struct CompactStepsProgressView: View {
 
 #Preview("Compact Progress") {
     let sampleSteps = [
-        ExposureStep(text: "Посмотрите на фотографию", hasTimer: true, timerDuration: 30, order: 0),
-        ExposureStep(text: "Посмотрите видео", hasTimer: true, timerDuration: 120, order: 1),
-        ExposureStep(text: "Представьте ситуацию", hasTimer: false, timerDuration: 0, order: 2),
-        ExposureStep(text: "Посмотрите вживую", hasTimer: false, timerDuration: 0, order: 3)
+        ExposureStep(text: String(localized: "Look at a photo"), hasTimer: true, timerDuration: 30, order: 0),
+        ExposureStep(text: String(localized: "Watch a video"), hasTimer: true, timerDuration: 120, order: 1),
+        ExposureStep(text: String(localized: "Imagine the situation"), hasTimer: false, timerDuration: 0, order: 2),
+        ExposureStep(text: String(localized: "See it in person"), hasTimer: false, timerDuration: 0, order: 3)
     ]
     
     VStack(alignment: .leading, spacing: 0) {
@@ -550,7 +551,7 @@ struct CompactStepsProgressView: View {
 #Preview("Dark Mode - Current Step") {
     ScrollView {
         StepCardView(
-            step: ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут", hasTimer: true, timerDuration: 120, order: 1),
+            step: ExposureStep(text: String(localized: "Watch a spider video for 2 minutes"), hasTimer: true, timerDuration: 120, order: 1),
             stepNumber: 2,
             status: .current
         )
@@ -564,7 +565,7 @@ struct CompactStepsProgressView: View {
     ScrollView {
         VStack(spacing: 16) {
             StepCardView(
-                step: ExposureStep(text: "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения", hasTimer: true, timerDuration: 120, order: 1),
+                step: ExposureStep(text: String(localized: "Watch a spider video for 2 minutes, noting your sensations"), hasTimer: true, timerDuration: 120, order: 1),
                 stepNumber: 2,
                 status: .current
             )

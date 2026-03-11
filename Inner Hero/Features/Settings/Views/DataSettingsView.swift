@@ -52,7 +52,7 @@ struct DataSettingsView: View {
             case .success:
                 break
             case .failure(let error):
-                print("Ошибка экспорта файла: \(error)")
+                print("Error exporting file: \(error)")
             }
         }
         .confirmationDialog(
@@ -88,7 +88,7 @@ struct DataSettingsView: View {
             exportDocument = ExportJSONDocument(data: data)
             showingExporter = true
         } catch {
-            print("Ошибка подготовки экспорта: \(error)")
+            print("Error preparing export: \(error)")
         }
     }
     
@@ -116,7 +116,7 @@ struct DataSettingsView: View {
             
             try modelContext.save()
         } catch {
-            print("Ошибка сброса данных: \(error)")
+            print("Error resetting data: \(error)")
         }
     }
     

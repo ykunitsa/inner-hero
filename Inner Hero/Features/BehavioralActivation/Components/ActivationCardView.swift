@@ -44,7 +44,7 @@ struct ActivationCardView: View {
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
             } else {
-                Text("Нет активностей")
+                Text(String(localized: "No activities"))
                     .font(.body)
                     .foregroundStyle(TextColors.tertiary)
             }
@@ -81,30 +81,34 @@ struct ActivationCardView: View {
     }
     
     private func activitiesCountText(for count: Int) -> String {
-        "\(count) \(russianPlural(count, one: "активность", few: "активности", many: "активностей"))"
+        let form = pluralForm(for: count)
+        let word = String(localized: String.LocalizationValue(form.key))
+        return "\(count) \(word)"
     }
     
-    private func russianPlural(_ number: Int, one: String, few: String, many: String) -> String {
+    private enum PluralForm {
+        case one
+        case few
+        case many
+        
+        var key: String {
+            switch self {
+                case .one: return "activity"
+                case .few: return "activities_few"
+                case .many: return "activities"
+            }
+        }
+    }
+    
+    /// One form for all locales: EN has "activities" for few/many; RU uses all three forms.
+    private func pluralForm(for number: Int) -> PluralForm {
         let n = abs(number) % 100
         let n1 = n % 10
-        
-        if (11...14).contains(n) { return many }
+        if (11...14).contains(n) { return .many }
         switch n1 {
-        case 1: return one
-        case 2, 3, 4: return few
-        default: return many
+            case 1: return .one
+            case 2, 3, 4: return .few
+            default: return .many
         }
     }
 }
-
-#Preview {
-    ActivationCardView(
-        activation: ActivityList(
-            title: "Утренняя рутина",
-            activities: ["Разминка", "Медитация", "Полезный завтрак"],
-            isPredefined: false
-        )
-    )
-    .padding()
-}
-

@@ -16,7 +16,7 @@ final class NotificationManager {
             let granted = try await notificationCenter.requestAuthorization(options: [.alert, .sound, .badge])
             return granted
         } catch {
-            print("Ошибка запроса разрешений на уведомления: \(error)")
+            print("Error requesting notification permissions: \(error)")
             return false
         }
     }

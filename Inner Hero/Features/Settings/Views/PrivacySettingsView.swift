@@ -6,12 +6,12 @@ struct PrivacySettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Блокировка приложения (Face ID)", isOn: $appLockEnabled)
+                Toggle(String(localized: "App lock (Face ID)"), isOn: $appLockEnabled)
             } footer: {
-                Text("При включении приложение будет запрашивать подтверждение личности только при запуске.")
+                Text(String(localized: "When enabled, the app will ask for identity verification only when launching."))
             }
         }
-        .navigationTitle("Конфиденциальность")
+        .navigationTitle(String(localized: "Privacy"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

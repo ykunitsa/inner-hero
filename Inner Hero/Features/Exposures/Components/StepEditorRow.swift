@@ -43,7 +43,7 @@ struct StepEditorRow: View {
                     .alignmentGuide(.firstTextBaseline) { dimensions in
                         dimensions[VerticalAlignment.center]
                     }
-                    .accessibilityLabel("Переместить шаг")
+                    .accessibilityLabel(String(localized: "Move step"))
             }
             
             Text("\(index + 1).")
@@ -52,10 +52,10 @@ struct StepEditorRow: View {
                 .frame(width: 28, alignment: .trailing)
                 .accessibilityHidden(true)
             
-            TextField("Шаг \(index + 1)", text: $step.text)
+            TextField(String(format: String(localized: "Step %d"), index + 1), text: $step.text)
                 .font(.body)
                 .focused(focusState, equals: .step(step.id))
-                .accessibilityLabel("Шаг \(index + 1)")
+                .accessibilityLabel(String(format: String(localized: "Step %d"), index + 1))
 
             Button {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -73,8 +73,8 @@ struct StepEditorRow: View {
             .alignmentGuide(.firstTextBaseline) { dimensions in
                 dimensions[VerticalAlignment.center]
             }
-            .accessibilityLabel("Таймер для шага \(index + 1)")
-            .accessibilityValue(step.hasTimer ? "Включен" : "Выключен")
+            .accessibilityLabel(String(format: String(localized: "Timer for step %d"), index + 1))
+            .accessibilityValue(step.hasTimer ? String(localized: "On") : String(localized: "Off"))
             
             if isRemovable {
                 Button(role: .destructive, action: onDelete) {
@@ -88,7 +88,7 @@ struct StepEditorRow: View {
                 .alignmentGuide(.firstTextBaseline) { dimensions in
                     dimensions[VerticalAlignment.center]
                 }
-                .accessibilityLabel("Удалить шаг \(index + 1)")
+                .accessibilityLabel(String(format: String(localized: "Delete step %d"), index + 1))
             }
         }
     }
@@ -113,7 +113,7 @@ private struct StepTimerControlsView: View {
                 .foregroundStyle(.secondary)
             
             HStack(spacing: Spacing.sm) {
-                durationPicker(title: "Минуты", range: 0..<60, selection: $step.timerMinutes)
+                durationPicker(title: String(localized: "Minutes"), range: 0..<60, selection: $step.timerMinutes)
                     .frame(maxWidth: .infinity)
                 
                 Text(":")
@@ -121,7 +121,7 @@ private struct StepTimerControlsView: View {
                     .foregroundStyle(.secondary)
                     .padding(.top, Spacing.md)
                 
-                durationPicker(title: "Секунды", range: 0..<60, selection: $step.timerSeconds, padded: true)
+                durationPicker(title: String(localized: "Seconds"), range: 0..<60, selection: $step.timerSeconds, padded: true)
                     .frame(maxWidth: .infinity)
             }
             
@@ -131,13 +131,13 @@ private struct StepTimerControlsView: View {
                     .foregroundStyle(.green)
                     .accessibilityHidden(true)
                 
-                Text("Общее время: \(formattedDuration)")
+                Text(String(format: String(localized: "Total time: %@"), formattedDuration))
                     .font(.caption.weight(.medium))
                     .foregroundStyle(.green)
             }
             .padding(.top, Spacing.xxxs)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Общее время: \(formattedDuration)")
+            .accessibilityLabel(String(format: String(localized: "Total time: %@"), formattedDuration))
         }
         .padding(Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -185,11 +185,11 @@ private struct StepTimerControlsView: View {
         let seconds = totalSeconds % 60
         
         if minutes > 0 && seconds > 0 {
-            return "\(minutes) мин \(seconds) сек"
+            return String(format: String(localized: "%d min %d sec"), minutes, seconds)
         } else if minutes > 0 {
-            return "\(minutes) мин"
+            return String(format: String(localized: "%d min"), minutes)
         } else {
-            return "\(seconds) сек"
+            return String(format: String(localized: "%d sec"), seconds)
         }
     }
 }

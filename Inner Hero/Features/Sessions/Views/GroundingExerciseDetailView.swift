@@ -307,7 +307,7 @@ struct GroundingExerciseDetailView: View {
                     HapticFeedback.selection()
                 }
             } catch {
-                print("Ошибка переключения избранного: \(error)")
+                print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
             }
         }
@@ -324,7 +324,7 @@ struct GroundingExerciseDetailView: View {
                     isFavorite = favorite
                 }
             } catch {
-                print("Ошибка проверки избранного: \(error)")
+                print("Error checking favorite: \(error)")
             }
         }
     }

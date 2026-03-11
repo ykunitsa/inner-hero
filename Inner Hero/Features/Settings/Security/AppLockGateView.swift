@@ -75,7 +75,7 @@ private struct LockedOverlay: View {
                     .multilineTextAlignment(.center)
             }
             
-            Button("Разблокировать") {
+            Button(String(localized: "Unlock")) {
                 onUnlock()
             }
             .buttonStyle(.borderedProminent)

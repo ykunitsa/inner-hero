@@ -333,7 +333,7 @@ struct ScheduleExerciseView: View {
                 dismiss()
             } catch {
                 HapticFeedback.error()
-                print("Ошибка сохранения расписания: \(error)")
+                print("Error saving schedule: \(error)")
             }
         }
     }

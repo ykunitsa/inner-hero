@@ -53,10 +53,10 @@ struct BreathingOrbView: View {
 
     private var accessibilityLabel: String {
         switch phase {
-        case .inhale: return "Вдох"
-        case .hold: return "Задержка"
-        case .exhale: return "Выдох"
-        case .rest: return "Пауза"
+        case .inhale: return String(localized: "Inhale")
+        case .hold: return String(localized: "Hold")
+        case .exhale: return String(localized: "Exhale")
+        case .rest: return String(localized: "Pause")
         }
     }
 
