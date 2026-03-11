@@ -77,7 +77,7 @@ struct SessionHistoryRowView: View {
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(
                                 anxietyColor(for: anxietyAfter, comparing: session.anxietyBefore)
-                            ) // HIG: semantic color для изменения уровня тревоги
+                            ) // HIG: semantic color for changing anxiety level
                             .monospacedDigit()
                     }
                     .accessibilityElement(children: .combine)

@@ -14,11 +14,11 @@ final class Inner_HeroTests: XCTestCase {
     
     // MARK: - Model Tests
     
-    /// Тест: Exposure модель создается с корректными данными
+    /// Test: Exposure model is created with correct data
     func testExposureCreation() throws {
         // Arrange
-        let title = "Публичное выступление"
-        let situation = "Выступление перед аудиторией"
+        let title = "Public speaking"
+        let situation = "Speaking in front of an audience"
         let fearLevel = 7
         
         // Act
@@ -30,29 +30,29 @@ final class Inner_HeroTests: XCTestCase {
         )
         
         // Assert
-        XCTAssertEqual(exposure.title, title, "Заголовок должен совпадать")
-        XCTAssertEqual(exposure.situation, situation, "Ситуация должна совпадать")
-        XCTAssertEqual(exposure.fearLevel, fearLevel, "Уровень страха должен совпадать")
-        XCTAssertEqual(exposure.completedSessions, 0, "Количество завершенных сессий должно быть 0")
-        XCTAssertLessThanOrEqual(exposure.createdAt, Date(), "Дата создания должна быть не позже текущей")
+        XCTAssertEqual(exposure.title, title, "Title should match")
+        XCTAssertEqual(exposure.situation, situation, "Situation should match")
+        XCTAssertEqual(exposure.fearLevel, fearLevel, "Fear level should match")
+        XCTAssertEqual(exposure.completedSessions, 0, "Completed sessions should be 0")
+        XCTAssertLessThanOrEqual(exposure.createdAt, Date(), "Created date should be not later than current")
     }
     
-    /// Тест: Exposure модель имеет дефолтные значения
+    /// Test: Exposure model has default values
     func testExposureDefaultValues() throws {
         // Arrange & Act
         let exposure = Exposure(
-            title: "Тест",
-            situation: "Тестовая ситуация"
+            title: "Test",
+            situation: "Test situation"
         )
         
         // Assert
-        XCTAssertEqual(exposure.fearLevel, 5, "Дефолтный уровень страха должен быть 5")
-        XCTAssertEqual(exposure.completedSessions, 0, "Дефолтное количество сессий должно быть 0")
+        XCTAssertEqual(exposure.fearLevel, 5, "Default fear level should be 5")
+        XCTAssertEqual(exposure.completedSessions, 0, "Default completed sessions should be 0")
     }
     
     // MARK: - View Tests
     
-    /// Тест: MainTabView инициализируется без ошибок
+    /// Test: MainTabView initializes without errors
     func testMainTabViewInitialization() throws {
         // Arrange
         let schema = Schema([Exposure.self])
@@ -64,10 +64,10 @@ final class Inner_HeroTests: XCTestCase {
             .modelContainer(container)
         
         // Assert
-        XCTAssertNotNil(view, "MainTabView должен быть создан")
+        XCTAssertNotNil(view, "MainTabView should be created")
     }
     
-    /// Тест: MainTabView создает body без ошибок
+    /// Test: MainTabView creates body without errors
     func testMainTabViewBody() throws {
         // Arrange
         let mainTabView = MainTabView()
@@ -76,13 +76,13 @@ final class Inner_HeroTests: XCTestCase {
         let body = mainTabView.body
         let mirror = Mirror(reflecting: body)
         
-        // Assert - проверяем, что body может быть создан без ошибок
-        XCTAssertGreaterThanOrEqual(mirror.children.count, 0, "Body должен быть создан корректно")
+        // Assert - check that body can be created without errors
+        XCTAssertGreaterThanOrEqual(mirror.children.count, 0, "Body should be created correctly")
     }
     
     // MARK: - Integration Tests
     
-    /// Тест: Создание ModelContainer для тестов
+    /// Test: Creating ModelContainer for tests
     func testModelContainerCreation() throws {
         // Arrange
         let schema = Schema([Exposure.self])
@@ -92,10 +92,10 @@ final class Inner_HeroTests: XCTestCase {
         let container = try ModelContainer(for: schema, configurations: [config])
         
         // Assert
-        XCTAssertNotNil(container, "ModelContainer должен быть создан")
+        XCTAssertNotNil(container, "ModelContainer should be created")
     }
     
-    /// Тест: Добавление и получение Exposure из ModelContext
+    /// Test: Adding and getting Exposure from ModelContext
     @MainActor
     func testExposureInModelContext() throws {
         // Arrange
@@ -105,8 +105,8 @@ final class Inner_HeroTests: XCTestCase {
         let context = ModelContext(container)
         
         let exposure = Exposure(
-            title: "Тестовая экспозиция",
-            situation: "Тестовая ситуация",
+            title: "Test exposure",
+            situation: "Test situation",
             fearLevel: 6
         )
         
@@ -118,9 +118,9 @@ final class Inner_HeroTests: XCTestCase {
         let fetchedExposures = try context.fetch(descriptor)
         
         // Assert
-        XCTAssertEqual(fetchedExposures.count, 1, "Должна быть одна экспозиция")
-        XCTAssertEqual(fetchedExposures.first?.title, "Тестовая экспозиция", "Заголовок должен совпадать")
-        XCTAssertEqual(fetchedExposures.first?.fearLevel, 6, "Уровень страха должен быть 6")
+        XCTAssertEqual(fetchedExposures.count, 1, "There should be one exposure")
+        XCTAssertEqual(fetchedExposures.first?.title, "Test exposure", "Title should match")
+        XCTAssertEqual(fetchedExposures.first?.fearLevel, 6, "Fear level should be 6")
     }
 
 }

@@ -23,7 +23,7 @@ struct ActivityEditorRow: View {
                     .alignmentGuide(.firstTextBaseline) { dimensions in
                         dimensions[VerticalAlignment.center]
                     }
-                    .accessibilityLabel("Переместить активность")
+                    .accessibilityLabel(String(localized: "Move activity"))
             }
             
             Text("\(index + 1).")
@@ -32,10 +32,10 @@ struct ActivityEditorRow: View {
                 .frame(width: 28, alignment: .trailing)
                 .accessibilityHidden(true)
             
-            TextField("Активность \(index + 1)", text: $item.text)
+            TextField(String(format: String(localized: "Activity %d"), index + 1), text: $item.text)
                 .font(.body)
                 .focused(focusState, equals: .activity(item.id))
-                .accessibilityLabel("Активность \(index + 1)")
+                .accessibilityLabel(String(format: String(localized: "Activity %d"), index + 1))
             
             if isRemovable {
                 Button(role: .destructive, action: onDelete) {
@@ -49,7 +49,7 @@ struct ActivityEditorRow: View {
                 .alignmentGuide(.firstTextBaseline) { dimensions in
                     dimensions[VerticalAlignment.center]
                 }
-                .accessibilityLabel("Удалить активность \(index + 1)")
+                .accessibilityLabel(String(format: String(localized: "Delete activity %d"), index + 1))
             }
         }
         .padding(.vertical, Spacing.xxs)
@@ -62,7 +62,7 @@ struct ActivityEditorRow: View {
     Form {
         Section {
             ActivityEditorRow(
-                item: .constant(ActivityEditItem(text: "Разминка")),
+                item: .constant(ActivityEditItem(text: String(localized: "Warm-up"))),
                 index: 0,
                 isRemovable: true,
                 focusState: $focusedField,

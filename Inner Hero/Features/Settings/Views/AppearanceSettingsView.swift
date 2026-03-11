@@ -5,7 +5,7 @@ struct AppearanceSettingsView: View {
     
     var body: some View {
         Form {
-            Section("Тема") {
+            Section(String(localized: "Theme")) {
                 Picker(selection: $themeModeRawValue) {
                     ForEach(ThemeMode.allCases) { mode in
                         Text(mode.title).tag(mode.rawValue)
@@ -17,7 +17,7 @@ struct AppearanceSettingsView: View {
                 .pickerStyle(.inline)
             }
         }
-        .navigationTitle("Внешний вид")
+        .navigationTitle(String(localized: "Appearance"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

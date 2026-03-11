@@ -21,7 +21,7 @@ struct WeekStripView: View {
                 .shadow(color: Color.black.opacity(0.04), radius: 10, x: 0, y: 4)
         )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Выбор дня недели")
+        .accessibilityLabel(String(localized: "Select day of week"))
     }
     
     private var header: some View {
@@ -35,7 +35,7 @@ struct WeekStripView: View {
                     .touchTarget()
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Предыдущая неделя")
+            .accessibilityLabel(String(localized: "Previous week"))
             
             VStack(spacing: 2) {
                 Text(weekTitle)
@@ -56,7 +56,7 @@ struct WeekStripView: View {
                     .touchTarget()
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Следующая неделя")
+            .accessibilityLabel(String(localized: "Next week"))
             
             Button {
                 selectedDate = Date()
@@ -67,7 +67,7 @@ struct WeekStripView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
-            .accessibilityLabel("Перейти к сегодняшнему дню")
+            .accessibilityLabel(String(localized: "Go to today"))
         }
     }
     
@@ -121,7 +121,7 @@ struct WeekStripView: View {
     
     private func accessibilityLabel(for date: Date, isSelected: Bool) -> String {
         let dateString = date.formatted(date: .long, time: .omitted)
-        return isSelected ? "\(dateString), выбрано" : dateString
+        return isSelected ? "\(dateString), \(String(localized: "selected"))" : dateString
     }
     
     private var weekDates: [Date] {

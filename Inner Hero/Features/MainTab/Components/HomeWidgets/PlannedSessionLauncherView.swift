@@ -21,9 +21,9 @@ struct PlannedSessionLauncherView: View {
                 destination(for: assignment)
             } else {
                 ContentUnavailableView(
-                    "Задание не найдено",
+                    String(localized: "Assignment not found"),
                     systemImage: "exclamationmark.triangle",
-                    description: Text("Возможно, расписание было удалено или изменено.")
+                    description: Text(String(localized: "The schedule may have been removed or changed."))
                 )
                 .padding()
             }
@@ -78,9 +78,9 @@ struct PlannedSessionLauncherView: View {
     
     private var missingDestinationView: some View {
         ContentUnavailableView(
-            "Упражнение недоступно",
+            String(localized: "Exercise unavailable"),
             systemImage: "questionmark.circle",
-            description: Text("Не удалось найти данные для запуска упражнения.")
+            description: Text(String(localized: "Could not find data to start the exercise."))
         )
         .padding()
     }

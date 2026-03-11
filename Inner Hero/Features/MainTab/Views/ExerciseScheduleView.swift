@@ -214,7 +214,7 @@ struct ExerciseScheduleView: View {
                 HapticFeedback.selection()
             } catch {
                 HapticFeedback.error()
-                print("Ошибка обновления расписания: \(error)")
+                print("Error updating schedule: \(error)")
             }
         }
     }
@@ -233,7 +233,7 @@ struct ExerciseScheduleView: View {
                 HapticFeedback.success()
             } catch {
                 HapticFeedback.error()
-                print("Ошибка удаления расписания: \(error)")
+                print("Error deleting schedule: \(error)")
             }
         }
     }

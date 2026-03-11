@@ -19,10 +19,10 @@ struct CreateExposureView: View {
                 // MARK: - Basic Information Section
                 
                 Section {
-                    TextField("Название экспозиции", text: $title)
+                    TextField(String(localized: "Exposure name"), text: $title)
                         .font(.body)
                         .focused($focusedField, equals: .title)
-                        .accessibilityLabel("Название экспозиции")
+                        .accessibilityLabel(String(localized: "Exposure name"))
                     
                     ZStack(alignment: .topLeading) {
                         TextEditor(text: $exposureDescription)
@@ -30,7 +30,7 @@ struct CreateExposureView: View {
                             .frame(minHeight: 80)
                             .focused($focusedField, equals: .description)
                             .scrollContentBackground(.hidden)
-                            .accessibilityLabel("Описание экспозиции")
+                            .accessibilityLabel(String(localized: "Exposure description"))
                         
                         if exposureDescription.isEmpty {
                             Text("Description of the anxiety-provoking situation")
@@ -48,7 +48,7 @@ struct CreateExposureView: View {
                         .fontWeight(.medium)
                         .foregroundStyle(.secondary)
                 } footer: {
-                    Text("Дайте короткое название и опишите ситуацию, которая вызывает тревогу")
+                    Text(String(localized: "Give a short name and describe the situation that causes anxiety"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -85,8 +85,8 @@ struct CreateExposureView: View {
                         }
                         .buttonStyle(.plain)
                         .frame(minWidth: 44, minHeight: 44)
-                        .accessibilityLabel("Добавить шаг")
-                        .accessibilityHint("Добавляет пустой шаг в конец списка")
+                        .accessibilityLabel(String(localized: "Add step"))
+                        .accessibilityHint(String(localized: "Adds an empty step to the end of the list"))
                     }
                 } footer: {
                     Text("Describe the sequence of actions. Each step can have its own timer.")
@@ -94,7 +94,7 @@ struct CreateExposureView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .navigationTitle("Новая экспозиция")
+            .navigationTitle(String(localized: "New exposure"))
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.interactively)
             .toolbar {
@@ -111,8 +111,8 @@ struct CreateExposureView: View {
                     }
                     .disabled(title.isEmpty || exposureDescription.isEmpty)
                     .opacity((title.isEmpty || exposureDescription.isEmpty) ? 0.5 : 1.0)
-                    .accessibilityLabel("Сохранить экспозицию")
-                    .accessibilityHint(title.isEmpty ? "Недоступно. Введите название" : (exposureDescription.isEmpty ? "Недоступно. Введите описание" : "Дважды нажмите чтобы сохранить"))
+                    .accessibilityLabel(String(localized: "Save exposure"))
+                    .accessibilityHint(title.isEmpty ? String(localized: "Unavailable. Enter a name") : (exposureDescription.isEmpty ? String(localized: "Unavailable. Enter a description") : String(localized: "Double tap to save")))
                 }
                 
                 ToolbarItemGroup(placement: .keyboard) {
@@ -184,7 +184,7 @@ struct CreateExposureView: View {
             
             dismiss()
         } catch {
-            print("Ошибка сохранения: \(error)")
+            print("Error saving: \(error)")
             
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)

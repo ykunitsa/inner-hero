@@ -11,7 +11,7 @@ struct KnowledgeCenterView: View {
                     ContentUnavailableView {
                         Label("No articles", systemImage: "book")
                     } description: {
-                        Text(query.isEmpty ? "Статьи пока недоступны" : "По запросу ничего не найдено")
+                        Text(query.isEmpty ? String(localized: "Articles are not available yet") : String(localized: "No results for this search"))
                     }
                 } else {
                     ForEach(groupedArticles, id: \.category) { group in
@@ -28,7 +28,7 @@ struct KnowledgeCenterView: View {
             .background(TopMeshGradientBackground())
             .navigationTitle("Knowledge center")
             .navigationBarTitleDisplayMode(.large)
-            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Поиск")
+            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .automatic), prompt: String(localized: "Search"))
         }
     }
     

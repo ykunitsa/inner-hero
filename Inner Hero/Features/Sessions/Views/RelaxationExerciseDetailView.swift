@@ -164,32 +164,21 @@ struct RelaxationExerciseDetailView: View {
     
     private var purposeCard: some View {
         infoCard(
-            title: "Для чего это",
+            title: String(localized: "What it's for"),
             icon: "target",
             accent: LinearGradient(colors: [.mint, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
         ) {
-            Text(
-                """
-                Прогрессивная мышечная релаксация помогает снизить тревогу и телесное напряжение через осознанное чередование «напрячь» → «расслабить». \
-                Вы учитесь быстрее замечать, где в теле накапливается стресс, и мягко отпускать его.
-                """
-            )
+            Text(String(localized: "Progressive muscle relaxation helps reduce anxiety and body tension through mindful tensing and releasing. You learn to notice where stress builds up in your body and gently release it."))
         }
     }
     
     private var howToCard: some View {
         infoCard(
-            title: "Как выполнять",
+            title: String(localized: "How to do it"),
             icon: "list.bullet.rectangle",
             accent: LinearGradient(colors: [.mint, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
         ) {
-            Text(
-                """
-                Устройтесь удобно. На этапе «Напрячь» напрягайте указанную группу мышц умеренно (без боли) и удерживайте напряжение. \
-                На этапе «Расслабить» полностью отпустите мышцы и обратите внимание на ощущения. Дышите ровно и спокойно.\n\n\
-                Совет: если вам сложно напрягать мышцу, делайте это мягче или пропускайте шаг — важно оставаться в комфорте.
-                """
-            )
+            Text(String(localized: "Get comfortable. On “Tense” phases, tense the muscle group moderately (no pain) and hold. On “Release” phases, fully let go and notice the sensations. Breathe steadily.\n\nTip: if tensing is difficult, ease off or skip that step—staying comfortable matters."))
         }
     }
     
@@ -359,7 +348,7 @@ struct RelaxationExerciseDetailView: View {
                     HapticFeedback.selection()
                 }
             } catch {
-                print("Ошибка переключения избранного: \(error)")
+                print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
             }
         }
@@ -376,7 +365,7 @@ struct RelaxationExerciseDetailView: View {
                     isFavorite = favorite
                 }
             } catch {
-                print("Ошибка проверки избранного: \(error)")
+                print("Error checking favorite: \(error)")
             }
         }
     }

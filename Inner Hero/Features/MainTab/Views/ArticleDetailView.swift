@@ -103,7 +103,7 @@ struct ArticleDetailView: View {
                     .ignoresSafeArea()
             }
         }
-        .navigationTitle("Статья")
+        .navigationTitle(String(localized: "Article"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

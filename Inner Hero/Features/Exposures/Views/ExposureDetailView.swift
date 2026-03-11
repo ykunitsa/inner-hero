@@ -43,7 +43,7 @@ struct ExposureDetailView: View {
             .padding(.bottom, 40)
         }
         .background(TopMeshGradientBackground())
-        .navigationTitle("Детали")
+        .navigationTitle(String(localized: "Details"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -68,7 +68,7 @@ struct ExposureDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? "Удалить из избранного" : "Добавить в избранное")
+                    .accessibilityLabel(isFavorite ? String(localized: "Remove from favorites") : String(localized: "Add to favorites"))
                     
                     Button {
                         showScheduleSheet = true
@@ -84,7 +84,7 @@ struct ExposureDetailView: View {
                             )
                     }
                     .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel("Запланировать")
+                    .accessibilityLabel(String(localized: "Schedule"))
                     
                     NavigationLink(destination: EditExposureView(exposure: exposure)) {
                         Image(systemName: "pencil")
@@ -141,9 +141,9 @@ struct ExposureDetailView: View {
     
     private var quickStatsSection: some View {
         HStack(spacing: 16) {
-            QuickStatCard(icon: "list.number", value: "\(totalSteps)", label: "Шагов", color: .blue)
-            QuickStatCard(icon: "timer", value: "\(stepsWithTimer)", label: "С таймером", color: .orange)
-            QuickStatCard(icon: "chart.bar.fill", value: "\(exposure.sessionResults.count)", label: "Сеансов", color: .blue)
+            QuickStatCard(icon: "list.number", value: "\(totalSteps)", label: String(localized: "Steps"), color: .blue)
+            QuickStatCard(icon: "timer", value: "\(stepsWithTimer)", label: String(localized: "With timer"), color: .orange)
+            QuickStatCard(icon: "chart.bar.fill", value: "\(exposure.sessionResults.count)", label: String(localized: "Sessions"), color: .blue)
         }
     }
     
@@ -340,7 +340,7 @@ struct ExposureDetailView: View {
                     HapticFeedback.selection()
                 }
             } catch {
-                print("Ошибка переключения избранного: \(error)")
+                print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
             }
         }
@@ -357,7 +357,7 @@ struct ExposureDetailView: View {
                     isFavorite = favorite
                 }
             } catch {
-                print("Ошибка проверки избранного: \(error)")
+                print("Error checking favorite: \(error)")
             }
         }
     }
@@ -453,6 +453,6 @@ struct StepDetailCard: View {
                 .fill(.thinMaterial)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Шаг \(index + 1): \(stepText)")
+        .accessibilityLabel(String(format: String(localized: "Step %d: %@"), index + 1, stepText))
     }
 }

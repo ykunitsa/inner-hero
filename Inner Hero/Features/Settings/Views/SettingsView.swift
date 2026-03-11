@@ -8,13 +8,13 @@ struct SettingsView: View {
                     NavigationLink {
                         AppearanceSettingsView()
                     } label: {
-                        Label("Внешний вид", systemImage: "paintbrush")
+                        Label(String(localized: "Appearance"), systemImage: "paintbrush")
                     }
                     
                     NavigationLink {
                         PrivacySettingsView()
                     } label: {
-                        Label("Конфиденциальность", systemImage: "lock.shield")
+                        Label(String(localized: "Privacy"), systemImage: "lock.shield")
                     }
                     
                     NavigationLink {
@@ -24,11 +24,11 @@ struct SettingsView: View {
                     }
                 }
                 
-                Section("Поддержка") {
+                Section(String(localized: "Support")) {
                     NavigationLink {
                         AboutView()
                     } label: {
-                        Label("О приложении", systemImage: "info.circle")
+                        Label(String(localized: "About"), systemImage: "info.circle")
                     }
                 }
             }

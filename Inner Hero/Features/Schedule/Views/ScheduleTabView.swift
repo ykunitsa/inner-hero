@@ -330,7 +330,7 @@ struct ScheduleTabView: View {
         } catch {
             manualCompletions = []
             manualCompletionByAssignmentId = [:]
-            print("Ошибка загрузки отметок выполнения: \(error)")
+            print("Error loading completion marks: \(error)")
         }
     }
     
@@ -349,7 +349,7 @@ struct ScheduleTabView: View {
         do {
             try modelContext.save()
         } catch {
-            print("Ошибка сохранения отметки выполнения: \(error)")
+            print("Error saving completion mark: \(error)")
         }
         
         refreshDayData()
@@ -360,7 +360,7 @@ struct ScheduleTabView: View {
         do {
             try modelContext.save()
         } catch {
-            print("Ошибка удаления расписания: \(error)")
+            print("Error deleting schedule: \(error)")
         }
         assignmentToDelete = nil
         

@@ -40,8 +40,8 @@ struct ActiveSessionCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Продолжить активный сеанс: \(exposure.localizedTitle)")
-        .accessibilityHint("Дважды нажмите, чтобы возобновить сеанс")
+        .accessibilityLabel(String(format: String(localized: "Continue active session: %@"), exposure.localizedTitle))
+        .accessibilityHint(String(localized: "Double tap to resume session"))
     }
     
     private var header: some View {
@@ -51,7 +51,7 @@ struct ActiveSessionCard: View {
                 .foregroundStyle(.green)
                 .accessibilityHidden(true)
             
-            Text("Активный сеанс")
+            Text(String(localized: "Active session"))
                 .font(.caption.weight(.medium))
                 .foregroundStyle(TextColors.secondary)
             

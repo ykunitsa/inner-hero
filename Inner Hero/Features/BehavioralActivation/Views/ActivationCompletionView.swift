@@ -291,7 +291,7 @@ struct SummaryRow: View {
             activityName: "Morning walk in the park",
         startedAt: Date().addingTimeInterval(-900), // 15 minutes ago
         onComplete: { rating in
-            print("Завершено, оценка: \(rating?.description ?? "нет")")
+            print("Completed, rating: \(rating?.description ?? "no rating")")
         }
     )
 }

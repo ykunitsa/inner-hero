@@ -55,7 +55,7 @@ struct ActivationsListView: View {
                         }
                         
                         if !predefinedActivations.isEmpty {
-                            activationsSection(title: "Предустановленные", activations: predefinedActivations)
+                            activationsSection(title: String(localized: "Predefined"), activations: predefinedActivations)
                         }
                     }
                 }
@@ -75,13 +75,13 @@ struct ActivationsListView: View {
                             .font(.headline)
                             .foregroundStyle(TextColors.toolbar)
                     }
-                    .accessibilityLabel("Добавить список активностей")
+                    .accessibilityLabel(String(localized: "Add activity list"))
                 }
             }
             .sheet(isPresented: $showingCreateSheet) {
                 CreateActivationView()
             }
-            .alert("Удалить список активностей?", isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
+            .alert(String(localized: "Delete activity list?"), isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
                 Button("Cancel", role: .cancel) {
                     activationToDelete = nil
                 }
@@ -89,7 +89,7 @@ struct ActivationsListView: View {
                     deleteActivation(activation)
                 }
             } message: { activation in
-                Text("Вы уверены, что хотите удалить список \"\(activation.localizedTitle)\"? Это действие нельзя отменить.")
+                Text(String(format: String(localized: "Are you sure you want to delete the list \"%@\"? This action cannot be undone."), activation.localizedTitle))
             }
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -113,11 +113,11 @@ struct ActivationsListView: View {
                 .accessibilityHidden(true)
             
             VStack(spacing: 12) {
-                Text("Начните действовать")
+                Text(String(localized: "Start taking action"))
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
                 
-                Text("Создайте первый список активностей для поведенческой активации")
+                Text(String(localized: "Create your first activity list for behavioral activation"))
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
@@ -160,8 +160,8 @@ struct ActivationsListView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(activation.localizedTitle). \(activation.localizedActivities.count) активностей\(activation.isPredefined ? ". Предустановленный список" : "")")
-        .accessibilityHint("Дважды нажмите для просмотра деталей")
+        .accessibilityLabel("\(activation.localizedTitle). \(activation.localizedActivities.count) \(String(localized: "activities"))\(activation.isPredefined ? ". \(String(localized: "Predefined list"))" : "")")
+        .accessibilityHint(String(localized: "Double tap to view details"))
     }
     
     private func deleteActivation(_ activation: ActivityList) {

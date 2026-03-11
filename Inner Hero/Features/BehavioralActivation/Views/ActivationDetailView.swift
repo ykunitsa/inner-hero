@@ -912,7 +912,7 @@ struct ActivationSessionView: View {
                 dismiss()
             }
         } catch {
-            print("Не удалось сохранить сеанс: \(error)")
+            print("Failed to save session: \(error)")
         }
     }
 }

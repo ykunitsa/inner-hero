@@ -38,7 +38,7 @@ struct EditExposureView: View {
                 basicInfoSection
                 stepsSection
             }
-            .navigationTitle("Редактирование")
+            .navigationTitle(String(localized: "Edit"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: toolbarContent)
             .scrollDismissesKeyboard(.interactively)
@@ -47,7 +47,7 @@ struct EditExposureView: View {
     
     private var basicInfoSection: some View {
         Section {
-            TextField("Название экспозиции", text: $title)
+            TextField(String(localized: "Exposure name"), text: $title)
                 .font(.body)
                 .focused($focusedField, equals: .title)
                 .textInputAutocapitalization(.sentences)
@@ -95,8 +95,8 @@ struct EditExposureView: View {
                 }
                 .buttonStyle(.plain)
                 .frame(minWidth: 44, minHeight: 44)
-                .accessibilityLabel("Добавить шаг")
-                .accessibilityHint("Добавляет пустой шаг в конец списка")
+                .accessibilityLabel(String(localized: "Add step"))
+                .accessibilityHint(String(localized: "Adds an empty step to the end of the list"))
             }
         } footer: {
             Text("Describe the sequence of actions. Each step can have its own timer. Hold the ☰ icon to reorder or swipe left to delete.")
@@ -144,8 +144,8 @@ struct EditExposureView: View {
             .fontWeight(.semibold)
             .disabled(title.isEmpty || exposureDescription.isEmpty)
             .opacity((title.isEmpty || exposureDescription.isEmpty) ? 0.5 : 1.0)
-            .accessibilityLabel("Сохранить изменения")
-            .accessibilityHint(title.isEmpty || exposureDescription.isEmpty ? "Заполните все обязательные поля" : "Сохраняет экспозицию и закрывает редактор")
+            .accessibilityLabel(String(localized: "Save changes"))
+            .accessibilityHint(title.isEmpty || exposureDescription.isEmpty ? String(localized: "Fill in all required fields") : String(localized: "Saves the exposure and closes the editor"))
         }
     }
     
@@ -210,7 +210,7 @@ struct EditExposureView: View {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)
             
-            print("Ошибка сохранения: \(error)")
+            print("Error saving: \(error)")
         }
     }
 }
@@ -221,14 +221,14 @@ struct EditExposureView: View {
         let container = try ModelContainer(for: Exposure.self, configurations: config)
         
         let sampleSteps = [
-            ExposureStep(text: "Первый шаг", hasTimer: false, timerDuration: 0, order: 0),
-            ExposureStep(text: "Второй шаг с таймером", hasTimer: true, timerDuration: 300, order: 1),
-            ExposureStep(text: "Третий финальный шаг", hasTimer: false, timerDuration: 0, order: 2)
+            ExposureStep(text: String(localized: "First step"), hasTimer: false, timerDuration: 0, order: 0),
+            ExposureStep(text: String(localized: "Second step with timer"), hasTimer: true, timerDuration: 300, order: 1),
+            ExposureStep(text: String(localized: "Third final step"), hasTimer: false, timerDuration: 0, order: 2)
         ]
         
         let sampleExposure = Exposure(
-            title: "Пример экспозиции для редактирования",
-            exposureDescription: "Описание тестовой экспозиции с несколькими шагами и таймерами",
+            title: String(localized: "Sample exposure for editing"),
+            exposureDescription: String(localized: "Description of a sample exposure with several steps and timers"),
             steps: sampleSteps
         )
         container.mainContext.insert(sampleExposure)

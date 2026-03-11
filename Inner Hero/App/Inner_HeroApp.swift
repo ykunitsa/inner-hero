@@ -64,12 +64,12 @@ struct Inner_HeroApp: App {
                 try SampleDataLoader.loadPredefinedActivationLists(into: context)
                 
                 hasLoadedSampleData = true
-                print("✅ Тестовые данные загружены успешно")
+                print("✅ Test data loaded successfully")
             } else {
                 hasLoadedSampleData = true
             }
         } catch {
-            print("⚠️ Ошибка загрузки тестовых данных: \(error)")
+            print("⚠️ Error loading test data: \(error)")
         }
     }
 }

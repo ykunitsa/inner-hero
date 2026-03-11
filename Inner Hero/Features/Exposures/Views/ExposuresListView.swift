@@ -79,7 +79,7 @@ struct ExposuresListView: View {
                             .font(.headline)
                             .foregroundStyle(TextColors.toolbar)
                     }
-                    .accessibilityLabel("Добавить экспозицию")
+                    .accessibilityLabel(String(localized: "Add exposure"))
                 }
             }
             .sheet(isPresented: $showingCreateSheet) {
@@ -98,7 +98,7 @@ struct ExposuresListView: View {
                     ActiveSessionView(session: session, exposure: exposure)
                 }
             }
-            .alert("Удалить экспозицию?", isPresented: $showingDeleteAlert, presenting: exposureToDelete) { exposure in
+            .alert(String(localized: "Delete exposure?"), isPresented: $showingDeleteAlert, presenting: exposureToDelete) { exposure in
                 Button("Cancel", role: .cancel) {
                     exposureToDelete = nil
                 }
@@ -106,7 +106,7 @@ struct ExposuresListView: View {
                     deleteExposure(exposure)
                 }
             } message: { exposure in
-                Text("Вы уверены, что хотите удалить экспозицию \"\(exposure.localizedTitle)\"? Это действие нельзя отменить.")
+                Text(String(format: String(localized: "Are you sure you want to delete \"%@\"? This action cannot be undone."), exposure.localizedTitle))
             }
             .opacity(appeared ? 1 : 0)
             .animation(.easeIn(duration: 0.3), value: appeared)
@@ -130,11 +130,11 @@ struct ExposuresListView: View {
                 .accessibilityHidden(true)
             
             VStack(spacing: 12) {
-                Text("Начните свой путь")
+                Text(String(localized: "Start your journey"))
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
                 
-                Text("Создайте первую экспозицию для работы с тревогой")
+                Text(String(localized: "Create your first exposure to work with anxiety"))
                     .font(.body)
                     .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
@@ -147,15 +147,15 @@ struct ExposuresListView: View {
     private var exposuresSections: some View {
         VStack(alignment: .leading, spacing: 24) {
             if !pinnedExposures.isEmpty {
-                exposuresSection(title: "Закреплённые", exposures: pinnedExposures)
+                exposuresSection(title: String(localized: "Pinned"), exposures: pinnedExposures)
             }
             
             if !userCreatedExposures.isEmpty {
-                exposuresSection(title: "Созданные мной", exposures: userCreatedExposures)
+                exposuresSection(title: String(localized: "Created by me"), exposures: userCreatedExposures)
             }
             
             if !predefinedExposures.isEmpty {
-                exposuresSection(title: "Предустановленные", exposures: predefinedExposures)
+                exposuresSection(title: String(localized: "Predefined"), exposures: predefinedExposures)
             }
         }
     }
@@ -202,7 +202,7 @@ struct ExposuresListView: View {
                 exposureToSchedule = exposure
             } label: {
                 Label(
-                    assignment?.isActive == true ? "Edit schedule" : "Создать расписание",
+                    assignment?.isActive == true ? "Edit schedule" : String(localized: "Create schedule"),
                     systemImage: "calendar"
                 )
             }
@@ -215,8 +215,8 @@ struct ExposuresListView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(exposure.localizedTitle). \(exposure.localizedStepTexts.count) шагов, \(exposure.sessionResults.count) сеансов")
-        .accessibilityHint("Дважды нажмите для просмотра деталей")
+        .accessibilityLabel(String(format: String(localized: "%@. %d steps, %d sessions"), exposure.localizedTitle, exposure.localizedStepTexts.count, exposure.sessionResults.count))
+        .accessibilityHint(String(localized: "Double tap to view details"))
     }
     
     private func startSession(for exposure: Exposure) {

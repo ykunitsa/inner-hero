@@ -84,22 +84,22 @@
         }
       }
     },
-    "%@. %lld активностей%@" : {
+    "%@. %d steps, %d sessions" : {
       "localizations" : {
-        "en" : {
+        "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@. %2$lld активностей%3$@"
+            "state" : "translated",
+            "value" : "%@. %d шагов, %d сеансов"
           }
         }
       }
     },
-    "%@. %lld шагов, %lld сеансов" : {
+    "%@. %lld %@%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$@. %2$lld шагов, %3$lld сеансов"
+            "value" : "%1$@. %2$lld %3$@%4$@"
           }
         }
       }
@@ -224,12 +224,42 @@
         }
       }
     },
+    "%d m" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d м"
+          }
+        }
+      }
+    },
+    "%d m %d s" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d м %d с"
+          }
+        }
+      }
+    },
     "%d min" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d мин"
+          }
+        }
+      }
+    },
+    "%d min %d sec" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d мин %d сек"
           }
         }
       }
@@ -270,6 +300,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d с"
+          }
+        }
+      }
+    },
+    "%d sec" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d сек"
           }
         }
       }
@@ -346,9 +386,6 @@
         }
       }
     },
-    "%lld процентов" : {
-
-    },
     "%lld:%@" : {
       "localizations" : {
         "en" : {
@@ -399,6 +436,9 @@
         }
       }
     },
+    "0\n%@" : {
+
+    },
     "0\nNo anxiety" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -409,9 +449,6 @@
           }
         }
       }
-    },
-    "0\nНет тревоги" : {
-
     },
     "1\nDid not like at all" : {
       "localizations" : {
@@ -443,6 +480,9 @@
         }
       }
     },
+    "5\n%@" : {
+
+    },
     "5\nLiked very much" : {
       "localizations" : {
         "ru" : {
@@ -464,9 +504,6 @@
         }
       }
     },
-    "5\nСредний" : {
-
-    },
     "5-4-3-2-1" : {
       "localizations" : {
         "ru" : {
@@ -487,6 +524,9 @@
         }
       }
     },
+    "10\n%@" : {
+
+    },
     "10\nMaximum" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -497,9 +537,6 @@
           }
         }
       }
-    },
-    "10\nМаксимум" : {
-
     },
     "About" : {
       "localizations" : {
@@ -552,12 +589,21 @@
       }
     },
     "Active session" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Активный сеанс"
+          }
+        }
+      }
+    },
+    "activities" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "активностей"
           }
         }
       }
@@ -572,6 +618,34 @@
         }
       }
     },
+    "activities_few" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "activities"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "активности"
+          }
+        }
+      }
+    },
+    "activity" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "активность"
+          }
+        }
+      }
+    },
     "Activity %1$lld: %2$@" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -579,6 +653,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Активность %lld: %@"
+          }
+        }
+      }
+    },
+    "Activity %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активность %d"
           }
         }
       }
@@ -675,7 +759,6 @@
       }
     },
     "Add activity list" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -716,7 +799,6 @@
       }
     },
     "Add exposure" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -747,7 +829,6 @@
       }
     },
     "Add step" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -778,7 +859,6 @@
       }
     },
     "Adds an empty step to the end of the list" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -824,6 +904,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Все дни"
+          }
+        }
+      }
+    },
+    "All steps completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все шаги выполнены"
           }
         }
       }
@@ -960,7 +1050,6 @@
       }
     },
     "App lock (Face ID)" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -981,12 +1070,21 @@
       }
     },
     "Appearance" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Внешний вид"
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete \"%@\"? This action cannot be undone." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы уверены, что хотите удалить \"%@\"? Это действие нельзя отменить."
           }
         }
       }
@@ -1003,7 +1101,6 @@
       }
     },
     "Are you sure you want to delete the list \"%@\"? This action cannot be undone." : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1064,7 +1161,6 @@
       }
     },
     "Article" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1085,12 +1181,21 @@
       }
     },
     "Articles are not available yet" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Статьи пока недоступны"
+          }
+        }
+      }
+    },
+    "Assignment not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Задание не найдено"
           }
         }
       }
@@ -1447,6 +1552,16 @@
         }
       }
     },
+    "Complete calm, no anxiety" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полное спокойствие, нет тревоги"
+          }
+        }
+      }
+    },
     "Complete current step" : {
       "localizations" : {
         "ru" : {
@@ -1512,7 +1627,6 @@
       }
     },
     "Completion progress" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1564,7 +1678,6 @@
       }
     },
     "Continue active session: %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1604,6 +1717,16 @@
         }
       }
     },
+    "Could not find data to start the exercise." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось найти данные для запуска упражнения."
+          }
+        }
+      }
+    },
     "Create a schedule for regular exercise reminders" : {
       "localizations" : {
         "ru" : {
@@ -1625,7 +1748,6 @@
       }
     },
     "Create your first activity list for behavioral activation" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1636,7 +1758,6 @@
       }
     },
     "Create your first exposure to work with anxiety" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1652,6 +1773,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Созданные мной"
+          }
+        }
+      }
+    },
+    "Current active step" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Текущий активный шаг"
           }
         }
       }
@@ -1757,6 +1888,16 @@
         }
       }
     },
+    "Delete activity %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить активность %d"
+          }
+        }
+      }
+    },
     "Delete activity %lld" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1769,7 +1910,6 @@
       }
     },
     "Delete activity list?" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1780,7 +1920,6 @@
       }
     },
     "Delete exposure?" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1796,6 +1935,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Удалить расписание?"
+          }
+        }
+      }
+    },
+    "Delete step %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить шаг %d"
           }
         }
       }
@@ -1917,6 +2066,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Готово"
+          }
+        }
+      }
+    },
+    "Double tap to resume session" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите, чтобы возобновить сеанс"
+          }
+        }
+      }
+    },
+    "Double tap to save" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите чтобы сохранить"
+          }
+        }
+      }
+    },
+    "Double tap to view details" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дважды нажмите для просмотра деталей"
           }
         }
       }
@@ -2229,7 +2408,6 @@
       }
     },
     "Exercise unavailable" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2245,6 +2423,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Упражнения"
+          }
+        }
+      }
+    },
+    "Exhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдох"
           }
         }
       }
@@ -2300,7 +2488,6 @@
       }
     },
     "Exposure description" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2321,7 +2508,6 @@
       }
     },
     "Exposure name" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2342,7 +2528,6 @@
       }
     },
     "Exposure steps" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2359,6 +2544,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Шаги экспозиции. Выполнено %lld из %lld"
+          }
+        }
+      }
+    },
+    "Exposure steps. %d of %d completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаги экспозиции. Выполнено %d из %d"
           }
         }
       }
@@ -2404,6 +2599,16 @@
         }
       }
     },
+    "Extreme anxiety, panic" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экстремальная тревога, паника"
+          }
+        }
+      }
+    },
     "Face" : {
       "localizations" : {
         "ru" : {
@@ -2420,6 +2625,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Лицо и челюсть"
+          }
+        }
+      }
+    },
+    "Failed to create session: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось создать сеанс: %@"
           }
         }
       }
@@ -2615,6 +2830,20 @@
         }
       }
     },
+    "Get comfortable. On \"Tense\" phases, tense the muscle group moderately (no pain) and hold. On \"Release\" phases, fully let go and notice the sensations. Breathe steadily.\n\nTip: if tensing is difficult, ease off or skip that step—staying comfortable matters." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Устройтесь удобно. На этапе «Напрячь» напрягайте указанную группу мышц умеренно (без боли) и удерживайте напряжение. На этапе «Расслабить» полностью отпустите мышцы и обратите внимание на ощущения. Дышите ровно и спокойно.\n\nСовет: если вам сложно напрягать мышцу, делайте это мягче или пропускайте шаг — важно оставаться в комфорте."
+          }
+        }
+      }
+    },
+    "Get comfortable. On “Tense” phases, tense the muscle group moderately (no pain) and hold. On “Release” phases, fully let go and notice the sensations. Breathe steadily.\n\nTip: if tensing is difficult, ease off or skip that step—staying comfortable matters." : {
+
+    },
     "Get comfortable. On the «Tense» phase, tense the indicated muscle group moderately (without pain) and hold. On the «Release» phase, fully release the muscles and notice the sensations. Breathe evenly and calmly.\n\nTip: if tensing is difficult, do it more gently or skip the step—staying comfortable matters." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2627,7 +2856,6 @@
       }
     },
     "Give a short name and describe the situation that causes anxiety" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2648,7 +2876,6 @@
       }
     },
     "Go to today" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2768,12 +2995,32 @@
         }
       }
     },
+    "High anxiety, significant distress" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Высокая тревога, значительный дистресс"
+          }
+        }
+      }
+    },
     "History" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "История"
+          }
+        }
+      }
+    },
+    "Hold" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Задержка"
           }
         }
       }
@@ -2799,7 +3046,6 @@
       }
     },
     "How to do it" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2808,6 +3054,20 @@
           }
         }
       }
+    },
+    "If anxiety stays high, it doesn't mean you're failing. Try to stay with it and notice: the wave of anxiety can shift, come and go." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если тревога держится — это не значит, что «не получается». Постарайся просто оставаться и отмечать: волна тревоги может меняться, приходить и уходить."
+          }
+        }
+      }
+    },
+    "If anxiety stays high, it doesn’t mean you’re failing. Try to stay with it and notice: the wave of anxiety can shift, come and go." : {
+
     },
     "If you experience serious symptoms of anxiety or other mental health conditions, please contact a qualified professional." : {
       "localizations" : {
@@ -2916,6 +3176,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Информация"
+          }
+        }
+      }
+    },
+    "Inhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вдох"
           }
         }
       }
@@ -3202,6 +3472,36 @@
         }
       }
     },
+    "Maximum" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Максимум"
+          }
+        }
+      }
+    },
+    "Medium" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средний"
+          }
+        }
+      }
+    },
+    "Mild anxiety, manageable" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Легкая тревога, управляемая"
+          }
+        }
+      }
+    },
     "min" : {
       "localizations" : {
         "ru" : {
@@ -3212,12 +3512,32 @@
         }
       }
     },
+    "Minutes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Минуты"
+          }
+        }
+      }
+    },
     "MO" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "МЕС"
+          }
+        }
+      }
+    },
+    "Moderate anxiety, noticeable discomfort" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средний уровень тревоги, заметный дискомфорт"
           }
         }
       }
@@ -3244,7 +3564,6 @@
       }
     },
     "Move activity" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3255,7 +3574,6 @@
       }
     },
     "Move step" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3286,7 +3604,6 @@
       }
     },
     "New exposure" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3317,7 +3634,6 @@
       }
     },
     "Next week" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3328,7 +3644,6 @@
       }
     },
     "No activities" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3354,6 +3669,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нет доступных списков активностей"
+          }
+        }
+      }
+    },
+    "No anxiety" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет тревоги"
           }
         }
       }
@@ -3404,6 +3729,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нет избранных упражнений"
+          }
+        }
+      }
+    },
+    "No results for this search" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По запросу ничего не найдено"
           }
         }
       }
@@ -3459,6 +3794,16 @@
       }
     },
     "Not completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не выполнен"
+          }
+        }
+      }
+    },
+    "Not done" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3550,6 +3895,16 @@
         }
       }
     },
+    "Notice avoidance and safety behaviors without judgment. When you can, gently return to the step." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Замечай избегание и «защитные действия» — без критики. Когда получится, мягко возвращайся к шагу."
+          }
+        }
+      }
+    },
     "Notice how you feel during and after" : {
       "localizations" : {
         "ru" : {
@@ -3591,7 +3946,6 @@
       }
     },
     "Off" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3622,7 +3976,6 @@
       }
     },
     "On" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3759,6 +4112,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Похвала за выполнение сеанса"
+          }
+        }
+      }
+    },
+    "Predefined" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предустановленные"
+          }
+        }
+      }
+    },
+    "Predefined list" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предустановленный список"
           }
         }
       }
@@ -5518,7 +5891,6 @@
       }
     },
     "Previous week" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5529,7 +5901,6 @@
       }
     },
     "Privacy" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5561,6 +5932,16 @@
     },
     "Progressive muscle relaxation helps reduce anxiety and bodily tension through mindful tensing and releasing. You learn to notice faster where stress builds up in your body and gently release it." : {
       "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогрессивная мышечная релаксация помогает снизить тревогу и телесное напряжение через осознанное чередование «напрячь» → «расслабить». Вы учитесь быстрее замечать, где в теле накапливается стресс, и мягко отпускать его."
+          }
+        }
+      }
+    },
+    "Progressive muscle relaxation helps reduce anxiety and body tension through mindful tensing and releasing. You learn to notice where stress builds up in your body and gently release it." : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5820,6 +6201,16 @@
         }
       }
     },
+    "Rest" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отдых"
+          }
+        }
+      }
+    },
     "Resume timer" : {
       "localizations" : {
         "ru" : {
@@ -5901,7 +6292,6 @@
       }
     },
     "Save exposure" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5942,7 +6332,6 @@
       }
     },
     "Saves the exposure and closes the editor" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5993,12 +6382,21 @@
       }
     },
     "Search" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поиск"
+          }
+        }
+      }
+    },
+    "Seconds" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Секунды"
           }
         }
       }
@@ -6023,12 +6421,32 @@
         }
       }
     },
+    "Select day of week" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор дня недели"
+          }
+        }
+      }
+    },
     "Select from list" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выбрать из списка"
+          }
+        }
+      }
+    },
+    "selected" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "выбрано"
           }
         }
       }
@@ -6207,6 +6625,16 @@
         }
       }
     },
+    "Sessions" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеансов"
+          }
+        }
+      }
+    },
     "Settings" : {
       "localizations" : {
         "ru" : {
@@ -6378,7 +6806,6 @@
       }
     },
     "Start taking action" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -6408,8 +6835,17 @@
         }
       }
     },
+    "Start with a manageable step and progress gradually." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начни с посильного шага и двигайся постепенно."
+          }
+        }
+      }
+    },
     "Start your journey" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -6441,6 +6877,36 @@
         }
       }
     },
+    "Step %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг %d"
+          }
+        }
+      }
+    },
+    "Step %d of %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг %d из %d"
+          }
+        }
+      }
+    },
+    "Step %d: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг %d: %@"
+          }
+        }
+      }
+    },
     "Step %lld" : {
       "localizations" : {
         "ru" : {
@@ -6467,6 +6933,26 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Step %1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "Step completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг выполнен"
+          }
+        }
+      }
+    },
+    "Step not yet completed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг еще не выполнен"
           }
         }
       }
@@ -6546,7 +7032,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Опора"
+            "value" : "Поддержка"
           }
         }
       }
@@ -6675,8 +7161,17 @@
         }
       }
     },
+    "The schedule may have been removed or changed." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возможно, расписание было удалено или изменено."
+          }
+        }
+      }
+    },
     "Theme" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -6767,7 +7262,6 @@
       }
     },
     "Timer" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -6778,12 +7272,21 @@
       }
     },
     "Timer %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Таймер %@"
+          }
+        }
+      }
+    },
+    "Timer for step %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таймер для шага %d"
           }
         }
       }
@@ -6860,7 +7363,6 @@
       }
     },
     "Total time: %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -6886,6 +7388,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Тип"
+          }
+        }
+      }
+    },
+    "Unavailable. Enter a description" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Недоступно. Введите описание"
+          }
+        }
+      }
+    },
+    "Unavailable. Enter a name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Недоступно. Введите название"
           }
         }
       }
@@ -6933,7 +7455,6 @@
       }
     },
     "Unlock" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -7033,6 +7554,37 @@
         }
       }
     },
+    "Very high anxiety, hard to tolerate" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очень высокая тревога, трудно терпеть"
+          }
+        }
+      }
+    },
+    "Very low anxiety" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очень низкий уровень тревоги"
+          }
+        }
+      }
+    },
+    "Warm-up" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разминка"
+          }
+        }
+      }
+    },
     "Week" : {
       "localizations" : {
         "ru" : {
@@ -7124,12 +7676,32 @@
         }
       }
     },
+    "When enabled, the app will ask for identity verification only when launching." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "При включении приложение будет запрашивать подтверждение личности только при запуске."
+          }
+        }
+      }
+    },
     "Will save the session and enjoyment rating" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сохранит сеанс и оценку впечатления"
+          }
+        }
+      }
+    },
+    "With timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "С таймером"
           }
         }
       }
@@ -7311,248 +7883,162 @@
         }
       }
     },
-    "Активность %lld" : {
-
-    },
-    "Активный сеанс" : {
-
-    },
-    "Блокировка приложения (Face ID)" : {
-
-    },
-    "Включен" : {
-
-    },
-    "Внешний вид" : {
-
-    },
-    "Возможно, расписание было удалено или изменено." : {
-
-    },
-    "Вы уверены, что хотите удалить список \"%@\"? Это действие нельзя отменить." : {
-
-    },
-    "Вы уверены, что хотите удалить экспозицию \"%@\"? Это действие нельзя отменить." : {
-
-    },
-    "Выбор дня недели" : {
-
-    },
-    "Выключен" : {
-
-    },
-    "Дайте короткое название и опишите ситуацию, которая вызывает тревогу" : {
-
-    },
-    "Дважды нажмите для просмотра деталей" : {
-
-    },
-    "Дважды нажмите чтобы сохранить" : {
-
-    },
-    "Дважды нажмите, чтобы возобновить сеанс" : {
-
-    },
-    "Детали" : {
-
-    },
-    "Добавить в избранное" : {
-
-    },
-    "Добавить список активностей" : {
-
-    },
-    "Добавить шаг" : {
-
-    },
-    "Добавить экспозицию" : {
-
-    },
-    "Добавляет пустой шаг в конец списка" : {
-
-    },
-    "Задание не найдено" : {
-
-    },
-    "Запланировать" : {
-
-    },
-    "Заполните все обязательные поля" : {
-
-    },
-    "Конфиденциальность" : {
-
-    },
-    "Название экспозиции" : {
-
-    },
-    "Начните действовать" : {
-
-    },
-    "Начните свой путь" : {
-
-    },
-    "Не удалось найти данные для запуска упражнения." : {
-
-    },
-    "Недоступно. Введите название" : {
-
-    },
-    "Недоступно. Введите описание" : {
-
-    },
-    "Нет активностей" : {
-
-    },
-    "Новая экспозиция" : {
-
-    },
-    "О приложении" : {
-
-    },
-    "Общее время: %@" : {
-
-    },
-    "Описание экспозиции" : {
-
-    },
-    "Ошибка" : {
-
-    },
-    "Перейти к сегодняшнему дню" : {
-
-    },
-    "Переместить активность" : {
-
-    },
-    "Переместить шаг" : {
-
-    },
-    "По запросу ничего не найдено" : {
-
-    },
-    "Поддержка" : {
-
-    },
-    "Поиск" : {
-
-    },
-    "Предыдущая неделя" : {
-
-    },
-    "При включении приложение будет запрашивать подтверждение личности только при запуске." : {
-
-    },
-    "Прогресс выполнения" : {
-
-    },
-    "Прогрессивная мышечная релаксация помогает снизить тревогу и телесное напряжение через осознанное чередование «напрячь» → «расслабить». Вы учитесь быстрее замечать, где в теле накапливается стресс, и мягко отпускать его." : {
-
-    },
-    "Продолжить активный сеанс: %@" : {
-
-    },
-    "Разблокировать" : {
-
-    },
-    "Редактирование" : {
-
-    },
-    "Следующая неделя" : {
-
-    },
-    "Создайте первую экспозицию для работы с тревогой" : {
-
-    },
-    "Создайте первый список активностей для поведенческой активации" : {
-
-    },
-    "Создать расписание" : {
-
-    },
-    "Сохранить изменения" : {
-
-    },
-    "Сохранить экспозицию" : {
-
-    },
-    "Сохраняет экспозицию и закрывает редактор" : {
-
-    },
-    "Статьи пока недоступны" : {
-
-    },
-    "Статья" : {
-
-    },
-    "Таймер" : {
-
-    },
-    "Таймер %@" : {
-
-    },
-    "Таймер для шага %lld" : {
-
-    },
-    "Текущий шаг" : {
-
-    },
-    "Тема" : {
-
-    },
-    "Удалить активность %lld" : {
-
-    },
-    "Удалить из избранного" : {
-
-    },
-    "Удалить список активностей?" : {
-
-    },
-    "Удалить шаг %lld" : {
-
-    },
-    "Удалить экспозицию?" : {
-
-    },
-    "Упражнение недоступно" : {
-
-    },
-    "Устройтесь удобно. На этапе «Напрячь» напрягайте указанную группу мышц умеренно (без боли) и удерживайте напряжение. На этапе «Расслабить» полностью отпустите мышцы и обратите внимание на ощущения. Дышите ровно и спокойно.\n\nСовет: если вам сложно напрягать мышцу, делайте это мягче или пропускайте шаг — важно оставаться в комфорте." : {
-
-    },
-    "Шаг %lld" : {
-
-    },
-    "Шаг %lld из %lld" : {
+    "Look at a spider photo for 30 seconds" : {
       "localizations" : {
-        "en" : {
+        "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Шаг %1$lld из %2$lld"
+            "state" : "translated",
+            "value" : "Посмотрите на фотографию паука в течение 30 секунд"
           }
         }
       }
     },
-    "Шаг %lld: %@" : {
+    "Watch a spider video for 2 minutes, noting your sensations" : {
       "localizations" : {
-        "en" : {
+        "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Шаг %1$lld: %2$@"
+            "state" : "translated",
+            "value" : "Посмотрите видео с пауками в течение 2 минут, отмечая свои ощущения"
           }
         }
       }
     },
-    "Шаги экспозиции" : {
-
-    },
-    "Шаги экспозиции. Выполнено %lld из %lld" : {
+    "Imagine holding a spider in your hands" : {
       "localizations" : {
-        "en" : {
+        "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Шаги экспозиции. Выполнено %1$lld из %2$lld"
+            "state" : "translated",
+            "value" : "Представьте, что держите паука в руках"
+          }
+        }
+      }
+    },
+    "Watch a spider video for 2 minutes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотрите видео с пауками в течение 2 минут"
+          }
+        }
+      }
+    },
+    "Imagine holding a spider in your hands. Close your eyes and visualize the situation in as much detail as possible" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Представьте, что держите паука в руках. Закройте глаза и визуализируйте эту ситуацию как можно подробнее"
+          }
+        }
+      }
+    },
+    "Look at a live spider in a terrarium" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотрите на живого паука в террариуме"
+          }
+        }
+      }
+    },
+    "Hold a spider in your hands (with a specialist's help)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подержите паука в руках (с помощью специалиста)"
+          }
+        }
+      }
+    },
+    "Look at a photo" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотрите на фотографию"
+          }
+        }
+      }
+    },
+    "Watch a video" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотрите видео"
+          }
+        }
+      }
+    },
+    "Imagine the situation" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Представьте ситуацию"
+          }
+        }
+      }
+    },
+    "See it in person" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотрите вживую"
+          }
+        }
+      }
+    },
+    "First step" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Первый шаг"
+          }
+        }
+      }
+    },
+    "Second step with timer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Второй шаг с таймером"
+          }
+        }
+      }
+    },
+    "Third final step" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Третий финальный шаг"
+          }
+        }
+      }
+    },
+    "Sample exposure for editing" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пример экспозиции для редактирования"
+          }
+        }
+      }
+    },
+    "Description of a sample exposure with several steps and timers" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Описание тестовой экспозиции с несколькими шагами и таймерами"
           }
         }
       }

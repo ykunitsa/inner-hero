@@ -40,7 +40,7 @@ struct StartSessionSheet: View {
                     .foregroundStyle(TextColors.toolbar)
                 }
             }
-            .alert("Ошибка", isPresented: $showError) {
+            .alert(String(localized: "Error"), isPresented: $showError) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(errorMessage)
@@ -87,17 +87,17 @@ struct StartSessionSheet: View {
             VStack(alignment: .leading, spacing: 12) {
                 GuidanceTipRow(
                     iconSystemName: "figure.walk",
-                    text: "Начни с посильного шага и двигайся постепенно."
+                    text: String(localized: "Start with a manageable step and progress gradually.")
                 )
                 
                 GuidanceTipRow(
                     iconSystemName: "timer",
-                    text: "Если тревога держится — это не значит, что «не получается». Постарайся просто оставаться и отмечать: волна тревоги может меняться, приходить и уходить."
+                    text: String(localized: "If anxiety stays high, it doesn’t mean you’re failing. Try to stay with it and notice: the wave of anxiety can shift, come and go.")
                 )
                 
                 GuidanceTipRow(
                     iconSystemName: "checkmark.seal",
-                    text: "Замечай избегание и «защитные действия» — без критики. Когда получится, мягко возвращайся к шагу."
+                    text: String(localized: "Notice avoidance and safety behaviors without judgment. When you can, gently return to the step.")
                 )
             }
             .font(.subheadline)
@@ -148,17 +148,17 @@ struct StartSessionSheet: View {
                         .tint(anxietyColor(for: Int(anxietyBefore)))
                     
                     HStack {
-                        Text("0\nНет тревоги")
+                        Text("0\n\(String(localized: "No anxiety"))")
                             .font(.caption)
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(TextColors.secondary)
                         Spacer()
-                        Text("5\nСредний")
+                        Text("5\n\(String(localized: "Medium"))")
                             .font(.caption)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(TextColors.secondary)
                         Spacer()
-                        Text("10\nМаксимум")
+                        Text("10\n\(String(localized: "Maximum"))")
                             .font(.caption)
                             .multilineTextAlignment(.trailing)
                             .foregroundStyle(TextColors.secondary)
@@ -304,13 +304,13 @@ struct StartSessionSheet: View {
     
     private func anxietyDescription(for value: Int) -> String {
         switch value {
-        case 0: return "Полное спокойствие, нет тревоги"
-        case 1...2: return "Очень низкий уровень тревоги"
-        case 3...4: return "Легкая тревога, управляемая"
-        case 5...6: return "Средний уровень тревоги, заметный дискомфорт"
-        case 7...8: return "Высокая тревога, значительный дистресс"
-        case 9: return "Очень высокая тревога, трудно терпеть"
-        case 10: return "Экстремальная тревога, паника"
+        case 0: return String(localized: "Complete calm, no anxiety")
+        case 1...2: return String(localized: "Very low anxiety")
+        case 3...4: return String(localized: "Mild anxiety, manageable")
+        case 5...6: return String(localized: "Moderate anxiety, noticeable discomfort")
+        case 7...8: return String(localized: "High anxiety, significant distress")
+        case 9: return String(localized: "Very high anxiety, hard to tolerate")
+        case 10: return String(localized: "Extreme anxiety, panic")
         default: return ""
         }
     }
@@ -324,7 +324,7 @@ struct StartSessionSheet: View {
             dismiss()
             onSessionCreated(session)
         } catch {
-            errorMessage = "Не удалось создать сеанс: \(error.localizedDescription)"
+            errorMessage = String(format: String(localized: "Failed to create session: %@"), error.localizedDescription)
             showError = true
         }
     }
