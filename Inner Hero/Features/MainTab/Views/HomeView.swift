@@ -4,7 +4,7 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var appeared = false
-    @EnvironmentObject private var articlesStore: ArticlesStore
+    @Environment(ArticlesStore.self) private var articlesStore
     
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \ExerciseCompletion.createdAt, order: .reverse) private var allCompletions: [ExerciseCompletion]
@@ -252,7 +252,7 @@ struct HomeView: View {
             ],
             inMemory: true
         )
-        .environmentObject(ArticlesStore())
+        .environment(ArticlesStore())
 }
 
 

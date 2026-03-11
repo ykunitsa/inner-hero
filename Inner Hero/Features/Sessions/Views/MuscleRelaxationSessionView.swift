@@ -11,7 +11,7 @@ struct MuscleRelaxationSessionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject private var timer = StepTimerController()
+    @State private var timer = StepTimerController()
     @State private var currentStepIndex = 0
     @State private var sessionStartTime = Date()
     @State private var isAnimating = false
@@ -194,7 +194,9 @@ struct MuscleRelaxationSessionView: View {
             
             ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    togglePlayPause()
+                    Task { @MainActor in
+                        togglePlayPause()
+                    }
                 } label: {
                     Label(
                         timer.isRunning && !timer.isPaused ? "Pause" : "Start",
@@ -223,7 +225,7 @@ struct MuscleRelaxationSessionView: View {
         .onDisappear {
             cleanupSession()
         }
-        .onReceive(timer.$elapsedTime) { _ in
+        .onChange(of: timer.elapsedTime) { _, _ in
             handlePhaseCompletionIfNeeded()
         }
         .alert("End session?", isPresented: $showingFinishConfirmation) {

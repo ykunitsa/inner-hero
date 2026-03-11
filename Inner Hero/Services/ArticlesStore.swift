@@ -1,10 +1,11 @@
-import Combine
 import Foundation
+import Observation
 
 @MainActor
-final class ArticlesStore: ObservableObject {
-    @Published private(set) var allArticles: [Article]
-    @Published private(set) var featuredArticles: [Article]
+@Observable
+final class ArticlesStore {
+    private(set) var allArticles: [Article]
+    private(set) var featuredArticles: [Article]
     
     init(loader: @MainActor () -> [Article] = { ArticlesLoader.loadArticles() }) {
         let loaded = loader()
@@ -12,5 +13,3 @@ final class ArticlesStore: ObservableObject {
         self.featuredArticles = Array(loaded.shuffled().prefix(2))
     }
 }
-
-

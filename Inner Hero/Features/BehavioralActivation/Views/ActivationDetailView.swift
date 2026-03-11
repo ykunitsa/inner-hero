@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import Combine
 
 struct ActivationDetailView: View {
     let activation: ActivityList
@@ -685,9 +684,8 @@ struct ActivationSessionView: View {
     @State private var showingCompletionView = false
     @State private var isCompleted = false
     @State private var currentTime = Date()
-    
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+    @State private var tickTask: Task<Void, Never>?
+
     private var dataManager: DataManager {
         DataManager(modelContext: modelContext)
     }
@@ -870,12 +868,19 @@ struct ActivationSessionView: View {
         .navigationTitle(activation.localizedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
-        .onReceive(timer) { _ in
-            currentTime = Date()
-        }
         .onAppear {
             sessionStartTime = Date()
             currentTime = Date()
+            tickTask = Task { @MainActor in
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .seconds(1))
+                    currentTime = Date()
+                }
+            }
+        }
+        .onDisappear {
+            tickTask?.cancel()
+            tickTask = nil
         }
         .sheet(isPresented: $showingCompletionView) {
             ActivationCompletionView(
