@@ -66,7 +66,7 @@ Inner Hero/
 │   └── Inner_HeroApp.swift          # App entry, model container, onboarding/sample data
 ├── Core/
 │   ├── DesignSystem/                # Shared UI (e.g. TopMeshGradientBackground)
-│   └── Utilities/                  # BreathingController, StepTimerController, etc.
+│   └── Utilities/                   # BreathingController, StepTimerController, etc.
 ├── Features/
 │   ├── BehavioralActivation/        # Activity lists, sessions, create/edit
 │   ├── Exposures/                   # Exposure CRUD, steps, session flow
