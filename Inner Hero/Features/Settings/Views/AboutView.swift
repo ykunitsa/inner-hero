@@ -27,7 +27,7 @@ struct AboutView: View {
             }
             
             Section("Support") {
-                let email = "support@innerhero.app"
+                let email = "coder.ekunitsa@gmail.com"
                 Text("If you found an issue or want to suggest an improvement—write to us.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
