@@ -80,25 +80,9 @@ struct ExercisesView: View {
             .onAppear {
                 appeared = true
             }
-        }
-        .navigationDestination(for: AppRoute.self) { route in
-            AppRouteView(route: route)
-        }
-    }
-    
-    @ViewBuilder
-    private func destinationView(for type: ExerciseType) -> some View {
-        switch type {
-        case .exposures:
-            ExposuresListView()
-        case .breathing:
-            BreathingExercisesView()
-        case .relaxation:
-            MuscleRelaxationListView()
-        case .grounding:
-            GroundingExercisesView()
-        case .activation:
-            BehavioralActivationView()
+            .navigationDestination(for: AppRoute.self) { route in
+                AppRouteView(route: route)
+            }
         }
     }
     

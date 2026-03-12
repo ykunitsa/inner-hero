@@ -29,9 +29,22 @@
 		AD028B892EA7FDEB0019A559 /* Inner HeroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Inner HeroUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		ADF352B52F6366C0009E9323 /* Exceptions for "Inner Hero" folder in "Inner Hero" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Inner-Hero-Info.plist",
+			);
+			target = AD028B6F2EA7FDE90019A559 /* Inner Hero */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AD028B722EA7FDE90019A559 /* Inner Hero */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ADF352B52F6366C0009E9323 /* Exceptions for "Inner Hero" folder in "Inner Hero" target */,
+			);
 			path = "Inner Hero";
 			sourceTree = "<group>";
 		};
@@ -402,8 +415,10 @@
 				DEVELOPMENT_TEAM = PFN9H3KS4G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Inner-Hero-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Inner Hero";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Used to protect access to the app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -441,8 +456,10 @@
 				DEVELOPMENT_TEAM = PFN9H3KS4G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Inner-Hero-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Inner Hero";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Used to protect access to the app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

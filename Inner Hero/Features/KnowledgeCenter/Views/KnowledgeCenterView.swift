@@ -31,9 +31,9 @@ struct KnowledgeCenterView: View {
             .navigationTitle("Knowledge center")
             .navigationBarTitleDisplayMode(.large)
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .automatic), prompt: String(localized: "Search"))
-        }
-        .navigationDestination(for: AppRoute.self) { route in
-            AppRouteView(route: route)
+            .navigationDestination(for: AppRoute.self) { route in
+                AppRouteView(route: route)
+            }
         }
     }
     

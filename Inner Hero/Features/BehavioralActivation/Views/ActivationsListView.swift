@@ -40,62 +40,60 @@ struct ActivationsListView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 24) {
-                    if activations.isEmpty {
-                        emptyStateView
-                    } else {
-                        if !pinnedActivations.isEmpty {
-                            activationsSection(title: String(localized: "Pinned"), activations: pinnedActivations)
-                        }
-                        
-                        if !userCreatedActivations.isEmpty {
-                            activationsSection(title: String(localized: "Created by me"), activations: userCreatedActivations)
-                        }
-                        
-                        if !predefinedActivations.isEmpty {
-                            activationsSection(title: String(localized: "Predefined"), activations: predefinedActivations)
-                        }
+        ScrollView {
+            LazyVStack(spacing: 24) {
+                if activations.isEmpty {
+                    emptyStateView
+                } else {
+                    if !pinnedActivations.isEmpty {
+                        activationsSection(title: String(localized: "Pinned"), activations: pinnedActivations)
+                    }
+                    
+                    if !userCreatedActivations.isEmpty {
+                        activationsSection(title: String(localized: "Created by me"), activations: userCreatedActivations)
+                    }
+                    
+                    if !predefinedActivations.isEmpty {
+                        activationsSection(title: String(localized: "Predefined"), activations: predefinedActivations)
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 40)
             }
-            .background(TopMeshGradientBackground(palette: .green))
-            .navigationTitle("Behavioral activation")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        showingCreateSheet = true
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.headline)
-                            .foregroundStyle(TextColors.toolbar)
-                    }
-                    .accessibilityLabel(String(localized: "Add activity list"))
+            .padding(.horizontal, 20)
+            .padding(.top, 24)
+            .padding(.bottom, 40)
+        }
+        .background(TopMeshGradientBackground(palette: .green))
+        .navigationTitle("Behavioral activation")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showingCreateSheet = true
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.headline)
+                        .foregroundStyle(TextColors.toolbar)
                 }
+                .accessibilityLabel(String(localized: "Add activity list"))
             }
-            .sheet(isPresented: $showingCreateSheet) {
-                CreateActivationView()
+        }
+        .sheet(isPresented: $showingCreateSheet) {
+            CreateActivationView()
+        }
+        .alert(String(localized: "Delete activity list?"), isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
+            Button("Cancel", role: .cancel) {
+                activationToDelete = nil
             }
-            .alert(String(localized: "Delete activity list?"), isPresented: $showingDeleteAlert, presenting: activationToDelete) { activation in
-                Button("Cancel", role: .cancel) {
-                    activationToDelete = nil
-                }
-                Button("Delete", role: .destructive) {
-                    deleteActivation(activation)
-                }
-            } message: { activation in
-                Text(String(format: String(localized: "Are you sure you want to delete the list \"%@\"? This action cannot be undone."), activation.localizedTitle))
+            Button("Delete", role: .destructive) {
+                deleteActivation(activation)
             }
-            .opacity(appeared ? 1 : 0)
-            .animation(.easeIn(duration: 0.3), value: appeared)
-            .onAppear {
-                appeared = true
-            }
+        } message: { activation in
+            Text(String(format: String(localized: "Are you sure you want to delete the list \"%@\"? This action cannot be undone."), activation.localizedTitle))
+        }
+        .opacity(appeared ? 1 : 0)
+        .animation(.easeIn(duration: 0.3), value: appeared)
+        .onAppear {
+            appeared = true
         }
     }
     

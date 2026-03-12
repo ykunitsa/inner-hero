@@ -90,9 +90,9 @@ struct ScheduleTabView: View {
                     activityLists: activityLists
                 )
             }
-        }
-        .navigationDestination(for: AppRoute.self) { route in
-            AppRouteView(route: route)
+            .navigationDestination(for: AppRoute.self) { route in
+                AppRouteView(route: route)
+            }
         }
     }
 

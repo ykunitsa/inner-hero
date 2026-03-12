@@ -278,22 +278,3 @@ struct FavoriteExerciseCard: View {
         }
     }
 }
-
-// MARK: - Exposure Navigation Helper
-
-struct ExposureNavigationView: View {
-    let exerciseId: UUID?
-    @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    
-    var body: some View {
-        Group {
-            if let exerciseId = exerciseId,
-               let exposure = exposures.first(where: { $0.id == exerciseId }) {
-                ExposureDetailView(exposure: exposure, onStartSession: {})
-            } else {
-                Text("Exercise not found")
-            }
-        }
-    }
-}
-

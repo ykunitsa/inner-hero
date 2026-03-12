@@ -91,7 +91,7 @@ struct HomeView: View {
                     favorites: favorites
                 )
             }
-            .onChange(of: allAssignments) {
+            .onChange(of: refreshTrigger) {
                 viewModel.refresh(
                     assignments: allAssignments,
                     completions: allCompletions,
@@ -105,136 +105,38 @@ struct HomeView: View {
                     favorites: favorites
                 )
             }
-            .onChange(of: allCompletions) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: exposures) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: activityLists) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: favorites) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: breathingSessions) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: groundingSessions) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: relaxationSessions) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: exposureSessions) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
-            }
-            .onChange(of: activationSessions) {
-                viewModel.refresh(
-                    assignments: allAssignments,
-                    completions: allCompletions,
-                    exposures: exposures,
-                    activityLists: activityLists,
-                    breathingSessions: breathingSessions,
-                    groundingSessions: groundingSessions,
-                    relaxationSessions: relaxationSessions,
-                    exposureSessions: exposureSessions,
-                    activationSessions: activationSessions,
-                    favorites: favorites
-                )
+            .navigationDestination(for: AppRoute.self) { route in
+                AppRouteView(route: route)
             }
         }
-        .navigationDestination(for: AppRoute.self) { route in
-            AppRouteView(route: route)
-        }
+    }
+
+    private var refreshTrigger: HomeRefreshTrigger {
+        HomeRefreshTrigger(
+            assignmentCount: allAssignments.count,
+            completionCount: allCompletions.count,
+            breathingCount: breathingSessions.count,
+            groundingCount: groundingSessions.count,
+            relaxationCount: relaxationSessions.count,
+            exposureSessionCount: exposureSessions.count,
+            activationCount: activationSessions.count,
+            favoriteCount: favorites.count,
+            exposureCount: exposures.count,
+            activityListCount: activityLists.count
+        )
+    }
+
+    private struct HomeRefreshTrigger: Equatable {
+        let assignmentCount: Int
+        let completionCount: Int
+        let breathingCount: Int
+        let groundingCount: Int
+        let relaxationCount: Int
+        let exposureSessionCount: Int
+        let activationCount: Int
+        let favoriteCount: Int
+        let exposureCount: Int
+        let activityListCount: Int
     }
 }
 
