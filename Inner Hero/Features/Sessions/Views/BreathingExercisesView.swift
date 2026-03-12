@@ -7,17 +7,14 @@ struct BreathingExercisesView: View {
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
+        ScrollView {
                 LazyVStack(spacing: 16) {
                     ForEach(BreathingPattern.predefinedPatterns) { pattern in
                         let assignment = allAssignments.first { assignment in
                             assignment.exerciseType == .breathing && assignment.breathingPattern == pattern.type
                         }
                         
-                        NavigationLink {
-                            BreathingPatternDetailView(pattern: pattern)
-                        } label: {
+                        NavigationLink(value: AppRoute.breathingDetail(patternType: pattern.type)) {
                             BreathingPatternCardView(
                                 pattern: pattern,
                                 assignment: assignment
@@ -33,7 +30,6 @@ struct BreathingExercisesView: View {
             .background(TopMeshGradientBackground(palette: .teal))
             .navigationTitle("Breathing")
             .navigationBarTitleDisplayMode(.large)
-        }
     }
 }
 

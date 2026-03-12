@@ -150,9 +150,7 @@ struct EditExposureView: View {
     }
     
     private func moveStep(from source: IndexSet, to destination: Int) {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
-        
+        HapticFeedback.light()
         steps.move(fromOffsets: source, toOffset: destination)
     }
     
@@ -162,8 +160,7 @@ struct EditExposureView: View {
         let remainingCount = steps.count - offsets.count
         guard remainingCount >= 1 else { return }
         
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.warning)
+        HapticFeedback.warning()
         
         withAnimation {
             steps.remove(atOffsets: offsets)
@@ -174,12 +171,12 @@ struct EditExposureView: View {
         let newStep = StepEditItem(text: "", hasTimer: false, timerMinutes: 5, timerSeconds: 0)
         steps.append(newStep)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        Task {
+            try? await Task.sleep(for: .seconds(0.1))
             focusedField = .step(newStep.id)
         }
         
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+        HapticFeedback.light()
     }
     
     private func saveChanges() {
@@ -202,13 +199,11 @@ struct EditExposureView: View {
         do {
             try modelContext.save()
             
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
+            HapticFeedback.success()
             
             dismiss()
         } catch {
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
+            HapticFeedback.error()
             
             print("Error saving: \(error)")
         }

@@ -4,17 +4,19 @@ import SwiftData
 struct RelaxationExerciseDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
-    
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
+
     let exercise: RelaxationExercise
     
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \RelaxationSessionResult.performedAt, order: .reverse) private var allSessions: [RelaxationSessionResult]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     
     @State private var showScheduleSheet = false
-    @State private var isFavorite = false
     
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
+    private var isFavorite: Bool {
+        FavoritesService.isFavorite(type: .relaxation, exerciseId: nil, identifier: exercise.type.rawValue, in: favorites)
     }
     
     private var assignments: [ExerciseAssignment] {
@@ -95,13 +97,14 @@ struct RelaxationExerciseDetailView: View {
             }
         }
         .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(
-                assignment: nil,
-                preSelectedRelaxationType: exercise.type
-            )
-        }
-        .onAppear {
-            checkFavoriteStatus()
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: nil,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedRelaxationType: exercise.type
+                )
+            }
         }
     }
     
@@ -218,7 +221,7 @@ struct RelaxationExerciseDetailView: View {
     }
     
     private var startSessionButton: some View {
-        NavigationLink(destination: MuscleRelaxationSessionView(exercise: exercise)) {
+        NavigationLink(value: AppRoute.relaxationSession(relaxationType: exercise.type)) {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
@@ -339,33 +342,18 @@ struct RelaxationExerciseDetailView: View {
     private func toggleFavorite() {
         Task {
             do {
-                let newFavoriteStatus = try dataManager.toggleFavorite(
-                    exerciseType: .relaxation,
-                    exerciseIdentifier: exercise.type.rawValue
+                _ = try FavoritesService.toggle(
+                    type: .relaxation,
+                    exerciseId: nil,
+                    identifier: exercise.type.rawValue,
+                    context: modelContext
                 )
                 await MainActor.run {
-                    isFavorite = newFavoriteStatus
                     HapticFeedback.selection()
                 }
             } catch {
                 print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
-            }
-        }
-    }
-    
-    private func checkFavoriteStatus() {
-        Task {
-            do {
-                let favorite = try dataManager.isFavorite(
-                    exerciseType: .relaxation,
-                    exerciseIdentifier: exercise.type.rawValue
-                )
-                await MainActor.run {
-                    isFavorite = favorite
-                }
-            } catch {
-                print("Error checking favorite: \(error)")
             }
         }
     }

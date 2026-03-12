@@ -7,8 +7,7 @@ struct GroundingExercisesView: View {
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
+        ScrollView {
                 LazyVStack(spacing: 24) {
                     header
                     
@@ -18,9 +17,7 @@ struct GroundingExercisesView: View {
                                 assignment.exerciseType == .grounding && assignment.grounding == exercise.type
                             }
                             
-                            NavigationLink {
-                                GroundingExerciseDetailView(exercise: exercise)
-                            } label: {
+                            NavigationLink(value: AppRoute.groundingDetail(groundingType: exercise.type)) {
                                 GroundingExerciseCardView(
                                     exercise: exercise,
                                     assignment: assignment
@@ -37,7 +34,6 @@ struct GroundingExercisesView: View {
             .background(TopMeshGradientBackground(palette: .purple))
             .navigationTitle("Grounding")
             .navigationBarTitleDisplayMode(.large)
-        }
     }
     
     private var header: some View {

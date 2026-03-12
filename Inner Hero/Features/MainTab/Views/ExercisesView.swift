@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct ExercisesView: View {
+    @Binding var path: NavigationPath
+
     @State private var appeared = false
     
     enum ExerciseType {
@@ -13,7 +15,7 @@ struct ExercisesView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 LazyVStack(spacing: 20) {
                     exerciseCard(
@@ -79,6 +81,9 @@ struct ExercisesView: View {
                 appeared = true
             }
         }
+        .navigationDestination(for: AppRoute.self) { route in
+            AppRouteView(route: route)
+        }
     }
     
     @ViewBuilder
@@ -104,9 +109,7 @@ struct ExercisesView: View {
         color: Color,
         type: ExerciseType
     ) -> some View {
-        NavigationLink {
-            destinationView(for: type)
-        } label: {
+        NavigationLink(value: AppRoute.exerciseList(exerciseListRoute(for: type))) {
             HStack(spacing: 16) {
                 Image(systemName: icon)
                     .font(.system(size: 40))
@@ -155,9 +158,19 @@ struct ExercisesView: View {
         .accessibilityLabel("\(title). \(description)")
         .accessibilityHint(String(localized: "Double-tap to open"))
     }
+
+    private func exerciseListRoute(for type: ExerciseType) -> ExerciseListRoute {
+        switch type {
+        case .exposures: return .exposures
+        case .breathing: return .breathing
+        case .relaxation: return .relaxation
+        case .grounding: return .grounding
+        case .activation: return .activation
+        }
+    }
 }
 
 #Preview {
-    ExercisesView()
+    ExercisesView(path: .constant(NavigationPath()))
 }
 

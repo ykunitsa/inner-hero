@@ -173,16 +173,29 @@ struct FavoriteExerciseItem: Identifiable {
 
 struct FavoriteExerciseCard: View {
     let item: FavoriteExerciseItem
-    @State private var navigationPath = NavigationPath()
     @Environment(\.colorScheme) var colorScheme
     
     private static let cardHeight: CGFloat = 160
+
+    private var route: AppRoute? {
+        appRoute(for: item)
+    }
     
     var body: some View {
-        NavigationLink {
-            destinationView
-        } label: {
-            VStack(alignment: .leading, spacing: 12) {
+        Group {
+            if let route {
+                NavigationLink(value: route) {
+                    cardContent
+                }
+                .buttonStyle(.plain)
+            } else {
+                cardContent
+            }
+        }
+    }
+
+    private var cardContent: some View {
+        VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Image(systemName: item.icon)
                         .font(.title3)
@@ -240,45 +253,28 @@ struct FavoriteExerciseCard: View {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(item.color.opacity(colorScheme == .dark ? 0.3 : 0.2), lineWidth: 1)
             )
-        }
-        .buttonStyle(.plain)
     }
-    
-    @ViewBuilder
-    private var destinationView: some View {
+
+    private func appRoute(for item: FavoriteExerciseItem) -> AppRoute? {
         switch item.exerciseType {
         case .exposure:
-            ExposureNavigationView(exerciseId: item.exerciseId)
-            
+            guard let id = item.exerciseId else { return nil }
+            return .exposureDetail(exposureId: id)
         case .breathing:
-            if let identifier = item.exerciseIdentifier,
-               let patternType = BreathingPatternType(rawValue: identifier),
-               let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == patternType }) {
-                BreathingSessionView(pattern: pattern)
-            } else {
-                Text("Exercise not found")
-            }
-            
+            guard let raw = item.exerciseIdentifier,
+                  let type = BreathingPatternType(rawValue: raw) else { return nil }
+            return .breathingDetail(patternType: type)
         case .relaxation:
-            if let identifier = item.exerciseIdentifier,
-               let relaxationType = RelaxationType(rawValue: identifier),
-               let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == relaxationType }) {
-                RelaxationExerciseDetailView(exercise: exercise)
-            } else {
-                Text("Exercise not found")
-            }
-            
+            guard let raw = item.exerciseIdentifier,
+                  let type = RelaxationType(rawValue: raw) else { return nil }
+            return .relaxationDetail(relaxationType: type)
         case .grounding:
-            if let identifier = item.exerciseIdentifier,
-               let groundingType = GroundingType(rawValue: identifier),
-               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
-                GroundingSessionView(exercise: exercise)
-            } else {
-                Text("Exercise not found")
-            }
-            
+            guard let raw = item.exerciseIdentifier,
+                  let type = GroundingType(rawValue: raw) else { return nil }
+            return .groundingDetail(groundingType: type)
         case .behavioralActivation:
-            BehavioralActivationView()
+            guard let id = item.exerciseId else { return nil }
+            return .activationView(activityListId: id, assignmentId: nil)
         }
     }
 }

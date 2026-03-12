@@ -13,9 +13,7 @@ struct NextPlannedWidget: View {
     var body: some View {
         Group {
             if let next {
-                NavigationLink {
-                    PlannedSessionLauncherView(assignmentId: next.assignmentId)
-                } label: {
+                NavigationLink(value: AppRoute.plannedSession(assignmentId: next.assignmentId)) {
                     WidgetCard(minHeight: 120) {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack(alignment: .firstTextBaseline) {
@@ -44,9 +42,7 @@ struct NextPlannedWidget: View {
                 }
                 .buttonStyle(.plain)
             } else {
-                NavigationLink {
-                    ExerciseScheduleView()
-                } label: {
+                NavigationLink(value: AppRoute.exerciseSchedule) {
                     WidgetCard(minHeight: 120) {
                         VStack(alignment: .leading, spacing: 10) {
                             Label("Next", systemImage: "calendar.badge.clock")

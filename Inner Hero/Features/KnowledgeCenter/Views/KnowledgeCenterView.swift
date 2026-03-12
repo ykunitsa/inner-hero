@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct KnowledgeCenterView: View {
+    @Binding var path: NavigationPath
+
     @Environment(ArticlesStore.self) private var articlesStore
     @State private var query = ""
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 if groupedArticles.isEmpty {
                     ContentUnavailableView {
@@ -29,6 +31,9 @@ struct KnowledgeCenterView: View {
             .navigationTitle("Knowledge center")
             .navigationBarTitleDisplayMode(.large)
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .automatic), prompt: String(localized: "Search"))
+        }
+        .navigationDestination(for: AppRoute.self) { route in
+            AppRouteView(route: route)
         }
     }
     
@@ -71,9 +76,7 @@ private struct KnowledgeCenterArticleRow: View {
     let article: Article
     
     var body: some View {
-        NavigationLink {
-            ArticleDetailView(article: article)
-        } label: {
+        NavigationLink(value: AppRoute.articleDetail(articleId: article.id)) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: article.icon)
                     .font(.title3)
@@ -111,7 +114,7 @@ private struct KnowledgeCenterArticleRow: View {
 }
 
 #Preview {
-    KnowledgeCenterView()
+    KnowledgeCenterView(path: .constant(NavigationPath()))
         .environment(ArticlesStore())
 }
 

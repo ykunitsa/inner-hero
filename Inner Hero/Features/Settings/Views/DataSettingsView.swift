@@ -4,7 +4,8 @@ import UniformTypeIdentifiers
 
 struct DataSettingsView: View {
     @Environment(\.modelContext) private var modelContext
-    
+    @Environment(NotificationManager.self) private var notificationManager
+
     @State private var isExporting: Bool = false
     @State private var exportDocument: ExportJSONDocument?
     @State private var showingExporter: Bool = false
@@ -98,8 +99,7 @@ struct DataSettingsView: View {
         defer { isResetting = false }
         
         do {
-            await NotificationManager.shared.removeAllNotifications()
-            
+            await notificationManager.removeAllNotifications()
             try deleteAll(ExposureSessionResult.self)
             try deleteAll(Exposure.self)
             try deleteAll(ExposureStep.self)
@@ -369,6 +369,7 @@ private struct FavoriteExerciseDTO: Codable {
 #Preview {
     NavigationStack {
         DataSettingsView()
+            .environment(NotificationManager())
     }
     .modelContainer(for: [
         Exposure.self,

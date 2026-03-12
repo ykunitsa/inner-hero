@@ -11,22 +11,20 @@ struct CompleteSessionView: View {
     let session: ExposureSessionResult
     let notes: String
     let assignment: ExerciseAssignment?
+    let onSave: (Int, String) async throws -> Void
     let onComplete: () -> Void
     
     @State private var anxietyAfter: Double = 5
     @State private var finalNotes: String = ""
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var isSaving = false
     
     private enum FocusField: Hashable {
         case finalNotes
     }
     
     @FocusState private var focusedField: FocusField?
-    
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
     
     private var screenBackgroundGradientColors: [Color] {
         if colorScheme == .dark {
@@ -170,10 +168,11 @@ struct CompleteSessionView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        completeSession()
+                        Task { await completeSession() }
                     }
                     .fontWeight(.semibold)
                     .foregroundStyle(TextColors.toolbar)
+                    .disabled(isSaving)
                     .accessibilityLabel("Save session result")
                     .accessibilityHint("Double-tap to save and finish")
                 }
@@ -409,18 +408,12 @@ struct CompleteSessionView: View {
         return String(format: "%02d:%02d", minutes, seconds)
     }
     
-    private func completeSession() {
+    private func completeSession() async {
+        isSaving = true
+        defer { isSaving = false }
         do {
             let combinedNotes = notes.isEmpty ? finalNotes : notes + "\n\n" + finalNotes
-            try dataManager.completeSession(
-                session,
-                anxietyAfter: Int(anxietyAfter),
-                notes: combinedNotes.trimmingCharacters(in: .whitespacesAndNewlines)
-            )
-            
-            if let assignment {
-                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
-            }
+            try await onSave(Int(anxietyAfter), combinedNotes.trimmingCharacters(in: .whitespacesAndNewlines))
             onComplete()
         } catch {
             errorMessage = String(localized: "Failed to save result.") + " \(error.localizedDescription)"

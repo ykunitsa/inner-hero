@@ -1,13 +1,12 @@
 import Foundation
+import SwiftData
 import UserNotifications
 
 @Observable
 final class NotificationManager {
-    static let shared = NotificationManager()
-    
     private let notificationCenter = UNUserNotificationCenter.current()
-    
-    private init() {}
+
+    init() {}
     
     // MARK: - Permission Management
     
@@ -43,7 +42,7 @@ final class NotificationManager {
         assignment.notificationId = notificationId
         
         // Get exercise name
-        let exerciseName = getExerciseName(for: assignment)
+        let exerciseName = assignment.displayTitle(exposures: [], activityLists: [])
         
         // Create notification content
         let content = UNMutableNotificationContent()
@@ -102,47 +101,6 @@ final class NotificationManager {
         guard let notificationId = assignment.notificationId else { return }
         await removeNotification(identifier: notificationId)
         assignment.notificationId = nil
-    }
-    
-    // MARK: - Helper Methods
-    
-    private func getExerciseName(for assignment: ExerciseAssignment) -> String {
-        switch assignment.exerciseType {
-        case .exposure:
-            return String(localized: "Exposure")
-        case .breathing:
-            if let patternType = assignment.breathingPattern {
-                switch patternType {
-                case .box:
-                    return String(localized: "Box Breathing")
-                case .fourSix:
-                    return String(localized: "4-6 Breathing")
-                case .paced:
-                    return String(localized: "Paced Breathing")
-                }
-            }
-            return String(localized: "Breathing exercise")
-        case .relaxation:
-            if let relaxationType = assignment.relaxation {
-                switch relaxationType {
-                case .fullBody:
-                    return String(localized: "Full Body Relaxation")
-                case .short:
-                    return String(localized: "Quick Relaxation")
-                }
-            }
-            return String(localized: "Relaxation")
-        case .grounding:
-            if let groundingType = assignment.grounding {
-                switch groundingType {
-                case .fiveFourThreeTwoOne:
-                    return String(localized: "5-4-3-2-1")
-                }
-            }
-            return String(localized: "Grounding")
-        case .behavioralActivation:
-            return String(localized: "Behavioral activation")
-        }
     }
     
     // MARK: - Cleanup

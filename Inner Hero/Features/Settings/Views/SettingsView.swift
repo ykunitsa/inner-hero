@@ -1,33 +1,27 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Binding var path: NavigationPath
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Form {
                 Section("Settings") {
-                    NavigationLink {
-                        AppearanceSettingsView()
-                    } label: {
+                    NavigationLink(value: AppRoute.settingsAppearance) {
                         Label(String(localized: "Appearance"), systemImage: "paintbrush")
                     }
                     
-                    NavigationLink {
-                        PrivacySettingsView()
-                    } label: {
+                    NavigationLink(value: AppRoute.settingsPrivacy) {
                         Label(String(localized: "Privacy"), systemImage: "lock.shield")
                     }
                     
-                    NavigationLink {
-                        DataSettingsView()
-                    } label: {
+                    NavigationLink(value: AppRoute.settingsData) {
                         Label("Data", systemImage: "tray.full")
                     }
                 }
                 
                 Section(String(localized: "Support")) {
-                    NavigationLink {
-                        AboutView()
-                    } label: {
+                    NavigationLink(value: AppRoute.settingsAbout) {
                         Label(String(localized: "About"), systemImage: "info.circle")
                     }
                 }
@@ -35,11 +29,14 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
         }
+        .navigationDestination(for: AppRoute.self) { route in
+            AppRouteView(route: route)
+        }
     }
 }
 
 #Preview {
-    SettingsView()
+    SettingsView(path: .constant(NavigationPath()))
 }
 
 

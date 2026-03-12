@@ -37,7 +37,7 @@ struct BreathingOrbView: View {
             applyPhaseAppearance(phase, animated: false)
 
             // Trigger the phase animation on the next run loop tick (fixes “first inhale doesn’t animate”).
-            DispatchQueue.main.async {
+            Task {
                 applyPhase(phase, duration: phaseDuration, animated: true)
             }
         }

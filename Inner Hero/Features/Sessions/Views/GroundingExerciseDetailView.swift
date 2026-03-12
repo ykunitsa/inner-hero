@@ -4,17 +4,19 @@ import SwiftData
 struct GroundingExerciseDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
-    
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
+
     let exercise: GroundingExercise
     
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \GroundingSessionResult.performedAt, order: .reverse) private var allSessions: [GroundingSessionResult]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     
     @State private var showScheduleSheet = false
-    @State private var isFavorite = false
     
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
+    private var isFavorite: Bool {
+        FavoritesService.isFavorite(type: .grounding, exerciseId: nil, identifier: exercise.type.rawValue, in: favorites)
     }
     
     private var assignments: [ExerciseAssignment] {
@@ -90,13 +92,14 @@ struct GroundingExerciseDetailView: View {
             }
         }
         .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(
-                assignment: nil,
-                preSelectedGroundingType: exercise.type
-            )
-        }
-        .onAppear {
-            checkFavoriteStatus()
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: nil,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedGroundingType: exercise.type
+                )
+            }
         }
     }
     
@@ -177,7 +180,7 @@ struct GroundingExerciseDetailView: View {
     }
     
     private var startSessionButton: some View {
-        NavigationLink(destination: GroundingSessionView(exercise: exercise)) {
+        NavigationLink(value: AppRoute.groundingSession(groundingType: exercise.type)) {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
@@ -204,7 +207,7 @@ struct GroundingExerciseDetailView: View {
     }
     
     private var sessionsHistoryCard: some View {
-        NavigationLink(destination: GroundingSessionHistoryView(type: exercise.type, title: exercise.name)) {
+        NavigationLink(value: AppRoute.sessionHistoryGrounding(groundingType: exercise.type)) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "clock")
@@ -298,33 +301,18 @@ struct GroundingExerciseDetailView: View {
     private func toggleFavorite() {
         Task {
             do {
-                let newFavoriteStatus = try dataManager.toggleFavorite(
-                    exerciseType: .grounding,
-                    exerciseIdentifier: exercise.type.rawValue
+                _ = try FavoritesService.toggle(
+                    type: .grounding,
+                    exerciseId: nil,
+                    identifier: exercise.type.rawValue,
+                    context: modelContext
                 )
                 await MainActor.run {
-                    isFavorite = newFavoriteStatus
                     HapticFeedback.selection()
                 }
             } catch {
                 print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
-            }
-        }
-    }
-    
-    private func checkFavoriteStatus() {
-        Task {
-            do {
-                let favorite = try dataManager.isFavorite(
-                    exerciseType: .grounding,
-                    exerciseIdentifier: exercise.type.rawValue
-                )
-                await MainActor.run {
-                    isFavorite = favorite
-                }
-            } catch {
-                print("Error checking favorite: \(error)")
             }
         }
     }

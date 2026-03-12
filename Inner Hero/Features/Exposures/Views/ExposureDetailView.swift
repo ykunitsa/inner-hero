@@ -4,15 +4,20 @@ import SwiftData
 struct ExposureDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
+    @Environment(\.navigationRouter) private var router
+    @Environment(\.currentAppTab) private var currentTab
     let exposure: Exposure
-    let onStartSession: () -> Void
+    var onStartSession: (() -> Void)? = nil
     
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     @State private var showScheduleSheet = false
-    @State private var isFavorite = false
+    @State private var startSessionSheetExposure: Exposure?
     
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
+    private var isFavorite: Bool {
+        FavoritesService.isFavorite(type: .exposure, exerciseId: exposure.id, identifier: nil, in: favorites)
     }
     
     private var totalSteps: Int { exposure.localizedStepTexts.count }
@@ -86,7 +91,7 @@ struct ExposureDetailView: View {
                     .frame(minWidth: 44, minHeight: 44)
                     .accessibilityLabel(String(localized: "Schedule"))
                     
-                    NavigationLink(destination: EditExposureView(exposure: exposure)) {
+                    NavigationLink(value: AppRoute.editExposure(exposureId: exposure.id)) {
                         Image(systemName: "pencil")
                             .font(.title2)
                             .foregroundStyle(
@@ -102,10 +107,22 @@ struct ExposureDetailView: View {
             }
         }
         .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(preSelectedExposureId: exposure.id)
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: nil,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedExposureId: exposure.id
+                )
+            }
         }
-        .onAppear {
-            checkFavoriteStatus()
+        .sheet(item: $startSessionSheetExposure) { exp in
+            StartSessionSheet(exposure: exp) { session in
+                startSessionSheetExposure = nil
+                if let r = router {
+                    r.navigate(to: .exposureSession(sessionId: session.id), in: currentTab)
+                }
+            }
         }
     }
     
@@ -215,7 +232,7 @@ struct ExposureDetailView: View {
     }
     
     private var sessionsHistoryCard: some View {
-        NavigationLink(destination: SessionHistoryView(exposure: exposure)) {
+        NavigationLink(value: AppRoute.sessionHistory(exposureId: exposure.id)) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "clock")
@@ -303,7 +320,13 @@ struct ExposureDetailView: View {
     }
     
     private var startSessionButton: some View {
-        Button(action: onStartSession) {
+        Button(action: {
+            if let onStartSession {
+                onStartSession()
+            } else {
+                startSessionSheetExposure = exposure
+            }
+        }) {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
@@ -331,33 +354,18 @@ struct ExposureDetailView: View {
     private func toggleFavorite() {
         Task {
             do {
-                let newFavoriteStatus = try dataManager.toggleFavorite(
-                    exerciseType: .exposure,
-                    exerciseId: exposure.id
+                _ = try FavoritesService.toggle(
+                    type: .exposure,
+                    exerciseId: exposure.id,
+                    identifier: nil,
+                    context: modelContext
                 )
                 await MainActor.run {
-                    isFavorite = newFavoriteStatus
                     HapticFeedback.selection()
                 }
             } catch {
                 print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
-            }
-        }
-    }
-    
-    private func checkFavoriteStatus() {
-        Task {
-            do {
-                let favorite = try dataManager.isFavorite(
-                    exerciseType: .exposure,
-                    exerciseId: exposure.id
-                )
-                await MainActor.run {
-                    isFavorite = favorite
-                }
-            } catch {
-                print("Error checking favorite: \(error)")
             }
         }
     }

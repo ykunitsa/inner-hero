@@ -2,20 +2,17 @@ import SwiftUI
 import SwiftData
 
 struct MainTabView: View {
-    @State private var selectedTab: Tab = .home
-    
-    enum Tab {
-        case home
-        case schedule
-        case knowledge
-        case exercises
-        case settings
-    }
-    
+    @State private var selectedTab: AppTab = .home
+    @State private var scheduleViewModel = ScheduleViewModel()
+    @State private var router = NavigationRouter()
+
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView()
-                .tag(Tab.home)
+            HomeView(path: router.path(for: .home))
+                .environment(router)
+                .environment(\.currentAppTab, .home)
+                .environment(\.scheduleViewModel, scheduleViewModel)
+                .tag(AppTab.home)
                 .tabItem {
                     Label {
                         Text("Summary")
@@ -25,8 +22,11 @@ struct MainTabView: View {
                 }
                 .accessibilityLabel("Summary")
 
-            ExercisesView()
-                .tag(Tab.exercises)
+            ExercisesView(path: router.path(for: .exercises))
+                .environment(router)
+                .environment(\.currentAppTab, .exercises)
+                .environment(\.scheduleViewModel, scheduleViewModel)
+                .tag(AppTab.exercises)
                 .tabItem {
                     Label {
                         Text("Exercises")
@@ -35,9 +35,12 @@ struct MainTabView: View {
                     }
                 }
                 .accessibilityLabel("Exercises")
-            
-            ScheduleTabView()
-                .tag(Tab.schedule)
+
+            ScheduleTabView(path: router.path(for: .schedule))
+                .environment(router)
+                .environment(\.currentAppTab, .schedule)
+                .environment(\.scheduleViewModel, scheduleViewModel)
+                .tag(AppTab.schedule)
                 .tabItem {
                     Label {
                         Text("Schedule")
@@ -46,9 +49,12 @@ struct MainTabView: View {
                     }
                 }
                 .accessibilityLabel("Schedule")
-            
-            KnowledgeCenterView()
-                .tag(Tab.knowledge)
+
+            KnowledgeCenterView(path: router.path(for: .knowledge))
+                .environment(router)
+                .environment(\.currentAppTab, .knowledge)
+                .environment(\.scheduleViewModel, scheduleViewModel)
+                .tag(AppTab.knowledge)
                 .tabItem {
                     Label {
                         Text("Knowledge center")
@@ -57,9 +63,11 @@ struct MainTabView: View {
                     }
                 }
                 .accessibilityLabel("Knowledge center")
-            
-            SettingsView()
-                .tag(Tab.settings)
+
+            SettingsView(path: router.path(for: .settings))
+                .environment(router)
+                .environment(\.currentAppTab, .settings)
+                .tag(AppTab.settings)
                 .tabItem {
                     Label {
                         Text("Settings")

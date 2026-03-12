@@ -8,8 +8,7 @@ struct MuscleRelaxationListView: View {
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
+        ScrollView {
                 LazyVStack(spacing: 24) {
                     header
                     
@@ -19,9 +18,7 @@ struct MuscleRelaxationListView: View {
                                 assignment.exerciseType == .relaxation && assignment.relaxation == exercise.type
                             }
                             
-                            NavigationLink {
-                                RelaxationExerciseDetailView(exercise: exercise)
-                            } label: {
+                            NavigationLink(value: AppRoute.relaxationDetail(relaxationType: exercise.type)) {
                                 RelaxationExerciseCardView(
                                     exercise: exercise,
                                     assignment: assignment
@@ -38,7 +35,6 @@ struct MuscleRelaxationListView: View {
             .background(TopMeshGradientBackground(palette: .mint))
             .navigationTitle("Muscle relaxation")
             .navigationBarTitleDisplayMode(.large)
-        }
     }
     
     private var header: some View {

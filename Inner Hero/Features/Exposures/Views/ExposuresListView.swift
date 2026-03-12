@@ -3,6 +3,8 @@ import SwiftData
 
 struct ExposuresListView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
     @Query(sort: \Exposure.createdAt, order: .reverse) private var exposures: [Exposure]
     @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var allSessions: [ExposureSessionResult]
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
@@ -91,7 +93,14 @@ struct ExposuresListView: View {
                 }
             }
             .sheet(item: $exposureToSchedule) { exposure in
-                ScheduleExerciseView(preSelectedExposureId: exposure.id)
+                if let viewModel = scheduleViewModel {
+                    ScheduleExerciseView(
+                        assignment: nil,
+                        viewModel: viewModel,
+                        notificationManager: notificationManager,
+                        preSelectedExposureId: exposure.id
+                    )
+                }
             }
             .navigationDestination(item: $currentSession) { session in
                 if let exposure = session.exposure {

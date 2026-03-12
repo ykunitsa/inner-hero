@@ -21,9 +21,8 @@ struct QuickStartWidget: View {
                 } else {
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(favorites.prefix(3)) { favorite in
-                            NavigationLink {
-                                quickDestination(for: favorite)
-                            } label: {
+                            if let route = appRoute(for: favorite) {
+                                NavigationLink(value: route) {
                                 HStack(spacing: 10) {
                                     Image(systemName: icon(for: favorite))
                                         .font(.subheadline)
@@ -44,12 +43,35 @@ struct QuickStartWidget: View {
                                 .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
+                            }
                         }
                     }
                 }
             }
         }
         .accessibilityElement(children: .contain)
+    }
+
+    private func appRoute(for favorite: FavoriteExercise) -> AppRoute? {
+        switch favorite.exerciseType {
+        case .exposure:
+            guard let id = favorite.exerciseId else { return nil }
+            return .exposureDetail(exposureId: id)
+        case .breathing:
+            guard let raw = favorite.exerciseIdentifier,
+                  let type = BreathingPatternType(rawValue: raw) else { return nil }
+            return .breathingDetail(patternType: type)
+        case .relaxation:
+            guard let raw = favorite.exerciseIdentifier,
+                  let type = RelaxationType(rawValue: raw) else { return nil }
+            return .relaxationDetail(relaxationType: type)
+        case .grounding:
+            guard let raw = favorite.exerciseIdentifier,
+                  let type = GroundingType(rawValue: raw) else { return nil }
+            return .groundingDetail(groundingType: type)
+        case .behavioralActivation:
+            return .exerciseList(.activation)
+        }
     }
     
     private func title(for favorite: FavoriteExercise) -> String {
@@ -112,39 +134,10 @@ struct QuickStartWidget: View {
     
     @ViewBuilder
     private func quickDestination(for favorite: FavoriteExercise) -> some View {
-        switch favorite.exerciseType {
-        case .exposure:
-            ExposureNavigationView(exerciseId: favorite.exerciseId)
-            
-        case .breathing:
-            if let raw = favorite.exerciseIdentifier,
-               let type = BreathingPatternType(rawValue: raw),
-               let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == type }) {
-                BreathingSessionView(pattern: pattern)
-            } else {
-                Text("Exercise not found")
-            }
-            
-        case .relaxation:
-            if let raw = favorite.exerciseIdentifier,
-               let type = RelaxationType(rawValue: raw),
-               let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == type }) {
-                RelaxationExerciseDetailView(exercise: exercise)
-            } else {
-                Text("Exercise not found")
-            }
-            
-        case .grounding:
-            if let raw = favorite.exerciseIdentifier,
-               let type = GroundingType(rawValue: raw),
-               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == type }) {
-                GroundingSessionView(exercise: exercise)
-            } else {
-                Text("Exercise not found")
-            }
-            
-        case .behavioralActivation:
-            BehavioralActivationView()
+        if let route = appRoute(for: favorite) {
+            AppRouteView(route: route)
+        } else {
+            Text("Exercise not found")
         }
     }
 }

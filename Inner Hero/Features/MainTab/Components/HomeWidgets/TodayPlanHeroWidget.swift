@@ -36,9 +36,7 @@ struct TodayPlanHeroWidget: View {
                                 .font(.title3.weight(.semibold))
                                 .foregroundStyle(.primary)
                             
-                            NavigationLink {
-                                ExerciseScheduleView()
-                            } label: {
+                            NavigationLink(value: AppRoute.exerciseSchedule) {
                                 Label("Open schedule", systemImage: "calendar")
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(accent)
@@ -90,9 +88,7 @@ struct TodayPlanHeroWidget: View {
                     Spacer(minLength: 0)
                     
                     if let next {
-                        NavigationLink {
-                            PlannedSessionLauncherView(assignmentId: next.assignmentId)
-                        } label: {
+                        NavigationLink(value: AppRoute.plannedSession(assignmentId: next.assignmentId)) {
                             Image(systemName: "play.fill")
                                 .font(.headline)
                                 .frame(width: 44, height: 44)

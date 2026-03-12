@@ -1,12 +1,11 @@
 import Foundation
 import SwiftData
 
-// MARK: - BreathingPatternType Enum
-
+// Storage contract: rawValues are persisted in SwiftData. NEVER rename rawValue strings — only add new cases.
 enum BreathingPatternType: String, Codable {
-    case box
-    case fourSix
-    case paced
+    case box = "box"
+    case fourSix = "fourSix"
+    case paced = "paced"
 }
 
 // MARK: - BreathingSessionResult Model

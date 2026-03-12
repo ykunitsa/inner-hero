@@ -1,9 +1,8 @@
 import Foundation
 
-// MARK: - GroundingType
-
+// Storage contract: rawValues are persisted in SwiftData. NEVER rename rawValue strings — only add new cases.
 enum GroundingType: String, Codable {
-    case fiveFourThreeTwoOne
+    case fiveFourThreeTwoOne = "fiveFourThreeTwoOne"
 }
 
 // MARK: - GroundingInstructionStep
