@@ -7,14 +7,16 @@ struct ActivationDetailView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
     @State private var showingEditSheet = false
     @State private var showScheduleSheet = false
-    @State private var isFavorite = false
     
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
+    private var isFavorite: Bool {
+        FavoritesService.isFavorite(type: .behavioralActivation, exerciseId: activation.id, identifier: nil, in: favorites)
     }
     
     private var assignments: [ExerciseAssignment] {
@@ -110,13 +112,14 @@ struct ActivationDetailView: View {
             EditActivationView(activation: activation)
         }
         .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(
-                assignment: nil,
-                preSelectedActivityListId: activation.id
-            )
-        }
-        .onAppear {
-            checkFavoriteStatus()
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: nil,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedActivityListId: activation.id
+                )
+            }
         }
     }
     
@@ -267,7 +270,7 @@ struct ActivationDetailView: View {
     }
     
     private var startActivityButton: some View {
-        NavigationLink(destination: StartActivationView(activation: activation, assignment: assignment)) {
+        NavigationLink(value: AppRoute.activationStart(activityListId: activation.id, assignmentId: assignment?.id)) {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
@@ -297,26 +300,15 @@ struct ActivationDetailView: View {
     
     private func toggleFavorite() {
         do {
-            let newFavoriteStatus = try dataManager.toggleFavorite(
-                exerciseType: .behavioralActivation,
-                exerciseId: activation.id
+            _ = try FavoritesService.toggle(
+                type: .behavioralActivation,
+                exerciseId: activation.id,
+                identifier: nil,
+                context: modelContext
             )
-            isFavorite = newFavoriteStatus
             HapticFeedback.selection()
         } catch {
             HapticFeedback.error()
-        }
-    }
-    
-    private func checkFavoriteStatus() {
-        do {
-            let favorite = try dataManager.isFavorite(
-                exerciseType: .behavioralActivation,
-                exerciseId: activation.id
-            )
-            isFavorite = favorite
-        } catch {
-            isFavorite = false
         }
     }
 }
@@ -686,10 +678,6 @@ struct ActivationSessionView: View {
     @State private var currentTime = Date()
     @State private var tickTask: Task<Void, Never>?
 
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
-    
     init(activation: ActivityList, selectedActivity: String, assignment: ExerciseAssignment? = nil) {
         self.activation = activation
         self.selectedActivity = selectedActivity
@@ -907,13 +895,14 @@ struct ActivationSessionView: View {
             try modelContext.save()
             
             if let assignment = self.assignment {
-                try self.dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
+                try SessionCompletionService.markCompletedIfNeeded(assignmentId: assignment.id, context: modelContext)
             }
             HapticFeedback.success()
             isCompleted = true
             
             // Dismiss after a short delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            Task {
+                try? await Task.sleep(for: .seconds(0.5))
                 dismiss()
             }
         } catch {
@@ -957,6 +946,6 @@ struct InstructionRow: View {
             )
         )
     }
-    .modelContainer(for: ActivityList.self, inMemory: true)
+    .modelContainer(for: [ActivityList.self, ExerciseAssignment.self, FavoriteExercise.self], inMemory: true)
 }
 

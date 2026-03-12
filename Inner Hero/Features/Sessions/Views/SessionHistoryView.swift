@@ -4,15 +4,13 @@ import SwiftData
 struct SessionHistoryView: View {
     @Environment(\.modelContext) private var modelContext
     let exposure: Exposure
-    
-    @State private var sessions: [ExposureSessionResult] = []
-    @State private var errorMessage: String?
-    @State private var showingError = false
-    
+
+    @State private var viewModel = SessionHistoryViewModel()
+
     private var completedSessions: [ExposureSessionResult] {
-        sessions.filter { $0.endAt != nil }
+        viewModel.sessions.filter { $0.endAt != nil }
     }
-    
+
     private var chartDataPoints: [ChartDataPoint] {
         completedSessions.map { session in
             ChartDataPoint(
@@ -23,8 +21,9 @@ struct SessionHistoryView: View {
             )
         }
     }
-    
+
     var body: some View {
+        @Bindable var vm = viewModel
         ScrollView {
             VStack(spacing: 0) {
                 if !completedSessions.isEmpty {
@@ -34,22 +33,22 @@ struct SessionHistoryView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 24)
                 }
-                
+
                 // Session List
-                if sessions.isEmpty {
+                if viewModel.sessions.isEmpty {
                     emptyStateView
                         .padding(.top, 60)
                 } else {
                     VStack(spacing: 0) {
-                        ForEach(sessions) { session in
-                            NavigationLink(destination: SessionDetailView(session: session)) {
+                        ForEach(viewModel.sessions) { session in
+                            NavigationLink(value: AppRoute.sessionDetail(sessionId: session.id)) {
                                 SessionHistoryRowView(session: session)
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 12)
                             }
                             .buttonStyle(.plain)
-                            
-                            if session.id != sessions.last?.id {
+
+                            if session.id != viewModel.sessions.last?.id {
                                 Divider()
                                     .padding(.leading, 20)
                             }
@@ -78,20 +77,21 @@ struct SessionHistoryView: View {
         .navigationTitle("Session history")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            loadSessions()
+            viewModel.loadSessions(exposure: exposure, context: modelContext)
         }
-        .alert("Error", isPresented: $showingError) {
+        .alert("Error", isPresented: $vm.showingError) {
             Button("OK") {
-                errorMessage = nil
+                vm.errorMessage = nil
+                vm.showingError = false
             }
         } message: {
-            if let errorMessage = errorMessage {
+            if let errorMessage = vm.errorMessage {
                 Text(errorMessage)
                     .font(.body)
             }
         }
     }
-    
+
     private var emptyStateView: some View {
         ContentUnavailableView(
             "No sessions",
@@ -99,16 +99,6 @@ struct SessionHistoryView: View {
             description: Text("Session history for this exposure is empty")
                 .font(.body)
         )
-    }
-    
-    private func loadSessions() {
-        let dataManager = DataManager(modelContext: modelContext)
-        do {
-            sessions = try dataManager.fetchSessionResults(for: exposure)
-        } catch {
-            errorMessage = String(localized: "Failed to load sessions.") + " \(error.localizedDescription)"
-            showingError = true
-        }
     }
 }
 

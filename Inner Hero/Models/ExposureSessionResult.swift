@@ -59,6 +59,10 @@ final class ExposureSessionResult {
         stepTimings[stepIndex] = time
     }
     
+    func removeStepTime(_ stepIndex: Int) {
+        stepTimings.removeValue(forKey: stepIndex)
+    }
+    
     func getStepTime(_ stepIndex: Int) -> TimeInterval {
         return stepTimings[stepIndex] ?? 0
     }

@@ -11,9 +11,9 @@ struct MuscleRelaxationSessionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
+    @State private var viewModel = RelaxationSessionViewModel()
     @State private var timer = StepTimerController()
     @State private var currentStepIndex = 0
-    @State private var sessionStartTime = Date()
     @State private var isAnimating = false
     @State private var showingFinishConfirmation = false
     @State private var showingCongratsSheet = false
@@ -219,7 +219,7 @@ struct MuscleRelaxationSessionView: View {
             }
         }
         .onAppear {
-            sessionStartTime = Date()
+            viewModel.sessionStartTime = Date()
             startReadingPhase()
         }
         .onDisappear {
@@ -261,7 +261,7 @@ struct MuscleRelaxationSessionView: View {
     }
     
     private var formattedTotalDuration: String {
-        let elapsed = Date().timeIntervalSince(sessionStartTime)
+        let elapsed = Date().timeIntervalSince(viewModel.sessionStartTime)
         let minutes = Int(elapsed) / 60
         let seconds = Int(elapsed) % 60
         return String(format: "%d:%02d", minutes, seconds)
@@ -342,20 +342,15 @@ struct MuscleRelaxationSessionView: View {
     private func finishSession() {
         cleanupSession()
         
-        let totalDuration = Date().timeIntervalSince(sessionStartTime)
+        let totalDuration = Date().timeIntervalSince(viewModel.sessionStartTime)
         
-        // Save session result
-        let dataManager = DataManager(modelContext: modelContext)
         do {
-            try dataManager.createRelaxationSessionResult(
+            try viewModel.saveSession(
                 type: exercise.type,
-                duration: totalDuration
+                duration: totalDuration,
+                assignment: assignment,
+                context: modelContext
             )
-            
-            if let assignment {
-                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
-            }
-            
             HapticFeedback.success()
         } catch {
             print("Error saving relaxation session: \(error)")

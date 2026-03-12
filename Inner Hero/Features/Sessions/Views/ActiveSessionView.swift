@@ -347,46 +347,31 @@ struct ActiveSessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
-    
-    let session: ExposureSessionResult
+
     let exposure: Exposure
-    let assignment: ExerciseAssignment?
-    
+    @State private var viewModel: ActiveSessionViewModel
+
     init(session: ExposureSessionResult, exposure: Exposure, assignment: ExerciseAssignment? = nil) {
-        self.session = session
         self.exposure = exposure
-        self.assignment = assignment
-        
         let steps = exposure.steps.sorted(by: { $0.order < $1.order })
-        var timers: [Int: StepTimerController] = [:]
-        for (index, step) in steps.enumerated() {
-            if step.hasTimer {
-                timers[index] = StepTimerController()
-            }
-        }
-        self._stepTimers = State(initialValue: timers)
+        self._viewModel = State(initialValue: ActiveSessionViewModel(session: session, steps: steps, assignment: assignment))
     }
-    
-    @State private var notes: String = ""
-    @State private var showingCompletion = false
+
     @State private var showingPauseModal = false
     @State private var showingInterruptAlert = false
     @State private var shouldDismissAfterCompletion = false
-    
-    @State private var completedSteps: Set<Int> = []
-    @State private var stepTimers: [Int: StepTimerController] = [:]
-    @State private var timerElapsedTimes: [Int: TimeInterval] = [:]
-    
+
     @State private var showTimer: Bool = true
     @State private var showProgressBar: Bool = false
     @State private var showAllSteps: Bool = false
-    @State private var selectedStepIndex: Int? = nil
     @State private var scrollToStepId: Int? = nil
 
-    // Swipe-to-complete (only for the large current step card)
     @State private var cardSwipeOffsetX: CGFloat = 0
     @State private var isSwipingCard: Bool = false
-    
+
+    private var session: ExposureSessionResult { viewModel.session }
+    private var steps: [ExposureStep] { viewModel.steps }
+
     private var backgroundGradientColors: [Color] {
         if colorScheme == .dark {
             return [
@@ -394,50 +379,27 @@ struct ActiveSessionView: View {
                 Color(red: 0.10, green: 0.11, blue: 0.14)
             ]
         }
-        
         return [
             Color(red: 0.95, green: 0.97, blue: 1.0),
             Color(red: 0.92, green: 0.95, blue: 0.98)
         ]
     }
-    
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
-    
-    private var steps: [ExposureStep] {
-        exposure.steps.sorted(by: { $0.order < $1.order })
-    }
-    
-    private var localizedStepTexts: [String] {
-        exposure.localizedStepTexts
-    }
-    
+
+    private var localizedStepTexts: [String] { exposure.localizedStepTexts }
+
     private func localizedStepText(at index: Int, fallback step: ExposureStep) -> String {
         guard index >= 0, index < localizedStepTexts.count else { return step.text }
         return localizedStepTexts[index]
     }
-    
-    private var currentStepIndex: Int {
-        if let selected = selectedStepIndex {
-            return selected
-        }
-        for (index, _) in steps.enumerated() {
-            if !completedSteps.contains(index) {
-                return index
-            }
-        }
-        return max(0, steps.count - 1)
-    }
-    
+
+    private var currentStepIndex: Int { viewModel.currentStepIndex }
+
     private var currentStep: ExposureStep? {
         guard currentStepIndex < steps.count else { return nil }
         return steps[currentStepIndex]
     }
-    
-    private var allStepsCompleted: Bool {
-        completedSteps.count == steps.count
-    }
+
+    private var allStepsCompleted: Bool { viewModel.allStepsCompleted }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -550,46 +512,53 @@ struct ActiveSessionView: View {
                 // Complete button or Finish flag
                 Button {
                     if currentStepIndex == steps.count - 1 {
-                        finishSession()
+                        HapticFeedback.success()
+                        viewModel.saveProgress(context: modelContext)
+                        viewModel.finishSessionUI()
                     } else {
-                        completeCurrentStep()
+                        if !viewModel.completedSteps.contains(currentStepIndex) {
+                            HapticFeedback.success()
+                        }
+                        viewModel.completeCurrentStep()
                     }
                 } label: {
                     if currentStepIndex == steps.count - 1 {
                         Image(systemName: "flag.pattern.checkered")
                             .font(.title2)
                             .foregroundStyle(.green)
-                            .symbolEffect(.bounce, value: completedSteps.count)
+                            .symbolEffect(.bounce, value: viewModel.completedSteps.count)
                     } else {
-                        Image(systemName: completedSteps.contains(currentStepIndex) ? "checkmark.circle.fill" : "checkmark")
+                        Image(systemName: viewModel.completedSteps.contains(currentStepIndex) ? "checkmark.circle.fill" : "checkmark")
                             .font(.title2)
-                            .foregroundStyle(completedSteps.contains(currentStepIndex) ? .green : TextColors.toolbar)
-                            .symbolEffect(.bounce, value: completedSteps.contains(currentStepIndex))
+                            .foregroundStyle(viewModel.completedSteps.contains(currentStepIndex) ? .green : TextColors.toolbar)
+                            .symbolEffect(.bounce, value: viewModel.completedSteps.contains(currentStepIndex))
                     }
                 }
                 .accessibilityLabel(currentStepIndex == steps.count - 1 ? "End session" : "Complete current step")
             }
         }
         .onAppear {
-            setupSession()
+            viewModel.setup()
         }
         .onDisappear {
-            cleanupSession()
+            viewModel.cleanup()
         }
-        .sheet(isPresented: $showingCompletion, onDismiss: {
+        .sheet(isPresented: $viewModel.showingCompletion, onDismiss: {
             guard shouldDismissAfterCompletion else { return }
             shouldDismissAfterCompletion = false
             dismiss()
         }) {
             CompleteSessionView(
                 session: session,
-                notes: notes,
-                assignment: assignment,
+                notes: viewModel.notes,
+                assignment: viewModel.assignment,
+                onSave: { anxietyAfter, notes in
+                    try await viewModel.finishSession(anxietyAfter: anxietyAfter, notes: notes, context: modelContext)
+                },
                 onComplete: {
-                    // Close the sheet first, then close this screen in `onDismiss`.
-                    saveProgress(includeNotes: false)
+                    viewModel.saveProgress(context: modelContext)
                     shouldDismissAfterCompletion = true
-                    showingCompletion = false
+                    viewModel.showingCompletion = false
                 }
             )
         }
@@ -599,7 +568,7 @@ struct ActiveSessionView: View {
                     showingPauseModal = false
                 },
                 onEnd: {
-                    cleanupSession()
+                    viewModel.cleanup()
                     dismiss()
                 }
             )
@@ -609,7 +578,7 @@ struct ActiveSessionView: View {
         .alert("Interrupt session?", isPresented: $showingInterruptAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Interrupt", role: .destructive) {
-                cleanupSession()
+                viewModel.cleanup()
                 dismiss()
             }
         } message: {
@@ -632,7 +601,8 @@ struct ActiveSessionView: View {
             .clipShape(Capsule())
             .onAppear {
                 // Center current step on first appearance
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                Task {
+                    try? await Task.sleep(for: .seconds(0.1))
                     withAnimation(.easeInOut(duration: 0.3)) {
                         proxy.scrollTo(currentStepIndex, anchor: .center)
                     }
@@ -656,11 +626,12 @@ struct ActiveSessionView: View {
     
     private func stepNumberButton(index: Int, scrollProxy: ScrollViewProxy) -> some View {
         let isCurrent = index == currentStepIndex
-        let isCompleted = completedSteps.contains(index)
+        let isCompleted = viewModel.completedSteps.contains(index)
         
         return Button {
             scrollToStepId = index
-            goToStep(index)
+            viewModel.goToStep(index)
+            HapticFeedback.light()
         } label: {
             if isCompleted {
                 // Show checkmark for completed steps (never show the number)
@@ -702,25 +673,25 @@ struct ActiveSessionView: View {
                             )
                         )
                         .frame(
-                            width: geometry.size.width * CGFloat(completedSteps.count) / CGFloat(max(steps.count, 1)),
+                            width: geometry.size.width * CGFloat(viewModel.completedSteps.count) / CGFloat(max(steps.count, 1)),
                             height: 5
                         )
-                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: completedSteps.count)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.completedSteps.count)
                 }
             }
             .frame(height: 5)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Progress")
-            .accessibilityValue("\(completedSteps.count) of \(steps.count) steps completed")
+            .accessibilityValue("\(viewModel.completedSteps.count) of \(steps.count) steps completed")
         }
     }
     
     private func currentStepLargeCard(step: ExposureStep, index: Int) -> some View {
-        let isCompleted = completedSteps.contains(index)
-        let timerController = step.hasTimer ? getStepTimer(index) : nil
+        let isCompleted = viewModel.completedSteps.contains(index)
+        let timerController = step.hasTimer ? viewModel.timer(for: index) : nil
         let duration = step.hasTimer ? TimeInterval(step.timerDuration) : 0
         // Use elapsedTime directly from controller for reactive updates
-        let elapsedTime = timerController?.elapsedTime ?? (timerElapsedTimes[index] ?? 0)
+        let elapsedTime = timerController?.elapsedTime ?? 0
         let remaining = max(0, duration - elapsedTime)
         let isExpired = step.hasTimer && elapsedTime >= duration
         // Read timer state directly from controller to ensure UI updates
@@ -878,9 +849,9 @@ struct ActiveSessionView: View {
     
     
     private func timerControlSection(for step: ExposureStep, at index: Int) -> some View {
-        let timerController = getStepTimer(index)
+        let timerController = viewModel.timer(for: index)
         let duration = TimeInterval(step.timerDuration)
-        let elapsedTime = timerElapsedTimes[index] ?? 0
+        let elapsedTime = timerController.elapsedTime
         let remaining = max(0, duration - elapsedTime)
         let isExpired = elapsedTime >= duration
         
@@ -1040,7 +1011,7 @@ struct ActiveSessionView: View {
                 Text(showAllSteps ? "Hide all steps" : "Show all steps")
                     .font(.system(size: 15, weight: .medium))
                 Spacer()
-                Text("\(completedSteps.count)/\(steps.count)")
+                Text("\(viewModel.completedSteps.count)/\(steps.count)")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
             }
@@ -1053,7 +1024,7 @@ struct ActiveSessionView: View {
         }
         .frame(minHeight: 44)
         .accessibilityLabel(showAllSteps ? "Hide all steps" : "Show all steps")
-        .accessibilityValue("\(completedSteps.count) of \(steps.count) steps completed")
+        .accessibilityValue("\(viewModel.completedSteps.count) of \(steps.count) steps completed")
     }
     
     private var allStepsSection: some View {
@@ -1066,7 +1037,7 @@ struct ActiveSessionView: View {
     }
     
     private func compactStepRow(step: ExposureStep, index: Int) -> some View {
-        let isCompleted = completedSteps.contains(index)
+        let isCompleted = viewModel.completedSteps.contains(index)
         let isCurrent = index == currentStepIndex
         
         return compactStepRowContent(
@@ -1153,7 +1124,7 @@ struct ActiveSessionView: View {
     
     @ViewBuilder
     private func compactStepTimer(step: ExposureStep, index: Int) -> some View {
-        let timerController = getStepTimer(index)
+        let timerController = viewModel.timer(for: index)
         let duration = TimeInterval(step.timerDuration)
         
         CompactTimerView(
@@ -1165,7 +1136,7 @@ struct ActiveSessionView: View {
     
     private func compactStepCompletionButton(index: Int, isCompleted: Bool) -> some View {
         Button {
-            toggleStepCompletion(index)
+            viewModel.toggleStepCompletion(index)
         } label: {
             ZStack {
                 Circle()
@@ -1203,180 +1174,31 @@ struct ActiveSessionView: View {
     }
     
     // MARK: - Helper Functions
-    
-    private func setupSession() {
-        completedSteps = Set(session.completedStepIndices)
-        
-        for (index, time) in session.stepTimings {
-            let timer = getStepTimer(index)
-            timer.setElapsedTime(time)
-            timerElapsedTimes[index] = time
-        }
-    }
-    
-    private func cleanupSession() {
-        for (_, timer) in stepTimers {
-            timer.stop()
-        }
-    }
-    
-    private func saveProgress(includeNotes: Bool = true) {
-        session.completedStepIndices = Array(completedSteps).sorted()
-        
-        for (index, timer) in stepTimers {
-            if timer.elapsedTime > 0 {
-                session.setStepTime(index, time: timer.elapsedTime)
-            }
-        }
-        
-        if includeNotes, !notes.isEmpty {
-            session.notes = notes
-        }
-        
-        try? modelContext.save()
-    }
-    
-    private func completeCurrentStep() {
-        // Capture the step the user is currently on (including manual navigation).
-        let targetIndex = currentStepIndex
-        let isCompleting = !completedSteps.contains(targetIndex)
-        
-        if isCompleting {
-            triggerSuccessHaptic()
-        }
-        
-        toggleStepCompletion(targetIndex)
-        
-        // After completing, return to auto-navigation; after un-completing, stay on this step.
-        selectedStepIndex = isCompleting ? nil : targetIndex
-    }
-    
-    private func finishSession() {
-        // Mark the last step as completed
-        withAnimation(.spring(response: 0.3)) {
-            selectedStepIndex = nil // Reset to auto-navigation
-            completedSteps.insert(currentStepIndex)
-            session.markStepCompleted(currentStepIndex)
-            
-            if let timer = stepTimers[currentStepIndex] {
-                timer.stop()
-            }
-        }
-        
-        triggerSuccessHaptic()
-        saveProgress()
-        
-        // Show completion screen
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            showingCompletion = true
-        }
-    }
-    
-    private func toggleStepCompletion(_ index: Int) {
-        withAnimation(.spring(response: 0.3)) {
-            if completedSteps.contains(index) {
-                // When un-completing a step, also un-complete all subsequent steps
-                // to keep progress consistent.
-                let indicesToInvalidate = completedSteps.filter { $0 >= index }
-                
-                for stepIndex in indicesToInvalidate {
-                    completedSteps.remove(stepIndex)
-                    session.markStepIncomplete(stepIndex)
-                    
-                    // Clear any recorded timing for invalidated steps.
-                    session.stepTimings.removeValue(forKey: stepIndex)
-                    timerElapsedTimes.removeValue(forKey: stepIndex)
-                    
-                    // Reset any running timers for invalidated steps.
-                    if let timer = stepTimers[stepIndex] {
-                        timer.reset()
-                    }
-                }
-            } else {
-                // When completing a step, reset selectedStepIndex to return to auto-navigation
-                if index == currentStepIndex {
-                    selectedStepIndex = nil
-                }
-                completedSteps.insert(index)
-                session.markStepCompleted(index)
-                triggerSuccessHaptic()
-                
-                if let timer = stepTimers[index] {
-                    timer.stop()
-                }
-            }
-        }
-        
-        saveProgress()
-    }
 
     // MARK: - Swipe completion (deterministic)
 
     private func completeStepBySwipe(_ index: Int) {
         guard index >= 0, index < steps.count else { return }
-        guard !completedSteps.contains(index) else {
-            // Already completed — still return to auto-navigation.
-            selectedStepIndex = nil
+        guard !viewModel.completedSteps.contains(index) else {
+            viewModel.selectedStepIndex = nil
             return
         }
-
         withAnimation(.spring(response: 0.3)) {
-            completedSteps.insert(index)
-            session.markStepCompleted(index)
-            selectedStepIndex = nil // return to auto-navigation (advance to next incomplete)
-
-            if let timer = stepTimers[index] {
-                timer.stop()
-            }
+            viewModel.toggleStepCompletion(index)
         }
-
-        triggerSuccessHaptic()
-        saveProgress()
+        HapticFeedback.success()
+        viewModel.saveProgress(context: modelContext)
     }
 
     private func uncompleteStepBySwipe(_ index: Int) {
         guard index >= 0, index < steps.count else { return }
-        guard completedSteps.contains(index) else { return }
-        toggleStepCompletion(index) // keeps existing invalidation rules for subsequent steps
+        guard viewModel.completedSteps.contains(index) else { return }
+        viewModel.toggleStepCompletion(index)
     }
-    
-    
-    // MARK: - Step Navigation
-    
-    private func goToStep(_ index: Int) {
-        guard index >= 0 && index < steps.count else { return }
-        
-        withAnimation(.spring(response: 0.3)) {
-            selectedStepIndex = index
-        }
-        
-        triggerHaptic(.light)
-    }
-    
-    // MARK: - Haptic Feedback
-    
-    private func triggerHaptic(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        let generator = UIImpactFeedbackGenerator(style: style)
-        generator.impactOccurred()
-    }
-    
-    private func triggerSuccessHaptic() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-    }
-    
-    // MARK: - Helper Functions
-    
-    private func getStepTimer(_ index: Int) -> StepTimerController {
-        if let existing = stepTimers[index] {
-            return existing
-        }
-        let newTimer = StepTimerController()
-        // No need for onTimeUpdate callback - TimerSectionContent observes the timer directly
-        // via its @Observable properties (elapsedTime)
-        stepTimers[index] = newTimer
-        return newTimer
-    }
+
+    // MARK: - Step Navigation (goToStep is viewModel.goToStep)
+
+    // MARK: - Helpers
     
     private func formatTime(_ timeInterval: TimeInterval) -> String {
         let totalSeconds = max(0, Int(timeInterval))

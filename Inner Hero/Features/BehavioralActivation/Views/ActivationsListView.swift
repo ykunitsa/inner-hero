@@ -145,7 +145,7 @@ struct ActivationsListView: View {
     }
     
     private func activationCard(activation: ActivityList) -> some View {
-        NavigationLink(destination: ActivationDetailView(activation: activation)) {
+        NavigationLink(value: AppRoute.activationView(activityListId: activation.id, assignmentId: nil)) {
             ActivationCardView(activation: activation)
         }
         .buttonStyle(.plain)

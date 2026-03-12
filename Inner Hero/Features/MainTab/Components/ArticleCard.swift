@@ -7,9 +7,7 @@ struct ArticleCard: View {
     private static let cardHeight: CGFloat = 160
     
     var body: some View {
-        NavigationLink {
-            ArticleDetailView(article: article)
-        } label: {
+        NavigationLink(value: AppRoute.articleDetail(articleId: article.id)) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Image(systemName: article.icon)

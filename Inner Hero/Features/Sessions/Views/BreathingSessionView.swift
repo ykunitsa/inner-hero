@@ -8,6 +8,7 @@ struct BreathingSessionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
+    @State private var viewModel = BreathingSessionViewModel()
     @State private var controller: BreathingController
     @State private var showingFinishConfirmation = false
     @State private var showingCongratsSheet = false
@@ -216,17 +217,13 @@ struct BreathingSessionView: View {
         controller.stop()
         hapticsEngine.stop()
         
-        // Save session result
-        let dataManager = DataManager(modelContext: modelContext)
         do {
-            try dataManager.createBreathingSessionResult(
+            try viewModel.saveSession(
                 patternType: pattern.type,
-                duration: controller.elapsedTime
+                duration: controller.elapsedTime,
+                assignment: assignment,
+                context: modelContext
             )
-            
-            if let assignment {
-                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
-            }
             HapticFeedback.success()
         } catch {
             print("Error saving breathing session: \(error)")

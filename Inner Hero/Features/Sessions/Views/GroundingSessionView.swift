@@ -10,7 +10,7 @@ struct GroundingSessionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    @State private var sessionStartTime = Date()
+    @State private var viewModel = GroundingSessionViewModel()
     @State private var currentStepIndex = 0
     @State private var showingFinishConfirmation = false
     @State private var showingCongratsSheet = false
@@ -106,8 +106,8 @@ struct GroundingSessionView: View {
                         
                         Spacer()
                         
-                        TimelineView(.periodic(from: sessionStartTime, by: 1)) { context in
-                            Text(formatDuration(context.date.timeIntervalSince(sessionStartTime)))
+                        TimelineView(.periodic(from: viewModel.sessionStartTime, by: 1)) { context in
+                            Text(formatDuration(context.date.timeIntervalSince(viewModel.sessionStartTime)))
                                 .font(.caption.monospacedDigit())
                                 .foregroundStyle(TextColors.tertiary)
                         }
@@ -226,7 +226,7 @@ struct GroundingSessionView: View {
             }
         }
         .onAppear {
-            sessionStartTime = Date()
+            viewModel.sessionStartTime = Date()
         }
         .alert("End exercise?", isPresented: $showingFinishConfirmation) {
             Button("Cancel", role: .cancel) { }
@@ -272,18 +272,15 @@ struct GroundingSessionView: View {
     }
     
     private func finishSession() {
-        let elapsed = Date().timeIntervalSince(sessionStartTime)
+        let elapsed = Date().timeIntervalSince(viewModel.sessionStartTime)
         
-        let dataManager = DataManager(modelContext: modelContext)
         do {
-            try dataManager.createGroundingSessionResult(
+            try viewModel.saveSession(
                 type: exercise.type,
-                duration: elapsed
+                duration: elapsed,
+                assignment: assignment,
+                context: modelContext
             )
-            
-            if let assignment {
-                try dataManager.markAssignmentCompletedIfNeeded(assignment: assignment)
-            }
             HapticFeedback.success()
         } catch {
             print("Error saving grounding session: \(error)")

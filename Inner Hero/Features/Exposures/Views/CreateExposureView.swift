@@ -135,12 +135,12 @@ struct CreateExposureView: View {
         let newStep = StepEditItem(text: "", hasTimer: false, timerMinutes: 5, timerSeconds: 0)
         steps.append(newStep)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        Task {
+            try? await Task.sleep(for: .seconds(0.1))
             focusedField = .step(newStep.id)
         }
         
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+        HapticFeedback.light()
     }
     
     private func deleteStep(at index: Int) {
@@ -151,8 +151,7 @@ struct CreateExposureView: View {
             steps.remove(at: index)
         }
         
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+        HapticFeedback.medium()
     }
     
     private func saveExposure() {
@@ -179,15 +178,13 @@ struct CreateExposureView: View {
         do {
             try modelContext.save()
             
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
+            HapticFeedback.success()
             
             dismiss()
         } catch {
             print("Error saving: \(error)")
             
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
+            HapticFeedback.error()
         }
     }
 }

@@ -3,7 +3,9 @@ import SwiftData
 
 struct ExerciseScheduleSection: View {
     @Environment(\.modelContext) private var modelContext
-    
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
+
     let assignments: [ExerciseAssignment]
     let exerciseType: ExerciseType
     let exposureId: UUID?
@@ -11,13 +13,56 @@ struct ExerciseScheduleSection: View {
     let breathingPatternType: BreathingPatternType?
     let relaxationType: RelaxationType?
     let activityListId: UUID?
-    
+
     @State private var showScheduleSheet = false
     @State private var assignmentToEdit: ExerciseAssignment?
     @State private var assignmentToDelete: ExerciseAssignment?
     @State private var showDeleteAlert = false
-    
+
     var body: some View {
+        Group {
+            if let viewModel = scheduleViewModel {
+                sectionContent(viewModel: viewModel, notificationManager: notificationManager)
+            } else {
+                sectionContentFallback
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
+        )
+        .sheet(isPresented: $showScheduleSheet) {
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: assignmentToEdit,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedExposureId: exposureId,
+                    preSelectedBreathingPattern: breathingPatternType,
+                    preSelectedRelaxationType: relaxationType,
+                    preSelectedGroundingType: groundingType,
+                    preSelectedActivityListId: activityListId
+                )
+            }
+        }
+        .alert("Delete schedule?", isPresented: $showDeleteAlert, presenting: assignmentToDelete) { assignment in
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                if let viewModel = scheduleViewModel {
+                    Task {
+                        await deleteSchedule(assignment, viewModel: viewModel, notificationManager: notificationManager)
+                    }
+                }
+            }
+        } message: { _ in
+            Text("Are you sure you want to delete this schedule?")
+        }
+    }
+
+    private func sectionContent(viewModel: ScheduleViewModel, notificationManager: NotificationManager) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "calendar.badge.clock")
@@ -33,58 +78,75 @@ struct ExerciseScheduleSection: View {
                     .font(.body.weight(.semibold))
                     .foregroundStyle(TextColors.primary)
             }
-            
+
             if assignments.isEmpty {
                 createScheduleButton
             } else {
-                schedulesList
+                schedulesList(viewModel: viewModel, notificationManager: notificationManager)
                 addAnotherScheduleButton
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
-        )
-        .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(
-                assignment: assignmentToEdit,
-                preSelectedExposureId: exposureId,
-                preSelectedBreathingPattern: breathingPatternType,
-                preSelectedRelaxationType: relaxationType,
-                preSelectedGroundingType: groundingType,
-                preSelectedActivityListId: activityListId
-            )
-        }
-        .alert("Delete schedule?", isPresented: $showDeleteAlert, presenting: assignmentToDelete) { assignment in
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
-                deleteSchedule(assignment)
+    }
+
+    private var sectionContentFallback: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "calendar.badge.clock")
+                    .font(.body)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.orange, .orange.opacity(0.8)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                Text("Schedule")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(TextColors.primary)
             }
-        } message: { _ in
-            Text("Are you sure you want to delete this schedule?")
+            if assignments.isEmpty {
+                createScheduleButton
+            } else {
+                schedulesListFallback
+                addAnotherScheduleButton
+            }
         }
     }
-    
-    private var schedulesList: some View {
+
+    private func schedulesList(viewModel: ScheduleViewModel, notificationManager: NotificationManager) -> some View {
         let sorted = assignments.sorted {
             if $0.time != $1.time { return $0.time < $1.time }
             return $0.createdAt < $1.createdAt
         }
-        
+
         return VStack(alignment: .leading, spacing: 12) {
             ForEach(Array(sorted.enumerated()), id: \.element.id) { index, assignment in
-                scheduleRow(assignment: assignment)
-                
+                scheduleRow(
+                    assignment: assignment,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager
+                )
+
                 if index != (sorted.count - 1) {
                     Divider()
                 }
             }
         }
     }
-    
+
+    private var schedulesListFallback: some View {
+        let sorted = assignments.sorted {
+            if $0.time != $1.time { return $0.time < $1.time }
+            return $0.createdAt < $1.createdAt
+        }
+        return VStack(alignment: .leading, spacing: 12) {
+            ForEach(Array(sorted.enumerated()), id: \.element.id) { index, assignment in
+                scheduleRowReadOnly(assignment: assignment)
+                if index != (sorted.count - 1) { Divider() }
+            }
+        }
+    }
+
     private var createScheduleButton: some View {
         Button {
             assignmentToEdit = nil
@@ -112,7 +174,7 @@ struct ExerciseScheduleSection: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private var addAnotherScheduleButton: some View {
         Button {
             assignmentToEdit = nil
@@ -135,8 +197,12 @@ struct ExerciseScheduleSection: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Add schedule")
     }
-    
-    private func scheduleRow(assignment: ExerciseAssignment) -> some View {
+
+    private func scheduleRow(
+        assignment: ExerciseAssignment,
+        viewModel: ScheduleViewModel,
+        notificationManager: NotificationManager
+    ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 6) {
@@ -148,7 +214,7 @@ struct ExerciseScheduleSection: View {
                             .font(.body.weight(.medium))
                             .foregroundStyle(TextColors.primary)
                     }
-                    
+
                     HStack(spacing: 8) {
                         Image(systemName: "calendar")
                             .font(.caption)
@@ -158,18 +224,20 @@ struct ExerciseScheduleSection: View {
                             .foregroundStyle(TextColors.secondary)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 Toggle("", isOn: Binding(
                     get: { assignment.isActive },
                     set: { newValue in
-                        toggleSchedule(assignment, isActive: newValue)
+                        Task {
+                            await toggleSchedule(assignment, isActive: newValue, viewModel: viewModel, notificationManager: notificationManager)
+                        }
                     }
                 ))
                 .labelsHidden()
             }
-            
+
             HStack(spacing: 12) {
                 Button {
                     assignmentToEdit = assignment
@@ -190,7 +258,7 @@ struct ExerciseScheduleSection: View {
                     )
                 }
                 .buttonStyle(.plain)
-                
+
                 Button {
                     assignmentToDelete = assignment
                     showDeleteAlert = true
@@ -210,7 +278,7 @@ struct ExerciseScheduleSection: View {
                     )
                 }
                 .buttonStyle(.plain)
-                
+
                 Spacer(minLength: 0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -218,47 +286,61 @@ struct ExerciseScheduleSection: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
     }
-    
+
+    private func scheduleRowReadOnly(assignment: ExerciseAssignment) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 8) {
+                Image(systemName: "clock")
+                    .font(.caption)
+                    .foregroundStyle(TextColors.secondary)
+                Text(timeString(from: assignment.time))
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(TextColors.primary)
+            }
+            Text(assignment.getDayNamesString())
+                .font(.subheadline)
+                .foregroundStyle(TextColors.secondary)
+        }
+    }
+
     private func timeString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: date)
     }
-    
-    private func toggleSchedule(_ assignment: ExerciseAssignment, isActive: Bool) {
-        Task {
-            let dataManager = DataManager(modelContext: modelContext)
-            
-            do {
-                try dataManager.updateExerciseAssignment(assignment, isActive: isActive)
-                
-                if isActive {
-                    try await NotificationManager.shared.scheduleNotification(for: assignment)
-                } else {
-                    await NotificationManager.shared.cancelNotification(for: assignment)
-                }
-                
-                try modelContext.save()
-                HapticFeedback.selection()
-            } catch {
-                HapticFeedback.error()
-                print("Error updating schedule: \(error)")
-            }
+
+    private func toggleSchedule(
+        _ assignment: ExerciseAssignment,
+        isActive: Bool,
+        viewModel: ScheduleViewModel,
+        notificationManager: NotificationManager
+    ) async {
+        do {
+            try await viewModel.updateAssignment(
+                assignment,
+                context: modelContext,
+                isActive: isActive,
+                notificationManager: notificationManager
+            )
+            HapticFeedback.selection()
+        } catch {
+            HapticFeedback.error()
+            print("Error updating schedule: \(error)")
         }
     }
-    
-    private func deleteSchedule(_ assignment: ExerciseAssignment) {
-        Task {
-            let dataManager = DataManager(modelContext: modelContext)
-            
-            do {
-                await NotificationManager.shared.cancelNotification(for: assignment)
-                try dataManager.deleteExerciseAssignment(assignment)
-                HapticFeedback.success()
-            } catch {
-                HapticFeedback.error()
-                print("Error deleting schedule: \(error)")
-            }
+
+    private func deleteSchedule(
+        _ assignment: ExerciseAssignment,
+        viewModel: ScheduleViewModel,
+        notificationManager: NotificationManager
+    ) async {
+        do {
+            try await viewModel.deleteAssignment(assignment, context: modelContext, notificationManager: notificationManager)
+            assignmentToDelete = nil
+            HapticFeedback.success()
+        } catch {
+            HapticFeedback.error()
+            print("Error deleting schedule: \(error)")
         }
     }
 }
@@ -274,8 +356,8 @@ struct ExerciseScheduleSection: View {
             relaxationType: nil,
             activityListId: nil
         )
+        .environment(\.scheduleViewModel, ScheduleViewModel())
+        .environment(NotificationManager())
         .padding()
     }
 }
-
-

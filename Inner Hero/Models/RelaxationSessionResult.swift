@@ -1,11 +1,10 @@
 import Foundation
 import SwiftData
 
-// MARK: - RelaxationType Enum
-
+// Storage contract: rawValues are persisted in SwiftData. NEVER rename rawValue strings — only add new cases.
 enum RelaxationType: String, Codable {
-    case fullBody
-    case short
+    case fullBody = "fullBody"
+    case short = "short"
 }
 
 // MARK: - RelaxationSessionResult Model

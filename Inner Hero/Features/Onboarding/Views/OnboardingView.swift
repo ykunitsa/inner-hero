@@ -87,10 +87,8 @@ struct OnboardingView: View {
                 // Continue Button
                 Button {
                     #if os(iOS)
-                    let generator = UIImpactFeedbackGenerator(style: .light)
-                    generator.impactOccurred()
+                    HapticFeedback.light()
                     #endif
-                    
                     withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.3)) {
                         hasCompletedOnboarding = true
                     }

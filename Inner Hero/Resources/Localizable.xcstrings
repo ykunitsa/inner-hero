@@ -67,6 +67,9 @@
         }
       }
     },
+    "%@ not found" : {
+
+    },
     "%@: %@" : {
       "localizations" : {
         "en" : {
@@ -1471,6 +1474,7 @@
       }
     },
     "Breathing exercise" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -6576,6 +6580,9 @@
         }
       }
     },
+    "Schedule is not available in this context." : {
+
+    },
     "Scheduled" : {
       "localizations" : {
         "ru" : {
@@ -7414,6 +7421,9 @@
           }
         }
       }
+    },
+    "The item may have been removed or is unavailable." : {
+
     },
     "The schedule may have been deleted or changed." : {
       "extractionState" : "stale",

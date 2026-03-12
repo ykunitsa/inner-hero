@@ -4,17 +4,19 @@ import SwiftData
 struct BreathingPatternDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
-    
+    @Environment(\.scheduleViewModel) private var scheduleViewModel
+    @Environment(NotificationManager.self) private var notificationManager
+
     let pattern: BreathingPattern
     
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \BreathingSessionResult.performedAt, order: .reverse) private var allSessions: [BreathingSessionResult]
+    @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     
     @State private var showScheduleSheet = false
-    @State private var isFavorite = false
     
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
+    private var isFavorite: Bool {
+        FavoritesService.isFavorite(type: .breathing, exerciseId: nil, identifier: pattern.type.rawValue, in: favorites)
     }
     
     private var assignments: [ExerciseAssignment] {
@@ -90,13 +92,14 @@ struct BreathingPatternDetailView: View {
             }
         }
         .sheet(isPresented: $showScheduleSheet) {
-            ScheduleExerciseView(
-                assignment: nil,
-                preSelectedBreathingPattern: pattern.type
-            )
-        }
-        .onAppear {
-            checkFavoriteStatus()
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: nil,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedBreathingPattern: pattern.type
+                )
+            }
         }
     }
     
@@ -194,7 +197,7 @@ struct BreathingPatternDetailView: View {
     }
     
     private var startSessionButton: some View {
-        NavigationLink(destination: BreathingSessionView(pattern: pattern)) {
+        NavigationLink(value: AppRoute.breathingSession(patternType: pattern.type)) {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.body)
@@ -221,7 +224,7 @@ struct BreathingPatternDetailView: View {
     }
     
     private var sessionsHistoryCard: some View {
-        NavigationLink(destination: BreathingSessionHistoryView(patternType: pattern.type, title: pattern.localizedName)) {
+        NavigationLink(value: AppRoute.sessionHistoryBreathing(patternType: pattern.type)) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "clock")
@@ -316,33 +319,18 @@ struct BreathingPatternDetailView: View {
     private func toggleFavorite() {
         Task {
             do {
-                let newFavoriteStatus = try dataManager.toggleFavorite(
-                    exerciseType: .breathing,
-                    exerciseIdentifier: pattern.type.rawValue
+                _ = try FavoritesService.toggle(
+                    type: .breathing,
+                    exerciseId: nil,
+                    identifier: pattern.type.rawValue,
+                    context: modelContext
                 )
                 await MainActor.run {
-                    isFavorite = newFavoriteStatus
                     HapticFeedback.selection()
                 }
             } catch {
                 print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
-            }
-        }
-    }
-    
-    private func checkFavoriteStatus() {
-        Task {
-            do {
-                let favorite = try dataManager.isFavorite(
-                    exerciseType: .breathing,
-                    exerciseIdentifier: pattern.type.rawValue
-                )
-                await MainActor.run {
-                    isFavorite = favorite
-                }
-            } catch {
-                print("Error checking favorite: \(error)")
             }
         }
     }

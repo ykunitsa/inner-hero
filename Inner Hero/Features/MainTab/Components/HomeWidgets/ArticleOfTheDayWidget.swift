@@ -6,9 +6,7 @@ struct ArticleOfTheDayWidget: View {
     var body: some View {
         Group {
             if let article {
-                NavigationLink {
-                    ArticleDetailView(article: article)
-                } label: {
+                NavigationLink(value: AppRoute.articleDetail(articleId: article.id)) {
                     WidgetCard(minHeight: 120) {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {

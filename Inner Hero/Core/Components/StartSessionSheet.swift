@@ -13,10 +13,6 @@ struct StartSessionSheet: View {
     @State private var showError = false
     @State private var errorMessage = ""
     
-    private var dataManager: DataManager {
-        DataManager(modelContext: modelContext)
-    }
-    
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
@@ -317,10 +313,13 @@ struct StartSessionSheet: View {
     
     private func startSession() {
         do {
-            let session = try dataManager.createSessionResult(
-                for: exposure,
-                anxietyBefore: Int(anxietyBefore)
+            let session = ExposureSessionResult(
+                exposure: exposure,
+                anxietyBefore: Int(anxietyBefore),
+                notes: ""
             )
+            modelContext.insert(session)
+            try modelContext.save()
             dismiss()
             onSessionCreated(session)
         } catch {

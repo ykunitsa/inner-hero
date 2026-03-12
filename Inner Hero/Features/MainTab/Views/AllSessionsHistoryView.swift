@@ -22,7 +22,7 @@ struct AllSessionsHistoryView: View {
                 } else {
                     List {
                         ForEach(completedSessions) { session in
-                            NavigationLink(destination: MainTabSessionDetailView(session: session)) {
+                            NavigationLink(value: AppRoute.sessionDetail(sessionId: session.id)) {
                                 SessionHistoryRowView(session: session)
                             }
                         }

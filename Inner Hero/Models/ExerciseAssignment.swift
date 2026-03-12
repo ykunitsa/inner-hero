@@ -1,14 +1,13 @@
 import Foundation
 import SwiftData
 
-// MARK: - ExerciseType Enum
-
+// Storage contract: rawValues are persisted in SwiftData. NEVER rename rawValue strings — only add new cases.
 enum ExerciseType: String, Codable {
-    case exposure
-    case breathing
-    case relaxation
-    case grounding
-    case behavioralActivation
+    case exposure = "exposure"
+    case breathing = "breathing"
+    case relaxation = "relaxation"
+    case grounding = "grounding"
+    case behavioralActivation = "behavioralActivation"
 }
 
 // MARK: - ExerciseAssignment Model

@@ -5,7 +5,7 @@ struct ScheduleExerciseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
-    
+
     @State private var exerciseType: ExerciseType = .exposure
     @State private var selectedExposureId: UUID?
     @State private var selectedBreathingPattern: BreathingPatternType?
@@ -22,19 +22,23 @@ struct ScheduleExerciseView: View {
     @State private var isActive: Bool = true
     @State private var showingPermissionAlert = false
     @State private var permissionDenied = false
-    
+
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
     @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
-    
+
     let assignmentToEdit: ExerciseAssignment?
+    let viewModel: ScheduleViewModel
+    let notificationManager: NotificationManager
     let preSelectedExposureId: UUID?
     let preSelectedBreathingPattern: BreathingPatternType?
     let preSelectedRelaxationType: RelaxationType?
     let preSelectedGroundingType: GroundingType?
     let preSelectedActivityListId: UUID?
-    
+
     init(
         assignment: ExerciseAssignment? = nil,
+        viewModel: ScheduleViewModel,
+        notificationManager: NotificationManager,
         preSelectedExposureId: UUID? = nil,
         preSelectedBreathingPattern: BreathingPatternType? = nil,
         preSelectedRelaxationType: RelaxationType? = nil,
@@ -42,12 +46,14 @@ struct ScheduleExerciseView: View {
         preSelectedActivityListId: UUID? = nil
     ) {
         self.assignmentToEdit = assignment
+        self.viewModel = viewModel
+        self.notificationManager = notificationManager
         self.preSelectedExposureId = preSelectedExposureId
         self.preSelectedBreathingPattern = preSelectedBreathingPattern
         self.preSelectedRelaxationType = preSelectedRelaxationType
         self.preSelectedGroundingType = preSelectedGroundingType
         self.preSelectedActivityListId = preSelectedActivityListId
-        
+
         if let assignment = assignment {
             _exerciseType = State(initialValue: assignment.exerciseType)
             _selectedExposureId = State(initialValue: assignment.exposureId)
@@ -59,7 +65,6 @@ struct ScheduleExerciseView: View {
             _selectedTime = State(initialValue: assignment.time)
             _isActive = State(initialValue: assignment.isActive)
         } else {
-            // Pre-select values if provided
             if preSelectedExposureId != nil {
                 _exerciseType = State(initialValue: .exposure)
                 _selectedExposureId = State(initialValue: preSelectedExposureId)
@@ -78,7 +83,7 @@ struct ScheduleExerciseView: View {
             }
         }
     }
-    
+
     var body: some View {
         NavigationStack {
             Form {
@@ -123,7 +128,7 @@ struct ScheduleExerciseView: View {
             }
         }
     }
-    
+
     private var exerciseTypeSection: some View {
         Section {
             Picker("Exercise type", selection: $exerciseType) {
@@ -134,7 +139,6 @@ struct ScheduleExerciseView: View {
                 Text("Behavioral activation").tag(ExerciseType.behavioralActivation)
             }
             .onChange(of: exerciseType) {
-                // Reset specific selections when type changes
                 selectedExposureId = nil
                 selectedBreathingPattern = nil
                 selectedRelaxationType = nil
@@ -145,7 +149,7 @@ struct ScheduleExerciseView: View {
             Text("Exercise type")
         }
     }
-    
+
     @ViewBuilder
     private var specificExerciseSection: some View {
         switch exerciseType {
@@ -165,7 +169,7 @@ struct ScheduleExerciseView: View {
             } header: {
                 Text("Exposure")
             }
-            
+
         case .breathing:
             Section {
                 Picker("Breathing technique", selection: $selectedBreathingPattern) {
@@ -177,7 +181,7 @@ struct ScheduleExerciseView: View {
             } header: {
                 Text("Breathing technique")
             }
-            
+
         case .relaxation:
             Section {
                 Picker("Relaxation", selection: $selectedRelaxationType) {
@@ -189,7 +193,7 @@ struct ScheduleExerciseView: View {
             } header: {
                 Text("Relaxation")
             }
-            
+
         case .grounding:
             Section {
                 Picker("Grounding", selection: $selectedGroundingType) {
@@ -201,7 +205,7 @@ struct ScheduleExerciseView: View {
             } header: {
                 Text("Grounding")
             }
-            
+
         case .behavioralActivation:
             Section {
                 if activityLists.isEmpty {
@@ -220,7 +224,7 @@ struct ScheduleExerciseView: View {
             }
         }
     }
-    
+
     private var timeSection: some View {
         Section {
             DatePicker("Time", selection: $selectedTime, displayedComponents: .hourAndMinute)
@@ -228,7 +232,7 @@ struct ScheduleExerciseView: View {
             Text("Time")
         }
     }
-    
+
     private var daysSection: some View {
         Section {
             DayOfWeekSelector(selectedDays: $selectedDays)
@@ -241,7 +245,7 @@ struct ScheduleExerciseView: View {
             }
         }
     }
-    
+
     private var activeToggleSection: some View {
         Section {
             Toggle("Active", isOn: $isActive)
@@ -249,68 +253,51 @@ struct ScheduleExerciseView: View {
             Text("When active, you will receive reminders at the selected time")
         }
     }
-    
+
     private var canSave: Bool {
         guard !selectedDays.isEmpty else { return false }
-        
         switch exerciseType {
-        case .exposure:
-            return selectedExposureId != nil
-        case .breathing:
-            return selectedBreathingPattern != nil
-        case .relaxation:
-            return selectedRelaxationType != nil
-        case .grounding:
-            return selectedGroundingType != nil
-        case .behavioralActivation:
-            return selectedActivityListId != nil
+        case .exposure: return selectedExposureId != nil
+        case .breathing: return selectedBreathingPattern != nil
+        case .relaxation: return selectedRelaxationType != nil
+        case .grounding: return selectedGroundingType != nil
+        case .behavioralActivation: return selectedActivityListId != nil
         }
     }
-    
+
     private func saveSchedule() {
         Task { @MainActor in
-            // Request notification permissions if needed
-            let authStatus = await NotificationManager.shared.checkAuthorizationStatus()
+            let authStatus = await notificationManager.checkAuthorizationStatus()
             if authStatus != .authorized {
-                let granted = await NotificationManager.shared.requestAuthorization()
+                let granted = await notificationManager.requestAuthorization()
                 if !granted {
                     permissionDenied = authStatus == .denied
                     showingPermissionAlert = true
                     return
                 }
             }
-            
-            let dataManager = DataManager(modelContext: modelContext)
-            
+
             do {
                 if let assignment = assignmentToEdit {
-                    // Update existing assignment
-                    try dataManager.updateExerciseAssignment(
+                    try await viewModel.updateAssignment(
                         assignment,
+                        context: modelContext,
                         daysOfWeek: selectedDays,
                         time: selectedTime,
-                        isActive: isActive
+                        isActive: isActive,
+                        exerciseType: exerciseType,
+                        exposureId: selectedExposureId,
+                        breathingPatternType: selectedBreathingPattern,
+                        relaxationType: selectedRelaxationType,
+                        groundingType: selectedGroundingType,
+                        activityListId: selectedActivityListId,
+                        notificationManager: notificationManager
                     )
-                    
-                    // Update exercise-specific fields if type changed
-                    assignment.exerciseType = exerciseType
-                    assignment.exposureId = selectedExposureId
-                    assignment.breathingPattern = selectedBreathingPattern
-                    assignment.relaxation = selectedRelaxationType
-                    assignment.grounding = selectedGroundingType
-                    assignment.activityListId = selectedActivityListId
-                    
-                    try modelContext.save()
-                    
-                    // Update notification
-                    if isActive {
-                        try await NotificationManager.shared.updateNotification(for: assignment)
-                    } else {
-                        await NotificationManager.shared.cancelNotification(for: assignment)
-                    }
+                    HapticFeedback.success()
+                    dismiss()
                 } else {
-                    // Create new assignment
-                    let assignment = try dataManager.createExerciseAssignment(
+                    _ = try await viewModel.createAssignment(
+                        context: modelContext,
                         exerciseType: exerciseType,
                         daysOfWeek: selectedDays,
                         time: selectedTime,
@@ -319,18 +306,12 @@ struct ScheduleExerciseView: View {
                         breathingPatternType: selectedBreathingPattern,
                         relaxationType: selectedRelaxationType,
                         groundingType: selectedGroundingType,
-                        activityListId: selectedActivityListId
+                        activityListId: selectedActivityListId,
+                        notificationManager: notificationManager
                     )
-                    
-                    // Schedule notification
-                    if isActive {
-                        try await NotificationManager.shared.scheduleNotification(for: assignment)
-                        try modelContext.save()
-                    }
+                    HapticFeedback.success()
+                    dismiss()
                 }
-                
-                HapticFeedback.success()
-                dismiss()
             } catch {
                 HapticFeedback.error()
                 print("Error saving schedule: \(error)")
@@ -340,7 +321,9 @@ struct ScheduleExerciseView: View {
 }
 
 #Preview {
-    ScheduleExerciseView()
-        .modelContainer(for: [Exposure.self, ActivityList.self, ExerciseAssignment.self], inMemory: true)
+    ScheduleExerciseView(
+        viewModel: ScheduleViewModel(),
+        notificationManager: NotificationManager()
+    )
+    .modelContainer(for: [Exposure.self, ActivityList.self, ExerciseAssignment.self], inMemory: true)
 }
-

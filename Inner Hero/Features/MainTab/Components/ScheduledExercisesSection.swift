@@ -29,7 +29,7 @@ struct ScheduledExercisesSection: View {
                     dateComponents.minute = timeComponents.minute
                     
                     if let exerciseDate = calendar.date(from: dateComponents), exerciseDate >= Date() {
-                        let exerciseName = getExerciseName(for: assignment)
+                        let exerciseName = assignment.displayTitle(exposures: exposures, activityLists: activityLists)
                         let exerciseType = assignment.exerciseType
                         let exerciseId = getExerciseId(for: assignment)
                         let exerciseIdentifier = getExerciseIdentifier(for: assignment)
@@ -99,9 +99,7 @@ struct ScheduledExercisesSection: View {
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
             
-            NavigationLink {
-                ExerciseScheduleView()
-            } label: {
+            NavigationLink(value: AppRoute.exerciseSchedule) {
                 Text("Create schedule")
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.orange)
@@ -110,48 +108,7 @@ struct ScheduledExercisesSection: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
     }
-    
-    private func getExerciseName(for assignment: ExerciseAssignment) -> String {
-        switch assignment.exerciseType {
-        case .exposure:
-            if let exposureId = assignment.exposureId,
-               let exposure = exposures.first(where: { $0.id == exposureId }) {
-                return exposure.localizedTitle
-            }
-            return String(localized: "Exposure")
-            
-        case .breathing:
-            if let patternType = assignment.breathingPattern {
-                if let pattern = BreathingPattern.predefinedPatterns.first(where: { $0.type == patternType }) {
-                    return pattern.name
-                }
-            }
-            return String(localized: "Breathing exercise")
-            
-        case .relaxation:
-            if let relaxationType = assignment.relaxation {
-                if let exercise = RelaxationExercise.predefinedExercises.first(where: { $0.type == relaxationType }) {
-                    return exercise.name
-                }
-            }
-            return String(localized: "Relaxation")
-            
-        case .grounding:
-            if let groundingType = assignment.grounding,
-               let exercise = GroundingExercise.predefinedExercises.first(where: { $0.type == groundingType }) {
-                return exercise.name
-            }
-            return String(localized: "Grounding")
-            
-        case .behavioralActivation:
-            if let activityListId = assignment.activityListId,
-               let activityList = activityLists.first(where: { $0.id == activityListId }) {
-                return activityList.localizedTitle
-            }
-            return String(localized: "Behavioral activation")
-        }
-    }
-    
+
     private func getExerciseId(for assignment: ExerciseAssignment) -> UUID? {
         switch assignment.exerciseType {
         case .exposure:
@@ -200,7 +157,7 @@ struct ScheduledExerciseCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Image(systemName: iconForExerciseType(exercise.exerciseType))
+                Image(systemName: exercise.assignment.displayIcon)
                     .font(.title3)
                     .foregroundStyle(colorForExerciseType(exercise.exerciseType))
                 
@@ -248,21 +205,6 @@ struct ScheduledExerciseCard: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .strokeBorder(colorForExerciseType(exercise.exerciseType).opacity(colorScheme == .dark ? 0.3 : 0.2), lineWidth: 1)
         )
-    }
-    
-    private func iconForExerciseType(_ type: ExerciseType) -> String {
-        switch type {
-        case .exposure:
-            return "leaf.circle.fill"
-        case .breathing:
-            return "wind"
-        case .relaxation:
-            return "figure.mind.and.body"
-        case .grounding:
-            return "brain.head.profile"
-        case .behavioralActivation:
-            return "figure.walk"
-        }
     }
     
     private func colorForExerciseType(_ type: ExerciseType) -> Color {
