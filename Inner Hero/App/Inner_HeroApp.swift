@@ -3,8 +3,8 @@ import SwiftData
 
 @main
 struct Inner_HeroApp: App {
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @AppStorage("hasLoadedSampleData") private var hasLoadedSampleData = false
+    @AppStorage(AppStorageKeys.hasCompletedOnboarding) private var hasCompletedOnboarding = false
+    @AppStorage(AppStorageKeys.hasLoadedSampleData) private var hasLoadedSampleData = false
     @AppStorage(AppStorageKeys.themeMode) private var themeModeRawValue: String = ThemeMode.system.rawValue
 
     @State private var notificationManager = NotificationManager()
@@ -31,7 +31,9 @@ struct Inner_HeroApp: App {
             #if DEBUG
             fatalError("Could not create ModelContainer: \(error)")
             #else
+            #if DEBUG
             print("⚠️ ModelContainer failed (\(error)); using in-memory fallback.")
+            #endif
             do {
                 let config = ModelConfiguration(isStoredInMemoryOnly: true)
                 return try ModelContainer(
@@ -93,12 +95,16 @@ struct Inner_HeroApp: App {
                 try SampleDataLoader.loadPredefinedActivationLists(into: context)
                 
                 hasLoadedSampleData = true
+                #if DEBUG
                 print("✅ Test data loaded successfully")
+                #endif
             } else {
                 hasLoadedSampleData = true
             }
         } catch {
+            #if DEBUG
             print("⚠️ Error loading test data: \(error)")
+            #endif
         }
     }
 }

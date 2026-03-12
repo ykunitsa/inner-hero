@@ -28,9 +28,9 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
-        }
-        .navigationDestination(for: AppRoute.self) { route in
-            AppRouteView(route: route)
+            .navigationDestination(for: AppRoute.self) { route in
+                AppRouteView(route: route)
+            }
         }
     }
 }

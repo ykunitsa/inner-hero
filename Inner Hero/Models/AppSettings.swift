@@ -28,6 +28,8 @@ enum AppStorageKeys {
     static let themeMode = "settings.themeMode"
     static let remindersEnabled = "settings.remindersEnabled"
     static let appLockEnabled = "settings.appLockEnabled"
+    static let hasCompletedOnboarding = "hasCompletedOnboarding"
+    static let hasLoadedSampleData = "hasLoadedSampleData"
 }
 
 

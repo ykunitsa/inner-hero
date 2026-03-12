@@ -3,6 +3,7 @@ import SwiftData
 import UserNotifications
 
 @Observable
+@MainActor
 final class NotificationManager {
     private let notificationCenter = UNUserNotificationCenter.current()
 

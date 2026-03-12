@@ -48,80 +48,78 @@ struct ExposuresListView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 24) {
-                    if let activeSession = activeSessions.first,
-                       let exposure = activeSession.exposure {
-                        ActiveSessionCard(session: activeSession, exposure: exposure) {
-                            currentSession = activeSession
-                        }
-                        .transition(.move(edge: .top).combined(with: .opacity))
+        ScrollView {
+            LazyVStack(spacing: 24) {
+                if let activeSession = activeSessions.first,
+                   let exposure = activeSession.exposure {
+                    ActiveSessionCard(session: activeSession, exposure: exposure) {
+                        currentSession = activeSession
                     }
-                    
-                    if exposures.isEmpty {
-                        emptyStateView
-                    } else {
-                        exposuresSections
-                    }
+                    .transition(.move(edge: .top).combined(with: .opacity))
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 40)
-            }
-            .background(TopMeshGradientBackground())
-            .navigationTitle("Exposures")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        showingCreateSheet = true
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.headline)
-                            .foregroundStyle(TextColors.toolbar)
-                    }
-                    .accessibilityLabel(String(localized: "Add exposure"))
+                
+                if exposures.isEmpty {
+                    emptyStateView
+                } else {
+                    exposuresSections
                 }
             }
-            .sheet(isPresented: $showingCreateSheet) {
-                CreateExposureView()
-            }
-            .sheet(item: $exposureToStart) { exposure in
-                StartSessionSheet(exposure: exposure) { session in
-                    currentSession = session
+            .padding(.horizontal, 20)
+            .padding(.top, 24)
+            .padding(.bottom, 40)
+        }
+        .background(TopMeshGradientBackground())
+        .navigationTitle("Exposures")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showingCreateSheet = true
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.headline)
+                        .foregroundStyle(TextColors.toolbar)
                 }
+                .accessibilityLabel(String(localized: "Add exposure"))
             }
-            .sheet(item: $exposureToSchedule) { exposure in
-                if let viewModel = scheduleViewModel {
-                    ScheduleExerciseView(
-                        assignment: nil,
-                        viewModel: viewModel,
-                        notificationManager: notificationManager,
-                        preSelectedExposureId: exposure.id
-                    )
-                }
+        }
+        .sheet(isPresented: $showingCreateSheet) {
+            CreateExposureView()
+        }
+        .sheet(item: $exposureToStart) { exposure in
+            StartSessionSheet(exposure: exposure) { session in
+                currentSession = session
             }
-            .navigationDestination(item: $currentSession) { session in
-                if let exposure = session.exposure {
-                    ActiveSessionView(session: session, exposure: exposure)
-                }
+        }
+        .sheet(item: $exposureToSchedule) { exposure in
+            if let viewModel = scheduleViewModel {
+                ScheduleExerciseView(
+                    assignment: nil,
+                    viewModel: viewModel,
+                    notificationManager: notificationManager,
+                    preSelectedExposureId: exposure.id
+                )
             }
-            .alert(String(localized: "Delete exposure?"), isPresented: $showingDeleteAlert, presenting: exposureToDelete) { exposure in
-                Button("Cancel", role: .cancel) {
-                    exposureToDelete = nil
-                }
-                Button("Delete", role: .destructive) {
-                    deleteExposure(exposure)
-                }
-            } message: { exposure in
-                Text(String(format: String(localized: "Are you sure you want to delete \"%@\"? This action cannot be undone."), exposure.localizedTitle))
+        }
+        .navigationDestination(item: $currentSession) { session in
+            if let exposure = session.exposure {
+                ActiveSessionView(session: session, exposure: exposure)
             }
-            .opacity(appeared ? 1 : 0)
-            .animation(.easeIn(duration: 0.3), value: appeared)
-            .onAppear {
-                appeared = true
+        }
+        .alert(String(localized: "Delete exposure?"), isPresented: $showingDeleteAlert, presenting: exposureToDelete) { exposure in
+            Button("Cancel", role: .cancel) {
+                exposureToDelete = nil
             }
+            Button("Delete", role: .destructive) {
+                deleteExposure(exposure)
+            }
+        } message: { exposure in
+            Text(String(format: String(localized: "Are you sure you want to delete \"%@\"? This action cannot be undone."), exposure.localizedTitle))
+        }
+        .opacity(appeared ? 1 : 0)
+        .animation(.easeIn(duration: 0.3), value: appeared)
+        .onAppear {
+            appeared = true
         }
     }
     

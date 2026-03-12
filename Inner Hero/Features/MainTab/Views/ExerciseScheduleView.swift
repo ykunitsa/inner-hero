@@ -38,74 +38,72 @@ struct ExerciseScheduleView: View {
     }
 
     private func content(viewModel: ScheduleViewModel, notificationManager: NotificationManager) -> some View {
-        NavigationStack {
-            List {
-                if allAssignments.isEmpty {
-                    emptyStateView(viewModel: viewModel, notificationManager: notificationManager)
-                } else {
-                    if !activeAssignments.isEmpty {
-                        Section {
-                            ForEach(activeAssignments) { assignment in
-                                scheduleRow(
-                                    assignment: assignment,
-                                    viewModel: viewModel,
-                                    notificationManager: notificationManager
-                                )
-                            }
-                        } header: {
-                            Text("Active schedules")
+        List {
+            if allAssignments.isEmpty {
+                emptyStateView(viewModel: viewModel, notificationManager: notificationManager)
+            } else {
+                if !activeAssignments.isEmpty {
+                    Section {
+                        ForEach(activeAssignments) { assignment in
+                            scheduleRow(
+                                assignment: assignment,
+                                viewModel: viewModel,
+                                notificationManager: notificationManager
+                            )
                         }
+                    } header: {
+                        Text("Active schedules")
                     }
+                }
 
-                    if !inactiveAssignments.isEmpty {
-                        Section {
-                            ForEach(inactiveAssignments) { assignment in
-                                scheduleRow(
-                                    assignment: assignment,
-                                    viewModel: viewModel,
-                                    notificationManager: notificationManager
-                                )
-                            }
-                        } header: {
-                            Text("Inactive schedules")
+                if !inactiveAssignments.isEmpty {
+                    Section {
+                        ForEach(inactiveAssignments) { assignment in
+                            scheduleRow(
+                                assignment: assignment,
+                                viewModel: viewModel,
+                                notificationManager: notificationManager
+                            )
                         }
+                    } header: {
+                        Text("Inactive schedules")
                     }
                 }
             }
-            .navigationTitle("Schedule")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        assignmentToEdit = nil
-                        showingEditSheet = true
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.headline)
-                            .foregroundStyle(TextColors.toolbar)
-                    }
-                    .accessibilityLabel("Add schedule")
+        }
+        .navigationTitle("Schedule")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    assignmentToEdit = nil
+                    showingEditSheet = true
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.headline)
+                        .foregroundStyle(TextColors.toolbar)
+                }
+                .accessibilityLabel("Add schedule")
+            }
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            ScheduleExerciseView(
+                assignment: assignmentToEdit,
+                viewModel: viewModel,
+                notificationManager: notificationManager
+            )
+        }
+        .alert("Delete schedule?", isPresented: $showingDeleteAlert, presenting: assignmentToDelete) { assignment in
+            Button("Cancel", role: .cancel) {
+                assignmentToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                Task {
+                    await deleteAssignment(assignment, viewModel: viewModel, notificationManager: notificationManager)
                 }
             }
-            .sheet(isPresented: $showingEditSheet) {
-                ScheduleExerciseView(
-                    assignment: assignmentToEdit,
-                    viewModel: viewModel,
-                    notificationManager: notificationManager
-                )
-            }
-            .alert("Delete schedule?", isPresented: $showingDeleteAlert, presenting: assignmentToDelete) { assignment in
-                Button("Cancel", role: .cancel) {
-                    assignmentToDelete = nil
-                }
-                Button("Delete", role: .destructive) {
-                    Task {
-                        await deleteAssignment(assignment, viewModel: viewModel, notificationManager: notificationManager)
-                    }
-                }
-            } message: { _ in
-                Text("Are you sure you want to delete this schedule?")
-            }
+        } message: { _ in
+            Text("Are you sure you want to delete this schedule?")
         }
     }
 
@@ -150,7 +148,7 @@ struct ExerciseScheduleView: View {
                     .foregroundStyle(TextColors.primary)
 
                 HStack(spacing: 12) {
-                    Label(timeString(from: assignment.time), systemImage: "clock")
+                    Label(ScheduleViewModel.timeFormatter.string(from: assignment.time), systemImage: "clock")
                         .font(.subheadline)
                         .foregroundStyle(TextColors.secondary)
 
@@ -187,12 +185,6 @@ struct ExerciseScheduleView: View {
         }
     }
 
-    private func timeString(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
-    }
-
     private func toggleAssignment(
         _ assignment: ExerciseAssignment,
         isActive: Bool,
@@ -209,7 +201,9 @@ struct ExerciseScheduleView: View {
             HapticFeedback.selection()
         } catch {
             HapticFeedback.error()
+            #if DEBUG
             print("Error updating schedule: \(error)")
+            #endif
         }
     }
 
@@ -224,7 +218,9 @@ struct ExerciseScheduleView: View {
             HapticFeedback.success()
         } catch {
             HapticFeedback.error()
+            #if DEBUG
             print("Error deleting schedule: \(error)")
+            #endif
         }
     }
 }

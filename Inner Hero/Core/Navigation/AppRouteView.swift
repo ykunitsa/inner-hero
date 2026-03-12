@@ -156,11 +156,11 @@ struct AppRouteView: View {
     @ViewBuilder
     private func exerciseListView(for listRoute: ExerciseListRoute) -> some View {
         switch listRoute {
-        case .exposures: ExposuresListView()
-        case .breathing: BreathingExercisesView()
-        case .relaxation: MuscleRelaxationListView()
-        case .grounding: GroundingExercisesView()
-        case .activation: BehavioralActivationView()
+            case .exposures: ExposuresListView()
+            case .breathing: BreathingExercisesView()
+            case .relaxation: MuscleRelaxationListView()
+            case .grounding: GroundingExercisesView()
+            case .activation: ActivationsListView()
         }
     }
 

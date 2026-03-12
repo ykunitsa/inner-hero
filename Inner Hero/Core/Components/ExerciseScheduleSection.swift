@@ -210,7 +210,7 @@ struct ExerciseScheduleSection: View {
                         Image(systemName: "clock")
                             .font(.caption)
                             .foregroundStyle(TextColors.secondary)
-                        Text(timeString(from: assignment.time))
+                        Text(ScheduleViewModel.timeFormatter.string(from: assignment.time))
                             .font(.body.weight(.medium))
                             .foregroundStyle(TextColors.primary)
                     }
@@ -293,7 +293,7 @@ struct ExerciseScheduleSection: View {
                 Image(systemName: "clock")
                     .font(.caption)
                     .foregroundStyle(TextColors.secondary)
-                Text(timeString(from: assignment.time))
+                Text(ScheduleViewModel.timeFormatter.string(from: assignment.time))
                     .font(.body.weight(.medium))
                     .foregroundStyle(TextColors.primary)
             }
@@ -301,12 +301,6 @@ struct ExerciseScheduleSection: View {
                 .font(.subheadline)
                 .foregroundStyle(TextColors.secondary)
         }
-    }
-
-    private func timeString(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
     }
 
     private func toggleSchedule(
@@ -325,7 +319,9 @@ struct ExerciseScheduleSection: View {
             HapticFeedback.selection()
         } catch {
             HapticFeedback.error()
+            #if DEBUG
             print("Error updating schedule: \(error)")
+            #endif
         }
     }
 
@@ -340,7 +336,9 @@ struct ExerciseScheduleSection: View {
             HapticFeedback.success()
         } catch {
             HapticFeedback.error()
+            #if DEBUG
             print("Error deleting schedule: \(error)")
+            #endif
         }
     }
 }
