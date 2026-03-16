@@ -349,6 +349,102 @@ RecordedThoughtCard(
 )
 ```
 
+### SectionHeader
+
+```swift
+// С кнопкой "See All"
+SectionHeader(title: "Exercises", onSeeAll: { navigate() })
+
+// Без кнопки
+SectionHeader(title: "Current Mood")
+```
+
+### ExerciseStepHeader
+
+Три варианта — подбирай по экрану:
+
+```swift
+// Вариант 1 — прогресс-бар (Distortion picker, Mood check)
+ExerciseStepHeader(
+    variant: .progress(current: 2, total: 5, color: AppColors.primary),
+    onBack: { dismiss() }
+)
+
+// Вариант 2 — с заголовком и шестерёнкой (Guided Breathing)
+ExerciseStepHeader(
+    variant: .titled("Guided Breathing", category: "RELAXATION"),
+    onBack: { dismiss() },
+    onSettings: { showSettings = true }
+)
+
+// Вариант 3 — "Step N of M" (Thought Record)
+ExerciseStepHeader(
+    variant: .stepped(current: 3, total: 5),
+    onBack: { dismiss() }
+)
+```
+
+### AppTextEditor
+
+```swift
+@State private var notes = ""
+
+AppTextEditor(
+    text: $notes,
+    placeholder: "Describe the situation or thought...",
+    minHeight: 120
+)
+```
+
+### ThoughtRecordSection
+
+```swift
+// Заполненная секция с badge
+ThoughtRecordSection(
+    label: "Automatic Thought",
+    content: "I'm going to fail this presentation...",
+    badge: "Fortune Telling"
+)
+
+// Пустая секция с placeholder и hint
+ThoughtRecordSection(
+    label: "Evidence Against",
+    placeholder: "What facts contradict this thought?",
+    hint: "Think of times you've succeeded before."
+)
+
+// Активная секция (цветной bottom border — текущий шаг ввода)
+ThoughtRecordSection(
+    label: "Alternative Thought",
+    isActive: true,
+    accentColor: AppColors.primary
+)
+```
+
+### BottomPillNavBar
+
+```swift
+@State private var selectedTab = 0
+
+BottomPillNavBar(
+    items: [
+        .init(systemImage: "face.smiling",  tag: 0, accessibilityLabel: "Mood"),
+        .init(systemImage: "play.circle",   tag: 1, accessibilityLabel: "Play"),
+        .init(systemImage: "plus.square",   tag: 2, accessibilityLabel: "Add"),
+        .init(systemImage: "person",        tag: 4, accessibilityLabel: "Profile"),
+    ],
+    centerItem: .init(systemImage: "stop.fill", tag: 3, accessibilityLabel: "Stop"),
+    selection: $selectedTab,
+    onTrailingTap: { /* next / continue action */ }
+)
+.padding(.horizontal, Spacing.lg)
+```
+
+Параметры:
+- `items` — обычные иконки, делятся пополам вокруг центра. Левая половина — `items.prefix(n/2)`, правая — остаток
+- `centerItem` — выделенная круглая кнопка по центру (stop/record). Активна когда `selection == centerItem.tag`
+- `onTrailingTap` — опциональная стрелка-CTA справа. Передай `nil` если не нужна
+
 ### BreathingCircle
 
 ```swift
