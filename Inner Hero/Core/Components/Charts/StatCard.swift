@@ -4,29 +4,25 @@ struct StatCard: View {
     let title: String
     let value: String
     let color: Color
-    
-    private enum Layout {
-        static let cardSpacing: CGFloat = 8
-        static let cardPadding: CGFloat = 16
-        static let cornerRadius: CGFloat = 12
-    }
-    
+
     var body: some View {
-        VStack(spacing: Layout.cardSpacing) {
+        VStack(spacing: Spacing.xxxs) {
             Text(title)
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
+                .appFont(.caption)
+                .foregroundStyle(TextColors.secondary)
+                .multilineTextAlignment(.center)
             Text(value)
-                .font(.title2.weight(.bold))
+                .appFont(.monoLarge)
                 .foregroundStyle(color)
                 .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 44)
-        .padding(Layout.cardPadding)
+        .padding(Spacing.sm)
         .background(
-            RoundedRectangle(cornerRadius: Layout.cornerRadius, style: .continuous)
-                .fill(.background.tertiary)
+            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                .fill(AppColors.gray100)
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title): \(value)")
