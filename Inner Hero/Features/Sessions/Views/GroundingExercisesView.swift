@@ -1,57 +1,39 @@
 import SwiftUI
 import SwiftData
 
-// MARK: - GroundingExercisesView
-
 struct GroundingExercisesView: View {
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
-    
+
+    @State private var appeared = false
+
     var body: some View {
         ScrollView {
-                LazyVStack(spacing: 24) {
-                    header
-                    
-                    VStack(spacing: 16) {
-                        ForEach(GroundingExercise.predefinedExercises) { exercise in
-                            let assignment = allAssignments.first { assignment in
-                                assignment.exerciseType == .grounding && assignment.grounding == exercise.type
-                            }
-                            
-                            NavigationLink(value: AppRoute.groundingDetail(groundingType: exercise.type)) {
-                                GroundingExerciseCardView(
-                                    exercise: exercise,
-                                    assignment: assignment
-                                )
-                            }
-                            .buttonStyle(.plain)
-                        }
+            VStack(spacing: Spacing.xs) {
+                ForEach(Array(GroundingExercise.predefinedExercises.enumerated()), id: \.element.id) { index, exercise in
+                    let assignment = allAssignments.first {
+                        $0.exerciseType == .grounding && $0.grounding == exercise.type
                     }
+
+                    NavigationLink(value: AppRoute.groundingDetail(groundingType: exercise.type)) {
+                        GroundingExerciseCardView(exercise: exercise, assignment: assignment)
+                    }
+                    .buttonStyle(.plain)
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 12)
+                    .animation(AppAnimation.appear.delay(Double(index) * 0.07), value: appeared)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(exercise.name)
+                    .accessibilityHint(String(localized: "Double-tap to open details"))
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 40)
             }
-            .background(TopMeshGradientBackground(palette: .purple))
-            .navigationTitle("Grounding")
-            .navigationBarTitleDisplayMode(.large)
-    }
-    
-    private var header: some View {
-        VStack(spacing: Spacing.xs) {
-            Image(systemName: "brain.head.profile")
-                .font(.system(size: 48))
-                .foregroundStyle(.purple.gradient)
-                .accessibilityHidden(true)
-            
-            Text("Grounding techniques help quickly reduce anxiety and bring attention to the present moment")
-                .font(.subheadline)
-                .foregroundStyle(TextColors.secondary)
-                .multilineTextAlignment(.center)
-                .textCase(.none)
-                .padding(.top, Spacing.xxs)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.xxl)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 4)
+        .homeBackground()
+        .navigationTitle(String(localized: "Grounding"))
+        .navigationBarTitleDisplayMode(.large)
+        .onAppear { appeared = true }
     }
 }
 
@@ -61,5 +43,3 @@ struct GroundingExercisesView: View {
     }
     .modelContainer(for: [ExerciseAssignment.self, FavoriteExercise.self], inMemory: true)
 }
-
-

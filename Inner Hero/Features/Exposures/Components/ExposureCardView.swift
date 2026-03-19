@@ -1,94 +1,82 @@
 import SwiftUI
 import SwiftData
 
-struct ExposureCardView: View {
-    @Environment(\.colorScheme) private var colorScheme
+// MARK: - ExposureCardView
 
+struct ExposureCardView: View {
     let exposure: Exposure
-    let assignment: ExerciseAssignment?
-    
-    init(exposure: Exposure, assignment: ExerciseAssignment? = nil) {
-        self.exposure = exposure
-        self.assignment = assignment
-    }
-    
+    var assignment: ExerciseAssignment? = nil
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             header
             Divider()
+                .foregroundStyle(AppColors.gray200)
             metadataRow
         }
-        .padding(20)
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
-        )
     }
-    
+
+    // MARK: - Header
+
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Spacing.xxxs) {
             Text(exposure.localizedTitle)
-                .font(.title3.weight(.semibold))
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
-            
+
             Text(exposure.localizedDescription)
-                .font(.body)
+                .appFont(.body)
                 .foregroundStyle(TextColors.secondary)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
-    
+
+    // MARK: - Metadata Row
+
     private var metadataRow: some View {
-        HStack(spacing: 12) {
-            if let assignment = assignment, assignment.isActive {
+        HStack(spacing: Spacing.xs) {
+            // Schedule badge — only when active assignment exists
+            if let assignment, assignment.isActive {
                 ScheduleIndicatorView(assignment: assignment)
             }
-            
+
             Spacer(minLength: 0)
-            
-            HStack(spacing: 10) {
-                statItem(systemName: "list.bullet", value: exposure.localizedStepTexts.count)
-                statItem(systemName: "chart.bar", value: exposure.sessionResults.count)
-                
-                if let assignment = assignment, assignment.isActive {
-                    Image(systemName: "calendar.badge.checkmark")
-                        .font(.caption2)
-                        .foregroundStyle(.orange)
-                        .accessibilityLabel("Scheduled")
-                }
+
+            // Stats
+            HStack(spacing: Spacing.sm) {
+                statItem(
+                    systemImage: "list.bullet",
+                    value: exposure.localizedStepTexts.count,
+                    accessibilityLabel: String(format: String(localized: "%d steps"), exposure.localizedStepTexts.count)
+                )
+                statItem(
+                    systemImage: "chart.bar",
+                    value: exposure.sessionResults.count,
+                    accessibilityLabel: String(format: String(localized: "%d sessions"), exposure.sessionResults.count)
+                )
             }
-            .frame(alignment: .trailing)
         }
         .accessibilityElement(children: .combine)
     }
-    
-    private func statItem(systemName: String, value: Int) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: systemName)
-                .font(.caption2)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.blue, .cyan],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+
+    // MARK: - Stat Item
+
+    private func statItem(systemImage: String, value: Int, accessibilityLabel: String) -> some View {
+        HStack(spacing: Spacing.xxxs) {
+            Image(systemName: systemImage)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(AppColors.primary.opacity(0.7))
+
             Text("\(value)")
-                .font(.caption2)
+                .appFont(.small)
                 .foregroundStyle(TextColors.secondary)
+                .monospacedDigit()
         }
+        .accessibilityLabel(accessibilityLabel)
     }
 }

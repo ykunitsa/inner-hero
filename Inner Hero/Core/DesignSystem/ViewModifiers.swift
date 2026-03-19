@@ -184,16 +184,9 @@ extension View {
 // ─────────────────────────────────────────────
 
 struct PageBackgroundModifier: ViewModifier {
-    @Environment(\.colorScheme) private var scheme
-
     func body(content: Content) -> some View {
         content
-            .background(
-                scheme == .dark
-                ? Color(red: 0.09, green: 0.09, blue: 0.11)
-                : AppColors.gray100
-            )
-            .ignoresSafeArea()
+            .background(AppColors.gray100.ignoresSafeArea())
     }
 }
 

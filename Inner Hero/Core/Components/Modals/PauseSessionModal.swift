@@ -3,178 +3,87 @@ import SwiftUI
 // MARK: - Pause Session Modal
 
 struct PauseSessionModal: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     let onResume: () -> Void
     let onEnd: () -> Void
-    
-    private var backgroundGradientColors: [Color] {
-        if colorScheme == .dark {
-            return [
-                Color(red: 0.10, green: 0.11, blue: 0.14),
-                Color(red: 0.06, green: 0.07, blue: 0.10)
-            ]
-        }
-        
-        return [
-            Color(red: 0.95, green: 0.97, blue: 1.0),
-            Color(red: 0.92, green: 0.95, blue: 0.98)
-        ]
-    }
-    
-    private var secondaryButtonBackground: some ShapeStyle {
-        if colorScheme == .dark {
-            return AnyShapeStyle(Color.primary.opacity(0.14))
-        }
-        
-        // Subtle, glassy surface on light theme
-        return AnyShapeStyle(.ultraThinMaterial)
-    }
-    
-    private var cardShadowColor: Color {
-        colorScheme == .dark ? Color.black.opacity(0.35) : Color.black.opacity(0.05)
-    }
-    
+
     var body: some View {
         VStack(spacing: 0) {
-            // Top section with icon and title
-            VStack(spacing: 20) {
-                // Icon with gradient background
-                ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    Color.blue.opacity(0.1),
-                                    Color.cyan.opacity(0.05)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(width: 80, height: 80)
-                    
-                    Image(systemName: "heart.fill")
-                        .font(.system(size: 36))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                }
-                .accessibilityHidden(true)
-                
-                // Title and subtitle
-                VStack(spacing: 10) {
-                    Text("You're doing great!")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(TextColors.primary)
-                        .multilineTextAlignment(.center)
-                
-                }
+            // Title + subtitle
+            VStack(spacing: Spacing.xxxs) {
+                Text("You're doing great!")
+                    .appFont(.h1)
+                    .foregroundStyle(TextColors.primary)
+                    .multilineTextAlignment(.center)
+
+                Text("Take a moment. You can continue when you're ready.")
+                    .appFont(.body)
+                    .foregroundStyle(TextColors.secondary)
+                    .multilineTextAlignment(.center)
             }
-            .padding(.top, 28)
-            .padding(.bottom, 24)
-            
-            // Supportive messages
-            VStack(spacing: 12) {
-                supportiveMessage(icon: "checkmark.circle.fill", text: "Take breaks when you need them")
-                supportiveMessage(icon: "heart.circle.fill", text: "Self-care is not weakness")
-                supportiveMessage(icon: "star.circle.fill", text: "Every step is progress")
+            .padding(.top, Spacing.xxl)
+            .padding(.bottom, Spacing.md)
+
+            // Supportive messages — single card with header
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("While you pause")
+                    .appFont(.h3)
+                    .foregroundStyle(TextColors.primary)
+
+                tipRow(icon: "pause.circle.fill", text: "Take a short break")
+                tipRow(icon: "wind",              text: "Breathe and reset")
+                tipRow(icon: "sparkles",          text: "Progress over perfection")
             }
-            .padding(.horizontal, 20)
-            
+            .cardStyle()
+            .padding(.horizontal, Spacing.lg)
+
             Spacer()
-            
-            // Action buttons - horizontal layout
-            HStack(spacing: 12) {
-                // Secondary button - End
-                Button {
+
+            // Action buttons
+            HStack(spacing: Spacing.xs) {
+                Button(action: onResume) {
+                    HStack(spacing: Spacing.xxs) {
+                        Image(systemName: "play.fill")
+                            .font(.system(size: IconSize.glyph, weight: .semibold))
+                            .accessibilityHidden(true)
+                        Text("Continue")
+                            .appFont(.buttonPrimary)
+                    }
+                    .foregroundStyle(TextColors.primary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 52)
+                    .background(Capsule().fill(AppColors.gray100))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Continue session")
+                .accessibilityHint("Double-tap to return to session")
+
+                PrimaryButton(title: "Finish", systemImage: "flag.checkered", color: AppColors.primary) {
                     onEnd()
-                } label: {
-                    Text("Finish")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(TextColors.secondary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 54)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(secondaryButtonBackground)
-                        )
                 }
                 .accessibilityLabel("Finish for today")
                 .accessibilityHint("Double-tap to end session without saving")
-                
-                // Primary button - Resume
-                Button {
-                    onResume()
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "play.fill")
-                            .font(.system(size: 15, weight: .semibold))
-                            .accessibilityHidden(true)
-                        Text("Continue")
-                            .font(.system(size: 16, weight: .semibold))
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    colors: [.blue, .cyan],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    )
-                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
-                }
-                .accessibilityLabel("Continue session")
-                .accessibilityHint("Double-tap to return to session")
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 24)
-            .padding(.bottom, 32)
+            .padding(.horizontal, Spacing.lg)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.lg)
         }
-        .background(
-            LinearGradient(
-                colors: backgroundGradientColors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .pageBackground()
     }
-    
-    private func supportiveMessage(icon: String, text: String) -> some View {
-        HStack(spacing: 14) {
+
+    private func tipRow(icon: String, text: String) -> some View {
+        HStack(alignment: .top, spacing: Spacing.xxs) {
             Image(systemName: icon)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.blue, .cyan],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: 24)
+                .font(.system(size: IconSize.glyph))
+                .foregroundStyle(AppColors.primary)
+                .frame(width: 22, alignment: .center)
+                .padding(.top, 1)
                 .accessibilityHidden(true)
-            
+
             Text(LocalizedStringKey(text))
-                .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(TextColors.primary)
-            
-            Spacer()
+                .appFont(.body)
+                .foregroundStyle(TextColors.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.background)
-                .shadow(color: cardShadowColor, radius: 6, x: 0, y: 2)
-        )
+        .accessibilityElement(children: .combine)
     }
 }

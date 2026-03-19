@@ -5,106 +5,124 @@ import SwiftData
 
 struct BreathingExercisesView: View {
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
-    
+
+    @State private var appeared = false
+
     var body: some View {
         ScrollView {
-                LazyVStack(spacing: 16) {
-                    ForEach(BreathingPattern.predefinedPatterns) { pattern in
-                        let assignment = allAssignments.first { assignment in
-                            assignment.exerciseType == .breathing && assignment.breathingPattern == pattern.type
-                        }
-                        
-                        NavigationLink(value: AppRoute.breathingDetail(patternType: pattern.type)) {
-                            BreathingPatternCardView(
-                                pattern: pattern,
-                                assignment: assignment
-                            )
-                        }
-                        .buttonStyle(.plain)
+            VStack(spacing: Spacing.xs) {
+                ForEach(Array(BreathingPattern.predefinedPatterns.enumerated()), id: \.element.id) { index, pattern in
+                    let assignment = allAssignments.first {
+                        $0.exerciseType == .breathing && $0.breathingPattern == pattern.type
                     }
+
+                    NavigationLink(value: AppRoute.breathingDetail(patternType: pattern.type)) {
+                        BreathingPatternCard(pattern: pattern, assignment: assignment)
+                    }
+                    .buttonStyle(.plain)
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 12)
+                    .animation(AppAnimation.appear.delay(Double(index) * 0.07), value: appeared)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(pattern.localizedName)
+                    .accessibilityHint(String(localized: "Double-tap to open details"))
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 40)
             }
-            .background(TopMeshGradientBackground(palette: .teal))
-            .navigationTitle("Breathing")
-            .navigationBarTitleDisplayMode(.large)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.xxl)
+        }
+        .homeBackground()
+        .navigationTitle(String(localized: "Breathing"))
+        .navigationBarTitleDisplayMode(.large)
+        .onAppear { appeared = true }
     }
 }
 
-// MARK: - BreathingPatternCardView
+// MARK: - BreathingPatternCard
 
-private struct BreathingPatternCardView: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
+private struct BreathingPatternCard: View {
     let pattern: BreathingPattern
     let assignment: ExerciseAssignment?
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             header
-            description
-            
-            metadataRow
+            descriptionText
+            footer
         }
-        .padding(20)
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(pattern.localizedName)
-        .accessibilityHint("Double-tap to open details. Starting a session is available inside.")
     }
-    
+
+    // MARK: Header
+
     private var header: some View {
-        HStack(alignment: .center, spacing: 12) {
+        HStack(alignment: .center, spacing: Spacing.xs) {
             Image(systemName: pattern.icon)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.teal)
-                .frame(width: 36, height: 36)
-                .background(
-                    Circle()
-                        .fill(.teal.opacity(colorScheme == .dark ? 0.20 : 0.12))
+                .font(.system(size: IconSize.glyph, weight: .semibold))
+                .foregroundStyle(AppColors.positive)
+                .iconContainer(
+                    size: IconSize.card,
+                    backgroundColor: AppColors.positive.opacity(Opacity.softBackground),
+                    cornerRadius: CornerRadius.sm
                 )
                 .accessibilityHidden(true)
-            
+
             Text(pattern.localizedName)
-                .font(.title3.weight(.semibold))
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
-            
+
             Spacer(minLength: 0)
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(AppColors.gray400)
         }
     }
-    
-    private var description: some View {
+
+    // MARK: Description — no lineLimit, only 3 cards on screen
+
+    private var descriptionText: some View {
         Text(pattern.localizedDescription)
-            .font(.body)
+            .appFont(.body)
             .foregroundStyle(TextColors.secondary)
-            .lineLimit(2)
             .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
     }
-    
-    private var metadataRow: some View {
-        HStack(spacing: 12) {
-            if let assignment = assignment, assignment.isActive {
+
+    // MARK: Footer — rhythm tag + optional schedule badge
+
+    private var footer: some View {
+        HStack(spacing: Spacing.xs) {
+            // Rhythm meta tag
+            Text(pattern.type.rhythmLabel)
+                .appFont(.smallMedium)
+                .foregroundStyle(AppColors.positive)
+                .padding(.horizontal, Spacing.xxs)
+                .padding(.vertical, Spacing.xxxs)
+                .background(
+                    Capsule()
+                        .fill(AppColors.positive.opacity(Opacity.subtleBackground))
+                )
+
+            if let assignment, assignment.isActive {
                 ScheduleIndicatorView(assignment: assignment)
             }
-            
-            Spacer(minLength: 0)
+        }
+    }
+}
+
+// MARK: - BreathingPatternType + rhythm label
+
+private extension BreathingPatternType {
+    /// Human-readable rhythm string shown as a tag on the card
+    var rhythmLabel: String {
+        switch self {
+        case .box:     return "4 · 4 · 4 · 4"
+        case .fourSix: return "4 · 6"
+        case .paced:   return "5 · 1 · 5 · 1"
         }
     }
 }

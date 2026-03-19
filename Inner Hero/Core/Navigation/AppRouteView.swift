@@ -79,14 +79,6 @@ struct AppRouteView: View {
                 contentUnavailable(route: "Activation")
             }
 
-        case .activationStart(let activityListId, let assignmentId):
-            if let activation = activityLists.first(where: { $0.id == activityListId }) {
-                let assignment = assignmentId.flatMap { id in allAssignments.first(where: { $0.id == id }) }
-                StartActivationView(activation: activation, assignment: assignment)
-            } else {
-                contentUnavailable(route: "Activation")
-            }
-
         case .sessionHistory(let exposureId):
             if let exposure = exposures.first(where: { $0.id == exposureId }) {
                 SessionHistoryView(exposure: exposure)

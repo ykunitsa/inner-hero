@@ -12,7 +12,6 @@ enum AppRoute: Hashable {
     case relaxationSession(relaxationType: RelaxationType)
     case groundingSession(groundingType: GroundingType)
     case activationView(activityListId: UUID, assignmentId: UUID?)
-    case activationStart(activityListId: UUID, assignmentId: UUID?)
     case sessionHistory(exposureId: UUID)
     case sessionDetail(sessionId: UUID)
     case articleDetail(articleId: String)

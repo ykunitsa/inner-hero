@@ -25,6 +25,7 @@ enum AppColors {
 
     // MARK: Neutrals
     static let black         = Color("AppBlack")
+    static let cardBackground = Color("CardBackground") // card / elevated surface (#FFF light, #2C2C2E dark)
     static let gray100       = Color("Gray100") // page background
     static let gray200       = Color("Gray200") // dividers / card borders
     static let gray300       = Color("Gray300") // disabled borders

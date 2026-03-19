@@ -9,10 +9,40 @@ import SwiftUI
 // MARK: Buttons
 // ─────────────────────────────────────────────
 
+/// Reusable label for primary-style CTA. Use as content of `PrimaryButton` or as `NavigationLink` label so the link receives the tap.
+/// Usage: `PrimaryButtonLabel(title: "Start session", systemImage: "play.fill", color: .positive)` inside NavigationLink.
+struct PrimaryButtonLabel: View {
+    let title: String
+    var systemImage: String? = nil
+    var color: Color = AppColors.black
+
+    var body: some View {
+        Group {
+            if let systemImage {
+                HStack(spacing: Spacing.xxs) {
+                    Image(systemName: systemImage)
+                        .font(.system(size: IconSize.glyph, weight: .semibold))
+                    Text(title)
+                        .appFont(.buttonPrimary)
+                }
+            } else {
+                Text(title)
+                    .appFont(.buttonPrimary)
+            }
+        }
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity)
+        .frame(height: 52)
+        .background(Capsule().fill(color))
+    }
+}
+
 /// Full-width primary CTA button
-/// Usage: `PrimaryButton(title: "Continue") { ... }`
+/// Usage: `PrimaryButton(title: "Continue") { ... }` or `PrimaryButton(title: "Start", systemImage: "play.fill") { ... }`
+/// For use inside NavigationLink, use `PrimaryButtonLabel` as the link's label so the tap triggers navigation.
 struct PrimaryButton: View {
     let title: String
+    var systemImage: String? = nil
     var color: Color = AppColors.black
     var isLoading: Bool = false
     let action: () -> Void
@@ -24,16 +54,9 @@ struct PrimaryButton: View {
                     ProgressView()
                         .tint(.white)
                 } else {
-                    Text(title)
-                        .appFont(.buttonPrimary)
-                        .foregroundStyle(.white)
+                    PrimaryButtonLabel(title: title, systemImage: systemImage, color: color)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                Capsule().fill(color)
-            )
         }
         .disabled(isLoading)
         .buttonStyle(.plain)
@@ -400,34 +423,45 @@ struct AppBadge: View {
 // ─────────────────────────────────────────────
 
 /// Segmented top navigation with active underline
-/// Usage: `TopTabBar(tabs: ["Daily", "Journal", "Discover"], selection: $tab)`
+/// Segmented pill tab bar
+/// Usage: `TopTabBar(tabs: ["Today", "All schedules"], selection: $tab)`
 struct TopTabBar: View {
     let tabs: [String]
     @Binding var selection: Int
+    @Namespace private var namespace
 
     var body: some View {
-        HStack(spacing: Spacing.lg) {
+        HStack(spacing: Spacing.xxxs) {
             ForEach(tabs.indices, id: \.self) { i in
                 Button {
                     withAnimation(AppAnimation.standard) { selection = i }
+                    HapticFeedback.selection()
                 } label: {
-                    VStack(spacing: 4) {
-                        Text(tabs[i])
-                            .appFont(selection == i ? .navItemActive : .navItem)
-                            .foregroundStyle(
-                                selection == i ? TextColors.primary : TextColors.secondary
-                            )
-                        // Underline indicator
-                        Rectangle()
-                            .fill(selection == i ? AppColors.black : .clear)
-                            .frame(height: 2)
-                            .clipShape(Capsule())
-                    }
+                    Text(tabs[i])
+                        .appFont(selection == i ? .bodyMedium : .body)
+                        .foregroundStyle(selection == i ? TextColors.primary : TextColors.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, Spacing.xxs)
+                        .background {
+                            if selection == i {
+                                Capsule()
+                                    .fill(Color(.systemBackground))
+                                    .shadow(
+                                        color: Color.black.opacity(Opacity.lightShadow),
+                                        radius: 4, x: 0, y: 2
+                                    )
+                                    .matchedGeometryEffect(id: "tab_indicator", in: namespace)
+                            }
+                        }
                 }
                 .buttonStyle(.plain)
-                .touchTarget()
+                .accessibilityAddTraits(selection == i ? .isSelected : [])
             }
         }
+        .padding(Spacing.xxxs)
+        .background(
+            Capsule().fill(AppColors.gray100)
+        )
     }
 }
 
@@ -482,6 +516,7 @@ struct BreathingCircle: View {
     enum BreathPhase { case inhale, hold, exhale }
     let phase: BreathPhase
     var color: Color = AppColors.positive
+    var duration: TimeInterval = 3
 
     private var scale: CGFloat {
         switch phase {
@@ -497,20 +532,13 @@ struct BreathingCircle: View {
             Circle()
                 .fill(color.opacity(0.12))
                 .scaleEffect(scale + 0.12)
-                .animation(
-                    AppAnimation.slow.repeatForever(autoreverses: true),
-                    value: scale
-                )
             // Main circle
             Circle()
                 .fill(color)
                 .scaleEffect(scale)
-                .animation(
-                    AppAnimation.slow.repeatForever(autoreverses: true),
-                    value: scale
-                )
         }
         .frame(width: 160, height: 160)
+        .animation(.easeInOut(duration: duration), value: phase)
     }
 }
 
@@ -569,8 +597,9 @@ struct FlatPillNavBar: View {
         }
         .padding(.horizontal, Spacing.xxs)
         .padding(.vertical, Spacing.xxs)
-        .background(Capsule().fill(AppColors.black))
+        .background(Capsule().fill(Color.black))
         .shadow(color: .black.opacity(0.25), radius: 20, y: 8)
+        .environment(\.colorScheme, .dark)
     }
 
     @ViewBuilder
@@ -708,9 +737,10 @@ struct BottomPillNavBar: View {
         .padding(.vertical, Spacing.xxs)
         .background(
             Capsule()
-                .fill(AppColors.black)
+                .fill(Color.black)
         )
         .shadow(color: .black.opacity(0.22), radius: 16, y: 6)
+        .environment(\.colorScheme, .dark)
     }
 
     @ViewBuilder

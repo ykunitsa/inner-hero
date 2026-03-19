@@ -1,113 +1,73 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ActivationDetailView
+
 struct ActivationDetailView: View {
     let activation: ActivityList
     let assignment: ExerciseAssignment?
-    
+
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.scheduleViewModel) private var scheduleViewModel
     @Environment(NotificationManager.self) private var notificationManager
+
     @State private var showingEditSheet = false
     @State private var showScheduleSheet = false
-    
+    @State private var pickedActivity: String? = nil
+    @State private var isShuffling = false
+
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
-    
+
     private var isFavorite: Bool {
-        FavoritesService.isFavorite(type: .behavioralActivation, exerciseId: activation.id, identifier: nil, in: favorites)
+        FavoritesService.isFavorite(
+            type: .behavioralActivation,
+            exerciseId: activation.id,
+            identifier: nil,
+            in: favorites
+        )
     }
-    
-    private var assignments: [ExerciseAssignment] {
-        allAssignments.filter { assignment in
-            assignment.exerciseType == .behavioralActivation && assignment.activityListId == activation.id
+
+    private var scheduleAssignments: [ExerciseAssignment] {
+        allAssignments.filter {
+            $0.exerciseType == .behavioralActivation && $0.activityListId == activation.id
         }
     }
-    
+
     init(activation: ActivityList, assignment: ExerciseAssignment? = nil) {
         self.activation = activation
         self.assignment = assignment
     }
-    
+
+    // MARK: - Body
+
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 32) {
-                heroHeaderSection
-                quickStatsSection
-                purposeCard
-                startActivityButton
+            VStack(spacing: Spacing.xs) {
+                statsRow
+                    .padding(.top, Spacing.xxs)
+
                 activitiesSection
-                scheduleSection
+
+                shuffleSection
+
+                ExerciseScheduleSection(
+                    assignments: scheduleAssignments,
+                    exerciseType: .behavioralActivation,
+                    exposureId: nil,
+                    groundingType: nil,
+                    breathingPatternType: nil,
+                    relaxationType: nil,
+                    activityListId: activation.id
+                )
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            .padding(.bottom, 40)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.bottom, Spacing.xxl)
         }
-        .background(TopMeshGradientBackground(palette: .green))
-        .navigationTitle("Details")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                HStack(spacing: 12) {
-                    Button {
-                        toggleFavorite()
-                    } label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .font(.title3)
-                            .foregroundStyle(
-                                isFavorite ?
-                                LinearGradient(
-                                    colors: [.pink, .red],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ) :
-                                LinearGradient(
-                                    colors: [TextColors.tertiary, TextColors.tertiary],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? String(localized: "Remove from favorites") : String(localized: "Add to favorites"))
-                    
-                    Button {
-                        showScheduleSheet = true
-                    } label: {
-                        Image(systemName: "calendar.badge.plus")
-                            .font(.title3)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.orange, .orange.opacity(0.8)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(String(localized: "Schedule"))
-                    
-                    if !activation.isPredefined {
-                        Button {
-                            showingEditSheet = true
-                        } label: {
-                            Image(systemName: "pencil.circle.fill")
-                                .font(.title2)
-                                .foregroundStyle(
-                                    LinearGradient(
-                                        colors: [.green, .mint],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                        }
-                        .frame(minWidth: 44, minHeight: 44)
-                        .accessibilityLabel("Edit")
-                    }
-                }
-            }
-        }
+        .homeBackground()
+        .navigationTitle(activation.localizedTitle)
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar { toolbarItems }
         .sheet(isPresented: $showingEditSheet) {
             EditActivationView(activation: activation)
         }
@@ -122,830 +82,297 @@ struct ActivationDetailView: View {
             }
         }
     }
-    
-    private var heroHeaderSection: some View {
-        VStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.green.opacity(0.15), .mint.opacity(0.1)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
-                Image(systemName: "figure.walk")
-                    .font(.system(size: 50))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-            }
-            
-            VStack(spacing: 8) {
-                Text(activation.localizedTitle)
-                    .font(.title.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-                    .multilineTextAlignment(.center)
-                
-                if activation.isPredefined {
-                    Text("Preset list")
-                        .font(.subheadline)
-                        .foregroundStyle(TextColors.tertiary)
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    private var toolbarItems: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            HStack(spacing: Spacing.xxxs) {
+                Button { toggleFavorite() } label: {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundStyle(isFavorite ? AppColors.primary : TextColors.secondary)
+                }
+                .touchTarget()
+                .accessibilityLabel(isFavorite
+                    ? String(localized: "Remove from favorites")
+                    : String(localized: "Add to favorites"))
+
+                Button { showScheduleSheet = true } label: {
+                    Image(systemName: "calendar.badge.plus")
+                        .foregroundStyle(TextColors.toolbar)
+                }
+                .touchTarget()
+                .accessibilityLabel(String(localized: "Schedule"))
+
+                if !activation.isPredefined {
+                    Button { showingEditSheet = true } label: {
+                        Image(systemName: "pencil")
+                            .foregroundStyle(TextColors.toolbar)
+                    }
+                    .touchTarget()
+                    .accessibilityLabel(String(localized: "Edit"))
                 }
             }
         }
-        .accessibilityElement(children: .combine)
     }
-    
-    private var quickStatsSection: some View {
-        HStack(spacing: 16) {
-            QuickStatCard(
+
+    // MARK: - Stats Row
+    //
+    // Quick context at a glance — no big hero block needed here.
+
+    private var statsRow: some View {
+        HStack(spacing: 0) {
+            statCell(
                 icon: "list.bullet",
                 value: "\(activation.localizedActivities.count)",
-                label: "Activities",
-                color: .green
+                label: String(localized: "Activities"),
+                color: AppColors.positive
             )
-            
-            QuickStatCard(
+            Divider().frame(height: 28)
+            statCell(
                 icon: activation.isPredefined ? "lock.fill" : "person.fill",
-                value: activation.isPredefined ? String(localized: "Preset") : String(localized: "User-created"),
+                value: activation.isPredefined
+                    ? String(localized: "Preset")
+                    : String(localized: "My list"),
                 label: String(localized: "Type"),
-                color: .mint
+                color: AppColors.positive
             )
         }
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: 0)
     }
-    
-    private var purposeCard: some View {
-        infoCard(
-            title: String(localized: "What it's for"),
-            icon: "target",
-            accent: LinearGradient(colors: [.green, .mint], startPoint: .topLeading, endPoint: .bottomTrailing)
-        ) {
-            Text(
-                String(localized: "Behavioral activation helps you gently \"turn on\" to life when you have no energy, mood, or motivation. You choose simple actions (pleasant or meaningful) in advance, do them in small steps, and notice how your state and level of enjoyment change.")
-            )
-        }
-    }
-    
-    private func infoCard(
-        title: String,
-        icon: String,
-        accent: LinearGradient,
-        @ViewBuilder content: () -> some View
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.body)
-                    .foregroundStyle(accent)
-                
-                Text(title)
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
-            
-            content()
-                .font(.body)
+
+    private func statCell(icon: String, value: String, label: String, color: Color) -> some View {
+        HStack(spacing: Spacing.xxs) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(color)
+            Text(value)
+                .appFont(.bodyMedium)
+                .foregroundStyle(TextColors.primary)
+                .monospacedDigit()
+            Text(label)
+                .appFont(.small)
                 .foregroundStyle(TextColors.secondary)
-                .fixedSize(horizontal: false, vertical: true)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.sm)
     }
-    
+
+    // MARK: - Activities Section
+
     private var activitiesSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Image(systemName: "checklist")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Activities")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
-            
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            Text(String(localized: "Activities"))
+                .appFont(.h3)
+                .foregroundStyle(TextColors.primary)
+
             if activation.localizedActivities.isEmpty {
-                Text("No activities yet")
-                    .font(.body)
+                Text(String(localized: "No activities yet"))
+                    .appFont(.body)
                     .foregroundStyle(TextColors.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.vertical, 32)
+                    .padding(.vertical, Spacing.xl)
             } else {
                 ActivityGroupCard(activities: activation.localizedActivities)
             }
         }
+        .cardStyle()
     }
-    
-    private var scheduleSection: some View {
-        ExerciseScheduleSection(
-            assignments: assignments,
-            exerciseType: .behavioralActivation,
-            exposureId: nil,
-            groundingType: nil,
-            breathingPatternType: nil,
-            relaxationType: nil,
-            activityListId: activation.id
-        )
-    }
-    
-    private var startActivityButton: some View {
-        NavigationLink(value: AppRoute.activationStart(activityListId: activation.id, assignmentId: assignment?.id)) {
-            HStack(spacing: 8) {
-                Image(systemName: "play.fill")
-                    .font(.body)
-                Text("Start session")
-                    .font(.system(size: 17, weight: .semibold))
+
+    // MARK: - Shuffle Section
+    //
+    // Secondary action — discover a random activity without commitment.
+    // Result appears inline below the row; user can start directly from result.
+
+    private var shuffleSection: some View {
+        VStack(spacing: Spacing.xxs) {
+            shuffleRow
+
+            if let picked = pickedActivity {
+                shuffleResult(picked)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+        }
+        .animation(AppAnimation.spring, value: pickedActivity != nil)
+    }
+
+    private var shuffleRow: some View {
+        Button { shuffle() } label: {
+            HStack(spacing: Spacing.xs) {
+                Image(systemName: "shuffle")
+                    .font(.system(size: IconSize.glyph, weight: .medium))
+                    .foregroundStyle(AppColors.positive)
+                    .iconContainer(
+                        size: IconSize.card,
+                        backgroundColor: AppColors.positive.opacity(Opacity.softBackground),
+                        cornerRadius: CornerRadius.sm
                     )
-                    .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
-            )
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(String(localized: "Pick random activity"))
+                        .appFont(.bodyMedium)
+                        .foregroundStyle(TextColors.primary)
+                    Text(isShuffling
+                         ? String(localized: "Picking…")
+                         : String(localized: "Tap to get inspired"))
+                        .appFont(.small)
+                        .foregroundStyle(TextColors.secondary)
+                }
+
+                Spacer()
+
+                if isShuffling {
+                    ProgressView()
+                        .scaleEffect(0.85)
+                        .frame(width: IconSize.action, height: IconSize.action)
+                } else {
+                    Image(systemName: pickedActivity != nil ? "arrow.clockwise" : "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(AppColors.gray400)
+                }
+            }
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.xs)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .disabled(activation.localizedActivities.isEmpty)
-        .opacity(activation.localizedActivities.isEmpty ? 0.5 : 1.0)
-        .accessibilityLabel(String(localized: "Start behavioral activation session"))
+        .cardStyle(padding: 0)
+        .disabled(isShuffling || activation.localizedActivities.isEmpty)
     }
-    
-    private func toggleFavorite() {
-        do {
-            _ = try FavoritesService.toggle(
-                type: .behavioralActivation,
-                exerciseId: activation.id,
-                identifier: nil,
-                context: modelContext
-            )
-            HapticFeedback.selection()
-        } catch {
-            HapticFeedback.error()
-        }
-    }
-}
 
-// MARK: - Supporting Views
-
-struct ActivityRowCard: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
-    let activity: String
-    let index: Int
-    
-    var body: some View {
-        HStack(alignment: .center, spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(Color.green.opacity(0.1))
-                    .frame(width: 36, height: 36)
-                Text("\(index + 1)")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.green)
-            }
-            
+    private func shuffleResult(_ activity: String) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(String(localized: "Your activity"))
+                .appFont(.small)
+                .foregroundStyle(TextColors.secondary)
             Text(activity)
-                .font(.body)
+                .appFont(.bodyMedium)
                 .foregroundStyle(TextColors.primary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Spacing.sm)
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.thinMaterial)
+            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                .fill(AppColors.positive.opacity(Opacity.subtleBackground))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
+            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                .strokeBorder(
+                    AppColors.positive.opacity(Opacity.subtleBorder),
+                    lineWidth: 1
+                )
         )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(String(format: String(localized: "Activity %d: %@"), index + 1, activity))
+    }
+
+    // MARK: - Shuffle Logic
+
+    private func shuffle() {
+        let pool = activation.localizedActivities
+        guard !pool.isEmpty, !isShuffling else { return }
+
+        isShuffling = true
+        pickedActivity = nil
+        HapticFeedback.selection()
+
+        // Build a short spin sequence, landing on the real pick
+        let final = pool.randomElement()!
+        var sequence = (0..<8).map { _ in pool.randomElement()! }
+        sequence.append(final)
+
+        var delay: Double = 0
+        var interval: Double = 0.06
+
+        for (i, item) in sequence.enumerated() {
+            let isFinal = i == sequence.count - 1
+            let d = delay
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + d) {
+                withAnimation(AppAnimation.fast) {
+                    pickedActivity = item
+                }
+                if isFinal {
+                    isShuffling = false
+                    HapticFeedback.success()
+                }
+            }
+
+            delay += interval
+            interval = min(interval * 1.25, 0.35)
+        }
+    }
+
+    // MARK: - Actions
+
+    private func toggleFavorite() {
+        Task {
+            do {
+                _ = try FavoritesService.toggle(
+                    type: .behavioralActivation,
+                    exerciseId: activation.id,
+                    identifier: nil,
+                    context: modelContext
+                )
+                await MainActor.run { HapticFeedback.selection() }
+            } catch {
+                HapticFeedback.error()
+            }
+        }
     }
 }
 
+// MARK: - ActivityGroupCard
+
 struct ActivityGroupCard: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     let activities: [String]
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ForEach(activities.indices, id: \.self) { idx in
-                HStack(alignment: .firstTextBaseline, spacing: 12) {
-                    Image(systemName: "circle.fill")
-                        .font(.system(size: 7, weight: .semibold))
-                        .foregroundStyle(.green.opacity(0.8))
-                        .padding(.top, 7)
-                    
+                HStack(alignment: .firstTextBaseline, spacing: Spacing.xs) {
+                    Text("•")
+                        .appFont(.smallMedium)
+                        .foregroundStyle(AppColors.positive)
+                        .accessibilityHidden(true)
+
                     Text(activities[idx])
-                        .font(.body)
+                        .appFont(.body)
                         .foregroundStyle(TextColors.primary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                .padding(.vertical, 12)
-                .padding(.horizontal, 16)
-                
+                .padding(.vertical, Spacing.xs)
+
                 if idx != activities.indices.last {
                     Divider()
-                        .padding(.leading, 16)
+                        .padding(.leading, Spacing.md) // align with text
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(.thinMaterial)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
-        )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Activity list")
+        .accessibilityLabel(String(localized: "Activity list"))
     }
 }
 
-// MARK: - Start Activation View
-
-struct StartActivationView: View {
-    let activation: ActivityList
-    let assignment: ExerciseAssignment?
-    
-    @State private var showingActivityList = false
-    @State private var selectedActivity: String?
-    @State private var navigateToSession = false
-
-    @State private var isRouletteRunning = false
-    @State private var rouletteActivity: String?
-    @State private var rouletteTask: Task<Void, Never>?
-    
-    init(activation: ActivityList, assignment: ExerciseAssignment? = nil) {
-        self.activation = activation
-        self.assignment = assignment
-    }
-    
-    var body: some View {
-        ZStack {
-            VStack(spacing: 32) {
-                Spacer()
-                
-                // Header
-                VStack(spacing: 16) {
-                    ZStack {
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.green.opacity(0.15), .mint.opacity(0.1)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 80, height: 80)
-                        Image(systemName: "figure.walk")
-                            .font(.system(size: 40))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.green, .mint],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    
-                    VStack(spacing: 8) {
-                        Text(activation.localizedTitle)
-                            .font(.title2.weight(.semibold))
-                            .foregroundStyle(TextColors.primary)
-                            .multilineTextAlignment(.center)
-                        
-                        if isRouletteRunning {
-                            Text("Selecting activity…")
-                                .font(.subheadline)
-                                .foregroundStyle(TextColors.secondary)
-                                .multilineTextAlignment(.center)
-
-                            if let rouletteActivity {
-                                Text(rouletteActivity)
-                                    .font(.headline.weight(.semibold))
-                                    .foregroundStyle(TextColors.primary)
-                                    .multilineTextAlignment(.center)
-                                    .id(rouletteActivity)
-                                    .transition(.opacity.combined(with: .scale(scale: 0.98)))
-                            }
-                        } else {
-                            Text("Choose how to select activity")
-                                .font(.subheadline)
-                                .foregroundStyle(TextColors.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-
-                Spacer()
-            }
-        }
-        .navigationTitle("Start session")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.hidden, for: .tabBar)
-        .tint(.green)
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Button {
-                    guard !isRouletteRunning else { return }
-                    showingActivityList = true
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "list.bullet")
-                            .font(.body)
-                        Text("List")
-                    }
-                    .foregroundStyle(.green)
-                }
-                .disabled(activation.localizedActivities.isEmpty || isRouletteRunning)
-                .accessibilityLabel(String(localized: "Select from list"))
-                .accessibilityHint(String(localized: "Opens the activity list to choose from"))
-                
-                Spacer()
-                
-                Button {
-                    runRouletteRandomPick()
-                } label: {
-                    HStack(spacing: 8) {
-                        if isRouletteRunning {
-                            ProgressView()
-                                .tint(.green)
-                            Text("Selecting…")
-                        } else {
-                            Image(systemName: "shuffle")
-                                .font(.body)
-                            Text("Random")
-                        }
-                    }
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.green)
-                }
-                .disabled(activation.localizedActivities.isEmpty || isRouletteRunning)
-                .accessibilityLabel(String(localized: "Random activity"))
-                .accessibilityHint(String(localized: "Picks a random activity and starts the session"))
-            }
-        }
-        .sheet(isPresented: $showingActivityList) {
-            ActivitySelectionSheet(
-                activities: activation.localizedActivities,
-                onSelect: { activity in
-                    selectedActivity = activity
-                    showingActivityList = false
-                    navigateToSession = true
-                }
-            )
-        }
-        .navigationDestination(isPresented: $navigateToSession) {
-            if let activity = selectedActivity {
-                ActivationSessionView(
-                    activation: activation,
-                    selectedActivity: activity,
-                    assignment: self.assignment
-                )
-            }
-        }
-        .onDisappear {
-            rouletteTask?.cancel()
-            rouletteTask = nil
-        }
-    }
-
-    private func runRouletteRandomPick() {
-        guard !activation.localizedActivities.isEmpty else { return }
-        guard !isRouletteRunning else { return }
-
-        rouletteTask?.cancel()
-
-        isRouletteRunning = true
-
-        withAnimation(.easeInOut(duration: 0.12)) {
-            rouletteActivity = activation.localizedActivities.randomElement()
-        }
-
-        rouletteTask = Task { @MainActor in
-            let pool = activation.localizedActivities
-            let totalSteps = min(max(12, pool.count * 2), 20)
-
-            var delay: UInt64 = 60_000_000
-            for _ in 0..<totalSteps {
-                guard !Task.isCancelled else {
-                    isRouletteRunning = false
-                    return
-                }
-
-                let next = pool.randomElement() ?? rouletteActivity
-                withAnimation(.easeInOut(duration: 0.12)) {
-                    rouletteActivity = next
-                }
-
-                try? await Task.sleep(nanoseconds: delay)
-                delay = min(delay + 18_000_000, 140_000_000)
-            }
-
-            guard !Task.isCancelled else {
-                isRouletteRunning = false
-                return
-            }
-
-            if let final = pool.randomElement() {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
-                    rouletteActivity = final
-                }
-
-                HapticFeedback.selection()
-                selectedActivity = final
-                try? await Task.sleep(nanoseconds: 250_000_000)
-                isRouletteRunning = false
-                navigateToSession = true
-            } else {
-                isRouletteRunning = false
-            }
-        }
-    }
-}
-
-// MARK: - Activity Selection Sheet
-
-struct ActivitySelectionSheet: View {
-    let activities: [String]
-    let onSelect: (String) -> Void
-    
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 12) {
-                    ForEach(activities.indices, id: \.self) { index in
-                        let activity = activities[index]
-                        Button {
-                            HapticFeedback.selection()
-                            onSelect(activity)
-                        } label: {
-                            HStack(alignment: .center, spacing: 16) {
-                                Circle()
-                                    .fill(Color.green.opacity(0.22))
-                                    .frame(width: 10, height: 10)
-                                
-                                Text(activity)
-                                    .font(.body)
-                                    .foregroundStyle(TextColors.primary)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .multilineTextAlignment(.leading)
-                                
-                                Image(systemName: "chevron.right")
-                                    .font(.body.weight(.medium))
-                                    .foregroundStyle(TextColors.tertiary)
-                            }
-                            .padding(16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(.thinMaterial)
-                            )
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(activity)
-                        .accessibilityHint(String(localized: "Select activity"))
-                    }
-                }
-                .padding(20)
-            }
-            .navigationTitle(String(localized: "Activity selection"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
-}
-
-// MARK: - Activation Session View
-
-struct ActivationSessionView: View {
-    let activation: ActivityList
-    let selectedActivity: String
-    let assignment: ExerciseAssignment?
-    
-    @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
-    
-    @State private var sessionStartTime = Date()
-    @State private var showingCompletionView = false
-    @State private var isCompleted = false
-    @State private var currentTime = Date()
-    @State private var tickTask: Task<Void, Never>?
-
-    init(activation: ActivityList, selectedActivity: String, assignment: ExerciseAssignment? = nil) {
-        self.activation = activation
-        self.selectedActivity = selectedActivity
-        self.assignment = assignment
-    }
-    
-    private var formattedStartTime: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: sessionStartTime)
-    }
-    
-    private var elapsedTime: String {
-        let elapsed = currentTime.timeIntervalSince(sessionStartTime)
-        let minutes = Int(elapsed) / 60
-        let seconds = Int(elapsed) % 60
-        return String(format: "%d:%02d", minutes, seconds)
-    }
-    
-    var body: some View {
-        ZStack {
-            TopMeshGradientBackground(palette: .green)
-            
-            ScrollView {
-                VStack(spacing: 32) {
-                    // Header
-                    VStack(spacing: 16) {
-                        ZStack {
-                            Circle()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [.green.opacity(0.15), .mint.opacity(0.1)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .frame(width: 100, height: 100)
-                            Image(systemName: "figure.walk")
-                                .font(.system(size: 50))
-                                .foregroundStyle(
-                                    LinearGradient(
-                                        colors: [.green, .mint],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                        }
-                        
-                        VStack(spacing: 8) {
-                            Text("Your activity")
-                                .font(.subheadline)
-                                .foregroundStyle(TextColors.tertiary)
-                            
-                            Text(selectedActivity)
-                                .font(.title2.weight(.semibold))
-                                .foregroundStyle(TextColors.primary)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                    .padding(.top, 20)
-                    
-                    // Time info card
-                    HStack(spacing: 20) {
-                        VStack(spacing: 4) {
-                            Text("Start")
-                                .font(.caption.weight(.medium))
-                                .foregroundStyle(TextColors.tertiary)
-                            Text(formattedStartTime)
-                                .font(.body.weight(.semibold))
-                                .foregroundStyle(TextColors.primary)
-                                .monospacedDigit()
-                        }
-                        .frame(maxWidth: .infinity)
-                        
-                        Divider()
-                            .frame(height: 32)
-                        
-                        VStack(spacing: 4) {
-                            Text("Duration")
-                                .font(.caption.weight(.medium))
-                                .foregroundStyle(TextColors.tertiary)
-                            Text(elapsedTime)
-                                .font(.body.weight(.semibold))
-                                .foregroundStyle(.green)
-                                .monospacedDigit()
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(.thinMaterial)
-                            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
-                    )
-                    .padding(.horizontal, 20)
-                    
-                    // Instructions card
-                    VStack(alignment: .leading, spacing: 16) {
-                        HStack {
-                            Image(systemName: "info.circle.fill")
-                                .font(.title3)
-                                .foregroundStyle(.green)
-                            Text("Instructions")
-                                .font(.headline)
-                                .foregroundStyle(TextColors.primary)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            InstructionRow(
-                                number: 1,
-                                text: String(localized: "Do the activity at a comfortable pace")
-                            )
-                            InstructionRow(
-                                number: 2,
-                                text: String(localized: "Focus on sensations in the present moment")
-                            )
-                            InstructionRow(
-                                number: 3,
-                                text: String(localized: "Notice how you feel during and after")
-                            )
-                            InstructionRow(
-                                number: 4,
-                                text: String(localized: "After finishing, rate how much you enjoyed it")
-                            )
-                        }
-                    }
-                    .padding(20)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(.thinMaterial)
-                            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
-                    )
-                    .padding(.horizontal, 20)
-                    
-                    // Complete button
-                    if !isCompleted {
-                        Button {
-                            showingCompletionView = true
-                        } label: {
-                            HStack(spacing: 8) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.body)
-                                Text("Finish")
-                                    .font(.system(size: 17, weight: .semibold))
-                            }
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 52)
-                            .background(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [.green, .mint],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
-                                    )
-                                    .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
-                            )
-                        }
-                        .buttonStyle(.plain)
-                        .padding(.horizontal, 20)
-                    }
-                }
-                .padding(.bottom, 40)
-            }
-        }
-        .navigationTitle(activation.localizedTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            sessionStartTime = Date()
-            currentTime = Date()
-            tickTask = Task { @MainActor in
-                while !Task.isCancelled {
-                    try? await Task.sleep(for: .seconds(1))
-                    currentTime = Date()
-                }
-            }
-        }
-        .onDisappear {
-            tickTask?.cancel()
-            tickTask = nil
-        }
-        .sheet(isPresented: $showingCompletionView) {
-            ActivationCompletionView(
-                activityName: selectedActivity,
-                startedAt: sessionStartTime,
-                onComplete: { rating in
-                    completeSession(rating: rating)
-                }
-            )
-        }
-    }
-    
-    private func completeSession(rating: Int?) {
-        let session = BehavioralActivationSession(
-            startedAt: sessionStartTime,
-            completedAt: Date(),
-            selectedActivity: selectedActivity,
-            pleasureRating: rating
-        )
-        
-        modelContext.insert(session)
-        
-        do {
-            try modelContext.save()
-            
-            if let assignment = self.assignment {
-                try SessionCompletionService.markCompletedIfNeeded(assignmentId: assignment.id, context: modelContext)
-            }
-            HapticFeedback.success()
-            isCompleted = true
-            
-            // Dismiss after a short delay
-            Task {
-                try? await Task.sleep(for: .seconds(0.5))
-                dismiss()
-            }
-        } catch {
-            print("Failed to save session: \(error)")
-        }
-    }
-}
-
-// MARK: - Supporting Views
-
-struct InstructionRow: View {
-    let number: Int
-    let text: String
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            ZStack {
-                Circle()
-                    .fill(Color.green.opacity(0.1))
-                    .frame(width: 24, height: 24)
-                Text("\(number)")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.green)
-            }
-            
-            Text(text)
-                .font(.body)
-                .foregroundStyle(TextColors.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-}
+// MARK: - Preview
 
 #Preview {
     NavigationStack {
         ActivationDetailView(
             activation: ActivityList(
-                title: "Morning routine",
-                activities: ["Warm-up 30 min", "Meditation", "Healthy breakfast", "Reading 15 min"],
+                title: "Morning Routine",
+                activities: [
+                    "Stretch for 10 minutes",
+                    "Healthy breakfast",
+                    "10 minutes of journaling",
+                    "Walk outside",
+                    "Review goals for the day"
+                ],
                 isPredefined: false
             )
         )
     }
-    .modelContainer(for: [ActivityList.self, ExerciseAssignment.self, FavoriteExercise.self], inMemory: true)
+    .modelContainer(for: [ExerciseAssignment.self, FavoriteExercise.self], inMemory: true)
 }
-
