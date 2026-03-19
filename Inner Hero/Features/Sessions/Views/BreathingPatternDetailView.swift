@@ -3,94 +3,65 @@ import SwiftData
 
 struct BreathingPatternDetailView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.scheduleViewModel) private var scheduleViewModel
     @Environment(NotificationManager.self) private var notificationManager
 
     let pattern: BreathingPattern
-    
+
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \BreathingSessionResult.performedAt, order: .reverse) private var allSessions: [BreathingSessionResult]
     @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
-    
+
     @State private var showScheduleSheet = false
-    
+
     private var isFavorite: Bool {
         FavoritesService.isFavorite(type: .breathing, exerciseId: nil, identifier: pattern.type.rawValue, in: favorites)
     }
-    
+
     private var assignments: [ExerciseAssignment] {
-        allAssignments.filter { assignment in
-            assignment.exerciseType == .breathing && assignment.breathingPattern == pattern.type
+        allAssignments.filter {
+            $0.exerciseType == .breathing && $0.breathingPattern == pattern.type
         }
     }
-    
+
     private var sessions: [BreathingSessionResult] {
         allSessions.filter { $0.patternType == pattern.type }
     }
-    
+
     private var averageDuration: TimeInterval? {
         guard !sessions.isEmpty else { return nil }
-        let total = sessions.reduce(0) { $0 + $1.duration }
-        return total / Double(sessions.count)
+        return sessions.reduce(0) { $0 + $1.duration } / Double(sessions.count)
     }
-    
-    private var lastSessionDate: Date? {
-        sessions.first?.performedAt
-    }
-    
+
+    private var lastSessionDate: Date? { sessions.first?.performedAt }
+
+    // MARK: - Body
+
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 32) {
-                heroHeaderSection
-                quickStatsSection
+            VStack(spacing: Spacing.lg) {
+                statsRow
                 descriptionCard
                 startSessionButton
-                sessionsHistoryCard
-                scheduleSection
+                sessionsHistoryRow
+                ExerciseScheduleSection(
+                    assignments: assignments,
+                    exerciseType: .breathing,
+                    exposureId: nil,
+                    groundingType: nil,
+                    breathingPatternType: pattern.type,
+                    relaxationType: nil,
+                    activityListId: nil
+                )
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            .padding(.bottom, 40)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.xxl)
         }
-        .background(TopMeshGradientBackground(palette: .teal))
-        .navigationTitle("Details")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                HStack(spacing: 12) {
-                    Button {
-                        toggleFavorite()
-                    } label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .font(.title3)
-                            .foregroundStyle(
-                                isFavorite
-                                ? LinearGradient(colors: [.pink, .red], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                : LinearGradient(colors: [TextColors.tertiary, TextColors.tertiary], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? "Remove from favorites" : "Add to favorites")
-                    
-                    Button {
-                        showScheduleSheet = true
-                    } label: {
-                        Image(systemName: "calendar.badge.plus")
-                            .font(.title3)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.orange, .orange.opacity(0.8)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel("Schedule")
-                }
-            }
-        }
+        .homeBackground()
+        .navigationTitle(pattern.localizedName)
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar { toolbarContent }
         .sheet(isPresented: $showScheduleSheet) {
             if let viewModel = scheduleViewModel {
                 ScheduleExerciseView(
@@ -102,220 +73,139 @@ struct BreathingPatternDetailView: View {
             }
         }
     }
-    
-    private var heroHeaderSection: some View {
-        VStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.teal.opacity(0.15), .mint.opacity(0.1)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
-                
-                Image(systemName: pattern.icon)
-                    .font(.system(size: 50))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.teal, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            HStack(spacing: Spacing.xs) {
+                Button { toggleFavorite() } label: {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundStyle(isFavorite ? AppColors.primary : TextColors.secondary)
+                }
+                .touchTarget()
+                .accessibilityLabel(isFavorite
+                    ? String(localized: "Remove from favorites")
+                    : String(localized: "Add to favorites"))
+
+                Button { showScheduleSheet = true } label: {
+                    Image(systemName: "calendar.badge.plus")
+                        .foregroundStyle(TextColors.toolbar)
+                }
+                .touchTarget()
+                .accessibilityLabel(String(localized: "Schedule"))
             }
-            
-            Text(pattern.localizedName)
-                .font(.title.weight(.semibold))
+        }
+    }
+
+    // MARK: - Inline Stats Row
+
+    private var statsRow: some View {
+        HStack(spacing: 0) {
+            statItem(icon: "chart.bar.fill", value: "\(sessions.count)",
+                     label: String(localized: "sessions"), color: AppColors.positive)
+            Divider().frame(height: 28)
+            statItem(icon: "timer", value: averageDuration.map(formatDuration) ?? "—",
+                     label: String(localized: "avg"), color: AppColors.State.warning)
+            Divider().frame(height: 28)
+            statItem(icon: "clock", value: lastSessionDate.map { $0.formatted(.relative(presentation: .named)) } ?? "—",
+                     label: String(localized: "last"), color: AppColors.positive)
+        }
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: 0)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func statItem(icon: String, value: String, label: String, color: Color) -> some View {
+        HStack(spacing: Spacing.xxs) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(color)
+            Text(value)
+                .appFont(.bodyMedium)
                 .foregroundStyle(TextColors.primary)
-                .multilineTextAlignment(.center)
+                .monospacedDigit()
+            Text(label)
+                .appFont(.small)
+                .foregroundStyle(TextColors.secondary)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.sm)
         .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(value) \(label)")
     }
-    
-    private var quickStatsSection: some View {
-        HStack(spacing: 16) {
-            QuickStatCard(
-                icon: "chart.bar.fill",
-                value: "\(sessions.count)",
-                label: "Sessions",
-                color: .teal
-            )
-            
-            QuickStatCard(
-                icon: "timer",
-                value: averageDuration.map(formatDurationShort) ?? "—",
-                label: "Average",
-                color: .orange
-            )
-            
-            QuickStatCard(
-                icon: "clock.fill",
-                value: lastSessionDate.map(formatRelativeShort) ?? "—",
-                label: "Last",
-                color: .teal
-            )
-        }
-    }
-    
+
+    // MARK: - Description
+
     private var descriptionCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "doc.text")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.teal, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Description")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
-            
+        VStack(alignment: .leading, spacing: Spacing.xxs) {
+            SectionLabel(text: String(localized: "Description"))
             Text(pattern.localizedDescription)
-                .font(.body)
+                .appFont(.body)
                 .foregroundStyle(TextColors.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
+        .cardStyle()
     }
-    
+
+    // MARK: - Start Session
+
     private var startSessionButton: some View {
         NavigationLink(value: AppRoute.breathingSession(patternType: pattern.type)) {
-            HStack(spacing: 8) {
-                Image(systemName: "play.fill")
-                    .font(.body)
-                Text("Start session")
-                    .font(.system(size: 17, weight: .semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.teal, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .shadow(color: .teal.opacity(0.3), radius: 8, x: 0, y: 4)
+            PrimaryButtonLabel(
+                title: String(localized: "Start session"),
+                systemImage: "play.fill",
+                color: AppColors.positive
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Start session")
     }
-    
-    private var sessionsHistoryCard: some View {
+
+    // MARK: - Sessions History Row
+
+    private var sessionsHistoryRow: some View {
         NavigationLink(value: AppRoute.sessionHistoryBreathing(patternType: pattern.type)) {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    Image(systemName: "clock")
-                        .font(.body)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.teal, .mint],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    Text("Session history")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(TextColors.primary)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundStyle(TextColors.secondary)
-                }
-                
-                if sessions.count > 0 {
-                    HStack(spacing: 20) {
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Total")
-                                .font(.caption)
-                                .foregroundStyle(TextColors.secondary)
-                            Text("\(sessions.count)")
-                                .font(.title2.weight(.semibold))
-                                .foregroundStyle(TextColors.primary)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        
-                        Divider()
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Last")
-                                .font(.caption)
-                                .foregroundStyle(TextColors.secondary)
-                            
-                            if let date = lastSessionDate {
-                                Text(date, style: .relative)
-                                    .font(.body.weight(.medium))
-                                    .foregroundStyle(
-                                        LinearGradient(
-                                            colors: [.teal, .mint],
-                                            startPoint: .leading,
-                                            endPoint: .trailing
-                                        )
-                                    )
-                            } else {
-                                Text("—")
-                                    .font(.body.weight(.medium))
-                                    .foregroundStyle(TextColors.secondary)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                } else {
-                    Text("No completed sessions")
-                        .font(.body)
-                        .foregroundStyle(TextColors.secondary)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(.thinMaterial)
-                    .shadow(
-                        color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                        radius: 10,
-                        x: 0,
-                        y: 4
+            HStack(spacing: Spacing.sm) {
+                Image(systemName: "clock")
+                    .font(.system(size: IconSize.glyph, weight: .medium))
+                    .foregroundStyle(AppColors.positive)
+                    .iconContainer(
+                        size: IconSize.card,
+                        backgroundColor: AppColors.positive.opacity(Opacity.softBackground),
+                        cornerRadius: CornerRadius.sm
                     )
-            )
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(localized: "Session history"))
+                        .appFont(.bodyMedium)
+                        .foregroundStyle(TextColors.primary)
+                    Text(sessions.isEmpty
+                         ? String(localized: "No sessions yet")
+                         : "\(sessions.count) sessions\(lastSessionDate.map { " · \($0.formatted(.relative(presentation: .named)))" } ?? "")")
+                        .appFont(.small)
+                        .foregroundStyle(TextColors.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(AppColors.gray400)
+            }
+            .cardStyle()
         }
         .buttonStyle(.plain)
     }
-    
-    private var scheduleSection: some View {
-        ExerciseScheduleSection(
-            assignments: assignments,
-            exerciseType: .breathing,
-            exposureId: nil,
-            groundingType: nil,
-            breathingPatternType: pattern.type,
-            relaxationType: nil,
-            activityListId: nil
-        )
+
+    // MARK: - Helpers
+
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        let totalSeconds = Int(duration.rounded())
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        if minutes == 0 { return String(format: String(localized: "%d s"), seconds) }
+        return "\(minutes):\(String(format: "%02d", seconds))"
     }
-    
+
     private func toggleFavorite() {
         Task {
             do {
@@ -325,31 +215,21 @@ struct BreathingPatternDetailView: View {
                     identifier: pattern.type.rawValue,
                     context: modelContext
                 )
-                await MainActor.run {
-                    HapticFeedback.selection()
-                }
-            } catch {
-                print("Error toggling favorite: \(error)")
-                HapticFeedback.error()
-            }
+                await MainActor.run { HapticFeedback.selection() }
+            } catch { HapticFeedback.error() }
         }
     }
-    
-    private func formatDurationShort(_ duration: TimeInterval) -> String {
-        let totalSeconds = Int(duration.rounded())
-        let minutes = totalSeconds / 60
-        let seconds = totalSeconds % 60
-        if minutes == 0 {
-            return String(format: String(localized: "%d s"), seconds)
+}
+
+// MARK: - BreathingPatternType + rhythm label (reused from list view)
+
+private extension BreathingPatternType {
+    var rhythmLabel: String {
+        switch self {
+        case .box:     return "4 · 4 · 4 · 4"
+        case .fourSix: return "4 · 6"
+        case .paced:   return "5 · 1 · 5 · 1"
         }
-        return "\(minutes):\(String(format: "%02d", seconds))"
-    }
-    
-    private func formatRelativeShort(_ date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = Locale(identifier: "ru_RU")
-        formatter.unitsStyle = .short
-        return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
 
@@ -359,5 +239,3 @@ struct BreathingPatternDetailView: View {
     }
     .modelContainer(for: [ExerciseAssignment.self, BreathingSessionResult.self, FavoriteExercise.self], inMemory: true)
 }
-
-

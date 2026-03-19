@@ -6,7 +6,6 @@ import SwiftData
 struct CompleteSessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
     
     let session: ExposureSessionResult
     let notes: String
@@ -26,137 +25,86 @@ struct CompleteSessionView: View {
     
     @FocusState private var focusedField: FocusField?
     
-    private var screenBackgroundGradientColors: [Color] {
-        if colorScheme == .dark {
-            return [
-                Color(red: 0.06, green: 0.07, blue: 0.09),
-                Color(red: 0.10, green: 0.11, blue: 0.14)
-            ]
-        }
-        
-        return [
-            Color(red: 0.95, green: 0.97, blue: 1.0),
-            Color(red: 0.92, green: 0.95, blue: 0.98)
-        ]
-    }
-    
-    private var cardBackgroundColor: Color {
-        if colorScheme == .dark {
-            return Color(red: 0.14, green: 0.15, blue: 0.18)
-        }
-        
-        return Color.white
-    }
-    
-    private var cardShadowOpacity: Double {
-        colorScheme == .dark ? Opacity.darkShadow : Opacity.lightShadow
-    }
-    
-    private var editorBackgroundGradientColors: [Color] {
-        if colorScheme == .dark {
-            return [
-                Color(red: 0.12, green: 0.13, blue: 0.16),
-                Color(red: 0.09, green: 0.10, blue: 0.13)
-            ]
-        }
-        
-        return [
-            Color(red: 0.98, green: 0.99, blue: 1.0),
-            Color(red: 0.96, green: 0.97, blue: 0.99)
-        ]
-    }
-    
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 32) {
+                VStack(spacing: Spacing.xl) {
                     sessionSummaryCard
                     
                     praiseCard
                     
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: Spacing.sm) {
                         Label("Anxiety level after session", systemImage: "gauge")
-                            .font(.headline)
+                            .appFont(.h3)
                             .foregroundStyle(TextColors.primary)
                         
                         Text("Rate your anxiety level now (0–10)")
-                            .font(.subheadline)
+                            .appFont(.body)
                             .foregroundStyle(TextColors.secondary)
                         
-                        VStack(spacing: 16) {
-                            HStack {
-                                Spacer()
+                        VStack(spacing: Spacing.md) {
+                            VStack(spacing: Spacing.xxxs) {
                                 Text("\(Int(anxietyAfter))")
-                                    .font(.system(.title, design: .rounded))
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(anxietyColor(for: Int(anxietyAfter)))
+                                    .appFont(.monoLarge)
+                                    .foregroundStyle(anxietyAccent(for: Int(anxietyAfter)))
                                     .monospacedDigit()
-                                Spacer()
+                                Text(anxietyDescription(for: Int(anxietyAfter)))
+                                    .appFont(.small)
+                                    .foregroundStyle(TextColors.secondary)
+                                    .multilineTextAlignment(.center)
                             }
                             
                             Slider(value: $anxietyAfter, in: 0...10, step: 1)
-                                .tint(anxietyColor(for: Int(anxietyAfter)))
+                                .tint(anxietyAccent(for: Int(anxietyAfter)))
+                            
+                            HStack {
+                                Text("0\nNo anxiety")
+                                    .appFont(.small)
+                                    .multilineTextAlignment(.leading)
+                                    .foregroundStyle(TextColors.secondary)
+                                Spacer()
+                                Text("5\nMedium")
+                                    .appFont(.small)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(TextColors.secondary)
+                                Spacer()
+                                Text("10\nMaximum")
+                                    .appFont(.small)
+                                    .multilineTextAlignment(.trailing)
+                                    .foregroundStyle(TextColors.secondary)
+                            }
                         }
-                        .padding(20)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(
-                                    LinearGradient(
-                                        colors: editorBackgroundGradientColors,
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                        )
+                        .cardStyle(cornerRadius: CornerRadius.lg, padding: Spacing.lg)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, Spacing.lg)
                     .accessibilityElement(children: .contain)
                     .accessibilityLabel("Anxiety level after session")
                     
                     progressCard
                     
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
                         Label("Describe how you feel", systemImage: "note.text")
-                            .font(.headline)
+                            .appFont(.h3)
                             .foregroundStyle(TextColors.primary)
                         
                         Text("What do you feel now? What thoughts/sensations were there during the session? What helped?")
-                            .font(.subheadline)
+                            .appFont(.body)
                             .foregroundStyle(TextColors.secondary)
                         
-                        TextEditor(text: $finalNotes)
-                            .frame(minHeight: 100)
-                            .focused($focusedField, equals: .finalNotes)
-                            .scrollContentBackground(.hidden)
-                            .padding(10)
-                            .background(
-                                LinearGradient(
-                                    colors: editorBackgroundGradientColors,
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        AppTextEditor(
+                            text: $finalNotes,
+                            placeholder: "How do you feel now? What helped?",
+                            minHeight: 120
+                        )
+                        .focused($focusedField, equals: .finalNotes)
                     }
-                    .padding(20)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .fill(cardBackgroundColor)
-                            .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
-                    )
-                    .padding(.horizontal, 20)
+                    .cardStyle()
+                    .padding(.horizontal, Spacing.lg)
                 }
-                .padding(.top, 20)
-                .padding(.bottom, 32)
+                .padding(.top, Spacing.lg)
+                .padding(.bottom, Spacing.xl)
             }
-            .background(
-                LinearGradient(
-                    colors: screenBackgroundGradientColors,
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-            )
+            .pageBackground()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -196,16 +144,16 @@ struct CompleteSessionView: View {
     }
     
     private var praiseCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Label("Well done!", systemImage: "sparkles")
-                .font(.headline)
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
             
             Text("You completed the session—that's already a big step. Even if anxiety was high, you practiced staying with the feelings and moving forward.")
-                .font(.body)
+                .appFont(.body)
                 .foregroundStyle(TextColors.secondary)
             
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: Spacing.xs) {
                 PraiseTipRow(
                     iconSystemName: "checkmark.seal",
                     text: "Note any small progress—it adds up."
@@ -216,44 +164,31 @@ struct CompleteSessionView: View {
                     text: "Write down what helped (breathing, focus on the task, supportive thought)—it will be useful next time."
                 )
             }
-            .font(.subheadline)
-            .foregroundStyle(TextColors.secondary)
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(cardBackgroundColor)
-                .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
-        )
-        .padding(.horizontal, 20)
+        .cardStyle()
+        .padding(.horizontal, Spacing.lg)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Praise for completing the session")
         .accessibilityHint("Short supportive message and tips")
     }
     
     private var sessionSummaryCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Label("Session results", systemImage: "chart.bar.fill")
-                .font(.headline)
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
             
-            HStack(spacing: 16) {
-                VStack(spacing: 6) {
+            HStack(spacing: Spacing.md) {
+                VStack(spacing: Spacing.xxxs) {
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .font(.system(size: IconSize.inline, weight: .semibold))
+                        .foregroundStyle(AppColors.positive)
                         .accessibilityHidden(true)
                     Text("\(session.completedStepIndices.count)")
-                        .font(.title2.weight(.bold))
+                        .appFont(.h2)
                         .foregroundStyle(TextColors.primary)
                     Text("steps")
-                        .font(.caption)
+                        .appFont(.small)
                         .foregroundStyle(TextColors.secondary)
                 }
                 .frame(maxWidth: .infinity)
@@ -262,23 +197,17 @@ struct CompleteSessionView: View {
                 
                 Divider()
                 
-                VStack(spacing: 6) {
+                VStack(spacing: Spacing.xxxs) {
                     Image(systemName: "clock.fill")
-                        .font(.title3)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .font(.system(size: IconSize.inline, weight: .semibold))
+                        .foregroundStyle(AppColors.primary)
                         .accessibilityHidden(true)
                     Text(formatTime(session.getTotalStepsTime()))
-                        .font(.title3.weight(.bold))
+                        .appFont(.h3)
                         .foregroundStyle(TextColors.primary)
                         .monospacedDigit()
                     Text("time")
-                        .font(.caption)
+                        .appFont(.small)
                         .foregroundStyle(TextColors.secondary)
                 }
                 .frame(maxWidth: .infinity)
@@ -286,81 +215,74 @@ struct CompleteSessionView: View {
                 .accessibilityLabel("Completion time: \(formatTime(session.getTotalStepsTime()))")
             }
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(cardBackgroundColor)
-                .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
-        )
-        .padding(.horizontal, 20)
+        .cardStyle()
+        .padding(.horizontal, Spacing.lg)
     }
     
     private var progressCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Label("Progress", systemImage: "chart.line.uptrend.xyaxis")
-                .font(.headline)
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
             
-            HStack(spacing: 14) {
+            HStack(spacing: Spacing.md) {
                 progressGauge(title: "Before", value: session.anxietyBefore)
                 
-                Image(systemName: "arrow.right")
-                    .font(.caption)
-                    .foregroundStyle(TextColors.secondary)
-                    .padding(.horizontal, 2)
-                    .accessibilityHidden(true)
+                Divider()
+                
+                changeColumn
+                
+                Divider()
                 
                 progressGauge(title: "After", value: Int(anxietyAfter))
-                
-                Spacer(minLength: 8)
-                
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("Change")
-                        .font(.caption)
-                        .foregroundStyle(TextColors.secondary)
-                    
-                    let change = session.anxietyBefore - Int(anxietyAfter)
-                    let changeText = change == 0 ? "0" : "\(change > 0 ? "-" : "+")\(abs(change))"
-                    
-                    Text(changeText)
-                        .font(.title2.weight(.bold))
-                        .foregroundStyle(change > 0 ? .green : (change < 0 ? .yellow : .gray))
-                        .monospacedDigit()
-                }
             }
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(cardBackgroundColor)
-                .shadow(color: Color.black.opacity(cardShadowOpacity), radius: 10, x: 0, y: 4)
-        )
-        .padding(.horizontal, 20)
+        .cardStyle()
+        .padding(.horizontal, Spacing.lg)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Anxiety progress")
         .accessibilityValue(accessibilityProgressValue)
     }
 
     private func progressGauge(title: String, value: Int) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.xxxs) {
             Gauge(value: Double(value), in: 0...10) {
                 EmptyView()
             } currentValueLabel: {
                 Text("\(value)")
-                    .font(.system(.headline, design: .rounded).weight(.bold))
+                    .appFont(.bodyMedium)
                     .foregroundStyle(TextColors.primary)
                     .monospacedDigit()
             }
             .gaugeStyle(.accessoryCircular)
-            .tint(anxietyColor(for: value))
+            .tint(anxietyAccent(for: value))
             .frame(width: 58, height: 58)
             .accessibilityHidden(true)
             
             Text(title)
-                .font(.caption)
+                .appFont(.small)
                 .foregroundStyle(TextColors.secondary)
         }
         .frame(width: 72)
+    }
+
+    private var changeColumn: some View {
+        let change = session.anxietyBefore - Int(anxietyAfter)
+        let changeText = change == 0 ? "0" : "\(change > 0 ? "-" : "+")\(abs(change))"
+        
+        return VStack(spacing: Spacing.xxxs) {
+            Text(changeText)
+                .appFont(.display)
+                .foregroundStyle(change > 0 ? AppColors.positive : (change < 0 ? AppColors.primary : TextColors.secondary))
+                .monospacedDigit()
+            
+            Text("Change")
+                .appFont(.small)
+                .foregroundStyle(TextColors.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Change \(changeText)")
     }
     
     private var accessibilityProgressValue: String {
@@ -376,29 +298,39 @@ struct CompleteSessionView: View {
         let text: String
         
         var body: some View {
-            HStack(alignment: .top, spacing: 10) {
+            HStack(alignment: .top, spacing: Spacing.xxs) {
                 Image(systemName: iconSystemName)
+                    .font(.system(size: IconSize.glyph))
+                    .foregroundStyle(AppColors.gray400)
                     .frame(width: 22, alignment: .center)
                     .padding(.top, 1)
                     .accessibilityHidden(true)
                 
                 Text(text)
+                    .appFont(.small)
+                    .foregroundStyle(TextColors.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .accessibilityElement(children: .combine)
         }
     }
     
-    private func anxietyColor(for value: Int) -> Color {
+    private func anxietyAccent(for value: Int) -> Color {
+        let clamped = max(0, min(10, value))
+        let intensity = 0.35 + (Double(clamped) / 10.0) * 0.65
+        return AppColors.accent.opacity(intensity)
+    }
+    
+    private func anxietyDescription(for value: Int) -> String {
         switch value {
-        case 0...3:
-            return .green
-        case 4...6:
-            return .orange
-        case 7...10:
-            return .red
-        default:
-            return .gray
+        case 0: return String(localized: "Complete calm, no anxiety")
+        case 1...2: return String(localized: "Very low anxiety")
+        case 3...4: return String(localized: "Mild anxiety, manageable")
+        case 5...6: return String(localized: "Moderate anxiety, noticeable discomfort")
+        case 7...8: return String(localized: "High anxiety, significant distress")
+        case 9: return String(localized: "Very high anxiety, hard to tolerate")
+        case 10: return String(localized: "Extreme anxiety, panic")
+        default: return ""
         }
     }
     

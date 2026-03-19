@@ -6,62 +6,39 @@ import SwiftData
 struct GroundingSessionView: View {
     let exercise: GroundingExercise
     let assignment: ExerciseAssignment?
-    
+
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    
+
     @State private var viewModel = GroundingSessionViewModel()
     @State private var currentStepIndex = 0
     @State private var showingFinishConfirmation = false
     @State private var showingCongratsSheet = false
     @State private var shouldDismissAfterCongrats = false
-    
+
     init(exercise: GroundingExercise, assignment: ExerciseAssignment? = nil) {
         self.exercise = exercise
         self.assignment = assignment
     }
-    
-    private var steps: [GroundingInstructionStep] {
-        exercise.instructionSteps
-    }
-    
-    private var currentStep: GroundingInstructionStep {
-        steps[currentStepIndex]
-    }
-    
-    private var isFirstStep: Bool {
-        currentStepIndex == 0
-    }
-    
-    private var isLastStep: Bool {
-        currentStepIndex == steps.count - 1
-    }
-    
+
+    private var steps: [GroundingInstructionStep] { exercise.instructionSteps }
+    private var currentStep: GroundingInstructionStep { steps[currentStepIndex] }
+    private var isFirstStep: Bool { currentStepIndex == 0 }
+    private var isLastStep: Bool { currentStepIndex == steps.count - 1 }
+
     private var stepIconSystemName: String {
         switch currentStep.number {
-        case 5:
-            return "eye.fill"
-        case 4:
-            return "hand.raised.fill"
-        case 3:
-            return "ear.fill"
+        case 5: return "eye.fill"
+        case 4: return "hand.raised.fill"
+        case 3: return "ear.fill"
         case 2:
-            if #available(iOS 17.0, *) {
-                return "nose.fill"
-            } else {
-                return "wind"
-            }
+            if #available(iOS 17.0, *) { return "nose.fill" } else { return "wind" }
         case 1:
-            if #available(iOS 17.0, *) {
-                return "mouth.fill"
-            } else {
-                return "cup.and.saucer.fill"
-            }
-        default:
-            return "sparkles"
+            if #available(iOS 17.0, *) { return "mouth.fill" } else { return "cup.and.saucer.fill" }
+        default: return "sparkles"
         }
     }
-    
+
     private var congratsConfiguration: CongratsSessionModal.Configuration {
         switch exercise.type {
         case .fiveFourThreeTwoOne:
@@ -71,168 +48,65 @@ struct GroundingSessionView: View {
                 title: "Well done!",
                 subtitle: "You brought your attention to the present moment—that really helps.",
                 messages: [
-                    .init(iconSystemName: "eye.circle.fill", text: "If you like, repeat another round—at your own pace."),
-                    .init(iconSystemName: "hand.raised.circle.fill", text: "You relied on your senses—that's a skill that strengthens with practice."),
-                    .init(iconSystemName: "heart.circle.fill", text: "Even a small step is self-care.")
+                    .init(iconSystemName: "eye.circle.fill",          text: "If you like, repeat another round—at your own pace."),
+                    .init(iconSystemName: "hand.raised.circle.fill",  text: "You relied on your senses—that's a skill that strengthens with practice."),
+                    .init(iconSystemName: "heart.circle.fill",         text: "Even a small step is self-care.")
                 ],
                 primaryButtonTitle: "Great"
             )
         }
     }
-    
+
+    // MARK: - Body
+
     var body: some View {
         ZStack {
             LinearGradient(
                 colors: [
-                    Color.purple.opacity(0.10),
-                    Color.indigo.opacity(0.05)
+                    AppColors.accentLight.opacity(0.5),
+                    AppColors.gray100
                 ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
-            
-            VStack(spacing: Spacing.md) {
-                VStack(spacing: Spacing.xs) {
-                    Text(exercise.name)
-                        .font(.title2.weight(.semibold))
-                        .foregroundStyle(TextColors.primary)
-                        .multilineTextAlignment(.center)
-                    
+
+            VStack(spacing: 0) {
+                // Progress
+                VStack(spacing: Spacing.xxs) {
                     HStack {
                         Text("Step \(currentStepIndex + 1) of \(steps.count)")
-                            .font(.caption.weight(.medium))
-                            .foregroundStyle(TextColors.tertiary)
-                        
+                            .appFont(.smallMedium)
+                            .foregroundStyle(TextColors.secondary)
                         Spacer()
-                        
-                        TimelineView(.periodic(from: viewModel.sessionStartTime, by: 1)) { context in
-                            Text(formatDuration(context.date.timeIntervalSince(viewModel.sessionStartTime)))
-                                .font(.caption.monospacedDigit())
-                                .foregroundStyle(TextColors.tertiary)
-                        }
                     }
-                    
-                    ProgressView(value: Double(currentStepIndex + 1), total: Double(steps.count))
-                        .tint(.purple)
+                    StepProgressBar(current: currentStepIndex + 1, total: steps.count, color: AppColors.accent)
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, Spacing.sm)
                 .padding(.top, Spacing.sm)
-                
+
                 Spacer()
-                
-                VStack(spacing: Spacing.sm) {
-                    ZStack {
-                        Circle()
-                            .fill(
-                                RadialGradient(
-                                    colors: [
-                                        Color.purple.opacity(0.55),
-                                        Color.indigo.opacity(0.35)
-                                    ],
-                                    center: .center,
-                                    startRadius: 20,
-                                    endRadius: 120
-                                )
-                            )
-                            .frame(width: 180, height: 180)
-                            .shadow(color: .purple.opacity(0.25), radius: 18)
-                        
-                        HStack(spacing: 16) {
-                            ZStack {
-                                Circle()
-                                    .fill(.white.opacity(0.18))
-                                    .frame(width: 50, height: 50)
-                                
-                                Image(systemName: stepIconSystemName)
-                                    .font(.system(size: 24, weight: .semibold))
-                                    .foregroundStyle(.white)
-                            }
-                            .accessibilityHidden(true)
-                            
-                            Text("\(currentStep.number)")
-                                .font(.system(size: 64, weight: .bold, design: .rounded))
-                                .foregroundStyle(.white)
-                                .accessibilityLabel("Step \(currentStep.number)")
-                        }
-                    }
-                    
-                    Text(currentStep.title)
-                        .font(.title3.weight(.semibold))
-                        .foregroundStyle(TextColors.primary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                    
-                    Text(currentStep.prompt)
-                        .font(.body)
-                        .foregroundStyle(TextColors.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, Spacing.lg)
-                }
-                
+
+                stepCard
+                    .padding(.horizontal, Spacing.sm)
+
                 Spacer()
+
+                navigationControls
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.bottom, Spacing.sm)
             }
+            .ignoresSafeArea(edges: .bottom)
         }
+        .navigationTitle(exercise.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.headline.weight(.semibold))
-                }
-                .accessibilityLabel("Sign out")
-                .tint(.purple)
-            }
-            
-            ToolbarItemGroup(placement: .bottomBar) {
-                HStack(spacing: 12) {
-                    Button {
-                        goBack()
-                    } label: {
-                        Label("Back", systemImage: "chevron.left")
-                            .padding(.leading, 8)
-                            .padding(.trailing, 4)
-                    }
-                    .disabled(isFirstStep)
-                    .accessibilityLabel("Back")
-                    
-                    Divider()
-
-                    Button {
-                        goNext()
-                    } label: {
-                        Label("Next", systemImage: "chevron.right")
-                            .padding(.leading, 4)
-                            .padding(.trailing, 8)
-                    }
-                    .disabled(isLastStep)
-                    .accessibilityLabel("Next")
-                }
-                .tint(.purple)
-                
-                Spacer()
-                
-                Button {
-                    showingFinishConfirmation = true
-                } label: {
-                    Label("Finish", systemImage: "flag.checkered")
-                }
-                .disabled(!isLastStep)
-                .accessibilityLabel("Finish")
-                .tint(.purple)
-            }
-        }
         .onAppear {
             viewModel.sessionStartTime = Date()
         }
         .alert("End exercise?", isPresented: $showingFinishConfirmation) {
             Button("Cancel", role: .cancel) { }
-            Button("Finish") {
-                finishSession()
-            }
+            Button("Finish") { finishSession() }
         } message: {
             Text("Are you sure you want to end this exercise?")
         }
@@ -252,28 +126,138 @@ struct GroundingSessionView: View {
             .presentationDragIndicator(.visible)
         }
     }
-    
+
+    // MARK: - Step Card
+
+    private var stepCard: some View {
+        VStack(spacing: Spacing.md) {
+            Image(systemName: stepIconSystemName)
+                .font(.system(size: 28, weight: .semibold))
+                .foregroundStyle(AppColors.accent)
+                .iconContainer(
+                    size: IconSize.hero,
+                    backgroundColor: AppColors.accentLight,
+                    cornerRadius: CornerRadius.md
+                )
+                .contentTransition(.opacity)
+                .animation(AppAnimation.standard, value: currentStepIndex)
+                .accessibilityHidden(true)
+
+            VStack(spacing: Spacing.sm) {
+                Text(currentStep.title)
+                    .appFont(.display)
+                    .foregroundStyle(TextColors.primary)
+                    .multilineTextAlignment(.center)
+                    .contentTransition(.opacity)
+                    .animation(AppAnimation.standard, value: currentStepIndex)
+
+                Text(currentStep.prompt)
+                    .appFont(.h2)
+                    .foregroundStyle(TextColors.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .contentTransition(.opacity)
+                    .animation(AppAnimation.standard, value: currentStepIndex)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .cardStyle()
+    }
+
+    // MARK: - Navigation Controls (BottomPillNavBar-style)
+
+    private var navigationControls: some View {
+        HStack(spacing: 0) {
+            // Left: Back
+            Button {
+                goBack()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(isFirstStep ? .white.opacity(0.25) : .white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: TouchTarget.minimum)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(isFirstStep)
+            .accessibilityLabel("Previous step")
+
+            // Center: Elapsed timer
+            TimelineView(.periodic(from: viewModel.sessionStartTime, by: 1)) { context in
+                VStack(spacing: 2) {
+                    Text(formatDuration(context.date.timeIntervalSince(viewModel.sessionStartTime)))
+                        .appFont(.mono)
+                        .foregroundStyle(.white)
+                    Text("Duration")
+                        .appFont(.smallMedium)
+                        .foregroundStyle(.white.opacity(0.5))
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: TouchTarget.minimum)
+            .accessibilityHidden(true)
+
+            // Right: Next → or Finish (on last step)
+            Button {
+                if isLastStep {
+                    showingFinishConfirmation = true
+                } else {
+                    goNext()
+                }
+            } label: {
+                Group {
+                    if isLastStep {
+                        VStack(spacing: 2) {
+                            Image(systemName: "flag.checkered")
+                                .font(.system(size: 17, weight: .regular))
+                                .foregroundStyle(.white)
+                            Text("Finish")
+                                .appFont(.smallMedium)
+                                .foregroundStyle(.white)
+                        }
+                    } else {
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: TouchTarget.minimum)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .animation(AppAnimation.fast, value: isLastStep)
+            .accessibilityLabel(isLastStep ? "Finish exercise" : "Next step")
+        }
+        .padding(.horizontal, Spacing.sm)
+        .padding(.vertical, Spacing.xxs)
+        .background(Capsule().fill(Color.black))
+        .shadow(color: .black.opacity(0.22), radius: 16, y: 6)
+        .environment(\.colorScheme, .dark)
+    }
+
     // MARK: - Actions
-    
+
     private func goBack() {
         guard currentStepIndex > 0 else { return }
-        withAnimation(.easeInOut(duration: 0.2)) {
+        withAnimation(AppAnimation.standard) {
             currentStepIndex -= 1
         }
         HapticFeedback.selection()
     }
-    
+
     private func goNext() {
         guard currentStepIndex < steps.count - 1 else { return }
-        withAnimation(.easeInOut(duration: 0.2)) {
+        withAnimation(AppAnimation.standard) {
             currentStepIndex += 1
         }
         HapticFeedback.selection()
     }
-    
+
     private func finishSession() {
         let elapsed = Date().timeIntervalSince(viewModel.sessionStartTime)
-        
+
         do {
             try viewModel.saveSession(
                 type: exercise.type,
@@ -290,9 +274,9 @@ struct GroundingSessionView: View {
         }
         showingCongratsSheet = true
     }
-    
+
     // MARK: - Formatting
-    
+
     private func formatDuration(_ duration: TimeInterval) -> String {
         let minutes = Int(duration) / 60
         let seconds = Int(duration) % 60
@@ -306,5 +290,3 @@ struct GroundingSessionView: View {
     }
     .modelContainer(for: [GroundingSessionResult.self], inMemory: true)
 }
-
-

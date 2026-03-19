@@ -44,7 +44,7 @@ struct OnboardingView: View {
                         HStack(spacing: 8) {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.body)
-                                .foregroundStyle(AppTheme.State.warning)
+                                .foregroundStyle(AppColors.State.warning)
                                 .accessibilityHidden(true)
                             
                             Text("Important notice")
@@ -72,11 +72,11 @@ struct OnboardingView: View {
                     .padding(Spacing.md)
                     .background(
                         RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                            .fill(AppTheme.State.warning.opacity(Opacity.softBackground))
+                            .fill(AppColors.State.warning.opacity(Opacity.softBackground))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                            .stroke(AppTheme.State.warning.opacity(Opacity.standardBorder), lineWidth: 1)
+                            .stroke(AppColors.State.warning.opacity(Opacity.standardBorder), lineWidth: 1)
                     )
                 }
                 .padding(.horizontal, Spacing.md)

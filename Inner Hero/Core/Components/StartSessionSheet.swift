@@ -4,7 +4,6 @@ import SwiftData
 struct StartSessionSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
     
     let exposure: Exposure
     let onSessionCreated: (ExposureSessionResult) -> Void
@@ -12,22 +11,20 @@ struct StartSessionSheet: View {
     @State private var anxietyBefore: Double = 5
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var showGuidance = false
     
     var body: some View {
         NavigationStack {
-            GeometryReader { proxy in
-                ScrollView(.vertical) {
-                    VStack(spacing: 32) {
-                        header
-                        anxietySliderSection
-                        guidanceSection
-                        startButton
-                    }
-                    .frame(width: proxy.size.width)
-                    .padding(.bottom, 20)
+            ScrollView(.vertical) {
+                VStack(spacing: Spacing.xl) {
+                    header
+                    anxietySliderSection
+                    startButton
+                    guidanceSection
                 }
-                .background(.background)
+                .padding(.bottom, Spacing.lg)
             }
+            .pageBackground()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -45,231 +42,129 @@ struct StartSessionSheet: View {
     }
     
     private var header: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: Spacing.sm) {
             Image(systemName: "figure.mind.and.body")
-                .font(.system(size: 60))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.blue, .cyan],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                .font(.system(size: 26, weight: .semibold))
+                .foregroundStyle(AppColors.primary)
+                .iconContainer(
+                    size: IconSize.hero,
+                    backgroundColor: AppColors.primaryLight,
+                    cornerRadius: CornerRadius.md
                 )
-            VStack(spacing: 6) {
+            VStack(spacing: Spacing.xxxs) {
                 Text(exposure.localizedTitle)
-                    .font(.system(size: 22, weight: .semibold))
+                    .appFont(.h2)
                     .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.center)
                 
                 Text("Exposure session")
-                    .font(.body)
+                    .appFont(.small)
                     .foregroundStyle(TextColors.secondary)
             }
         }
-        .padding(.top, 20)
-        .padding(.horizontal, 20)
+        .padding(.top, Spacing.lg)
+        .padding(.horizontal, Spacing.lg)
+        .safeAreaInset(edge: .top) {
+            Color.clear.frame(height: Spacing.xs)
+        }
     }
     
     private var guidanceSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Label("You've got this", systemImage: "sparkles")
-                .font(.headline)
-                .foregroundStyle(TextColors.primary)
-            
-            Text("Exposure is a gentle courage practice: you learn to stay with anxiety and notice that you can be with it—it's unpleasant but bearable. Sometimes anxiety goes down during the step, sometimes later. Both are okay.")
-                .font(.body)
-                .foregroundStyle(TextColors.secondary)
-            
-            VStack(alignment: .leading, spacing: 12) {
-                GuidanceTipRow(
-                    iconSystemName: "figure.walk",
-                    text: String(localized: "Start with a manageable step and progress gradually.")
-                )
+        DisclosureGroup(isExpanded: $showGuidance) {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("Exposure is a gentle courage practice: you learn to stay with anxiety and notice that you can be with it—it's unpleasant but bearable. Sometimes anxiety goes down during the step, sometimes later. Both are okay.")
+                    .appFont(.body)
+                    .foregroundStyle(TextColors.secondary)
                 
-                GuidanceTipRow(
-                    iconSystemName: "timer",
-                    text: String(localized: "If anxiety stays high, it doesn’t mean you’re failing. Try to stay with it and notice: the wave of anxiety can shift, come and go.")
-                )
-                
-                GuidanceTipRow(
-                    iconSystemName: "checkmark.seal",
-                    text: String(localized: "Notice avoidance and safety behaviors without judgment. When you can, gently return to the step.")
-                )
+                VStack(alignment: .leading, spacing: Spacing.xs) {
+                    GuidanceTipRow(
+                        iconSystemName: "figure.walk",
+                        text: String(localized: "Start with a manageable step and progress gradually.")
+                    )
+                    
+                    GuidanceTipRow(
+                        iconSystemName: "timer",
+                        text: String(localized: "If anxiety stays high, it doesn’t mean you’re failing. Try to stay with it and notice: the wave of anxiety can shift, come and go.")
+                    )
+                    
+                    GuidanceTipRow(
+                        iconSystemName: "checkmark.seal",
+                        text: String(localized: "Notice avoidance and safety behaviors without judgment. When you can, gently return to the step.")
+                    )
+                }
             }
-            .font(.subheadline)
-            .foregroundStyle(TextColors.secondary)
+            .padding(.top, Spacing.xxs)
+        } label: {
+            HStack(spacing: Spacing.xxs) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: IconSize.glyph, weight: .semibold))
+                    .foregroundStyle(AppColors.accent)
+                Text("Why this matters")
+                    .appFont(.h3)
+                    .foregroundStyle(TextColors.primary)
+                Spacer()
+            }
+            .contentShape(Rectangle())
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .strokeBorder(cardBorderColor, lineWidth: 1)
-                )
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
-        .padding(.horizontal, 20)
-        .accessibilityElement(children: .combine)
+        .cardStyle()
+        .padding(.horizontal, Spacing.lg)
     }
     
     private var anxietySliderSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Label("Anxiety level", systemImage: "gauge")
-                .font(.headline)
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
             
-            Text("Rate your current anxiety level before the session (0–10)")
-                .font(.body)
+            Text("Rate your current anxiety level before the session (0–10). This helps you compare before vs after.")
+                .appFont(.body)
                 .foregroundStyle(TextColors.secondary)
             
-            VStack(spacing: 20) {
-                HStack {
-                    Spacer()
+            VStack(spacing: Spacing.md) {
+                VStack(spacing: Spacing.xxxs) {
                     Text("\(Int(anxietyBefore))")
-                        .font(.system(.largeTitle, design: .rounded))
-                        .fontWeight(.bold)
+                        .appFont(.monoLarge)
                         .monospacedDigit()
-                        .foregroundStyle(anxietyColor(for: Int(anxietyBefore)))
-                    Spacer()
+                        .foregroundStyle(anxietyAccent(for: Int(anxietyBefore)))
+                    Text(anxietyDescription(for: Int(anxietyBefore)))
+                        .appFont(.small)
+                        .foregroundStyle(TextColors.secondary)
+                        .multilineTextAlignment(.center)
                 }
                 
-                VStack(spacing: 8) {
+                VStack(spacing: Spacing.xxs) {
                     Slider(value: $anxietyBefore, in: 0...10, step: 1)
-                        .tint(anxietyColor(for: Int(anxietyBefore)))
+                        .tint(anxietyAccent(for: Int(anxietyBefore)))
                     
                     HStack {
                         Text("0\n\(String(localized: "No anxiety"))")
-                            .font(.caption)
+                            .appFont(.small)
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(TextColors.secondary)
                         Spacer()
                         Text("5\n\(String(localized: "Medium"))")
-                            .font(.caption)
+                            .appFont(.small)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(TextColors.secondary)
                         Spacer()
                         Text("10\n\(String(localized: "Maximum"))")
-                            .font(.caption)
+                            .appFont(.small)
                             .multilineTextAlignment(.trailing)
                             .foregroundStyle(TextColors.secondary)
                     }
                 }
-                
-                Text(anxietyDescription(for: Int(anxietyBefore)))
-                    .font(.body)
-                    .foregroundStyle(TextColors.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.vertical, 12)
-                    .frame(maxWidth: .infinity)
             }
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(softCardFill)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .strokeBorder(cardBorderColor, lineWidth: 1)
-                    )
-            )
+            .cardStyle(cornerRadius: CornerRadius.lg, padding: Spacing.lg)
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
-        .padding(.horizontal, 20)
+        .padding(.horizontal, Spacing.lg)
     }
     
     private var startButton: some View {
-        Button(action: startSession) {
-            HStack(spacing: 8) {
-                Image(systemName: "play.fill")
-                    .font(.body)
-                Text("Start session")
-                    .font(.system(size: 17, weight: .semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
-            )
+        PrimaryButton(title: "Start session", systemImage: "play.fill", color: AppColors.primary) {
+            startSession()
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, Spacing.lg)
         .accessibilityLabel("Start session")
-    }
-    
-    // MARK: - Helpers
-    
-    private var softCardFill: AnyShapeStyle {
-        if colorScheme == .dark {
-            return AnyShapeStyle(
-                LinearGradient(
-                    colors: [
-                        Color.white.opacity(0.10),
-                        Color.white.opacity(0.04)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-        }
-        
-        return AnyShapeStyle(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.98, green: 0.99, blue: 1.0),
-                    Color(red: 0.96, green: 0.97, blue: 0.99)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
-    }
-    
-    private var insetCardFill: AnyShapeStyle {
-        if colorScheme == .dark {
-            return AnyShapeStyle(Color.white.opacity(0.06))
-        }
-        
-        return AnyShapeStyle(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.98, green: 0.99, blue: 1.0),
-                    Color(red: 0.96, green: 0.97, blue: 0.99)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
-    }
-    
-    private var cardBorderColor: Color {
-        colorScheme == .dark ? Color.white.opacity(0.10) : Color.black.opacity(0.06)
-    }
-    
-    private var insetBorderColor: Color {
-        colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.05)
     }
     
     private struct GuidanceTipRow: View {
@@ -277,25 +172,26 @@ struct StartSessionSheet: View {
         let text: String
         
         var body: some View {
-            HStack(alignment: .top, spacing: 10) {
+            HStack(alignment: .top, spacing: Spacing.xxs) {
                 Image(systemName: iconSystemName)
+                    .font(.system(size: IconSize.glyph))
+                    .foregroundStyle(AppColors.gray400)
                     .frame(width: 22, alignment: .center)
                     .padding(.top, 1)
                 
                 Text(text)
+                    .appFont(.small)
+                    .foregroundStyle(TextColors.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .accessibilityElement(children: .combine)
         }
     }
     
-    private func anxietyColor(for value: Int) -> Color {
-        switch value {
-        case 0...3: return .green
-        case 4...6: return .orange
-        case 7...10: return .red
-        default: return .gray
-        }
+    private func anxietyAccent(for value: Int) -> Color {
+        let clamped = max(0, min(10, value))
+        let intensity = 0.35 + (Double(clamped) / 10.0) * 0.65
+        return AppColors.accent.opacity(intensity)
     }
     
     private func anxietyDescription(for value: Int) -> String {

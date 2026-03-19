@@ -2,113 +2,87 @@ import SwiftUI
 import SwiftData
 
 struct ActivationCardView: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     let activation: ActivityList
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             header
-            Divider()
-            metadataRow
+            if !activation.localizedActivities.isEmpty {
+                activitiesPreview
+            }
+            footer
         }
-        .padding(20)
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(.primary.opacity(colorScheme == .dark ? 0.18 : 0.06), lineWidth: 1)
-        )
     }
-    
+
+    // MARK: - Header
+
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        HStack(alignment: .center, spacing: Spacing.xs) {
+            Image(systemName: "figure.walk")
+                .font(.system(size: IconSize.glyph, weight: .semibold))
+                .foregroundStyle(AppColors.positive)
+                .iconContainer(
+                    size: IconSize.card,
+                    backgroundColor: AppColors.positive.opacity(Opacity.softBackground),
+                    cornerRadius: CornerRadius.sm
+                )
+                .accessibilityHidden(true)
+
             Text(activation.localizedTitle)
-                .font(.title3.weight(.semibold))
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
                 .multilineTextAlignment(.leading)
-            
-            if !activation.localizedActivities.isEmpty {
-                Text(activation.localizedActivities.prefix(2).joined(separator: ", "))
-                    .font(.body)
-                    .foregroundStyle(TextColors.secondary)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-            } else {
-                Text(String(localized: "No activities"))
-                    .font(.body)
-                    .foregroundStyle(TextColors.tertiary)
-            }
-        }
-    }
-    
-    private var metadataRow: some View {
-        HStack(spacing: 12) {
+
             Spacer(minLength: 0)
-            
-            statItem(
-                systemName: "list.bullet",
-                valueText: activitiesCountText(for: activation.localizedActivities.count)
-            )
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(AppColors.gray400)
         }
-        .accessibilityElement(children: .combine)
     }
-    
-    private func statItem(systemName: String, valueText: String) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: systemName)
-                .font(.caption2)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.green, .mint],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
+
+    // MARK: - Activities preview (first 2, comma-separated)
+
+    private var activitiesPreview: some View {
+        Text(activation.localizedActivities.prefix(2).joined(separator: ", "))
+            .appFont(.body)
+            .foregroundStyle(TextColors.secondary)
+            .lineLimit(1)
+            .truncationMode(.tail)
+    }
+
+    // MARK: - Footer
+
+    private var footer: some View {
+        HStack(spacing: Spacing.xs) {
+            // Activity count tag
+            let count = activation.localizedActivities.count
+            Text(activitiesCountLabel(count))
+                .appFont(.smallMedium)
+                .foregroundStyle(AppColors.positive)
+                .padding(.horizontal, Spacing.xxs)
+                .padding(.vertical, Spacing.xxxs)
+                .background(Capsule().fill(AppColors.positive.opacity(Opacity.subtleBackground)))
+
+            // Predefined badge
+            if activation.isPredefined {
+                Text(String(localized: "Predefined"))
+                    .appFont(.smallMedium)
+                    .foregroundStyle(TextColors.tertiary)
+                    .padding(.horizontal, Spacing.xxs)
+                    .padding(.vertical, Spacing.xxxs)
+                    .background(
+                        Capsule().fill(AppColors.gray200)
                     )
-                )
-            Text(valueText)
-                .font(.caption2)
-                .foregroundStyle(TextColors.secondary)
-        }
-    }
-    
-    private func activitiesCountText(for count: Int) -> String {
-        let form = pluralForm(for: count)
-        let word = String(localized: String.LocalizationValue(form.key))
-        return "\(count) \(word)"
-    }
-    
-    private enum PluralForm {
-        case one
-        case few
-        case many
-        
-        var key: String {
-            switch self {
-                case .one: return "activity"
-                case .few: return "activities_few"
-                case .many: return "activities"
             }
         }
     }
-    
-    /// One form for all locales: EN has "activities" for few/many; RU uses all three forms.
-    private func pluralForm(for number: Int) -> PluralForm {
-        let n = abs(number) % 100
-        let n1 = n % 10
-        if (11...14).contains(n) { return .many }
-        switch n1 {
-            case 1: return .one
-            case 2, 3, 4: return .few
-            default: return .many
-        }
+
+    // MARK: - Helpers
+
+    private func activitiesCountLabel(_ count: Int) -> String {
+        String(format: String(localized: "%d activities"), count)
     }
 }

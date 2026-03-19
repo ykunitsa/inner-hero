@@ -1,6 +1,8 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ExerciseScheduleSection
+
 struct ExerciseScheduleSection: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scheduleViewModel) private var scheduleViewModel
@@ -20,20 +22,17 @@ struct ExerciseScheduleSection: View {
     @State private var showDeleteAlert = false
 
     var body: some View {
-        Group {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            SectionLabel(text: String(localized: "Schedule"))
+
             if let viewModel = scheduleViewModel {
-                sectionContent(viewModel: viewModel, notificationManager: notificationManager)
+                scheduleContent(viewModel: viewModel)
             } else {
-                sectionContentFallback
+                scheduleFallback
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
-        )
+        .cardStyle()
         .sheet(isPresented: $showScheduleSheet) {
             if let viewModel = scheduleViewModel {
                 ScheduleExerciseView(
@@ -48,7 +47,9 @@ struct ExerciseScheduleSection: View {
                 )
             }
         }
-        .alert("Delete schedule?", isPresented: $showDeleteAlert, presenting: assignmentToDelete) { assignment in
+        .alert(String(localized: "Delete schedule?"),
+               isPresented: $showDeleteAlert,
+               presenting: assignmentToDelete) { assignment in
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
                 if let viewModel = scheduleViewModel {
@@ -58,169 +59,85 @@ struct ExerciseScheduleSection: View {
                 }
             }
         } message: { _ in
-            Text("Are you sure you want to delete this schedule?")
+            Text(String(localized: "Are you sure you want to delete this schedule?"))
         }
     }
 
-    private func sectionContent(viewModel: ScheduleViewModel, notificationManager: NotificationManager) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "calendar.badge.clock")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.orange, .orange.opacity(0.8)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Schedule")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
+    // MARK: - Content (with ViewModel)
 
+    private func scheduleContent(viewModel: ScheduleViewModel) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
             if assignments.isEmpty {
-                createScheduleButton
+                createButton
             } else {
-                schedulesList(viewModel: viewModel, notificationManager: notificationManager)
-                addAnotherScheduleButton
+                assignmentsList(viewModel: viewModel)
+                addAnotherButton
             }
         }
     }
 
-    private var sectionContentFallback: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "calendar.badge.clock")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.orange, .orange.opacity(0.8)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Schedule")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
+    // MARK: - Fallback (read-only)
+
+    private var scheduleFallback: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
             if assignments.isEmpty {
-                createScheduleButton
+                createButton
             } else {
-                schedulesListFallback
-                addAnotherScheduleButton
+                assignmentsListReadOnly
+                addAnotherButton
             }
         }
     }
 
-    private func schedulesList(viewModel: ScheduleViewModel, notificationManager: NotificationManager) -> some View {
+    // MARK: - Assignments List
+
+    private func assignmentsList(viewModel: ScheduleViewModel) -> some View {
         let sorted = assignments.sorted {
-            if $0.time != $1.time { return $0.time < $1.time }
-            return $0.createdAt < $1.createdAt
+            $0.time != $1.time ? $0.time < $1.time : $0.createdAt < $1.createdAt
         }
-
-        return VStack(alignment: .leading, spacing: 12) {
+        return VStack(alignment: .leading, spacing: Spacing.xs) {
             ForEach(Array(sorted.enumerated()), id: \.element.id) { index, assignment in
-                scheduleRow(
-                    assignment: assignment,
-                    viewModel: viewModel,
-                    notificationManager: notificationManager
-                )
-
-                if index != (sorted.count - 1) {
-                    Divider()
-                }
+                if index > 0 { Divider() }
+                scheduleRow(assignment: assignment, viewModel: viewModel)
             }
         }
     }
 
-    private var schedulesListFallback: some View {
+    private var assignmentsListReadOnly: some View {
         let sorted = assignments.sorted {
-            if $0.time != $1.time { return $0.time < $1.time }
-            return $0.createdAt < $1.createdAt
+            $0.time != $1.time ? $0.time < $1.time : $0.createdAt < $1.createdAt
         }
-        return VStack(alignment: .leading, spacing: 12) {
+        return VStack(alignment: .leading, spacing: Spacing.xs) {
             ForEach(Array(sorted.enumerated()), id: \.element.id) { index, assignment in
+                if index > 0 { Divider() }
                 scheduleRowReadOnly(assignment: assignment)
-                if index != (sorted.count - 1) { Divider() }
             }
         }
     }
 
-    private var createScheduleButton: some View {
-        Button {
-            assignmentToEdit = nil
-            showScheduleSheet = true
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle.fill")
-                    .font(.body)
-                Text("Create schedule")
-                    .font(.body.weight(.medium))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.orange, .orange.opacity(0.8)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-            )
-        }
-        .buttonStyle(.plain)
-    }
-
-    private var addAnotherScheduleButton: some View {
-        Button {
-            assignmentToEdit = nil
-            showScheduleSheet = true
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle")
-                    .font(.body)
-                Text("Add schedule")
-                    .font(.body.weight(.medium))
-            }
-            .foregroundStyle(.orange)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.orange.opacity(0.10))
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Add schedule")
-    }
+    // MARK: - Schedule Row (editable)
 
     private func scheduleRow(
         assignment: ExerciseAssignment,
-        viewModel: ScheduleViewModel,
-        notificationManager: NotificationManager
+        viewModel: ScheduleViewModel
     ) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top, spacing: 12) {
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: Spacing.xxs) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: Spacing.xxxs) {
+                    HStack(spacing: Spacing.xxs) {
                         Image(systemName: "clock")
-                            .font(.caption)
+                            .font(.system(size: 11))
                             .foregroundStyle(TextColors.secondary)
                         Text(ScheduleViewModel.timeFormatter.string(from: assignment.time))
-                            .font(.body.weight(.medium))
+                            .appFont(.bodyMedium)
                             .foregroundStyle(TextColors.primary)
                     }
-
-                    HStack(spacing: 8) {
+                    HStack(spacing: Spacing.xxs) {
                         Image(systemName: "calendar")
-                            .font(.caption)
+                            .font(.system(size: 11))
                             .foregroundStyle(TextColors.secondary)
                         Text(assignment.getDayNamesString())
-                            .font(.subheadline)
+                            .appFont(.body)
                             .foregroundStyle(TextColors.secondary)
                     }
                 }
@@ -231,31 +148,30 @@ struct ExerciseScheduleSection: View {
                     get: { assignment.isActive },
                     set: { newValue in
                         Task {
-                            await toggleSchedule(assignment, isActive: newValue, viewModel: viewModel, notificationManager: notificationManager)
+                            await toggleSchedule(
+                                assignment,
+                                isActive: newValue,
+                                viewModel: viewModel,
+                                notificationManager: notificationManager
+                            )
                         }
                     }
                 ))
                 .labelsHidden()
+                .tint(AppColors.primary)
             }
 
-            HStack(spacing: 12) {
+            HStack(spacing: Spacing.xxs) {
                 Button {
                     assignmentToEdit = assignment
                     showScheduleSheet = true
                 } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "pencil")
-                            .font(.caption)
-                        Text("Edit")
-                            .font(.subheadline.weight(.medium))
-                    }
-                    .foregroundStyle(.blue)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(
-                        Capsule()
-                            .fill(Color.blue.opacity(0.10))
-                    )
+                    Label(String(localized: "Edit"), systemImage: "pencil")
+                        .appFont(.smallMedium)
+                        .foregroundStyle(AppColors.primary)
+                        .padding(.horizontal, Spacing.xs)
+                        .padding(.vertical, Spacing.xxxs + 2)
+                        .background(Capsule().fill(AppColors.primary.opacity(Opacity.subtleBackground)))
                 }
                 .buttonStyle(.plain)
 
@@ -263,45 +179,75 @@ struct ExerciseScheduleSection: View {
                     assignmentToDelete = assignment
                     showDeleteAlert = true
                 } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "trash")
-                            .font(.caption)
-                        Text("Delete")
-                            .font(.subheadline.weight(.medium))
-                    }
-                    .foregroundStyle(.red)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(
-                        Capsule()
-                            .fill(Color.red.opacity(0.10))
-                    )
+                    Label(String(localized: "Delete"), systemImage: "trash")
+                        .appFont(.smallMedium)
+                        .foregroundStyle(AppColors.State.error)
+                        .padding(.horizontal, Spacing.xs)
+                        .padding(.vertical, Spacing.xxxs + 2)
+                        .background(Capsule().fill(AppColors.State.error.opacity(Opacity.subtleBackground)))
                 }
                 .buttonStyle(.plain)
-
-                Spacer(minLength: 0)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
     }
 
+    // MARK: - Schedule Row (read-only)
+
     private func scheduleRowReadOnly(assignment: ExerciseAssignment) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Image(systemName: "clock")
-                    .font(.caption)
-                    .foregroundStyle(TextColors.secondary)
-                Text(ScheduleViewModel.timeFormatter.string(from: assignment.time))
-                    .font(.body.weight(.medium))
-                    .foregroundStyle(TextColors.primary)
-            }
+        HStack(spacing: Spacing.xxs) {
+            Image(systemName: "clock")
+                .font(.system(size: 11))
+                .foregroundStyle(TextColors.secondary)
+            Text(ScheduleViewModel.timeFormatter.string(from: assignment.time))
+                .appFont(.bodyMedium)
+                .foregroundStyle(TextColors.primary)
+            Text("·")
+                .appFont(.body)
+                .foregroundStyle(TextColors.tertiary)
             Text(assignment.getDayNamesString())
-                .font(.subheadline)
+                .appFont(.small)
                 .foregroundStyle(TextColors.secondary)
         }
     }
+
+    // MARK: - Buttons
+
+    private var createButton: some View {
+        PrimaryButton(
+            title: String(localized: "Create schedule"),
+            color: AppColors.State.warning
+        ) {
+            assignmentToEdit = nil
+            showScheduleSheet = true
+        }
+    }
+
+    private var addAnotherButton: some View {
+        Button {
+            assignmentToEdit = nil
+            showScheduleSheet = true
+        } label: {
+            HStack(spacing: Spacing.xxs) {
+                Image(systemName: "plus.circle")
+                    .font(.system(size: IconSize.glyph - 2))
+                Text(String(localized: "Add schedule"))
+                    .appFont(.bodyMedium)
+            }
+            .foregroundStyle(AppColors.State.warning)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, Spacing.xs)
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .fill(AppColors.State.warning.opacity(Opacity.subtleBackground))
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(String(localized: "Add schedule"))
+    }
+
+    // MARK: - Actions
 
     private func toggleSchedule(
         _ assignment: ExerciseAssignment,
@@ -319,9 +265,6 @@ struct ExerciseScheduleSection: View {
             HapticFeedback.selection()
         } catch {
             HapticFeedback.error()
-            #if DEBUG
-            print("Error updating schedule: \(error)")
-            #endif
         }
     }
 
@@ -331,31 +274,15 @@ struct ExerciseScheduleSection: View {
         notificationManager: NotificationManager
     ) async {
         do {
-            try await viewModel.deleteAssignment(assignment, context: modelContext, notificationManager: notificationManager)
+            try await viewModel.deleteAssignment(
+                assignment,
+                context: modelContext,
+                notificationManager: notificationManager
+            )
             assignmentToDelete = nil
             HapticFeedback.success()
         } catch {
             HapticFeedback.error()
-            #if DEBUG
-            print("Error deleting schedule: \(error)")
-            #endif
         }
-    }
-}
-
-#Preview {
-    VStack {
-        ExerciseScheduleSection(
-            assignments: [],
-            exerciseType: .exposure,
-            exposureId: UUID(),
-            groundingType: nil,
-            breathingPatternType: nil,
-            relaxationType: nil,
-            activityListId: nil
-        )
-        .environment(\.scheduleViewModel, ScheduleViewModel())
-        .environment(NotificationManager())
-        .padding()
     }
 }

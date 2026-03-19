@@ -29,22 +29,9 @@
 		AD028B892EA7FDEB0019A559 /* Inner HeroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Inner HeroUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ADF352B52F6366C0009E9323 /* Exceptions for "Inner Hero" folder in "Inner Hero" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Inner-Hero-Info.plist",
-			);
-			target = AD028B6F2EA7FDE90019A559 /* Inner Hero */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AD028B722EA7FDE90019A559 /* Inner Hero */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ADF352B52F6366C0009E9323 /* Exceptions for "Inner Hero" folder in "Inner Hero" target */,
-			);
 			path = "Inner Hero";
 			sourceTree = "<group>";
 		};
@@ -407,7 +394,7 @@
 		AD028B942EA7FDEB0019A559 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = heart_shield;
+				ASSETCATALOG_COMPILER_APPICON_NAME = heart;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
@@ -448,7 +435,7 @@
 		AD028B952EA7FDEB0019A559 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = heart_shield;
+				ASSETCATALOG_COMPILER_APPICON_NAME = heart;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;

@@ -1,111 +1,68 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ExposureDetailView
+
 struct ExposureDetailView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.scheduleViewModel) private var scheduleViewModel
     @Environment(NotificationManager.self) private var notificationManager
     @Environment(\.navigationRouter) private var router
     @Environment(\.currentAppTab) private var currentTab
+
     let exposure: Exposure
     var onStartSession: (() -> Void)? = nil
-    
+
     @Query(sort: \ExerciseAssignment.createdAt) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
+
     @State private var showScheduleSheet = false
     @State private var startSessionSheetExposure: Exposure?
-    
+
     private var isFavorite: Bool {
         FavoritesService.isFavorite(type: .exposure, exerciseId: exposure.id, identifier: nil, in: favorites)
     }
-    
+
     private var totalSteps: Int { exposure.localizedStepTexts.count }
     private var stepsWithTimer: Int { exposure.steps.filter { $0.hasTimer }.count }
     private var orderedStoredSteps: [ExposureStep] { exposure.steps.sorted { $0.order < $1.order } }
-    
+
     private var assignments: [ExerciseAssignment] {
-        allAssignments.filter { assignment in
-            assignment.exerciseType == .exposure && assignment.exposureId == exposure.id
+        allAssignments.filter {
+            $0.exerciseType == .exposure && $0.exposureId == exposure.id
         }
     }
-    
+
+    // MARK: - Body
+
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 32) {
-                heroHeaderSection
-                quickStatsSection
+            VStack(spacing: Spacing.lg) {
+                statsRow
                 descriptionCard
                 startSessionButton
                 if !exposure.localizedStepTexts.isEmpty {
                     stepsSection
                 }
-                sessionsHistoryCard
-                scheduleSection
+                sessionsHistoryRow
+                ExerciseScheduleSection(
+                    assignments: assignments,
+                    exerciseType: .exposure,
+                    exposureId: exposure.id,
+                    groundingType: nil,
+                    breathingPatternType: nil,
+                    relaxationType: nil,
+                    activityListId: nil
+                )
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            .padding(.bottom, 40)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.xxl)
         }
-        .background(TopMeshGradientBackground())
-        .navigationTitle(String(localized: "Details"))
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                HStack(spacing: 12) {
-                    Button {
-                        toggleFavorite()
-                    } label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .font(.title3)
-                            .foregroundStyle(
-                                isFavorite ?
-                                LinearGradient(
-                                    colors: [.pink, .red],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ) :
-                                LinearGradient(
-                                    colors: [TextColors.tertiary, TextColors.tertiary],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(isFavorite ? String(localized: "Remove from favorites") : String(localized: "Add to favorites"))
-                    
-                    Button {
-                        showScheduleSheet = true
-                    } label: {
-                        Image(systemName: "calendar.badge.plus")
-                            .font(.title3)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.orange, .orange.opacity(0.8)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                    .accessibilityLabel(String(localized: "Schedule"))
-                    
-                    NavigationLink(value: AppRoute.editExposure(exposureId: exposure.id)) {
-                        Image(systemName: "pencil")
-                            .font(.title2)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .cyan],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    .frame(minWidth: 44, minHeight: 44)
-                }
-            }
-        }
+        .homeBackground()
+        .navigationTitle(exposure.localizedTitle)
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar { toolbarContent }
         .sheet(isPresented: $showScheduleSheet) {
             if let viewModel = scheduleViewModel {
                 ScheduleExerciseView(
@@ -117,107 +74,125 @@ struct ExposureDetailView: View {
             }
         }
         .sheet(item: $startSessionSheetExposure) { exp in
-            StartSessionSheet(exposure: exp) { session in
-                startSessionSheetExposure = nil
-                if let r = router {
-                    r.navigate(to: .exposureSession(sessionId: session.id), in: currentTab)
+            StartSessionSheet(exposure: exp) { _ in }
+        }
+    }
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            HStack(spacing: Spacing.xs) {
+                Button { toggleFavorite() } label: {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundStyle(isFavorite ? AppColors.primary : TextColors.secondary)
                 }
+                .touchTarget()
+                .accessibilityLabel(isFavorite
+                    ? String(localized: "Remove from favorites")
+                    : String(localized: "Add to favorites"))
+
+                Button { showScheduleSheet = true } label: {
+                    Image(systemName: "calendar.badge.plus")
+                        .foregroundStyle(TextColors.toolbar)
+                }
+                .touchTarget()
+                .accessibilityLabel(String(localized: "Schedule"))
+
+                NavigationLink(value: AppRoute.editExposure(exposureId: exposure.id)) {
+                    Image(systemName: "pencil")
+                        .foregroundStyle(TextColors.toolbar)
+                }
+                .touchTarget()
             }
         }
     }
-    
-    private var heroHeaderSection: some View {
-        VStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.blue.opacity(0.15), .cyan.opacity(0.1)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
-                Image(systemName: "figure.mind.and.body")
-                    .font(.system(size: 50))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-            }
-            Text(exposure.localizedTitle)
-                .font(.title.weight(.semibold))
+
+    // MARK: - Inline Stats Row
+
+    private var statsRow: some View {
+        HStack(spacing: 0) {
+            statItem(
+                icon: "list.number",
+                value: "\(totalSteps)",
+                label: String(localized: "steps"),
+                color: AppColors.primary
+            )
+            Divider().frame(height: 28)
+            statItem(
+                icon: "timer",
+                value: "\(stepsWithTimer)",
+                label: String(localized: "timers"),
+                color: AppColors.State.warning
+            )
+            Divider().frame(height: 28)
+            statItem(
+                icon: "chart.bar.fill",
+                value: "\(exposure.sessionResults.count)",
+                label: String(localized: "sessions"),
+                color: AppColors.primary
+            )
+        }
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: 0)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func statItem(icon: String, value: String, label: String, color: Color) -> some View {
+        HStack(spacing: Spacing.xxs) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(color)
+            Text(value)
+                .appFont(.bodyMedium)
                 .foregroundStyle(TextColors.primary)
-                .multilineTextAlignment(.center)
+                .monospacedDigit()
+            Text(label)
+                .appFont(.small)
+                .foregroundStyle(TextColors.secondary)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.sm)
         .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(value) \(label)")
     }
-    
-    private var quickStatsSection: some View {
-        HStack(spacing: 16) {
-            QuickStatCard(icon: "list.number", value: "\(totalSteps)", label: String(localized: "Steps"), color: .blue)
-            QuickStatCard(icon: "timer", value: "\(stepsWithTimer)", label: String(localized: "With timer"), color: .orange)
-            QuickStatCard(icon: "chart.bar.fill", value: "\(exposure.sessionResults.count)", label: String(localized: "Sessions"), color: .blue)
-        }
-    }
-    
+
+    // MARK: - Description
+
     private var descriptionCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "doc.text")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Description")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
-            }
-            
+        VStack(alignment: .leading, spacing: Spacing.xxs) {
+            SectionLabel(text: String(localized: "Description"))
             Text(exposure.localizedDescription)
-                .font(.body)
+                .appFont(.body)
                 .foregroundStyle(TextColors.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.thinMaterial)
-                .shadow(
-                    color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                    radius: 10,
-                    x: 0,
-                    y: 4
-                )
-        )
+        .cardStyle()
     }
-    
-    private var stepsSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Image(systemName: "checklist")
-                    .font(.body)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Text("Steps")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(TextColors.primary)
+
+    // MARK: - Start Session
+
+    private var startSessionButton: some View {
+        PrimaryButton(
+            title: String(localized: "Start session"),
+            systemImage: "play.fill",
+            color: AppColors.primary
+        ) {
+            if let onStartSession {
+                onStartSession()
+            } else {
+                startSessionSheetExposure = exposure
             }
-            
-            VStack(spacing: 12) {
+        }
+    }
+
+    // MARK: - Steps
+
+    private var stepsSection: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            SectionLabel(text: String(localized: "Steps"))
+            VStack(spacing: Spacing.xxs) {
                 ForEach(Array(exposure.localizedStepTexts.enumerated()), id: \.offset) { index, stepText in
                     let storedStep = index < orderedStoredSteps.count ? orderedStoredSteps[index] : nil
                     StepDetailCard(
@@ -230,127 +205,51 @@ struct ExposureDetailView: View {
             }
         }
     }
-    
-    private var sessionsHistoryCard: some View {
+
+    // MARK: - Session History (single tappable row)
+
+    private var sessionsHistoryRow: some View {
         NavigationLink(value: AppRoute.sessionHistory(exposureId: exposure.id)) {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    Image(systemName: "clock")
-                        .font(.body)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    Text("Session history")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(TextColors.primary)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundStyle(TextColors.secondary)
-                }
-                
-                if exposure.sessionResults.count > 0 {
-                    HStack(spacing: 20) {
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("Total")
-                                .font(.caption)
-                                .foregroundStyle(TextColors.secondary)
-                            Text("\(exposure.sessionResults.count)")
-                                .font(.title2.weight(.semibold))
-                                .foregroundStyle(TextColors.primary)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        
-                        Divider()
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Last")
-                                .font(.caption)
-                                .foregroundStyle(TextColors.secondary)
-                            if let lastSession = exposure.sessionResults.sorted(by: { $0.startAt > $1.startAt }).first {
-                                Text(lastSession.startAt, style: .relative)
-                                    .font(.body.weight(.medium))
-                                    .foregroundStyle(
-                                        LinearGradient(
-                                            colors: [.blue, .cyan],
-                                            startPoint: .leading,
-                                            endPoint: .trailing
-                                        )
-                                    )
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                } else {
-                    Text("No completed sessions")
-                        .font(.body)
-                        .foregroundStyle(TextColors.secondary)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(.thinMaterial)
-                    .shadow(
-                        color: .black.opacity(colorScheme == .dark ? 0.35 : 0.06),
-                        radius: 10,
-                        x: 0,
-                        y: 4
+            HStack(spacing: Spacing.sm) {
+                Image(systemName: "clock")
+                    .font(.system(size: IconSize.glyph, weight: .medium))
+                    .foregroundStyle(AppColors.primary)
+                    .iconContainer(
+                        size: IconSize.card,
+                        backgroundColor: AppColors.primary.opacity(Opacity.softBackground),
+                        cornerRadius: CornerRadius.sm
                     )
-            )
+                    .accessibilityHidden(true)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(localized: "Session history"))
+                        .appFont(.bodyMedium)
+                        .foregroundStyle(TextColors.primary)
+                    if exposure.sessionResults.isEmpty {
+                        Text(String(localized: "No sessions yet"))
+                            .appFont(.small)
+                            .foregroundStyle(TextColors.secondary)
+                    } else {
+                        let last = exposure.sessionResults.sorted { $0.startAt > $1.startAt }.first
+                        Text("\(exposure.sessionResults.count) sessions · \(last.map { $0.startAt.formatted(.relative(presentation: .named)) } ?? "")")
+                            .appFont(.small)
+                            .foregroundStyle(TextColors.secondary)
+                    }
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(AppColors.gray400)
+            }
+            .cardStyle()
         }
         .buttonStyle(.plain)
     }
-    
-    private var scheduleSection: some View {
-        ExerciseScheduleSection(
-            assignments: assignments,
-            exerciseType: .exposure,
-            exposureId: exposure.id,
-            groundingType: nil,
-            breathingPatternType: nil,
-            relaxationType: nil,
-            activityListId: nil
-        )
-    }
-    
-    private var startSessionButton: some View {
-        Button(action: {
-            if let onStartSession {
-                onStartSession()
-            } else {
-                startSessionSheetExposure = exposure
-            }
-        }) {
-            HStack(spacing: 8) {
-                Image(systemName: "play.fill")
-                    .font(.body)
-                Text("Start session")
-                    .font(.system(size: 17, weight: .semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
-            )
-        }
-        .accessibilityLabel("Start session")
-    }
-    
+
+    // MARK: - Actions
+
     private func toggleFavorite() {
         Task {
             do {
@@ -360,107 +259,106 @@ struct ExposureDetailView: View {
                     identifier: nil,
                     context: modelContext
                 )
-                await MainActor.run {
-                    HapticFeedback.selection()
-                }
+                await MainActor.run { HapticFeedback.selection() }
             } catch {
-                print("Error toggling favorite: \(error)")
                 HapticFeedback.error()
             }
         }
     }
 }
 
-// MARK: - Supporting Views
+// MARK: - QuickStatCard
 
 struct QuickStatCard: View {
     let icon: String
     let value: String
     let label: String
-    let color: Color
-    
+    var color: Color = AppColors.primary
+
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.xxs) {
             Image(systemName: icon)
-                .font(.body)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: color == .blue ? [.blue, .cyan] : [color, color.opacity(0.8)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .font(.system(size: IconSize.glyph, weight: .medium))
+                .foregroundStyle(color)
             Text(value)
-                .font(.title3.weight(.semibold))
+                .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             Text(label)
-                .font(.caption)
+                .appFont(.small)
                 .foregroundStyle(TextColors.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.thinMaterial)
-        )
+        .padding(.vertical, Spacing.sm)
+        .cardStyle(cornerRadius: CornerRadius.md, padding: 0)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(value) \(label)")
     }
 }
+
+// MARK: - StepDetailCard
 
 struct StepDetailCard: View {
     let stepText: String
     let index: Int
     let hasTimer: Bool
     let timerDuration: Int
-    
+
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(Color.blue.opacity(0.1))
-                    .frame(width: 36, height: 36)
-                Text("\(index + 1)")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.blue)
-            }
-            
-            VStack(alignment: .leading, spacing: 8) {
+        HStack(alignment: .center, spacing: Spacing.sm) {
+            Text("\(index + 1)")
+                .appFont(.bodyMedium)
+                .foregroundStyle(AppColors.primary)
+                .frame(width: 32, height: 32)
+                .background(
+                    Circle().fill(AppColors.primary.opacity(Opacity.softBackground))
+                )
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: Spacing.xxs) {
                 Text(stepText)
-                    .font(.body)
+                    .appFont(.body)
                     .foregroundStyle(TextColors.primary)
                     .fixedSize(horizontal: false, vertical: true)
-                
+
                 if hasTimer {
-                    HStack(spacing: 6) {
-                        Image(systemName: "timer")
-                            .font(.caption)
-                        Text("\(timerDuration / 60):\(String(format: "%02d", timerDuration % 60))")
-                            .font(.caption.weight(.medium))
-                    }
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
+                    let minutes = timerDuration / 60
+                    let seconds = timerDuration % 60
+                    Label(
+                        "\(minutes):\(String(format: "%02d", seconds))",
+                        systemImage: "timer"
+                    )
+                    .appFont(.smallMedium)
+                    .foregroundStyle(AppColors.State.warning)
+                    .padding(.horizontal, Spacing.xxs)
+                    .padding(.vertical, Spacing.xxxs)
                     .background(
-                        Capsule()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.orange, .orange.opacity(0.8)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
+                        Capsule().fill(AppColors.State.warning.opacity(Opacity.subtleBackground))
                     )
                 }
             }
         }
-        .padding(16)
+        .padding(Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.thinMaterial)
-        )
+        .cardStyle(cornerRadius: CornerRadius.md, padding: 0)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(String(format: String(localized: "Step %d: %@"), index + 1, stepText))
     }
+}
+
+// MARK: - Preview
+
+#Preview {
+    NavigationStack {
+        ExposureDetailView(exposure: Exposure(
+            title: "Public Speaking",
+            exposureDescription: "Facing the fear of speaking in front of others.",
+            steps: []
+        ))
+    }
+    .modelContainer(for: [ExerciseAssignment.self, FavoriteExercise.self], inMemory: true)
 }

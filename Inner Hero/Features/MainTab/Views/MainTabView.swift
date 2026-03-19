@@ -13,13 +13,7 @@ struct MainTabView: View {
                 .environment(\.currentAppTab, .home)
                 .environment(\.scheduleViewModel, scheduleViewModel)
                 .tag(AppTab.home)
-                .tabItem {
-                    Label {
-                        Text("Summary")
-                    } icon: {
-                        Image(systemName: "heart.gauge.open")
-                    }
-                }
+                .tabItem { Image(systemName: "sparkles") }
                 .accessibilityLabel("Summary")
 
             ExercisesView(path: router.path(for: .exercises))
@@ -27,13 +21,7 @@ struct MainTabView: View {
                 .environment(\.currentAppTab, .exercises)
                 .environment(\.scheduleViewModel, scheduleViewModel)
                 .tag(AppTab.exercises)
-                .tabItem {
-                    Label {
-                        Text("Exercises")
-                    } icon: {
-                        Image(systemName: "figure.mind.and.body")
-                    }
-                }
+                .tabItem { Image(systemName: "figure.mind.and.body") }
                 .accessibilityLabel("Exercises")
 
             ScheduleTabView(path: router.path(for: .schedule))
@@ -41,13 +29,7 @@ struct MainTabView: View {
                 .environment(\.currentAppTab, .schedule)
                 .environment(\.scheduleViewModel, scheduleViewModel)
                 .tag(AppTab.schedule)
-                .tabItem {
-                    Label {
-                        Text("Schedule")
-                    } icon: {
-                        Image(systemName: "calendar")
-                    }
-                }
+                .tabItem { Image(systemName: "calendar") }
                 .accessibilityLabel("Schedule")
 
             KnowledgeCenterView(path: router.path(for: .knowledge))
@@ -55,29 +37,17 @@ struct MainTabView: View {
                 .environment(\.currentAppTab, .knowledge)
                 .environment(\.scheduleViewModel, scheduleViewModel)
                 .tag(AppTab.knowledge)
-                .tabItem {
-                    Label {
-                        Text("Knowledge center")
-                    } icon: {
-                        Image(systemName: "book.pages")
-                    }
-                }
+                .tabItem { Image(systemName: "book.pages") }
                 .accessibilityLabel("Knowledge center")
 
             SettingsView(path: router.path(for: .settings))
                 .environment(router)
                 .environment(\.currentAppTab, .settings)
                 .tag(AppTab.settings)
-                .tabItem {
-                    Label {
-                        Text("Settings")
-                    } icon: {
-                        Image(systemName: "gear")
-                    }
-                }
-                .accessibilityLabel("Settings")
+                .tabItem { Image(systemName: "person.circle") }
+                .accessibilityLabel("Profile")
         }
-        .tint(.blue)
+        .tint(AppColors.primary)
     }
 }
 

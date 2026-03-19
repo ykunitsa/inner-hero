@@ -1,160 +1,177 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ExerciseCategory
+// Defined at file scope so both ExercisesView and ExerciseCategoryCard can access it.
+
+private struct ExerciseCategory {
+    let title: String
+    let description: String
+    let meta: String
+    let icon: String
+    let color: Color
+    let route: ExerciseListRoute
+}
+
+// MARK: - ExercisesView
+
 struct ExercisesView: View {
     @Binding var path: NavigationPath
 
     @State private var appeared = false
-    
-    enum ExerciseType {
-        case exposures
-        case breathing
-        case relaxation
-        case grounding
-        case activation
-    }
-    
+
+    // MARK: - Data
+
+    private let categories: [ExerciseCategory] = [
+        .init(
+            title: String(localized: "Exposures"),
+            description: String(localized: "Gradually facing fears and anxieties at your own pace"),
+            meta: String(localized: "Personalized · Fear hierarchy"),
+            icon: "leaf",
+            color: AppColors.primary,
+            route: .exposures
+        ),
+        .init(
+            title: String(localized: "Breathing"),
+            description: String(localized: "Controlled techniques to calm the nervous system"),
+            meta: String(localized: "3 techniques · 3–10 min"),
+            icon: "wind",
+            color: AppColors.positive,
+            route: .breathing
+        ),
+        .init(
+            title: String(localized: "Relaxation"),
+            description: String(localized: "Progressive muscle relaxation for tension relief"),
+            meta: String(localized: "2 exercises · 5–15 min"),
+            icon: "figure.mind.and.body",
+            color: AppColors.positive,
+            route: .relaxation
+        ),
+        .init(
+            title: String(localized: "Grounding"),
+            description: String(localized: "Sensory awareness techniques to reduce anxiety"),
+            meta: String(localized: "5-4-3-2-1 · 2 min"),
+            icon: "brain.head.profile",
+            color: AppColors.accent,
+            route: .grounding
+        ),
+        .init(
+            title: String(localized: "Behavioral Activation"),
+            description: String(localized: "Build momentum through meaningful daily actions"),
+            meta: String(localized: "Personalized · Activity based"),
+            icon: "figure.walk",
+            color: AppColors.accent,
+            route: .activation
+        ),
+    ]
+
+    // MARK: - Body
+
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView {
-                LazyVStack(spacing: 20) {
-                    exerciseCard(
-                        title: String(localized: "Exposures"),
-                        description: String(localized: "Gradually facing fears and anxieties"),
-                        icon: "leaf",
-                        color: .blue,
-                        type: .exposures
-                    )
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.0), value: appeared)
-                    
-                    exerciseCard(
-                        title: String(localized: "Breathing"),
-                        description: String(localized: "Controlled breathing techniques to regulate the nervous system"),
-                        icon: "wind",
-                        color: .teal,
-                        type: .breathing
-                    )
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.1), value: appeared)
-                    
-                    exerciseCard(
-                        title: String(localized: "Relaxation"),
-                        description: String(localized: "Progressive muscle relaxation for tension relief"),
-                        icon: "figure.mind.and.body",
-                        color: .mint,
-                        type: .relaxation
-                    )
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.2), value: appeared)
-                    
-                    exerciseCard(
-                        title: String(localized: "Grounding"),
-                        description: String(localized: "Grounding and awareness techniques to reduce anxiety"),
-                        icon: "brain.head.profile",
-                        color: .purple,
-                        type: .grounding
-                    )
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.3), value: appeared)
-                    
-                    exerciseCard(
-                        title: String(localized: "Behavioral activation"),
-                        description: String(localized: "Increasing activity through meaningful actions"),
-                        icon: "figure.walk",
-                        color: .green,
-                        type: .activation
-                    )
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .animation(.easeOut(duration: 0.3).delay(0.4), value: appeared)
+                VStack(alignment: .leading, spacing: Spacing.sm) {
+                    // Page subtitle
+                    Text("Choose a technique that fits how you're feeling right now.")
+                        .appFont(.body)
+                        .foregroundStyle(TextColors.secondary)
+                        .padding(.top, Spacing.xxs)
+
+                    // Category cards
+                    VStack(spacing: Spacing.xs) {
+                        ForEach(categories.indices, id: \.self) { index in
+                            categoryRow(category: categories[index], index: index)
+                        }
+                    }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 40)
+                .padding(.horizontal, Spacing.sm)
+                .padding(.top, Spacing.md)
+                .padding(.bottom, Spacing.xxl)
             }
-            .background(TopMeshGradientBackground())
-            .navigationTitle("Exercises")
+            .homeBackground()
+            .navigationTitle(String(localized: "Exercises"))
             .navigationBarTitleDisplayMode(.large)
-            .opacity(appeared ? 1 : 0)
-            .animation(.easeIn(duration: 0.3), value: appeared)
-            .onAppear {
-                appeared = true
-            }
+            .onAppear { appeared = true }
             .navigationDestination(for: AppRoute.self) { route in
                 AppRouteView(route: route)
             }
         }
     }
-    
-    private func exerciseCard(
-        title: String,
-        description: String,
-        icon: String,
-        color: Color,
-        type: ExerciseType
-    ) -> some View {
-        NavigationLink(value: AppRoute.exerciseList(exerciseListRoute(for: type))) {
-            HStack(spacing: 16) {
-                Image(systemName: icon)
-                    .font(.system(size: 40))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [color.opacity(0.8), color.opacity(0.6)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 60, height: 60)
-                    .background(
-                        Circle()
-                            .fill(color.opacity(0.1))
-                    )
-                    .accessibilityHidden(true)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(title)
-                        .font(.title3.weight(.semibold))
-                        .foregroundStyle(Color.primary)
-                    
-                    Text(description)
-                        .font(.subheadline)
-                        .foregroundStyle(Color.secondary)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(2)
-                }
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .font(.body)
-                    .foregroundStyle(Color.secondary)
-            }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
-            )
+
+    // MARK: - Helpers
+
+    @ViewBuilder
+    private func categoryRow(category: ExerciseCategory, index: Int) -> some View {
+        let delay = Double(index) * 0.07
+        NavigationLink(value: AppRoute.exerciseList(category.route)) {
+            ExerciseCategoryCard(category: category)
         }
         .buttonStyle(.plain)
+        .opacity(appeared ? 1 : 0)
+        .offset(y: appeared ? 0 : 16)
+        .animation(AppAnimation.appear.delay(delay), value: appeared)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title). \(description)")
+        .accessibilityLabel("\(category.title). \(category.description)")
         .accessibilityHint(String(localized: "Double-tap to open"))
     }
+}
 
-    private func exerciseListRoute(for type: ExerciseType) -> ExerciseListRoute {
-        switch type {
-        case .exposures: return .exposures
-        case .breathing: return .breathing
-        case .relaxation: return .relaxation
-        case .grounding: return .grounding
-        case .activation: return .activation
+// MARK: - ExerciseCategoryCard
+
+private struct ExerciseCategoryCard: View {
+    let category: ExerciseCategory
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var iconBackgroundOpacity: Double {
+        colorScheme == .dark ? Opacity.softBackground : Opacity.subtleBackground + 0.05
+    }
+
+    var body: some View {
+        HStack(spacing: Spacing.sm) {
+            // Icon container
+            Image(systemName: category.icon)
+                .font(.system(size: IconSize.glyph + 4, weight: .medium))
+                .foregroundStyle(category.color)
+                .frame(width: IconSize.hero, height: IconSize.hero)
+                .background(
+                    RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                        .fill(category.color.opacity(iconBackgroundOpacity))
+                )
+
+            // Labels
+            VStack(alignment: .leading, spacing: Spacing.xxxs) {
+                Text(category.title)
+                    .appFont(.h3)
+                    .foregroundStyle(TextColors.primary)
+
+                Text(category.description)
+                    .appFont(.small)
+                    .foregroundStyle(TextColors.secondary)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(category.meta)
+                    .appFont(.smallMedium)
+                    .foregroundStyle(category.color.opacity(0.8))
+                    .padding(.top, 2)
+            }
+
+            Spacer(minLength: 0)
+
+            // Trailing arrow — NavigationLink owns the tap, this is purely visual
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(AppColors.gray400)
         }
+        .padding(.horizontal, Spacing.sm)
+        .padding(.vertical, Spacing.sm)
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: 0)
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     ExercisesView(path: .constant(NavigationPath()))
 }
-

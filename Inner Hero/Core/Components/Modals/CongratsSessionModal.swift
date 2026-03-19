@@ -3,101 +3,51 @@ import SwiftUI
 // MARK: - Congrats Session Modal
 
 struct CongratsSessionModal: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
+
     struct Message: Identifiable, Hashable {
         let id = UUID()
         let iconSystemName: String
         let text: String
     }
-    
+
     enum Palette: Hashable {
         case tealMint
         case purpleIndigo
-        
-        var accentColors: [Color] {
+
+        var accentColor: Color {
             switch self {
-            case .tealMint:
-                return [.teal, .mint]
-            case .purpleIndigo:
-                return [.purple, .indigo]
+            case .tealMint:     return AppColors.positive
+            case .purpleIndigo: return AppColors.accent
             }
         }
-        
-        func backgroundGradientColors(colorScheme: ColorScheme) -> [Color] {
-            switch (self, colorScheme) {
-            case (.tealMint, .dark):
-                return [
-                    Color(red: 0.08, green: 0.11, blue: 0.12),
-                    Color(red: 0.05, green: 0.07, blue: 0.09)
-                ]
-            case (.tealMint, .light):
-                return [
-                    Color(red: 0.94, green: 0.98, blue: 0.98),
-                    Color(red: 0.92, green: 0.96, blue: 0.96)
-                ]
-            case (.purpleIndigo, .dark):
-                return [
-                    Color(red: 0.09, green: 0.08, blue: 0.13),
-                    Color(red: 0.06, green: 0.06, blue: 0.10)
-                ]
-            case (.purpleIndigo, .light):
-                return [
-                    Color(red: 0.97, green: 0.96, blue: 1.0),
-                    Color(red: 0.94, green: 0.93, blue: 0.99)
-                ]
-            @unknown default:
-                return [
-                    Color(red: 0.94, green: 0.98, blue: 0.98),
-                    Color(red: 0.92, green: 0.96, blue: 0.96)
-                ]
+
+        var accentLightColor: Color {
+            switch self {
+            case .tealMint:     return AppColors.positiveLight
+            case .purpleIndigo: return AppColors.accentLight
             }
         }
     }
-    
+
     struct Configuration: Hashable {
         var palette: Palette = .tealMint
         var topIconSystemName: String = "sparkles"
         var title: String = "Well done!"
         var subtitle: String = "You just took a helpful step for yourself."
         var messages: [Message] = [
-            Message(iconSystemName: "heart.circle.fill", text: "Let this become a small good habit"),
+            Message(iconSystemName: "heart.circle.fill",    text: "Let this become a small good habit"),
             Message(iconSystemName: "checkmark.circle.fill", text: "Consistency matters more than perfection"),
-            Message(iconSystemName: "sparkles", text: "You're managing—step by step")
+            Message(iconSystemName: "sparkles",              text: "You're managing—step by step")
         ]
         var primaryButtonTitle: String = "Great"
     }
-    
+
     let configuration: Configuration
     let onDone: () -> Void
-    
-    private var backgroundGradientColors: [Color] {
-        configuration.palette.backgroundGradientColors(colorScheme: colorScheme)
-    }
-    
-    private var cardShadowColor: Color {
-        colorScheme == .dark ? Color.black.opacity(0.35) : Color.black.opacity(0.05)
-    }
-    
-    private var accentGradient: LinearGradient {
-        LinearGradient(
-            colors: configuration.palette.accentColors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-    
-    private var accentBackgroundGradient: LinearGradient {
-        LinearGradient(
-            colors: [
-                configuration.palette.accentColors[0].opacity(0.12),
-                configuration.palette.accentColors[1].opacity(0.06)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-    
+
+    private var accentColor: Color { configuration.palette.accentColor }
+    private var accentLightColor: Color { configuration.palette.accentLightColor }
+
     init(configuration: Configuration = Configuration(), onDone: @escaping () -> Void) {
         self.configuration = configuration
         self.onDone = onDone
@@ -105,110 +55,101 @@ struct CongratsSessionModal: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Top section with icon and title
-            VStack(spacing: 20) {
-                ZStack {
-                    Circle()
-                        .fill(accentBackgroundGradient)
-                        .frame(width: 80, height: 80)
+            // Icon + title + subtitle
+            VStack(spacing: Spacing.md) {
+                Image(systemName: configuration.topIconSystemName)
+                    .font(.system(size: 28, weight: .semibold))
+                    .foregroundStyle(accentColor)
+                    .iconContainer(
+                        size: IconSize.hero,
+                        backgroundColor: accentLightColor,
+                        cornerRadius: CornerRadius.pill
+                    )
+                    .accessibilityHidden(true)
 
-                    Image(systemName: configuration.topIconSystemName)
-                        .font(.system(size: 34, weight: .semibold))
-                        .foregroundStyle(accentGradient)
-                }
-                .accessibilityHidden(true)
-
-                VStack(spacing: 10) {
+                VStack(spacing: Spacing.xxxs) {
                     Text(configuration.title)
-                        .font(.system(size: 24, weight: .bold))
+                        .appFont(.h1)
                         .foregroundStyle(TextColors.primary)
                         .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .fixedSize(horizontal: false, vertical: true)
 
                     Text(LocalizedStringKey(configuration.subtitle))
-                        .font(.system(size: 16, weight: .medium))
+                        .appFont(.body)
                         .foregroundStyle(TextColors.secondary)
                         .multilineTextAlignment(.center)
-                        .lineLimit(nil)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(.top, 28)
-            .padding(.bottom, 24)
+            .padding(.top, Spacing.xxl)
+            .padding(.bottom, Spacing.md)
 
-            // Supportive messages
-            VStack(spacing: 12) {
+            // Messages section — single card with header
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("Keep in mind")
+                    .appFont(.h3)
+                    .foregroundStyle(TextColors.primary)
+
                 ForEach(configuration.messages) { message in
-                    supportiveMessage(icon: message.iconSystemName, text: message.text)
+                    tipRow(icon: message.iconSystemName, text: message.text)
                 }
             }
-            .padding(.horizontal, 20)
+            .cardStyle()
+            .padding(.horizontal, Spacing.lg)
 
             Spacer()
 
-            Button {
+            PrimaryButton(
+                title: configuration.primaryButtonTitle,
+                systemImage: "checkmark",
+                color: accentColor
+            ) {
                 onDone()
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 15, weight: .semibold))
-                        .accessibilityHidden(true)
-                    Text(configuration.primaryButtonTitle)
-                        .font(.system(size: 16, weight: .semibold))
-                }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(accentGradient)
-                )
-                .shadow(color: configuration.palette.accentColors[0].opacity(0.25), radius: 8, x: 0, y: 4)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 24)
-            .padding(.bottom, 32)
+            .padding(.horizontal, Spacing.lg)
+            .padding(.top, Spacing.md)
+            .padding(.bottom, Spacing.lg)
             .accessibilityLabel("Close")
         }
-        .background(
-            LinearGradient(
-                colors: backgroundGradientColors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .pageBackground()
     }
 
-    private func supportiveMessage(icon: String, text: String) -> some View {
-        HStack(alignment: .top, spacing: 14) {
+    private func tipRow(icon: String, text: String) -> some View {
+        HStack(alignment: .top, spacing: Spacing.xxs) {
             Image(systemName: icon)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(accentGradient)
-                .frame(width: 24)
+                .font(.system(size: IconSize.glyph))
+                .foregroundStyle(accentColor)
+                .frame(width: 22, alignment: .center)
+                .padding(.top, 1)
                 .accessibilityHidden(true)
 
             Text(LocalizedStringKey(text))
-                .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(TextColors.primary)
-                .multilineTextAlignment(.leading)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-                .layoutPriority(1)
-            
-            Spacer(minLength: 0)
+                .appFont(.body)
+                .foregroundStyle(TextColors.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.background)
-                .shadow(color: cardShadowColor, radius: 6, x: 0, y: 2)
-        )
+        .accessibilityElement(children: .combine)
     }
 }
 
 #Preview {
     CongratsSessionModal(onDone: { })
         .padding()
+}
+
+#Preview("Purple") {
+    CongratsSessionModal(
+        configuration: .init(
+            palette: .purpleIndigo,
+            topIconSystemName: "sparkles",
+            title: "Well done!",
+            subtitle: "You brought your attention to the present moment.",
+            messages: [
+                .init(iconSystemName: "eye.circle.fill",         text: "If you like, repeat another round."),
+                .init(iconSystemName: "hand.raised.circle.fill", text: "You relied on your senses—that strengthens with practice."),
+                .init(iconSystemName: "heart.circle.fill",       text: "Even a small step is self-care.")
+            ]
+        ),
+        onDone: { }
+    )
+    .padding()
 }
