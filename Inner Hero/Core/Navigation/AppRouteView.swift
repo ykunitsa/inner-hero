@@ -9,6 +9,9 @@ struct AppRouteView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ArticlesStore.self) private var articlesStore
 
+    @State private var exposureDetailStartSheet: Exposure?
+    @State private var exposureDetailActiveSession: ExposureSessionResult?
+
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
     @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
@@ -23,7 +26,20 @@ struct AppRouteView: View {
         switch route {
         case .exposureDetail(let exposureId):
             if let exposure = exposures.first(where: { $0.id == exposureId }) {
-                ExposureDetailView(exposure: exposure, onStartSession: {})
+                ExposureDetailView(
+                    exposure: exposure,
+                    onStartSession: { exposureDetailStartSheet = exposure }
+                )
+                .sheet(item: $exposureDetailStartSheet) { exp in
+                    StartSessionSheet(exposure: exp) { session in
+                        exposureDetailActiveSession = session
+                    }
+                }
+                .navigationDestination(item: $exposureDetailActiveSession) { session in
+                    if let exposure = session.exposure {
+                        ActiveSessionView(session: session, exposure: exposure, assignment: nil)
+                    }
+                }
             } else {
                 contentUnavailable(route: "Exposure")
             }

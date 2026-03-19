@@ -187,10 +187,7 @@ struct ExposuresListView: View {
         let assignment = allAssignments.first {
             $0.exerciseType == .exposure && $0.exposureId == exposure.id
         }
-        return NavigationLink(destination: ExposureDetailView(
-            exposure: exposure,
-            onStartSession: { startSession(for: exposure) }
-        )) {
+        return NavigationLink(value: AppRoute.exposureDetail(exposureId: exposure.id)) {
             ExposureCardView(exposure: exposure, assignment: assignment)
         }
         .buttonStyle(.plain)

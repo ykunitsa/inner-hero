@@ -5,155 +5,87 @@ struct ExposureProgressChart: View {
     let dataPoints: [ChartDataPoint]
     @State private var selectedPeriod: TimePeriod = .month
     @State private var selectedDataPoint: ChartDataPoint?
-    
+
     private var filteredDataPoints: [ChartDataPoint] {
         let cutoffDate = Calendar.current.date(
             byAdding: .day,
             value: -selectedPeriod.daysCount,
             to: Date()
         ) ?? Date()
-        
         return dataPoints
             .filter { $0.date >= cutoffDate }
             .sorted { $0.date < $1.date }
     }
-    
+
     private var statistics: ChartStatistics? {
         ChartStatistics.calculate(from: filteredDataPoints)
     }
-    
-    private var latestDataPoint: ChartDataPoint? {
-        filteredDataPoints.last
-    }
-    
+
+    private var latestDataPoint: ChartDataPoint? { filteredDataPoints.last }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // Header with current value
+        VStack(alignment: .leading, spacing: Spacing.md) {
             headerSection
-            
-            // Time period filters
             periodSelector
-            
-            // Legend
             legendView
-            
-            // Chart (always show)
             chartView
-            
-            // Statistics
             if let stats = statistics, !filteredDataPoints.isEmpty {
-                statisticsSection(stats: stats)
+                statsRow(stats: stats)
             }
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color(red: 0.98, green: 0.99, blue: 1.0))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(
-                    LinearGradient(
-                        colors: [.blue.opacity(0.2), .cyan.opacity(0.15)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    lineWidth: 1
-                )
-        )
+        .cardStyle()
         .accessibilityElement(children: .contain)
-                .accessibilityLabel("Anxiety progress chart")
+        .accessibilityLabel("Anxiety progress chart")
     }
-    
+
+    // MARK: - Header
+
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Label("Anxiety dynamics", systemImage: "chart.line.uptrend.xyaxis")
-                .font(.headline)
-                .foregroundStyle(TextColors.primary)
-                .accessibilityAddTraits(.isHeader)
-            
-            if let latest = latestDataPoint {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    if let after = latest.anxietyAfter {
-                        Text("\(after)")
-                            .font(.system(size: 48, weight: .medium))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .cyan],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
+        HStack(alignment: .firstTextBaseline, spacing: Spacing.xxs) {
+            VStack(alignment: .leading, spacing: 2) {
+                Label(String(localized: "Anxiety dynamics"), systemImage: "chart.line.uptrend.xyaxis")
+                    .appFont(.h3)
+                    .foregroundStyle(TextColors.primary)
+                    .accessibilityAddTraits(.isHeader)
+
+                if let latest = latestDataPoint {
+                    HStack(alignment: .firstTextBaseline, spacing: Spacing.xxs) {
+                        Text("\(latest.anxietyAfter ?? latest.anxietyBefore)")
+                            .appFont(.monoLarge)
+                            .foregroundStyle(AppColors.primary)
                             .monospacedDigit()
-                    } else {
-                        Text("\(latest.anxietyBefore)")
-                            .font(.system(size: 48, weight: .medium))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .cyan],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .monospacedDigit()
+                        Text(String(localized: "level"))
+                            .appFont(.body)
+                            .foregroundStyle(TextColors.secondary)
                     }
-                    
-                    Text("level")
-                        .font(.title3)
-                        .foregroundStyle(TextColors.secondary)
+                    Text(latest.date.formatted(date: .abbreviated, time: .omitted))
+                        .appFont(.small)
+                        .foregroundStyle(TextColors.tertiary)
+                } else {
+                    Text(String(localized: "No data"))
+                        .appFont(.h2)
+                        .foregroundStyle(TextColors.tertiary)
                 }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel(
-                    String(
-                        format: NSLocalizedString("Current anxiety level: %d", comment: ""),
-                        latest.anxietyAfter ?? latest.anxietyBefore
-                    )
-                )
-                
-                Text(latest.date.formatted(date: .abbreviated, time: .omitted))
-                    .font(.subheadline)
-                    .foregroundStyle(TextColors.tertiary)
-                    .accessibilityLabel(
-                        String(
-                            format: NSLocalizedString("Date: %@", comment: ""),
-                            latest.date.formatted(date: .long, time: .omitted)
-                        )
-                    )
-            } else {
-                Text("No data")
-                    .font(.system(size: 48, weight: .medium))
-                    .foregroundStyle(TextColors.tertiary)
             }
         }
     }
-    
+
+    // MARK: - Period Selector
+
     private var periodSelector: some View {
         HStack(spacing: 0) {
             ForEach(TimePeriod.allCases, id: \.self) { period in
                 Button {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        selectedPeriod = period
-                    }
+                    withAnimation(AppAnimation.standard) { selectedPeriod = period }
                 } label: {
                     Text(period.label)
-                        .font(.subheadline.weight(selectedPeriod == period ? .semibold : .regular))
+                        .appFont(selectedPeriod == period ? .smallMedium : .small)
                         .foregroundStyle(selectedPeriod == period ? .white : TextColors.secondary)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
+                        .padding(.vertical, Spacing.xxs)
                         .background(
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(
-                                    selectedPeriod == period ?
-                                    LinearGradient(
-                                        colors: [.blue, .cyan],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ) : LinearGradient(
-                                        colors: [.clear],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                                )
+                            RoundedRectangle(cornerRadius: CornerRadius.sm, style: .continuous)
+                                .fill(selectedPeriod == period ? AppColors.primary : Color.clear)
                         )
                 }
                 .buttonStyle(.plain)
@@ -161,15 +93,15 @@ struct ExposureProgressChart: View {
                 .accessibilityAddTraits(selectedPeriod == period ? [.isSelected] : [])
             }
         }
-        .padding(4)
+        .padding(Spacing.xxxs)
         .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(red: 0.95, green: 0.96, blue: 0.98))
+            RoundedRectangle(cornerRadius: CornerRadius.sm + 2, style: .continuous)
+                .fill(AppColors.gray100)
         )
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Display period selection")
     }
-    
+
     private func periodAccessibilityLabel(for period: TimePeriod) -> String {
         switch period {
         case .day: return String(localized: "One day")
@@ -179,219 +111,192 @@ struct ExposureProgressChart: View {
         case .year: return String(localized: "Year")
         }
     }
-    
+
+    // MARK: - Legend
+
     private var legendView: some View {
-        HStack(spacing: 16) {
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.blue, .blue.opacity(0.8)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .frame(width: 10, height: 10)
-                Text("Before session")
-                    .font(.caption)
-                    .foregroundStyle(TextColors.secondary)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Blue line: anxiety before session")
-            
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.cyan, .cyan.opacity(0.7)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .frame(width: 10, height: 10)
-                Text("After session")
-                    .font(.caption)
-                    .foregroundStyle(TextColors.secondary)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Blue line: anxiety after session")
+        HStack(spacing: Spacing.sm) {
+            legendItem(color: AppColors.primary, label: String(localized: "Before session"))
+            legendItem(color: AppColors.accent, label: String(localized: "After session"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
-    private var chartView: some View {
-        Chart {
-            // Reference lines (average)
-            if let stats = statistics, !filteredDataPoints.isEmpty {
+
+    private func legendItem(color: Color, label: String) -> some View {
+        HStack(spacing: Spacing.xxxs) {
+            Circle()
+                .fill(color)
+                .frame(width: 8, height: 8)
+            Text(label)
+                .appFont(.small)
+                .foregroundStyle(TextColors.secondary)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label) indicator")
+    }
+
+    // MARK: - Chart Marks
+
+    @ChartContentBuilder
+    private func averageRuleMarks() -> some ChartContent {
+        if let stats = statistics, !filteredDataPoints.isEmpty {
             RuleMark(y: .value(String(localized: "Avg Before"), stats.averageAnxietyBefore))
-                    .foregroundStyle(.blue.opacity(0.25))
+                .foregroundStyle(AppColors.primary.opacity(0.25))
+                .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
+                .accessibilityHidden(true)
+            if stats.averageAnxietyAfter != stats.averageAnxietyBefore {
+                RuleMark(y: .value(String(localized: "Avg After"), stats.averageAnxietyAfter))
+                    .foregroundStyle(AppColors.accent.opacity(0.25))
                     .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
                     .accessibilityHidden(true)
-                
-                if stats.averageAnxietyAfter != stats.averageAnxietyBefore {
-                RuleMark(y: .value(String(localized: "Avg After"), stats.averageAnxietyAfter))
-                        .foregroundStyle(.cyan.opacity(0.25))
-                        .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
-                        .accessibilityHidden(true)
-                }
-            }
-            
-            // Anxiety Before line - continuous line through all points
-            ForEach(filteredDataPoints) { point in
-                LineMark(
-                    x: .value(String(localized: "Date"), point.date),
-                    y: .value(String(localized: "Before session"), point.anxietyBefore),
-                    series: .value(String(localized: "Streak"), String(localized: "Before"))
-                )
-                .foregroundStyle(.blue)
-                .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-                .interpolationMethod(.catmullRom)
-                
-                PointMark(
-                    x: .value(String(localized: "Date"), point.date),
-                    y: .value(String(localized: "Before session"), point.anxietyBefore)
-                )
-                .foregroundStyle(.blue)
-                .symbolSize(80)
-            }
-            
-            // Anxiety After line - continuous line through all points with data
-            ForEach(filteredDataPoints.filter { $0.anxietyAfter != nil }) { point in
-                if let after = point.anxietyAfter {
-                    LineMark(
-                        x: .value(String(localized: "Date"), point.date),
-                        y: .value(String(localized: "After session"), after),
-                        series: .value(String(localized: "Streak"), String(localized: "After"))
-                    )
-                    .foregroundStyle(.cyan)
-                    .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-                    .interpolationMethod(.catmullRom)
-                    
-                    PointMark(
-                        x: .value(String(localized: "Date"), point.date),
-                        y: .value(String(localized: "After session"), after)
-                    )
-                    .foregroundStyle(.cyan)
-                    .symbolSize(80)
-                }
             }
         }
+    }
+
+    @ChartContentBuilder
+    private func beforeLineMarks() -> some ChartContent {
+        ForEach(filteredDataPoints) { point in
+            LineMark(
+                x: .value(String(localized: "Date"), point.date),
+                y: .value(String(localized: "Before session"), point.anxietyBefore),
+                series: .value(String(localized: "Streak"), String(localized: "Before"))
+            )
+            .foregroundStyle(AppColors.primary)
+            .lineStyle(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+            .interpolationMethod(.catmullRom)
+
+            PointMark(
+                x: .value(String(localized: "Date"), point.date),
+                y: .value(String(localized: "Before session"), point.anxietyBefore)
+            )
+            .foregroundStyle(AppColors.primary)
+            .symbolSize(60)
+        }
+    }
+
+    @ChartContentBuilder
+    private func afterLineMarks() -> some ChartContent {
+        ForEach(filteredDataPoints.filter { $0.anxietyAfter != nil }) { point in
+            if let after = point.anxietyAfter {
+                LineMark(
+                    x: .value(String(localized: "Date"), point.date),
+                    y: .value(String(localized: "After session"), after),
+                    series: .value(String(localized: "Streak"), String(localized: "After"))
+                )
+                .foregroundStyle(AppColors.accent)
+                .lineStyle(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+                .interpolationMethod(.catmullRom)
+
+                PointMark(
+                    x: .value(String(localized: "Date"), point.date),
+                    y: .value(String(localized: "After session"), after)
+                )
+                .foregroundStyle(AppColors.accent)
+                .symbolSize(60)
+            }
+        }
+    }
+
+    // MARK: - Chart
+
+    private var chartView: some View {
+        Chart {
+            averageRuleMarks()
+            beforeLineMarks()
+            afterLineMarks()
+        }
         .chartXAxis {
-            AxisMarks(values: .automatic) { value in
+            AxisMarks(values: .automatic) { _ in
                 AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                    .foregroundStyle(.gray.opacity(0.15))
+                    .foregroundStyle(AppColors.gray200)
                 AxisValueLabel()
-                    .font(.caption2)
+                    .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(TextColors.tertiary)
             }
         }
         .chartYAxis {
-            AxisMarks(position: .trailing, values: .automatic) { value in
+            AxisMarks(position: .trailing, values: .automatic) { _ in
                 AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                    .foregroundStyle(.gray.opacity(0.15))
+                    .foregroundStyle(AppColors.gray200)
                 AxisValueLabel()
-                    .font(.caption2)
+                    .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(TextColors.tertiary)
             }
         }
         .chartYScale(domain: 0...10)
-        .frame(height: 220)
-        .padding(.vertical, 8)
+        .frame(height: 200)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Anxiety dynamics chart by date")
     }
-    
-    private func statisticsSection(stats: ChartStatistics) -> some View {
-        HStack(spacing: 20) {
-            StatItemView(
-                title: "Avg Before",
+
+    // MARK: - Stats Row
+
+    private func statsRow(stats: ChartStatistics) -> some View {
+        HStack(spacing: 0) {
+            statItem(
+                title: String(localized: "Avg Before"),
                 value: String(format: "%.1f", stats.averageAnxietyBefore),
-                color: .blue
+                color: AppColors.primary
             )
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(
-                String(
-                    format: NSLocalizedString("Average anxiety before session: %@", comment: ""),
-                    String(format: "%.1f", stats.averageAnxietyBefore)
-                )
-            )
-            
-            Divider()
-                .frame(height: 30)
-                .accessibilityHidden(true)
-            
-            StatItemView(
-                title: "Avg After",
+
+            Divider().frame(height: 32)
+
+            statItem(
+                title: String(localized: "Avg After"),
                 value: String(format: "%.1f", stats.averageAnxietyAfter),
-                color: .cyan
+                color: AppColors.accent
             )
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(
-                String(
-                    format: NSLocalizedString("Average anxiety after session: %@", comment: ""),
-                    String(format: "%.1f", stats.averageAnxietyAfter)
-                )
-            )
-            
-            Divider()
-                .frame(height: 30)
-                .accessibilityHidden(true)
-            
-            VStack(spacing: 4) {
-                HStack(spacing: 4) {
-                    Image(systemName: stats.trendDirection.icon)
-                        .font(.caption)
-                    Text(stats.trendDirection.description)
-                        .font(.caption.weight(.medium))
-                }
-                .foregroundStyle(trendColor(for: stats.trendDirection))
-                
-                Text(String(format: "%.1f", abs(stats.averageChange)))
-                    .font(.headline.monospacedDigit())
-                    .foregroundStyle(TextColors.primary)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(
-                String(
-                    format: NSLocalizedString("Trend: %1$@, change %2$@", comment: ""),
-                    stats.trendDirection.description,
-                    String(format: "%.1f", abs(stats.averageChange))
-                )
-            )
-        }
-        .padding(.top, 8)
-    }
-    
-    private func trendColor(for direction: ChartStatistics.TrendDirection) -> Color {
-        switch direction {
-        case .improving: return .green
-        case .stable: return .orange
-        case .worsening: return .red
-        }
-    }
-}
 
-// MARK: - Stat Item View
+            Divider().frame(height: 32)
 
-private struct StatItemView: View {
-    let title: LocalizedStringKey
-    let value: String
-    let color: Color
-    
-    var body: some View {
-        VStack(spacing: 4) {
+            trendItem(stats: stats)
+        }
+        .padding(.top, Spacing.xxs)
+    }
+
+    private func statItem(title: String, value: String, color: Color) -> some View {
+        VStack(spacing: 2) {
             Text(title)
-                .font(.caption)
+                .appFont(.caption)
                 .foregroundStyle(TextColors.secondary)
             Text(value)
-                .font(.headline.monospacedDigit())
+                .appFont(.bodyMedium)
                 .foregroundStyle(color)
+                .monospacedDigit()
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
+    }
+
+    private func trendItem(stats: ChartStatistics) -> some View {
+        let trendColor: Color = {
+            switch stats.trendDirection {
+            case .improving: return AppColors.positive
+            case .stable: return AppColors.State.warning
+            case .worsening: return AppColors.primary
+            }
+        }()
+
+        return VStack(spacing: 2) {
+            HStack(spacing: Spacing.xxxs) {
+                Image(systemName: stats.trendDirection.icon)
+                    .font(.system(size: 11, weight: .semibold))
+                Text(stats.trendDirection.description)
+                    .appFont(.smallMedium)
+            }
+            .foregroundStyle(trendColor)
+
+            Text(String(format: "%.1f", abs(stats.averageChange)))
+                .appFont(.bodyMedium)
+                .foregroundStyle(TextColors.primary)
+                .monospacedDigit()
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(String(format: NSLocalizedString("Trend: %1$@, change %2$@", comment: ""), stats.trendDirection.description, String(format: "%.1f", abs(stats.averageChange))))
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ScrollView {
@@ -407,4 +312,3 @@ private struct StatItemView: View {
         .padding()
     }
 }
-

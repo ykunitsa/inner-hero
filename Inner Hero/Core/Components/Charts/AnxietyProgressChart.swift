@@ -3,186 +3,112 @@ import SwiftUI
 struct AnxietyProgressChart: View {
     let anxietyBefore: Int
     let anxietyAfter: Int
-    
-    @Environment(\.accessibilityReduceMotion) var reduceMotion
-    
-    private enum Layout {
-        static let headerSpacing: CGFloat = 12
-        static let contentSpacing: CGFloat = 16
-        static let barSpacing: CGFloat = 80
-        static let barWidth: CGFloat = 50
-        static let chartHeight: CGFloat = 200
-        static let cardPadding: CGFloat = 20
-        static let cornerRadius: CGFloat = 12
-        static let labelSpacing: CGFloat = 4
-        static let barCornerRadius: CGFloat = 8
+
+    private var delta: Int { anxietyBefore - anxietyAfter }
+
+    private var deltaColor: Color {
+        if delta > 0 { return AppColors.positive }
+        if delta < 0 { return AppColors.primary }
+        return AppColors.State.warning
     }
-    
-    private var maxValue: CGFloat { 10 }
-    
-    private var beforeHeight: CGFloat {
-        CGFloat(anxietyBefore) / maxValue
+
+    private var deltaIcon: String {
+        if delta > 0 { return "arrow.down.circle.fill" }
+        if delta < 0 { return "arrow.up.circle.fill" }
+        return "minus.circle.fill"
     }
-    
-    private var afterHeight: CGFloat {
-        CGFloat(anxietyAfter) / maxValue
-    }
-    
-    private var changeColor: Color {
-        if anxietyAfter < anxietyBefore {
-            return .green
-        } else if anxietyAfter > anxietyBefore {
-            return .red
-        } else {
-            return .orange
-        }
-    }
-    
-    private var changeIcon: String {
-        if anxietyAfter < anxietyBefore {
-            return "arrow.down"
-        } else if anxietyAfter > anxietyBefore {
-            return "arrow.up"
-        } else {
-            return "minus"
-        }
-    }
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: Layout.headerSpacing) {
-            Label("Anxiety dynamics", systemImage: "chart.line.uptrend.xyaxis")
-                .font(.title3.weight(.semibold))
-                .foregroundStyle(.primary)
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            Label(String(localized: "Anxiety dynamics"), systemImage: "chart.line.uptrend.xyaxis")
+                .appFont(.h3)
+                .foregroundStyle(TextColors.primary)
                 .accessibilityAddTraits(.isHeader)
-            
-            VStack(spacing: Layout.contentSpacing) {
-                GeometryReader { geometry in
-                    let chartHeight = geometry.size.height
-                    
-                    ZStack(alignment: .bottom) {
-                        VStack(spacing: 0) {
-                            ForEach(0..<11) { i in
-                                Divider()
-                                    .background(.separator)
-                                if i < 10 {
-                                    Spacer()
-                                }
-                            }
-                        }
-                        .accessibilityHidden(true)
-                        
-                        HStack(alignment: .bottom, spacing: Layout.barSpacing) {
-                            BarView(
-                                value: anxietyBefore,
-                                height: chartHeight * beforeHeight,
-                                maxHeight: chartHeight,
-                                color: .blue,
-                                label: "Before"
-                            )
-                            
-                            VStack {
-                                Image(systemName: changeIcon)
-                                    .font(.title)
-                                    .foregroundStyle(changeColor)
-                                    .padding(.bottom, chartHeight * 0.4)
-                                    .accessibilityHidden(true)
-                            }
-                            
-                            BarView(
-                                value: anxietyAfter,
-                                height: chartHeight * afterHeight,
-                                maxHeight: chartHeight,
-                                color: changeColor,
-                                label: "After"
-                            )
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                }
-                .frame(height: Layout.chartHeight)
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel("Anxiety dynamics chart")
-                
-                HStack {
-                    ScaleLabelView(value: "0", description: "No anxiety", alignment: .leading)
-                    Spacer()
-                    ScaleLabelView(value: "10", description: "Maximum", alignment: .trailing)
-                }
-                .accessibilityHidden(true)
+
+            HStack(alignment: .bottom, spacing: 0) {
+                barColumn(
+                    label: String(localized: "Before"),
+                    value: anxietyBefore,
+                    color: AppColors.primary
+                )
+
+                Spacer()
+
+                deltaColumn
+
+                Spacer()
+
+                barColumn(
+                    label: String(localized: "After"),
+                    value: anxietyAfter,
+                    color: AppColors.anxietyColor(for: anxietyAfter)
+                )
             }
-            .padding(Layout.cardPadding)
+            .padding(Spacing.sm)
+            .frame(height: 180)
             .background(
-                RoundedRectangle(cornerRadius: Layout.cornerRadius, style: .continuous)
-                    .fill(.background.tertiary.opacity(0.5))
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .fill(AppColors.gray100)
             )
+
+            HStack {
+                Text("0 — \(String(localized: "No anxiety"))")
+                    .appFont(.caption)
+                    .foregroundStyle(TextColors.tertiary)
+                Spacer()
+                Text("10 — \(String(localized: "Maximum"))")
+                    .appFont(.caption)
+                    .foregroundStyle(TextColors.tertiary)
+            }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Anxiety dynamics from \(anxietyBefore) to \(anxietyAfter)")
+        .accessibilityLabel(String(format: String(localized: "Anxiety dynamics from %lld to %lld"), anxietyBefore, anxietyAfter))
     }
-}
 
-private struct BarView: View {
-    let value: Int
-    let height: CGFloat
-    let maxHeight: CGFloat
-    let color: Color
-    let label: String
-    
-    private enum Layout {
-        static let barWidth: CGFloat = 50
-        static let barCornerRadius: CGFloat = 8
-        static let spacing: CGFloat = 8
-        static let labelSpacing: CGFloat = 4
-    }
-    
-    var body: some View {
-        VStack(spacing: Layout.spacing) {
-            ZStack(alignment: .bottom) {
-                RoundedRectangle(cornerRadius: Layout.barCornerRadius, style: .continuous)
-                    .fill(color.opacity(0.15))
-                    .frame(width: Layout.barWidth, height: maxHeight)
-                
-                RoundedRectangle(cornerRadius: Layout.barCornerRadius, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [color.opacity(0.7), color],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .frame(width: Layout.barWidth, height: height)
+    private func barColumn(label: String, value: Int, color: Color) -> some View {
+        VStack(spacing: Spacing.xxs) {
+            Text("\(value)")
+                .appFont(.h2)
+                .foregroundStyle(color)
+                .monospacedDigit()
+
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    Spacer()
+                    RoundedRectangle(cornerRadius: CornerRadius.sm, style: .continuous)
+                        .fill(color.opacity(Opacity.prominentBackground))
+                        .overlay(alignment: .bottom) {
+                            RoundedRectangle(cornerRadius: CornerRadius.sm, style: .continuous)
+                                .fill(color)
+                                .frame(height: geo.size.height * CGFloat(value) / 10.0)
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.sm, style: .continuous))
+                        .animation(AppAnimation.slow, value: value)
+                }
             }
-            
-            VStack(spacing: Layout.labelSpacing) {
-                Text("\(value)")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(color)
-                    .monospacedDigit()
-                Text(label)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+
+            Text(label)
+                .appFont(.smallMedium)
+                .foregroundStyle(TextColors.secondary)
         }
+        .frame(width: 72)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(label): \(value)")
     }
-}
 
-// MARK: - Scale Label View
+    private var deltaColumn: some View {
+        VStack(spacing: Spacing.xxxs) {
+            Image(systemName: deltaIcon)
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(deltaColor)
 
-private struct ScaleLabelView: View {
-    let value: String
-    let description: String
-    let alignment: HorizontalAlignment
-    
-    var body: some View {
-        VStack(alignment: alignment, spacing: 4) {
-            Text(value)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            Text(description)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+            let deltaText = delta == 0 ? "0" : "\(abs(delta))"
+            Text(deltaText)
+                .appFont(.bodyMedium)
+                .foregroundStyle(deltaColor)
+                .monospacedDigit()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(delta > 0 ? "Decreased by \(abs(delta))" : (delta < 0 ? "Increased by \(abs(delta))" : "No change"))
     }
 }
