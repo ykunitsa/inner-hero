@@ -48,7 +48,7 @@ struct Inner_HeroApp: App {
                     ExerciseAssignment.self,
                     ExerciseCompletion.self,
                     FavoriteExercise.self,
-                    configurations: [config]
+                    configurations: config
                 )
             } catch {
                 fatalError("In-memory ModelContainer fallback failed: \(error)")
