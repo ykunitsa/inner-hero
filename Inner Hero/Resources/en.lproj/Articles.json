@@ -7,7 +7,21 @@
       "content": "Anxiety is a natural reaction of the body to stressful situations. It helps us stay alert and ready to act. However, when anxiety becomes excessive or constant, it can interfere with daily life.\n\nSymptoms of anxiety may include:\n• Rapid heartbeat\n• Sweating\n• Trembling\n• Feelings of worry\n• Difficulty concentrating\n• Sleep problems\n\nIt is important to understand that anxiety is not a weakness but a normal response. With the right techniques and support, you can learn to manage anxiety and live a full life.",
       "icon": "brain.head.profile",
       "category": "Anxiety",
-      "readTime": 5
+      "readTime": 5,
+      "sources": [
+        {
+          "title": "National Institute of Mental Health: Anxiety Disorders",
+          "url": "https://www.nimh.nih.gov/health/topics/anxiety-disorders"
+        },
+        {
+          "title": "NHS: Generalised anxiety disorder (GAD)",
+          "url": "https://www.nhs.uk/mental-health/conditions/generalised-anxiety-disorder-gad/"
+        },
+        {
+          "title": "NICE Guideline CG113: Generalised anxiety disorder and panic disorder in adults",
+          "url": "https://www.nice.org.uk/guidance/cg113"
+        }
+      ]
     },
     {
       "id": "exposure-therapy-basics",
@@ -16,7 +30,21 @@
       "content": "Exposure therapy is an evidence-based method for treating anxiety disorders. The core idea is a gradual and controlled exposure to situations or objects that trigger fear or anxiety.\n\nPrinciples of exposure therapy:\n\n1. Fear hierarchy\nCreate a list of situations from least to most anxiety-provoking. Start with the easiest and progress toward more challenging ones.\n\n2. Gradual pace\nDo not rush. Give yourself time to get used to each level before moving to the next.\n\n3. Consistency\nRegular practice matters more than intensity. It is better to practice a little every day than a lot a few times per week.\n\n4. Stay in the situation\nRemain in the anxiety-provoking situation until the anxiety begins to naturally decrease.\n\n5. Track progress\nKeep a journal of your sessions, noting anxiety levels before and after each exercise.\n\nRemember: exposure therapy works because it helps the brain learn that the fear does not match the real level of danger.",
       "icon": "arrow.triangle.2.circlepath",
       "category": "Therapy",
-      "readTime": 8
+      "readTime": 8,
+      "sources": [
+        {
+          "title": "NHS: Treatment for phobias (CBT and exposure therapy)",
+          "url": "https://www.nhs.uk/mental-health/conditions/phobias/treatment/"
+        },
+        {
+          "title": "NICE Guideline CG113: Anxiety and panic disorder management",
+          "url": "https://www.nice.org.uk/guidance/cg113"
+        },
+        {
+          "title": "National Institute of Mental Health: Anxiety Disorders",
+          "url": "https://www.nimh.nih.gov/health/topics/anxiety-disorders"
+        }
+      ]
     },
     {
       "id": "breathing-techniques",
@@ -25,7 +53,21 @@
       "content": "Controlled breathing is a powerful tool for managing anxiety and stress. When we feel anxious, breathing becomes fast and shallow, which intensifies physical symptoms of anxiety.\n\nWhy breathing matters:\n\n• Activates the parasympathetic nervous system\n• Lowers heart rate\n• Helps relax muscles\n• Improves concentration\n• Reduces cortisol levels\n\nPopular techniques:\n\n1. 4-6 Breathing\nInhale for 4 counts, exhale for 6 counts. This technique is especially effective for activating the parasympathetic nervous system.\n\n2. Box Breathing\nEqual phases: inhale (4), hold (4), exhale (4), pause (4). Used by military and athletes to stay calm under pressure.\n\n3. Paced breathing\nSlow, controlled breathing at a comfortable rhythm.\n\nPractice tips:\n• Find a quiet place\n• Sit comfortably or lie down\n• Close your eyes\n• Focus on your breath\n• Start with 5–10 minutes a day",
       "icon": "wind",
       "category": "Breathing",
-      "readTime": 6
+      "readTime": 6,
+      "sources": [
+        {
+          "title": "NHS: Breathing exercises for stress",
+          "url": "https://www.nhs.uk/mental-health/self-help/guides-tools-and-activities/breathing-exercises-for-stress/"
+        },
+        {
+          "title": "NCCIH (NIH): Relaxation Techniques",
+          "url": "https://www.nccih.nih.gov/health/relaxation-techniques-what-you-need-to-know"
+        },
+        {
+          "title": "MedlinePlus: Relaxation techniques for stress",
+          "url": "https://medlineplus.gov/ency/patientinstructions/000874.htm"
+        }
+      ]
     },
     {
       "id": "progressive-muscle-relaxation",
@@ -34,7 +76,21 @@
       "content": "Progressive muscle relaxation (PMR) is a technique that helps you recognize and control muscle tension. The method was developed by physician Edmund Jacobson in the 1920s.\n\nHow it works:\n\nPMR is based on the principle that alternating tension and relaxation of muscles helps reduce overall stress and anxiety. The technique involves sequentially tensing and relaxing different muscle groups.\n\nProcess:\n\n1. Start with your toes\n2. Tense muscles for 5–10 seconds\n3. Release suddenly and notice the difference\n4. Move to the next muscle group\n5. Work your way up the body\n\nMuscle groups to work with:\n• Toes and feet\n• Calves and thighs\n• Hands and arms\n• Abdomen and chest\n• Shoulders and neck\n• Face and jaw\n\nBenefits:\n• Reduces muscle tension\n• Improves sleep\n• Helps with headaches\n• Lowers overall anxiety\n• Improves body awareness\n\nRegular PMR practice can significantly improve your ability to cope with stress and anxiety.",
       "icon": "figure.mind.and.body",
       "category": "Relaxation",
-      "readTime": 7
+      "readTime": 7,
+      "sources": [
+        {
+          "title": "NCCIH (NIH): Relaxation Techniques (Progressive Relaxation)",
+          "url": "https://www.nccih.nih.gov/health/relaxation-techniques-what-you-need-to-know"
+        },
+        {
+          "title": "MedlinePlus: Progressive Relaxation",
+          "url": "https://medlineplus.gov/ency/patientinstructions/000874.htm"
+        },
+        {
+          "title": "NHS inform: Progressive muscle relaxation",
+          "url": "https://www.nhsinform.scot/healthy-living/mental-wellbeing/breathing-and-relaxation-exercises/progressive-muscle-relaxation/"
+        }
+      ]
     },
     {
       "id": "behavioral-activation",
@@ -43,7 +99,21 @@
       "content": "Behavioral activation is a therapeutic approach based on the idea that changing behavior can improve mood and reduce anxiety. When we feel low or anxious, we often avoid activities, which only intensifies negative feelings.\n\nPrinciples of behavioral activation:\n\n1. Activity influences mood\nWhen we do something meaningful or enjoyable, our mood improves.\n\n2. Avoidance reinforces problems\nAvoiding activities can create a vicious cycle: less activity → worse mood → even less activity.\n\n3. Small steps matter\nYou do not need to do everything at once. Even small actions can make a big difference.\n\nTypes of activities:\n\n• Social: meeting friends, calling loved ones\n• Physical: walks, exercise, yoga\n• Creative: drawing, music, writing\n• Practical: cleaning, cooking, gardening\n• Leisure: reading, movies, games\n• Educational: learning something new, courses\n\nHow to start:\n\n1. Make a list of activities you used to enjoy\n2. Choose one simple activity for today\n3. Schedule a time for it\n4. Do the activity even if you do not feel like it\n5. Notice how you feel afterward\n6. Gradually increase the number of activities\n\nRemember: the goal is not to do everything perfectly but to start moving.",
       "icon": "figure.walk",
       "category": "Behavioral Activation",
-      "readTime": 7
+      "readTime": 7,
+      "sources": [
+        {
+          "title": "NHS: Treatment for depression in adults (Behavioural activation)",
+          "url": "https://www.nhs.uk/mental-health/conditions/depression-in-adults/treatment/"
+        },
+        {
+          "title": "NICE Guideline NG222: Depression in adults",
+          "url": "https://www.nice.org.uk/guidance/ng222"
+        },
+        {
+          "title": "Internet-Based Behavioral Activation for Depression (Systematic Review, 2023)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10251223/"
+        }
+      ]
     },
     {
       "id": "managing-panic-attacks",
@@ -52,7 +122,21 @@
       "content": "A panic attack is a sudden episode of intense fear or discomfort that peaks within minutes. Although panic attacks can feel frightening, it is important to remember they are not life-threatening.\n\nSymptoms of a panic attack:\n\n• Rapid heartbeat\n• Shortness of breath or choking sensation\n• Chest pain\n• Trembling or shaking\n• Sweating\n• Nausea\n• Dizziness\n• Fear of losing control or dying\n\nWhat to do during a panic attack:\n\n1. Acknowledge that it is a panic attack\nRemind yourself that this is temporary and will pass.\n\n2. Use the 5-4-3-2-1 grounding technique\n• 5 things you can see\n• 4 things you can touch\n• 3 things you can hear\n• 2 things you can smell\n• 1 thing you can taste\n\n3. Control your breathing\nFocus on slow, deep breaths. Inhale for 4 counts, exhale for 6 counts.\n\n4. Stay where you are\nIf possible, do not run away from the situation. Stay and let the anxiety pass.\n\n5. Use positive statements\n\"This will pass\", \"I am safe\", \"I can handle this\".\n\nPrevention:\n\n• Regular breathing exercises\n• Adequate sleep\n• Regular physical activity\n• Avoiding excess caffeine and alcohol\n• Relaxation techniques\n• Regular exposure therapy\n\nIf panic attacks are frequent or significantly affect your life, it is important to seek professional help.",
       "icon": "exclamationmark.triangle",
       "category": "Anxiety",
-      "readTime": 8
+      "readTime": 8,
+      "sources": [
+        {
+          "title": "NIMH: Panic Disorder — What You Need to Know",
+          "url": "https://www.nimh.nih.gov/health/publications/panic-disorder-when-fear-overwhelms"
+        },
+        {
+          "title": "NHS: Panic disorder",
+          "url": "https://www.nhs.uk/mental-health/conditions/panic-disorder/"
+        },
+        {
+          "title": "NICE Guideline CG113: Panic disorder management",
+          "url": "https://www.nice.org.uk/guidance/cg113"
+        }
+      ]
     }
   ]
 }
