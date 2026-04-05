@@ -168,7 +168,7 @@ struct AppRouteView: View {
             case .breathing: BreathingExercisesView()
             case .relaxation: MuscleRelaxationListView()
             case .grounding: GroundingExercisesView()
-            case .activation: ActivationsListView()
+            case .activation: BAMainView()
         }
     }
 
