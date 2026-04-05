@@ -20,8 +20,10 @@ struct Inner_HeroApp: App {
                 BreathingSessionResult.self,
                 RelaxationSessionResult.self,
                 GroundingSessionResult.self,
-                ActivityList.self,
-                BehavioralActivationSession.self,
+                ActivityList.self, // deprecated — kept in schema for migration safety
+                BehavioralActivationSession.self, // deprecated — kept in schema for migration safety
+                BAActivity.self,
+                BASession.self,
                 ExerciseAssignment.self,
                 ExerciseCompletion.self,
                 FavoriteExercise.self,
@@ -43,8 +45,10 @@ struct Inner_HeroApp: App {
                     BreathingSessionResult.self,
                     RelaxationSessionResult.self,
                     GroundingSessionResult.self,
-                    ActivityList.self,
-                    BehavioralActivationSession.self,
+                    ActivityList.self, // deprecated — kept in schema for migration safety
+                    BehavioralActivationSession.self, // deprecated — kept in schema for migration safety
+                    BAActivity.self,
+                    BASession.self,
                     ExerciseAssignment.self,
                     ExerciseCompletion.self,
                     FavoriteExercise.self,
@@ -92,7 +96,7 @@ struct Inner_HeroApp: App {
                 let exposures = try context.fetch(FetchDescriptor<Exposure>())
                 try SampleDataLoader.loadSampleSessions(for: exposures, into: context)
                 
-                try SampleDataLoader.loadPredefinedActivationLists(into: context)
+                try SampleDataLoader.loadPredefinedBAActivities(into: context)
                 
                 hasLoadedSampleData = true
                 #if DEBUG

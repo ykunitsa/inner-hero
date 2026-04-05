@@ -69,20 +69,19 @@ struct SampleDataLoader {
     }
 
     static func isDatabaseEmpty(_ modelContext: ModelContext) throws -> Bool {
-        let descriptor = FetchDescriptor<Exposure>()
-        let exposures = try modelContext.fetch(descriptor)
-        return exposures.isEmpty
+        let exposures = try modelContext.fetch(FetchDescriptor<Exposure>())
+        let activities = try modelContext.fetch(FetchDescriptor<BAActivity>())
+        return exposures.isEmpty && activities.isEmpty
     }
 
-    static func loadPredefinedActivationLists(into modelContext: ModelContext) throws {
-        for list in PredefinedActivationLists.all {
-            let activationList = ActivityList(
-                title: list.title,
-                predefinedKey: list.key.rawValue,
-                activities: list.activities,
-                isPredefined: true
+    static func loadPredefinedBAActivities(into modelContext: ModelContext) throws {
+        for data in PredefinedBAActivities.all {
+            let activity = BAActivity(
+                title: data.title,
+                lifeValueRaw: data.lifeValueRaw,
+                predefinedKey: data.key
             )
-            modelContext.insert(activationList)
+            modelContext.insert(activity)
         }
 
         try modelContext.save()
