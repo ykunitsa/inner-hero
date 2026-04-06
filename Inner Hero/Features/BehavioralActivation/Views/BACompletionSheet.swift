@@ -35,6 +35,19 @@ struct BACompletionSheet: View {
                     .homeBackground()
                     .navigationTitle(String(localized: "How did it go?"))
                     .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                withAnimation(AppAnimation.spring) { step = .moodAfter }
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "chevron.left")
+                                        .font(.system(size: 13, weight: .semibold))
+                                    Text(String(localized: "Back"))
+                                }
+                            }
+                        }
+                    }
 
                 case .insight:
                     BAInsightView(
@@ -52,6 +65,12 @@ struct BACompletionSheet: View {
                     .navigationBarTitleDisplayMode(.inline)
                 }
             }
+            .transition(.asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+            ))
+            .id(step)
+            .animation(AppAnimation.spring, value: step)
         }
     }
 }
@@ -199,10 +218,15 @@ private struct BAInsightView: View {
 
                 HStack {
                     Spacer()
-                    Text(deltaLabel)
-                        .appFont(.h2)
-                        .foregroundStyle(deltaColor)
-                        .animation(AppAnimation.spring, value: barsVisible)
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(deltaLabel)
+                            .appFont(.h2)
+                            .foregroundStyle(deltaColor)
+                            .animation(AppAnimation.spring, value: barsVisible)
+                        Text(String(localized: "mood shift"))
+                            .appFont(.small)
+                            .foregroundStyle(TextColors.tertiary)
+                    }
                 }
             }
             .padding(Spacing.md)

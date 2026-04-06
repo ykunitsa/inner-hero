@@ -54,6 +54,10 @@ final class BASession {
         statusRaw = BAStatus.completed.rawValue
     }
 
+    func cancel() {
+        statusRaw = BAStatus.cancelled.rawValue
+    }
+
     // MARK: - Init
 
     init(

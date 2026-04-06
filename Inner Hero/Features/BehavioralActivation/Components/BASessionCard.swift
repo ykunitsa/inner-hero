@@ -9,6 +9,7 @@ struct BASessionCard: View {
     let session: BASession
     let onStart: () -> Void
     let onComplete: () -> Void
+    var hasActiveSession: Bool = false
 
     var body: some View {
         Group {
@@ -75,9 +76,10 @@ struct BASessionCard: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, Spacing.xs)
                 .padding(.vertical, Spacing.xxxs)
-                .background(Capsule().fill(AppColors.positive))
+                .background(Capsule().fill(hasActiveSession ? AppColors.gray300 : AppColors.positive))
         }
         .buttonStyle(.plain)
+        .disabled(hasActiveSession)
     }
 
     private var doneButton: some View {

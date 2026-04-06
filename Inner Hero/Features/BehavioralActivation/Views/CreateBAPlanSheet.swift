@@ -39,15 +39,51 @@ struct CreateBAPlanSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    @State private var step: CreateBAPlanStep = .moodCheck
-    @State private var draft = BAPlanDraft()
+    @State private var step: CreateBAPlanStep
+    @State private var draft: BAPlanDraft
 
     var onStartNow: ((BASession) -> Void)? = nil
+
+    // When launched from Library, avoidance and activityPicker are skipped.
+    private let initialActivity: BAActivity?
+
+    init(initialActivity: BAActivity? = nil, onStartNow: ((BASession) -> Void)? = nil) {
+        self.initialActivity = initialActivity
+        self.onStartNow = onStartNow
+        if let activity = initialActivity {
+            _draft = State(initialValue: BAPlanDraft(selectedActivity: activity))
+            _step = State(initialValue: .intention)
+        } else {
+            _draft = State(initialValue: BAPlanDraft())
+            _step = State(initialValue: .moodCheck)
+        }
+    }
+
+    // MARK: - Computed
+
+    private var isFirstStep: Bool {
+        step == .moodCheck
+    }
+
+    private var previousStep: CreateBAPlanStep? {
+        if initialActivity != nil {
+            // Skipped avoidance + activityPicker — back from intention goes to moodCheck
+            switch step {
+            case .moodCheck:   return nil
+            case .intention:   return .moodCheck
+            case .confirmation: return .intention
+            default:           return nil
+            }
+        }
+        return CreateBAPlanStep(rawValue: step.rawValue - 1)
+    }
+
+    // MARK: - Body
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                progressDots
+                progressIndicator
                     .padding(.top, Spacing.sm)
                     .padding(.bottom, Spacing.xs)
 
@@ -61,27 +97,54 @@ struct CreateBAPlanSheet: View {
             .animation(AppAnimation.spring, value: step)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    if step == .moodCheck {
+                ToolbarItem(placement: .topBarLeading) {
+                    if isFirstStep {
                         Button(String(localized: "Cancel")) { dismiss() }
+                    } else if let prev = previousStep {
+                        Button {
+                            withAnimation(AppAnimation.spring) { step = prev }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 13, weight: .semibold))
+                                Text(String(localized: "Back"))
+                            }
+                        }
                     }
                 }
             }
         }
-        .interactiveDismissDisabled(step != .moodCheck)
+        .interactiveDismissDisabled(!isFirstStep)
     }
 
-    // MARK: - Progress Dots
+    // MARK: - Progress Indicator
 
-    private var progressDots: some View {
-        HStack(spacing: Spacing.xxs) {
-            ForEach(CreateBAPlanStep.allCases, id: \.rawValue) { s in
-                Circle()
-                    .fill(s == step ? AppColors.accent : AppColors.gray300)
-                    .frame(width: s == step ? 8 : 6, height: s == step ? 8 : 6)
-                    .animation(AppAnimation.standard, value: step)
+    private var progressIndicator: some View {
+        HStack(spacing: Spacing.sm) {
+            HStack(spacing: Spacing.xxs) {
+                ForEach(visibleSteps, id: \.rawValue) { s in
+                    Circle()
+                        .fill(s == step ? AppColors.accent : AppColors.gray300)
+                        .frame(width: s == step ? 8 : 6, height: s == step ? 8 : 6)
+                        .animation(AppAnimation.standard, value: step)
+                }
             }
+
+            Text("\(currentStepNumber) / \(visibleSteps.count)")
+                .appFont(.small)
+                .foregroundStyle(TextColors.tertiary)
         }
+    }
+
+    private var visibleSteps: [CreateBAPlanStep] {
+        if initialActivity != nil {
+            return [.moodCheck, .intention, .confirmation]
+        }
+        return CreateBAPlanStep.allCases
+    }
+
+    private var currentStepNumber: Int {
+        (visibleSteps.firstIndex(of: step) ?? 0) + 1
     }
 
     // MARK: - Step View
@@ -90,17 +153,25 @@ struct CreateBAPlanSheet: View {
     var stepView: some View {
         switch step {
         case .moodCheck:
-            BAMoodCheckStep(mood: $draft.moodBefore, onNext: { step = .avoidance })
+            BAMoodCheckStep(mood: $draft.moodBefore, onNext: {
+                withAnimation(AppAnimation.spring) {
+                    step = initialActivity != nil ? .intention : .avoidance
+                }
+            })
         case .avoidance:
             BAAvoidanceStep(
                 context: $draft.avoidanceContext,
-                onNext: { step = .activityPicker },
-                onSkip: { step = .activityPicker }
+                onNext: { withAnimation(AppAnimation.spring) { step = .activityPicker } },
+                onSkip: { withAnimation(AppAnimation.spring) { step = .activityPicker } }
             )
         case .activityPicker:
-            BAActivityPickerStep(selected: $draft.selectedActivity, onNext: { step = .intention })
+            BAActivityPickerStep(selected: $draft.selectedActivity, onNext: {
+                withAnimation(AppAnimation.spring) { step = .intention }
+            })
         case .intention:
-            BAIntentionStep(draft: $draft, onNext: { step = .confirmation })
+            BAIntentionStep(draft: $draft, onNext: {
+                withAnimation(AppAnimation.spring) { step = .confirmation }
+            })
         case .confirmation:
             BAConfirmationStep(draft: draft, onCreate: savePlan)
         }

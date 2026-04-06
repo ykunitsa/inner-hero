@@ -184,6 +184,16 @@
         }
       }
     },
+    "%@%.1f average" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$.1f average"
+          }
+        }
+      }
+    },
     "%@%lld" : {
       "localizations" : {
         "en" : {
@@ -300,6 +310,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld/%lld"
+          }
+        }
+      }
+    },
+    "%d / %d activities" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$d / %2$d activities"
           }
         }
       }
@@ -845,6 +865,9 @@
       }
     },
     "About as expected" : {
+
+    },
+    "Action doesn't require motivation to begin." : {
 
     },
     "Actions" : {
@@ -1630,12 +1653,12 @@
         }
       }
     },
-    "Average mood shift: %@%@" : {
+    "Average mood shift: %@%.1f" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Average mood shift: %1$@%2$@"
+            "value" : "Average mood shift: %1$@%2$.1f"
           }
         }
       }
@@ -2074,15 +2097,14 @@
     "Compare to what you expected before" : {
 
     },
-    "Complete %lld more %@ to see your patterns." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Complete %1$lld more %2$@ to see your patterns."
-          }
-        }
-      }
+    "Complete" : {
+
+    },
+    "Complete %d more activities to see your patterns." : {
+
+    },
+    "Complete 1 more activity to see your patterns." : {
+
     },
     "Complete calm, no anxiety" : {
       "localizations" : {
@@ -3072,6 +3094,9 @@
           }
         }
       }
+    },
+    "Every moment you show up counts." : {
+
     },
     "Every step is progress" : {
       "extractionState" : "stale",
@@ -4251,6 +4276,12 @@
         }
       }
     },
+    "Just keep going." : {
+
+    },
+    "Keep going" : {
+
+    },
     "Keep in mind" : {
       "localizations" : {
         "ru" : {
@@ -4303,7 +4334,7 @@
         }
       }
     },
-    "Last 14 days: %lld activities completed" : {
+    "Last 14 days: %d activities completed" : {
 
     },
     "Leave" : {
@@ -4722,6 +4753,9 @@
         }
       }
     },
+    "Missed" : {
+
+    },
     "MO" : {
       "localizations" : {
         "ru" : {
@@ -4756,6 +4790,9 @@
 
     },
     "Mood before: %d/10" : {
+
+    },
+    "mood shift" : {
 
     },
     "Mood: %d → %d" : {
@@ -5395,6 +5432,9 @@
         }
       }
     },
+    "Patterns" : {
+
+    },
     "Pause" : {
       "localizations" : {
         "ru" : {
@@ -5481,7 +5521,13 @@
     "Place" : {
 
     },
+    "Plan an activity" : {
+
+    },
     "Plan something for today" : {
+
+    },
+    "Plan this activity" : {
 
     },
     "Planned" : {
@@ -9221,6 +9267,9 @@
         }
       }
     },
+    "Small steps break the cycle." : {
+
+    },
     "Smells" : {
       "localizations" : {
         "ru" : {
@@ -9771,6 +9820,9 @@
           }
         }
       }
+    },
+    "This session will be marked as cancelled." : {
+
     },
     "This will delete all exercises, schedules, and session results." : {
       "localizations" : {
@@ -10572,6 +10624,9 @@
       }
     },
     "You'll be asked how you feel after." : {
+
+    },
+    "You're already doing it." : {
 
     },
     "You're doing great!" : {

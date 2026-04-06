@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 // MARK: - BASessionSummaryCard
+//
+// Read-only summary card used for completed sessions in history contexts.
 
 struct BASessionSummaryCard: View {
     let session: BASession
@@ -87,13 +89,17 @@ struct BASessionSummaryCard: View {
 
 struct BATodayView: View {
     var onActiveSessionTap: (BASession) -> Void = { _ in }
+    var onPlanTap: () -> Void = {}
 
     @Query(
         filter: #Predicate<BASession> { $0.statusRaw != "cancelled" },
         sort: \BASession.scheduledFor
     ) private var sessions: [BASession]
 
+    @Environment(\.modelContext) private var modelContext
+
     @State private var appeared = false
+    @State private var sessionForCompletion: BASession?
 
     // MARK: - Computed
 
@@ -109,9 +115,16 @@ struct BATodayView: View {
         todaySessions.filter { $0.statusRaw != "active" }
     }
 
+    private var overdueSessions: [BASession] {
+        let now = Date()
+        return sessions.filter {
+            !$0.isToday && $0.status == .planned && $0.scheduledFor < now
+        }
+    }
+
     private var weekCompletedSessions: [BASession] {
         let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        return sessions.filter { $0.status == .completed && $0.scheduledFor >= cutoff }
+        return sessions.filter { $0.status == .completed && ($0.completedAt ?? $0.scheduledFor) >= cutoff }
     }
 
     private var avgDelta: Double? {
@@ -136,8 +149,14 @@ struct BATodayView: View {
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
 
-                // 2 & 3. Empty state or session cards
-                if todaySessions.isEmpty {
+                // 2. Overdue sessions
+                if !overdueSessions.isEmpty {
+                    overdueSection
+                        .padding(.horizontal, Spacing.sm)
+                }
+
+                // 3. Empty state or today's session cards
+                if todaySessions.isEmpty && overdueSessions.isEmpty {
                     emptyState
                         .padding(.top, Spacing.xxl)
                         .frame(maxWidth: .infinity)
@@ -146,14 +165,24 @@ struct BATodayView: View {
                         Array(todayNonActiveSessions.enumerated()),
                         id: \.element.id
                     ) { index, session in
-                        BASessionSummaryCard(session: session)
-                            .padding(.horizontal, Spacing.sm)
-                            .opacity(appeared ? 1 : 0)
-                            .offset(y: appeared ? 0 : 12)
-                            .animation(
-                                AppAnimation.appear.delay(Double(index) * 0.06),
-                                value: appeared
-                            )
+                        BASessionCard(
+                            session: session,
+                            onStart: {
+                                session.start()
+                                onActiveSessionTap(session)
+                            },
+                            onComplete: {
+                                sessionForCompletion = session
+                            },
+                            hasActiveSession: activeSession != nil
+                        )
+                        .padding(.horizontal, Spacing.sm)
+                        .opacity(appeared ? 1 : 0)
+                        .offset(y: appeared ? 0 : 12)
+                        .animation(
+                            AppAnimation.appear.delay(Double(index) * 0.06),
+                            value: appeared
+                        )
                     }
                 }
 
@@ -168,9 +197,42 @@ struct BATodayView: View {
             .animation(AppAnimation.spring, value: activeSession?.id)
         }
         .onAppear { appeared = true }
+        .sheet(item: $sessionForCompletion) { session in
+            BACompletionSheet(session: session)
+        }
     }
 
-    // MARK: - Subviews
+    // MARK: - Overdue Section
+
+    private var overdueSection: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            SectionHeader(title: String(localized: "Missed"))
+
+            ForEach(Array(overdueSessions.enumerated()), id: \.element.id) { index, session in
+                BASessionCard(
+                    session: session,
+                    onStart: {
+                        session.start()
+                        onActiveSessionTap(session)
+                    },
+                    onComplete: {
+                        sessionForCompletion = session
+                    },
+                    hasActiveSession: activeSession != nil
+                )
+                .opacity(0.75)
+                .contextMenu {
+                    Button(role: .destructive) {
+                        session.cancel()
+                    } label: {
+                        Label(String(localized: "Cancel"), systemImage: "xmark.circle")
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Empty State
 
     private var emptyState: some View {
         VStack(spacing: Spacing.lg) {
@@ -189,10 +251,15 @@ struct BATodayView: View {
                     .foregroundStyle(TextColors.secondary)
                     .multilineTextAlignment(.center)
             }
+
+            PrimaryButton(title: String(localized: "Plan an activity"), action: onPlanTap)
+                .padding(.horizontal, Spacing.lg)
         }
         .padding(.horizontal, Spacing.lg)
         .accessibilityElement(children: .combine)
     }
+
+    // MARK: - Weekly Stats Footer
 
     private var weekStatsFooter: some View {
         VStack(alignment: .leading, spacing: Spacing.xxs) {

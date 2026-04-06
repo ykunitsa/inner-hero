@@ -4,20 +4,23 @@ struct BAActiveSessionView: View {
     let session: BASession
 
     @State private var showingCompletion = false
+    @State private var showingAbandonAlert = false
+
+    @Environment(\.dismiss) private var dismiss
 
     private static let motivationalQuotes = [
-        "Action doesn't require motivation to begin.",
-        "You're already doing it.",
-        "Just keep going.",
-        "Small steps break the cycle.",
-        "Every moment you show up counts."
+        String(localized: "Action doesn't require motivation to begin."),
+        String(localized: "You're already doing it."),
+        String(localized: "Just keep going."),
+        String(localized: "Small steps break the cycle."),
+        String(localized: "Every moment you show up counts."),
     ]
 
     private let quote: String
 
     init(session: BASession) {
         self.session = session
-        self.quote = Self.motivationalQuotes.randomElement() ?? "Just keep going."
+        self.quote = Self.motivationalQuotes.randomElement() ?? String(localized: "Just keep going.")
     }
 
     var body: some View {
@@ -25,7 +28,7 @@ struct BAActiveSessionView: View {
             Spacer()
 
             VStack(spacing: Spacing.lg) {
-                Text(session.activity?.localizedTitle ?? "Activity")
+                Text(session.activity?.localizedTitle ?? String(localized: "Activity"))
                     .appFont(.h1)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(TextColors.primary)
@@ -38,7 +41,7 @@ struct BAActiveSessionView: View {
                         .monospacedDigit()
                         .foregroundStyle(TextColors.secondary)
                 }
-                .accessibilityLabel("Elapsed time")
+                .accessibilityLabel(String(localized: "Elapsed time"))
             }
 
             Spacer()
@@ -50,16 +53,36 @@ struct BAActiveSessionView: View {
                 .padding(.horizontal, Spacing.xl)
                 .padding(.bottom, Spacing.xxl)
 
-            PrimaryButton(title: "Complete") {
+            PrimaryButton(title: String(localized: "Complete")) {
                 showingCompletion = true
             }
             .padding(.horizontal, Spacing.lg)
             .padding(.bottom, Spacing.lg)
         }
         .homeBackground()
-        .navigationTitle("In progress")
+        .navigationTitle(String(localized: "In progress"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingAbandonAlert = true
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(TextColors.secondary)
+                }
+            }
+        }
+        .alert(String(localized: "End session?"), isPresented: $showingAbandonAlert) {
+            Button(String(localized: "End session"), role: .destructive) {
+                session.cancel()
+                dismiss()
+            }
+            Button(String(localized: "Keep going"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "This session will be marked as cancelled."))
+        }
         .sheet(isPresented: $showingCompletion) {
             BACompletionSheet(session: session)
         }

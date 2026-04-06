@@ -4,8 +4,9 @@ import SwiftData
 // MARK: - BATab
 
 enum BATab: String, CaseIterable {
-    case today   = "today"
-    case library = "library"
+    case today    = "today"
+    case library  = "library"
+    case patterns = "patterns"
 }
 
 // MARK: - BAMainView
@@ -34,6 +35,7 @@ struct BAMainView: View {
             )) {
                 Text(String(localized: "Today")).tag(BATab.today)
                 Text(String(localized: "Library")).tag(BATab.library)
+                Text(String(localized: "Patterns")).tag(BATab.patterns)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, Spacing.md)
@@ -41,16 +43,24 @@ struct BAMainView: View {
 
             // Tab content
             ZStack {
-                if selectedTab == .today {
-                    BATodayView(onActiveSessionTap: { session in
-                        selectedActiveSession = session
-                    })
+                switch selectedTab {
+                case .today:
+                    BATodayView(
+                        onActiveSessionTap: { session in selectedActiveSession = session },
+                        onPlanTap: { showingCreatePlanSheet = true }
+                    )
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 12)
                     .animation(AppAnimation.appear, value: appeared)
                     .transition(.opacity)
-                } else {
+                case .library:
                     BALibraryView()
+                        .opacity(appeared ? 1 : 0)
+                        .offset(y: appeared ? 0 : 12)
+                        .animation(AppAnimation.appear, value: appeared)
+                        .transition(.opacity)
+                case .patterns:
+                    BAPatternsView()
                         .opacity(appeared ? 1 : 0)
                         .offset(y: appeared ? 0 : 12)
                         .animation(AppAnimation.appear, value: appeared)
@@ -72,7 +82,9 @@ struct BAMainView: View {
             }
         }
         .sheet(isPresented: $showingCreatePlanSheet) {
-            CreateBAPlanSheet()
+            CreateBAPlanSheet(onStartNow: { session in
+                selectedActiveSession = session
+            })
         }
         .navigationDestination(item: $selectedActiveSession) { session in
             BAActiveSessionView(session: session)

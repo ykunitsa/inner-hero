@@ -8,6 +8,7 @@ struct BALibraryView: View {
     @State private var showingAddSheet = false
     @State private var activityToDelete: BAActivity?
     @State private var showingDeleteConfirmation = false
+    @State private var activityToSchedule: BAActivity?
 
     // Activities used at least once or custom-created, sorted by usage
     private var myActivities: [BAActivity] {
@@ -50,6 +51,9 @@ struct BALibraryView: View {
         .sheet(isPresented: $showingAddSheet) {
             AddBAActivitySheet()
         }
+        .sheet(item: $activityToSchedule) { activity in
+            CreateBAPlanSheet(initialActivity: activity)
+        }
         .confirmationDialog(
             String(localized: "Delete Activity?"),
             isPresented: $showingDeleteConfirmation,
@@ -86,6 +90,12 @@ struct BALibraryView: View {
                         }
                         myActivityRow(activity)
                             .contextMenu {
+                                Button {
+                                    activityToSchedule = activity
+                                } label: {
+                                    Label(String(localized: "Plan this activity"), systemImage: "calendar.badge.plus")
+                                }
+
                                 if activity.isCustom {
                                     Button(role: .destructive) {
                                         activityToDelete = activity
@@ -131,6 +141,15 @@ struct BALibraryView: View {
             }
 
             Spacer()
+
+            Button {
+                activityToSchedule = activity
+            } label: {
+                Image(systemName: "calendar.badge.plus")
+                    .font(.system(size: IconSize.glyph))
+                    .foregroundStyle(AppColors.accent)
+            }
+            .buttonStyle(.plain)
         }
         .frame(minHeight: TouchTarget.standard)
     }
@@ -159,7 +178,11 @@ struct BALibraryView: View {
                             Divider()
                                 .padding(.leading, Spacing.lg)
                         }
-                        CatalogDisclosureGroup(lifeValue: lifeValue, activities: items)
+                        CatalogDisclosureGroup(
+                            lifeValue: lifeValue,
+                            activities: items,
+                            onSchedule: { activity in activityToSchedule = activity }
+                        )
                     }
                 }
             }
@@ -169,49 +192,76 @@ struct BALibraryView: View {
 }
 
 // MARK: - CatalogDisclosureGroup
+//
+// Custom expandable row — avoids DisclosureGroup gesture conflict with ScrollView.
 
 private struct CatalogDisclosureGroup: View {
     let lifeValue: LifeValue
     let activities: [BAActivity]
+    let onSchedule: (BAActivity) -> Void
 
     @State private var isExpanded = false
 
     var body: some View {
-        DisclosureGroup(isExpanded: $isExpanded) {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            Button {
+                HapticFeedback.selection()
+                withAnimation(AppAnimation.spring) { isExpanded.toggle() }
+            } label: {
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: lifeValue.systemIconName)
+                        .font(.system(size: IconSize.glyph))
+                        .foregroundStyle(AppColors.accent)
+                        .frame(width: IconSize.inline, height: IconSize.inline)
+
+                    Text(lifeValue.localizedName)
+                        .appFont(.bodyMedium)
+                        .foregroundStyle(TextColors.primary)
+
+                    Spacer()
+
+                    Text("\(activities.count)")
+                        .appFont(.small)
+                        .foregroundStyle(TextColors.tertiary)
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(TextColors.tertiary)
+                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                        .animation(AppAnimation.spring, value: isExpanded)
+                }
+                .padding(.horizontal, Spacing.sm)
+                .frame(minHeight: TouchTarget.standard)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if isExpanded {
                 ForEach(activities) { activity in
                     Divider()
                         .padding(.leading, Spacing.lg)
 
-                    Text(activity.localizedTitle)
-                        .appFont(.body)
-                        .foregroundStyle(TextColors.primary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .frame(minHeight: TouchTarget.standard)
-                        .padding(.horizontal, Spacing.sm)
+                    HStack(spacing: Spacing.sm) {
+                        Text(activity.localizedTitle)
+                            .appFont(.body)
+                            .foregroundStyle(TextColors.primary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(minHeight: TouchTarget.standard)
+
+                        Button {
+                            HapticFeedback.selection()
+                            onSchedule(activity)
+                        } label: {
+                            Image(systemName: "calendar.badge.plus")
+                                .font(.system(size: IconSize.glyph))
+                                .foregroundStyle(AppColors.accent)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, Spacing.sm)
                 }
             }
-        } label: {
-            HStack(spacing: Spacing.sm) {
-                Image(systemName: lifeValue.systemIconName)
-                    .font(.system(size: IconSize.glyph))
-                    .foregroundStyle(AppColors.accent)
-                    .frame(width: IconSize.inline, height: IconSize.inline)
-
-                Text(lifeValue.localizedName)
-                    .appFont(.bodyMedium)
-                    .foregroundStyle(TextColors.primary)
-
-                Spacer()
-
-                Text("\(activities.count)")
-                    .appFont(.small)
-                    .foregroundStyle(TextColors.tertiary)
-            }
-            .frame(minHeight: TouchTarget.standard)
         }
-        .padding(.horizontal, Spacing.sm)
-        .animation(AppAnimation.spring, value: isExpanded)
     }
 }
 

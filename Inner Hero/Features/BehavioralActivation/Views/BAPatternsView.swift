@@ -81,19 +81,59 @@ struct BAPatternsView: View {
                 .accessibilityHidden(true)
 
             VStack(spacing: Spacing.xxs) {
-                Text("Not enough data yet")
+                Text(String(localized: "Not enough data yet"))
                     .appFont(.h2)
                     .foregroundStyle(TextColors.primary)
                     .multilineTextAlignment(.center)
 
-                Text("Complete \(remaining) more \(remaining == 1 ? "activity" : "activities") to see your patterns.")
-                    .appFont(.body)
-                    .foregroundStyle(TextColors.secondary)
-                    .multilineTextAlignment(.center)
+                Text(
+                    remaining == 1
+                        ? String(localized: "Complete 1 more activity to see your patterns.")
+                        : String(format: String(localized: "Complete %d more activities to see your patterns."), remaining)
+                )
+                .appFont(.body)
+                .foregroundStyle(TextColors.secondary)
+                .multilineTextAlignment(.center)
             }
+
+            emptyStateProgress
         }
         .padding(.horizontal, Spacing.lg)
         .accessibilityElement(children: .combine)
+    }
+
+    private var emptyStateProgress: some View {
+        let completed = completedSessions.count
+        let total = Self.requiredCount
+        let fraction = Double(completed) / Double(total)
+
+        return VStack(spacing: Spacing.xxs) {
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(AppColors.gray200)
+                        .frame(height: 8)
+
+                    Capsule()
+                        .fill(AppColors.accent)
+                        .frame(width: geo.size.width * CGFloat(fraction), height: 8)
+                        .animation(AppAnimation.spring, value: fraction)
+                }
+            }
+            .frame(height: 8)
+
+            HStack {
+                Text(
+                    String(
+                        format: String(localized: "%d / %d activities"),
+                        completed, total
+                    )
+                )
+                .appFont(.small)
+                .foregroundStyle(TextColors.tertiary)
+                Spacer()
+            }
+        }
     }
 
     // MARK: - Stats Card
@@ -105,9 +145,14 @@ struct BAPatternsView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(AppColors.positive)
 
-                Text("Last 14 days: \(last14DaysSessions.count) activities completed")
-                    .appFont(.bodyMedium)
-                    .foregroundStyle(TextColors.primary)
+                Text(
+                    String(
+                        format: String(localized: "Last 14 days: %d activities completed"),
+                        last14DaysSessions.count
+                    )
+                )
+                .appFont(.bodyMedium)
+                .foregroundStyle(TextColors.primary)
             }
 
             if let delta = averageMoodDelta {
@@ -119,9 +164,15 @@ struct BAPatternsView: View {
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(delta >= 0 ? AppColors.positive : AppColors.primary)
 
-                    Text("Average mood shift: \(delta >= 0 ? "+" : "")\(String(format: "%.1f", delta))")
-                        .appFont(.bodyMedium)
-                        .foregroundStyle(TextColors.primary)
+                    Text(
+                        String(
+                            format: String(localized: "Average mood shift: %@%.1f"),
+                            delta >= 0 ? "+" : "",
+                            delta
+                        )
+                    )
+                    .appFont(.bodyMedium)
+                    .foregroundStyle(TextColors.primary)
                 }
             }
         }
@@ -139,7 +190,7 @@ struct BAPatternsView: View {
 
     private var topValuesSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("What works best for you")
+            Text(String(localized: "What works best for you"))
                 .appFont(.h2)
                 .foregroundStyle(TextColors.primary)
 
@@ -191,7 +242,11 @@ private struct LifeValueInsightRow: View {
     let barsVisible: Bool
 
     private var deltaLabel: String {
-        "\(delta >= 0 ? "+" : "")\(String(format: "%.1f", delta)) average"
+        String(
+            format: String(localized: "%@%.1f average"),
+            delta >= 0 ? "+" : "",
+            delta
+        )
     }
 
     var body: some View {
