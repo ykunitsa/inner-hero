@@ -1,56 +1,6 @@
 import SwiftUI
 import SwiftData
 
-// MARK: - BAActiveSessionBanner
-
-struct BAActiveSessionBanner: View {
-    let session: BASession
-    @State private var isPulsing = false
-
-    var body: some View {
-        HStack(spacing: Spacing.sm) {
-            ZStack {
-                Circle()
-                    .fill(Color.white.opacity(Opacity.mediumBackground))
-                    .frame(width: IconSize.card, height: IconSize.card)
-                    .scaleEffect(isPulsing ? 1.18 : 1.0)
-                    .animation(
-                        .easeInOut(duration: 1.1).repeatForever(autoreverses: true),
-                        value: isPulsing
-                    )
-                Image(systemName: session.activity?.lifeValue.systemIconName ?? "figure.walk")
-                    .font(.system(size: IconSize.glyph, weight: .semibold))
-                    .foregroundStyle(.white)
-            }
-            .onAppear { isPulsing = true }
-
-            VStack(alignment: .leading, spacing: Spacing.xxxs) {
-                Text(session.activity?.localizedTitle ?? String(localized: "Session"))
-                    .appFont(.bodyMedium)
-                    .foregroundStyle(TextColors.onColor)
-                Text(String(localized: "In progress · tap to continue"))
-                    .appFont(.small)
-                    .foregroundStyle(TextColors.onColorSecondary)
-            }
-
-            Spacer()
-
-            Image(systemName: "chevron.right")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.65))
-        }
-        .heroCardStyle(color: AppColors.positive)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(
-            String(
-                format: String(localized: "%@, in progress"),
-                session.activity?.localizedTitle ?? String(localized: "Session")
-            )
-        )
-        .accessibilityHint(String(localized: "Double tap to continue the session"))
-    }
-}
-
 // MARK: - BASessionSummaryCard
 
 struct BASessionSummaryCard: View {
@@ -136,6 +86,8 @@ struct BASessionSummaryCard: View {
 // MARK: - BATodayView
 
 struct BATodayView: View {
+    var onActiveSessionTap: (BASession) -> Void = { _ in }
+
     @Query(
         filter: #Predicate<BASession> { $0.statusRaw != "cancelled" },
         sort: \BASession.scheduledFor
@@ -179,7 +131,7 @@ struct BATodayView: View {
 
                 // 1. Active session banner
                 if let session = activeSession {
-                    BAActiveSessionBanner(session: session)
+                    BAActiveSessionBanner(session: session, onTap: { onActiveSessionTap(session) })
                         .padding(.horizontal, Spacing.sm)
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }

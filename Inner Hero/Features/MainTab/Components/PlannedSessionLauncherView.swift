@@ -4,8 +4,6 @@ import SwiftData
 struct PlannedSessionLauncherView: View {
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
-    
     let assignmentId: UUID
     
     @State private var exposureToStart: Exposure?
@@ -59,12 +57,7 @@ struct PlannedSessionLauncherView: View {
             }
             
         case .behavioralActivation:
-            if let id = assignment.activityListId,
-               let activation = activityLists.first(where: { $0.id == id }) {
-                ActivationDetailView(activation: activation, assignment: assignment)
-            } else {
-                missingDestinationView
-            }
+            BAMainView()
             
         case .exposure:
             if let id = assignment.exposureId,

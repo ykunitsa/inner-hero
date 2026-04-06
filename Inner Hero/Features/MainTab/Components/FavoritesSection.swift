@@ -274,7 +274,7 @@ struct FavoriteExerciseCard: View {
             return .groundingDetail(groundingType: type)
         case .behavioralActivation:
             guard let id = item.exerciseId else { return nil }
-            return .activationView(activityListId: id, assignmentId: nil)
+            return .baMain
         }
     }
 }

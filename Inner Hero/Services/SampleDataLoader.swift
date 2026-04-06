@@ -77,8 +77,8 @@ struct SampleDataLoader {
     static func loadPredefinedBAActivities(into modelContext: ModelContext) throws {
         for data in PredefinedBAActivities.all {
             let activity = BAActivity(
-                title: data.title,
-                lifeValueRaw: data.lifeValueRaw,
+                title: data.key,
+                lifeValueRaw: data.lifeValue.rawValue,
                 predefinedKey: data.key
             )
             modelContext.insert(activity)

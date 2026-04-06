@@ -444,7 +444,7 @@ struct HomeView: View {
                 meta: String(localized: "Activation · \(list.localizedActivities.count) activities"),
                 icon: "figure.walk",
                 color: AppColors.positive,
-                route: .activationView(activityListId: id, assignmentId: nil)
+                route: .baMain
             )
         }
     }
