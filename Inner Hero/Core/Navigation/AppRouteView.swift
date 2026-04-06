@@ -13,8 +13,7 @@ struct AppRouteView: View {
     @State private var exposureDetailActiveSession: ExposureSessionResult?
 
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
-    @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
+    @Query(sort: \BASession.createdAt) private var baSessions: [BASession]
     @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var allSessions: [ExposureSessionResult]
 
     var body: some View {
@@ -87,12 +86,14 @@ struct AppRouteView: View {
                 contentUnavailable(route: "Grounding")
             }
 
-        case .activationView(let activityListId, let assignmentId):
-            if let activation = activityLists.first(where: { $0.id == activityListId }) {
-                let assignment = assignmentId.flatMap { id in allAssignments.first(where: { $0.id == id }) }
-                ActivationDetailView(activation: activation, assignment: assignment)
+        case .baMain:
+            BAMainView()
+
+        case .baActiveSession(let sessionId):
+            if let session = baSessions.first(where: { $0.id == sessionId }) {
+                BAActiveSessionView(session: session)
             } else {
-                contentUnavailable(route: "Activation")
+                contentUnavailable(route: "Session")
             }
 
         case .sessionHistory(let exposureId):
