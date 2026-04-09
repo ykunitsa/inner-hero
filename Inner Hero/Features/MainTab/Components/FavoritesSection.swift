@@ -5,7 +5,7 @@ struct FavoritesSection: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
+    @Query(sort: \ActivationTask.title) private var activationTasks: [ActivationTask]
     
     private var favoriteExercises: [FavoriteExerciseItem] {
         favorites.compactMap { favorite in
@@ -138,12 +138,12 @@ struct FavoritesSection: View {
             
         case .behavioralActivation:
             if let exerciseId = favorite.exerciseId,
-               let activityList = activityLists.first(where: { $0.id == exerciseId }) {
+               let task = activationTasks.first(where: { $0.id == exerciseId }) {
                 return FavoriteExerciseItem(
                     id: favorite.id,
-                    name: activityList.localizedTitle,
-                    description: String(localized: "Activity list for behavioral activation"),
-                    icon: "figure.walk",
+                    name: task.localizedTitle,
+                    description: task.localizedHint ?? String(localized: "Behavioral activation"),
+                    icon: task.sfSymbol,
                     color: .green,
                     exerciseType: .behavioralActivation,
                     exerciseId: exerciseId,
@@ -274,7 +274,7 @@ struct FavoriteExerciseCard: View {
             return .groundingDetail(groundingType: type)
         case .behavioralActivation:
             guard let id = item.exerciseId else { return nil }
-            return .activationView(activityListId: id, assignmentId: nil)
+            return .activationView(activityId: id, assignmentId: nil)
         }
     }
 }

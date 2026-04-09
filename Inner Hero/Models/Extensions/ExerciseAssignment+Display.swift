@@ -5,8 +5,8 @@ extension ExerciseAssignment {
     // MARK: - Display
 
     /// Full display title with type prefix (e.g. "Exposure: Public speaking", "Breathing: Box Breathing").
-    /// Use empty arrays when exposures/activityLists are not available (e.g. notifications).
-    func displayTitle(exposures: [Exposure], activityLists: [ActivityList]) -> String {
+    /// Use empty arrays when exposures/activationTasks are not available (e.g. notifications).
+    func displayTitle(exposures: [Exposure], activationTasks: [ActivationTask]) -> String {
         switch exerciseType {
         case .exposure:
             if let id = exposureId,
@@ -37,9 +37,9 @@ extension ExerciseAssignment {
             return String(localized: "Grounding")
 
         case .behavioralActivation:
-            if let id = activityListId,
-               let list = activityLists.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Activation: %@", comment: ""), list.localizedTitle)
+            if let id = activityId,
+               let task = activationTasks.first(where: { $0.id == id }) {
+                return String(format: NSLocalizedString("Activation: %@", comment: ""), task.localizedTitle)
             }
             return String(localized: "Behavioral activation")
         }

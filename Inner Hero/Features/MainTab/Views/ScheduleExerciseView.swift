@@ -11,7 +11,7 @@ struct ScheduleExerciseView: View {
     @State private var selectedBreathingPattern: BreathingPatternType?
     @State private var selectedRelaxationType: RelaxationType?
     @State private var selectedGroundingType: GroundingType?
-    @State private var selectedActivityListId: UUID?
+    @State private var selectedActivityId: UUID?
     @State private var selectedDays: [Int] = []
     @State private var selectedTime: Date = {
         var components = DateComponents()
@@ -24,7 +24,7 @@ struct ScheduleExerciseView: View {
     @State private var permissionDenied = false
 
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
+    @Query(sort: \ActivationTask.title) private var activationTasks: [ActivationTask]
 
     let assignmentToEdit: ExerciseAssignment?
     let viewModel: ScheduleViewModel
@@ -33,7 +33,7 @@ struct ScheduleExerciseView: View {
     let preSelectedBreathingPattern: BreathingPatternType?
     let preSelectedRelaxationType: RelaxationType?
     let preSelectedGroundingType: GroundingType?
-    let preSelectedActivityListId: UUID?
+    let preSelectedActivityId: UUID?
 
     init(
         assignment: ExerciseAssignment? = nil,
@@ -43,7 +43,7 @@ struct ScheduleExerciseView: View {
         preSelectedBreathingPattern: BreathingPatternType? = nil,
         preSelectedRelaxationType: RelaxationType? = nil,
         preSelectedGroundingType: GroundingType? = nil,
-        preSelectedActivityListId: UUID? = nil
+        preSelectedActivityId: UUID? = nil
     ) {
         self.assignmentToEdit = assignment
         self.viewModel = viewModel
@@ -52,7 +52,7 @@ struct ScheduleExerciseView: View {
         self.preSelectedBreathingPattern = preSelectedBreathingPattern
         self.preSelectedRelaxationType = preSelectedRelaxationType
         self.preSelectedGroundingType = preSelectedGroundingType
-        self.preSelectedActivityListId = preSelectedActivityListId
+        self.preSelectedActivityId = preSelectedActivityId
 
         if let assignment = assignment {
             _exerciseType = State(initialValue: assignment.exerciseType)
@@ -60,7 +60,7 @@ struct ScheduleExerciseView: View {
             _selectedBreathingPattern = State(initialValue: assignment.breathingPattern)
             _selectedRelaxationType = State(initialValue: assignment.relaxation)
             _selectedGroundingType = State(initialValue: assignment.grounding)
-            _selectedActivityListId = State(initialValue: assignment.activityListId)
+            _selectedActivityId = State(initialValue: assignment.activityId)
             _selectedDays = State(initialValue: assignment.daysOfWeek)
             _selectedTime = State(initialValue: assignment.time)
             _isActive = State(initialValue: assignment.isActive)
@@ -77,9 +77,9 @@ struct ScheduleExerciseView: View {
             } else if preSelectedGroundingType != nil {
                 _exerciseType = State(initialValue: .grounding)
                 _selectedGroundingType = State(initialValue: preSelectedGroundingType)
-            } else if preSelectedActivityListId != nil {
+            } else if preSelectedActivityId != nil {
                 _exerciseType = State(initialValue: .behavioralActivation)
-                _selectedActivityListId = State(initialValue: preSelectedActivityListId)
+                _selectedActivityId = State(initialValue: preSelectedActivityId)
             }
         }
     }
@@ -143,7 +143,7 @@ struct ScheduleExerciseView: View {
                 selectedBreathingPattern = nil
                 selectedRelaxationType = nil
                 selectedGroundingType = nil
-                selectedActivityListId = nil
+                selectedActivityId = nil
             }
         } header: {
             Text("Exercise type")
@@ -208,19 +208,19 @@ struct ScheduleExerciseView: View {
 
         case .behavioralActivation:
             Section {
-                if activityLists.isEmpty {
-                    Text("No activity lists available")
+                if activationTasks.isEmpty {
+                    Text("No activities available")
                         .foregroundStyle(TextColors.secondary)
                 } else {
-                    Picker("Activity list", selection: $selectedActivityListId) {
-                        Text("Choose list").tag(nil as UUID?)
-                        ForEach(activityLists) { list in
-                            Text(list.localizedTitle).tag(list.id as UUID?)
+                    Picker("Activity", selection: $selectedActivityId) {
+                        Text("Choose activity").tag(nil as UUID?)
+                        ForEach(activationTasks.filter { !$0.isHiddenByUser }) { task in
+                            Text(task.localizedTitle).tag(task.id as UUID?)
                         }
                     }
                 }
             } header: {
-                Text("Activity list")
+                Text("Activity")
             }
         }
     }
@@ -261,7 +261,7 @@ struct ScheduleExerciseView: View {
         case .breathing: return selectedBreathingPattern != nil
         case .relaxation: return selectedRelaxationType != nil
         case .grounding: return selectedGroundingType != nil
-        case .behavioralActivation: return selectedActivityListId != nil
+        case .behavioralActivation: return selectedActivityId != nil
         }
     }
 
@@ -290,7 +290,7 @@ struct ScheduleExerciseView: View {
                         breathingPatternType: selectedBreathingPattern,
                         relaxationType: selectedRelaxationType,
                         groundingType: selectedGroundingType,
-                        activityListId: selectedActivityListId,
+                        activityId: selectedActivityId,
                         notificationManager: notificationManager
                     )
                     HapticFeedback.success()
@@ -306,7 +306,7 @@ struct ScheduleExerciseView: View {
                         breathingPatternType: selectedBreathingPattern,
                         relaxationType: selectedRelaxationType,
                         groundingType: selectedGroundingType,
-                        activityListId: selectedActivityListId,
+                        activityId: selectedActivityId,
                         notificationManager: notificationManager
                     )
                     HapticFeedback.success()
@@ -325,5 +325,5 @@ struct ScheduleExerciseView: View {
         viewModel: ScheduleViewModel(),
         notificationManager: NotificationManager()
     )
-    .modelContainer(for: [Exposure.self, ActivityList.self, ExerciseAssignment.self], inMemory: true)
+    .modelContainer(for: [Exposure.self, ActivationTask.self, ExerciseAssignment.self], inMemory: true)
 }

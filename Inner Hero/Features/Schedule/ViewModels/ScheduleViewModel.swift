@@ -42,6 +42,8 @@ final class ScheduleViewModel {
     var isLoading = false
     var error: String?
 
+    private static let completedStatusRaw = SessionStatus.completed.rawValue
+
     static let timeFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = .current
@@ -66,7 +68,7 @@ final class ScheduleViewModel {
         allAssignments: [ExerciseAssignment],
         selectedDate: Date,
         exposures: [Exposure],
-        activityLists: [ActivityList]
+        activationTasks: [ActivationTask]
     ) async {
         isLoading = true
         error = nil
@@ -79,7 +81,7 @@ final class ScheduleViewModel {
 
         do {
             refreshManualCompletions(context: context, selectedDate: selectedDate)
-            completedEntries = try buildCompletedEntries(context: context, selectedDate: selectedDate, exposures: exposures, activityLists: activityLists)
+            completedEntries = try buildCompletedEntries(context: context, selectedDate: selectedDate, exposures: exposures, activationTasks: activationTasks)
             weekProgress = try buildWeekProgress(context: context, selectedDate: selectedDate)
         } catch {
             self.error = error.localizedDescription
@@ -104,7 +106,7 @@ final class ScheduleViewModel {
         context: ModelContext,
         selectedDate: Date,
         exposures: [Exposure],
-        activityLists: [ActivityList]
+        activationTasks: [ActivationTask]
     ) throws -> [CompletedEntry] {
         let calendar = Calendar.current
         let dayStart = calendar.startOfDay(for: selectedDate)
@@ -120,7 +122,7 @@ final class ScheduleViewModel {
         entries.append(contentsOf: manual.map { completion in
             CompletedEntry(
                 id: "manual|\(completion.id.uuidString)",
-                title: completionTitle(completion, exposures: exposures, activityLists: activityLists),
+                title: completionTitle(completion, exposures: exposures, activationTasks: activationTasks),
                 time: completion.createdAt,
                 detail: String(localized: "on schedule"),
                 sourceLabel: String(localized: "Entry"),
@@ -205,21 +207,23 @@ final class ScheduleViewModel {
             )
         })
 
-        let baDescriptor = FetchDescriptor<BehavioralActivationSession>(
-            predicate: #Predicate { $0.startedAt >= dayStart && $0.startedAt < dayEnd && $0.completedAt != nil },
-            sortBy: [SortDescriptor(\.startedAt, order: .forward)]
+        let completedRaw = Self.completedStatusRaw
+        let baDescriptor = FetchDescriptor<ActivationSession>(
+            predicate: #Predicate { $0.statusRaw == completedRaw && $0.completedAt != nil },
+            sortBy: [SortDescriptor(\.completedAt, order: .forward)]
         )
-        let baResults = try context.fetch(baDescriptor)
-        entries.append(contentsOf: baResults.map { result in
-            let duration: TimeInterval = {
-                guard let endAt = result.completedAt else { return 0 }
-                return max(0, endAt.timeIntervalSince(result.startedAt))
-            }()
+        let baResults = try context.fetch(baDescriptor).filter {
+            guard let completedAt = $0.completedAt else { return false }
+            return completedAt >= dayStart && completedAt < dayEnd
+        }
+        entries.append(contentsOf: baResults.map { session in
+            let taskTitle = activationTasks.first(where: { $0.id == session.activityId })?.localizedTitle ?? String(localized: "Behavioral activation")
+            let durationDetail = session.actualMinutes.map { "\($0) min" }
             return CompletedEntry(
-                id: "ba|\(result.id.uuidString)",
-                title: String(format: NSLocalizedString("Activation: %@", comment: ""), result.selectedActivity),
-                time: result.startedAt,
-                detail: duration > 0 ? formatDuration(duration) : nil,
+                id: "ba|\(session.id.uuidString)",
+                title: String(format: NSLocalizedString("Activation: %@", comment: ""), taskTitle),
+                time: session.completedAt,
+                detail: durationDetail,
                 sourceLabel: String(localized: "Session"),
                 systemImage: "sparkles",
                 tint: .mint
@@ -230,7 +234,7 @@ final class ScheduleViewModel {
         return entries
     }
 
-    private func completionTitle(_ completion: ExerciseCompletion, exposures: [Exposure], activityLists: [ActivityList]) -> String {
+    private func completionTitle(_ completion: ExerciseCompletion, exposures: [Exposure], activationTasks: [ActivationTask]) -> String {
         switch completion.exerciseType {
         case .exposure:
             if let id = completion.exposureId, let exposure = exposures.first(where: { $0.id == id }) {
@@ -256,8 +260,8 @@ final class ScheduleViewModel {
             }
             return String(localized: "Grounding")
         case .behavioralActivation:
-            if let id = completion.activityListId, let list = activityLists.first(where: { $0.id == id }) {
-                return String(format: NSLocalizedString("Activation: %@", comment: ""), list.localizedTitle)
+            if let id = completion.activityId, let task = activationTasks.first(where: { $0.id == id }) {
+                return String(format: NSLocalizedString("Activation: %@", comment: ""), task.localizedTitle)
             }
             return String(localized: "Behavioral activation")
         }
@@ -293,7 +297,8 @@ final class ScheduleViewModel {
         total += (try? context.fetchCount(FetchDescriptor<RelaxationSessionResult>(predicate: #Predicate { $0.performedAt >= start && $0.performedAt < end }))) ?? 0
         total += (try? context.fetchCount(FetchDescriptor<GroundingSessionResult>(predicate: #Predicate { $0.performedAt >= start && $0.performedAt < end }))) ?? 0
         total += (try? context.fetchCount(FetchDescriptor<ExposureSessionResult>(predicate: #Predicate { $0.startAt >= start && $0.startAt < end && $0.endAt != nil }))) ?? 0
-        total += (try? context.fetchCount(FetchDescriptor<BehavioralActivationSession>(predicate: #Predicate { $0.startedAt >= start && $0.startedAt < end && $0.completedAt != nil }))) ?? 0
+        let completedRaw = Self.completedStatusRaw
+        total += (try? context.fetchCount(FetchDescriptor<ActivationSession>(predicate: #Predicate { $0.statusRaw == completedRaw && $0.completedAt != nil && $0.completedAt! >= start && $0.completedAt! < end }))) ?? 0
         return total
     }
 
@@ -320,8 +325,12 @@ final class ScheduleViewModel {
         if let results = try? context.fetch(FetchDescriptor<ExposureSessionResult>(predicate: #Predicate { $0.startAt >= lookbackStart && $0.startAt < end && $0.endAt != nil })) {
             results.forEach { insertDay($0.startAt) }
         }
-        if let results = try? context.fetch(FetchDescriptor<BehavioralActivationSession>(predicate: #Predicate { $0.startedAt >= lookbackStart && $0.startedAt < end && $0.completedAt != nil })) {
-            results.forEach { insertDay($0.startedAt) }
+        let completedRaw = Self.completedStatusRaw
+        if let results = try? context.fetch(FetchDescriptor<ActivationSession>(predicate: #Predicate { $0.statusRaw == completedRaw && $0.completedAt != nil })) {
+            results.filter {
+                guard let d = $0.completedAt else { return false }
+                return d >= lookbackStart && d < end
+            }.forEach { insertDay($0.completedAt!) }
         }
 
         var streak = 0
@@ -348,7 +357,7 @@ final class ScheduleViewModel {
         breathingPatternType: BreathingPatternType?,
         relaxationType: RelaxationType?,
         groundingType: GroundingType?,
-        activityListId: UUID?,
+        activityId: UUID?,
         notificationManager: NotificationManager
     ) async throws -> ExerciseAssignment {
         let assignment = ExerciseAssignment(
@@ -360,7 +369,7 @@ final class ScheduleViewModel {
             breathingPatternType: breathingPatternType,
             relaxationType: relaxationType,
             groundingType: groundingType,
-            activityListId: activityListId
+            activityId: activityId
         )
         context.insert(assignment)
         try context.save()
@@ -382,7 +391,7 @@ final class ScheduleViewModel {
         breathingPatternType: BreathingPatternType? = nil,
         relaxationType: RelaxationType? = nil,
         groundingType: GroundingType? = nil,
-        activityListId: UUID? = nil,
+        activityId: UUID? = nil,
         notificationManager: NotificationManager
     ) async throws {
         if let daysOfWeek { assignment.daysOfWeek = daysOfWeek }
@@ -393,7 +402,7 @@ final class ScheduleViewModel {
         if let breathingPatternType { assignment.breathingPattern = breathingPatternType }
         if let relaxationType { assignment.relaxation = relaxationType }
         if let groundingType { assignment.grounding = groundingType }
-        if let activityListId { assignment.activityListId = activityListId }
+        if let activityId { assignment.activityId = activityId }
         try context.save()
         if assignment.isActive {
             try await notificationManager.updateNotification(for: assignment)

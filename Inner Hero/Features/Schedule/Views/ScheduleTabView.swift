@@ -10,7 +10,7 @@ struct ScheduleTabView: View {
 
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
+    @Query(sort: \ActivationTask.title) private var activationTasks: [ActivationTask]
 
     @State private var selectedTab = 0
     @State private var showingNewScheduleSheet = false
@@ -102,7 +102,7 @@ struct ScheduleTabView: View {
                     allAssignments: allAssignments,
                     selectedDate: viewModel.selectedDate,
                     exposures: exposures,
-                    activityLists: activityLists
+                    activationTasks: activationTasks
                 )
             }
             .navigationDestination(for: AppRoute.self) { route in
@@ -215,7 +215,7 @@ struct ScheduleTabView: View {
 
             // Labels
             VStack(alignment: .leading, spacing: 2) {
-                Text(assignment.displayTitle(exposures: exposures, activityLists: activityLists))
+                Text(assignment.displayTitle(exposures: exposures, activationTasks: activationTasks))
                     .appFont(.bodyMedium)
                     .foregroundStyle(isDone ? TextColors.secondary : TextColors.primary)
                     .strikethrough(isDone, color: TextColors.secondary)
@@ -409,7 +409,7 @@ struct ScheduleTabView: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(assignment.displayTitle(exposures: exposures, activityLists: activityLists))
+                Text(assignment.displayTitle(exposures: exposures, activationTasks: activationTasks))
                     .appFont(.bodyMedium)
                     .foregroundStyle(TextColors.primary)
                     .lineLimit(1)
@@ -455,7 +455,7 @@ struct ScheduleTabView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(assignment.displayTitle(exposures: exposures, activityLists: activityLists))
+        .accessibilityLabel(assignment.displayTitle(exposures: exposures, activationTasks: activationTasks))
     }
 
     // MARK: - All Schedules Empty State
@@ -512,7 +512,7 @@ struct ScheduleTabView: View {
                 allAssignments: allAssignments,
                 selectedDate: viewModel.selectedDate,
                 exposures: exposures,
-                activityLists: activityLists
+                activationTasks: activationTasks
             )
         }
     }
@@ -548,7 +548,7 @@ struct ScheduleTabView: View {
             allAssignments: allAssignments,
             selectedDate: viewModel.selectedDate,
             exposures: exposures,
-            activityLists: activityLists
+            activationTasks: activationTasks
         )
     }
 }
@@ -571,7 +571,7 @@ private struct ScheduleRefreshId: Equatable {
                 ExerciseAssignment.self,
                 ExerciseCompletion.self,
                 Exposure.self,
-                ActivityList.self
+                ActivationTask.self
             ],
             inMemory: true
         )

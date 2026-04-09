@@ -20,8 +20,9 @@ struct Inner_HeroApp: App {
                 BreathingSessionResult.self,
                 RelaxationSessionResult.self,
                 GroundingSessionResult.self,
-                ActivityList.self,
-                BehavioralActivationSession.self,
+                ActivationCategory.self,
+                ActivationTask.self,
+                ActivationSession.self,
                 ExerciseAssignment.self,
                 ExerciseCompletion.self,
                 FavoriteExercise.self,
@@ -43,8 +44,9 @@ struct Inner_HeroApp: App {
                     BreathingSessionResult.self,
                     RelaxationSessionResult.self,
                     GroundingSessionResult.self,
-                    ActivityList.self,
-                    BehavioralActivationSession.self,
+                    ActivationCategory.self,
+                    ActivationTask.self,
+                    ActivationSession.self,
                     ExerciseAssignment.self,
                     ExerciseCompletion.self,
                     FavoriteExercise.self,
@@ -92,7 +94,7 @@ struct Inner_HeroApp: App {
                 let exposures = try context.fetch(FetchDescriptor<Exposure>())
                 try SampleDataLoader.loadSampleSessions(for: exposures, into: context)
                 
-                try SampleDataLoader.loadPredefinedActivationLists(into: context)
+                try SampleDataLoader.loadPresetActivationData(into: context)
                 
                 hasLoadedSampleData = true
                 #if DEBUG

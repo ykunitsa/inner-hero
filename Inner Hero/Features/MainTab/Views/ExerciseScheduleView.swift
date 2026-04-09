@@ -8,7 +8,7 @@ struct ExerciseScheduleView: View {
 
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
+    @Query(sort: \ActivationTask.title) private var activationTasks: [ActivationTask]
 
     @State private var assignmentToEdit: ExerciseAssignment?
     @State private var showingEditSheet = false
@@ -143,7 +143,7 @@ struct ExerciseScheduleView: View {
     ) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
-                Text(assignment.displayTitle(exposures: exposures, activityLists: activityLists))
+                Text(assignment.displayTitle(exposures: exposures, activationTasks: activationTasks))
                     .font(.headline)
                     .foregroundStyle(TextColors.primary)
 
@@ -229,5 +229,5 @@ struct ExerciseScheduleView: View {
     ExerciseScheduleView()
         .environment(\.scheduleViewModel, ScheduleViewModel())
         .environment(NotificationManager())
-        .modelContainer(for: [ExerciseAssignment.self, Exposure.self, ActivityList.self], inMemory: true)
+        .modelContainer(for: [ExerciseAssignment.self, Exposure.self, ActivationTask.self], inMemory: true)
 }

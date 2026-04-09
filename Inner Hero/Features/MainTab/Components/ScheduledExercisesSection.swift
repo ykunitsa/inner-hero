@@ -5,7 +5,7 @@ struct ScheduledExercisesSection: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
+    @Query(sort: \ActivationTask.title) private var activationTasks: [ActivationTask]
     
     private var upcomingExercises: [UpcomingExercise] {
         let calendar = Calendar.current
@@ -29,7 +29,7 @@ struct ScheduledExercisesSection: View {
                     dateComponents.minute = timeComponents.minute
                     
                     if let exerciseDate = calendar.date(from: dateComponents), exerciseDate >= Date() {
-                        let exerciseName = assignment.displayTitle(exposures: exposures, activityLists: activityLists)
+                        let exerciseName = assignment.displayTitle(exposures: exposures, activationTasks: activationTasks)
                         let exerciseType = assignment.exerciseType
                         let exerciseId = getExerciseId(for: assignment)
                         let exerciseIdentifier = getExerciseIdentifier(for: assignment)
@@ -114,7 +114,7 @@ struct ScheduledExercisesSection: View {
         case .exposure:
             return assignment.exposureId
         case .behavioralActivation:
-            return assignment.activityListId
+            return assignment.activityId
         default:
             return nil
         }

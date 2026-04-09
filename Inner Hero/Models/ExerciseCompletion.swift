@@ -22,7 +22,7 @@ final class ExerciseCompletion {
     var breathingPatternType: String?
     var relaxationType: String?
     var groundingType: String?
-    var activityListId: UUID?
+    @Attribute(originalName: "activityListId") var activityId: UUID?
     
     init(
         id: UUID = UUID(),
@@ -43,7 +43,7 @@ final class ExerciseCompletion {
         self.breathingPatternType = assignment.breathingPatternType
         self.relaxationType = assignment.relaxationType
         self.groundingType = assignment.groundingType
-        self.activityListId = assignment.activityListId
+        self.activityId = assignment.activityId
         
         self.uniqueKey = "\(assignment.id.uuidString)|\(Int(dayStart.timeIntervalSince1970))"
     }

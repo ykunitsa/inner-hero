@@ -27,12 +27,12 @@ final class HomeViewModel {
         assignments: [ExerciseAssignment],
         completions: [ExerciseCompletion],
         exposures: [Exposure],
-        activityLists: [ActivityList],
+        activationTasks: [ActivationTask],
         breathingSessions: [BreathingSessionResult],
         groundingSessions: [GroundingSessionResult],
         relaxationSessions: [RelaxationSessionResult],
         exposureSessions: [ExposureSessionResult],
-        activationSessions: [BehavioralActivationSession],
+        activationSessions: [ActivationSession],
         favorites: [FavoriteExercise]
     ) {
         let dayStart = calendar.startOfDay(for: Date())
@@ -59,7 +59,7 @@ final class HomeViewModel {
             assignments: assignments,
             dayStart: dayStart,
             exposures: exposures,
-            activityLists: activityLists
+            activationTasks: activationTasks
         )
 
         // Practice minutes
@@ -91,7 +91,7 @@ final class HomeViewModel {
         assignments: [ExerciseAssignment],
         dayStart: Date,
         exposures: [Exposure],
-        activityLists: [ActivityList]
+        activationTasks: [ActivationTask]
     ) -> PlannedUpcoming? {
         let now = Date()
         for dayOffset in 0..<3 {
@@ -107,7 +107,7 @@ final class HomeViewModel {
                 dateComponents.minute = timeComponents.minute
                 guard let occurrence = calendar.date(from: dateComponents) else { continue }
                 guard occurrence >= now else { continue }
-                let title = assignment.displayTitle(exposures: exposures, activityLists: activityLists)
+                let title = assignment.displayTitle(exposures: exposures, activationTasks: activationTasks)
                 return PlannedUpcoming(date: occurrence, assignment: assignment, title: title)
             }
         }
@@ -121,8 +121,19 @@ final class HomeViewModel {
         groundingSessions: [GroundingSessionResult],
         relaxationSessions: [RelaxationSessionResult],
         exposureSessions: [ExposureSessionResult],
-        activationSessions: [BehavioralActivationSession]
+        activationSessions: [ActivationSession]
     ) -> Int {
+        let activationMinutes = activationSessions
+            .filter { session in
+                session.statusRaw == SessionStatus.completed.rawValue &&
+                session.completedAt.map { $0 >= start && $0 < end } == true
+            }
+            .reduce(0) { sum, session in
+                if let minutes = session.actualMinutes { return sum + minutes }
+                guard let startedAt = session.startedAt, let completedAt = session.completedAt else { return sum }
+                return sum + Int(completedAt.timeIntervalSince(startedAt) / 60)
+            }
+
         let totalSeconds: TimeInterval =
             breathingSessions
                 .filter { $0.performedAt >= start && $0.performedAt < end }
@@ -139,13 +150,7 @@ final class HomeViewModel {
                     guard let endAt = result.endAt else { return sum }
                     return sum + endAt.timeIntervalSince(result.startAt)
                 }
-            + activationSessions
-                .filter { $0.startedAt >= start && $0.startedAt < end && $0.completedAt != nil }
-                .reduce(0) { sum, result in
-                    guard let completedAt = result.completedAt else { return sum }
-                    return sum + completedAt.timeIntervalSince(result.startedAt)
-                }
-        return Int(totalSeconds / 60)
+        return Int(totalSeconds / 60) + activationMinutes
     }
 
     private func streakDays(from completions: [ExerciseCompletion], dayStart: Date) -> Int {

@@ -12,13 +12,13 @@ struct HomeView: View {
     @Query(sort: \ExerciseAssignment.time) private var allAssignments: [ExerciseAssignment]
     @Query(sort: \ExerciseCompletion.createdAt, order: .reverse) private var allCompletions: [ExerciseCompletion]
     @Query(sort: \Exposure.title) private var exposures: [Exposure]
-    @Query(sort: \ActivityList.title) private var activityLists: [ActivityList]
+    @Query(sort: \ActivationTask.title) private var activationTasks: [ActivationTask]
     @Query(sort: \FavoriteExercise.createdAt, order: .reverse) private var favorites: [FavoriteExercise]
     @Query(sort: \BreathingSessionResult.performedAt, order: .reverse) private var breathingSessions: [BreathingSessionResult]
     @Query(sort: \GroundingSessionResult.performedAt, order: .reverse) private var groundingSessions: [GroundingSessionResult]
     @Query(sort: \RelaxationSessionResult.performedAt, order: .reverse) private var relaxationSessions: [RelaxationSessionResult]
     @Query(sort: \ExposureSessionResult.startAt, order: .reverse) private var exposureSessions: [ExposureSessionResult]
-    @Query(sort: \BehavioralActivationSession.startedAt, order: .reverse) private var activationSessions: [BehavioralActivationSession]
+    @Query(sort: \ActivationSession.createdAt, order: .reverse) private var activationSessions: [ActivationSession]
 
     // MARK: - Computed
 
@@ -436,15 +436,15 @@ struct HomeView: View {
             )
         case .behavioralActivation:
             guard let id = favorite.exerciseId,
-                  let list = activityLists.first(where: { $0.id == id })
+                  let task = activationTasks.first(where: { $0.id == id })
             else { return nil }
             return QuickAccessItem(
                 id: favorite.id,
-                name: list.localizedTitle,
-                meta: String(localized: "Activation · \(list.localizedActivities.count) activities"),
-                icon: "figure.walk",
+                name: task.localizedTitle,
+                meta: String(localized: "Behavioral Activation"),
+                icon: task.sfSymbol,
                 color: AppColors.positive,
-                route: .activationView(activityListId: id, assignmentId: nil)
+                route: .activationView(activityId: id, assignmentId: nil)
             )
         }
     }
@@ -456,7 +456,7 @@ struct HomeView: View {
             assignments: allAssignments,
             completions: allCompletions,
             exposures: exposures,
-            activityLists: activityLists,
+            activationTasks: activationTasks,
             breathingSessions: breathingSessions,
             groundingSessions: groundingSessions,
             relaxationSessions: relaxationSessions,
@@ -477,7 +477,7 @@ struct HomeView: View {
             activationCount: activationSessions.count,
             favoriteCount: favorites.count,
             exposureCount: exposures.count,
-            activityListCount: activityLists.count
+            activityListCount: activationTasks.count
         )
     }
 
@@ -544,12 +544,13 @@ private struct QuickAccessItem: Identifiable {
                 ExerciseCompletion.self,
                 FavoriteExercise.self,
                 Exposure.self,
-                ActivityList.self,
+                ActivationCategory.self,
+                ActivationTask.self,
+                ActivationSession.self,
                 BreathingSessionResult.self,
                 GroundingSessionResult.self,
                 RelaxationSessionResult.self,
-                ExposureSessionResult.self,
-                BehavioralActivationSession.self
+                ExposureSessionResult.self
             ],
             inMemory: true
         )

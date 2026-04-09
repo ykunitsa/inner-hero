@@ -52,7 +52,7 @@ struct ExposureDetailView: View {
                     groundingType: nil,
                     breathingPatternType: nil,
                     relaxationType: nil,
-                    activityListId: nil
+                    activityId: nil
                 )
             }
             .padding(.horizontal, Spacing.sm)

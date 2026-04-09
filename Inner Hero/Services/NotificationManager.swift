@@ -43,7 +43,7 @@ final class NotificationManager {
         assignment.notificationId = notificationId
         
         // Get exercise name
-        let exerciseName = assignment.displayTitle(exposures: [], activityLists: [])
+        let exerciseName = assignment.displayTitle(exposures: [], activationTasks: [])
         
         // Create notification content
         let content = UNMutableNotificationContent()

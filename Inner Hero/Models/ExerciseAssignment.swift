@@ -26,7 +26,7 @@ final class ExerciseAssignment {
     var breathingPatternType: String?
     var relaxationType: String?
     var groundingType: String?
-    var activityListId: UUID?
+    @Attribute(originalName: "activityListId") var activityId: UUID?
     
     // Notification identifier
     var notificationId: String?
@@ -42,7 +42,7 @@ final class ExerciseAssignment {
         breathingPatternType: BreathingPatternType? = nil,
         relaxationType: RelaxationType? = nil,
         groundingType: GroundingType? = nil,
-        activityListId: UUID? = nil,
+        activityId: UUID? = nil,
         notificationId: String? = nil
     ) {
         self.id = id
@@ -55,7 +55,7 @@ final class ExerciseAssignment {
         self.breathingPatternType = breathingPatternType?.rawValue
         self.relaxationType = relaxationType?.rawValue
         self.groundingType = groundingType?.rawValue
-        self.activityListId = activityListId
+        self.activityId = activityId
         self.notificationId = notificationId
     }
     

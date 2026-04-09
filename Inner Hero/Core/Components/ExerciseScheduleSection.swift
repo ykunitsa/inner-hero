@@ -14,7 +14,7 @@ struct ExerciseScheduleSection: View {
     let groundingType: GroundingType?
     let breathingPatternType: BreathingPatternType?
     let relaxationType: RelaxationType?
-    let activityListId: UUID?
+    let activityId: UUID?
 
     @State private var showScheduleSheet = false
     @State private var assignmentToEdit: ExerciseAssignment?
@@ -43,7 +43,7 @@ struct ExerciseScheduleSection: View {
                     preSelectedBreathingPattern: breathingPatternType,
                     preSelectedRelaxationType: relaxationType,
                     preSelectedGroundingType: groundingType,
-                    preSelectedActivityListId: activityListId
+                    preSelectedActivityId: activityId
                 )
             }
         }

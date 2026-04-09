@@ -355,8 +355,9 @@ struct SettingsView: View {
             try deleteAll(BreathingSessionResult.self)
             try deleteAll(RelaxationSessionResult.self)
             try deleteAll(GroundingSessionResult.self)
-            try deleteAll(BehavioralActivationSession.self)
-            try deleteAll(ActivityList.self)
+            try deleteAll(ActivationSession.self)
+            try deleteAll(ActivationTask.self)
+            try deleteAll(ActivationCategory.self)
             try deleteAll(ExerciseAssignment.self)
             try deleteAll(FavoriteExercise.self)
             try modelContext.save()
@@ -379,8 +380,9 @@ struct SettingsView: View {
         let breathingResults = try modelContext.fetch(FetchDescriptor<BreathingSessionResult>())
         let relaxationResults = try modelContext.fetch(FetchDescriptor<RelaxationSessionResult>())
         let groundingResults = try modelContext.fetch(FetchDescriptor<GroundingSessionResult>())
-        let activityLists = try modelContext.fetch(FetchDescriptor<ActivityList>())
-        let behavioralSessions = try modelContext.fetch(FetchDescriptor<BehavioralActivationSession>())
+        let activationCategories = try modelContext.fetch(FetchDescriptor<ActivationCategory>())
+        let activationTasks = try modelContext.fetch(FetchDescriptor<ActivationTask>())
+        let activationSessions = try modelContext.fetch(FetchDescriptor<ActivationSession>())
         let assignments = try modelContext.fetch(FetchDescriptor<ExerciseAssignment>())
         let favorites = try modelContext.fetch(FetchDescriptor<FavoriteExercise>())
 
@@ -393,8 +395,9 @@ struct SettingsView: View {
             breathingSessionResults: breathingResults.map(BreathingSessionResultDTO.init),
             relaxationSessionResults: relaxationResults.map(RelaxationSessionResultDTO.init),
             groundingSessionResults: groundingResults.map(GroundingSessionResultDTO.init),
-            activityLists: activityLists.map(ActivityListDTO.init),
-            behavioralActivationSessions: behavioralSessions.map(BehavioralActivationSessionDTO.init),
+            activationCategories: activationCategories.map(ActivationCategoryDTO.init),
+            activationTasks: activationTasks.map(ActivationTaskDTO.init),
+            activationSessions: activationSessions.map(ActivationSessionDTO.init),
             exerciseAssignments: assignments.map(ExerciseAssignmentDTO.init),
             favoriteExercises: favorites.map(FavoriteExerciseDTO.init)
         )
@@ -416,8 +419,9 @@ private struct ExportPayload: Codable {
     let breathingSessionResults: [BreathingSessionResultDTO]
     let relaxationSessionResults: [RelaxationSessionResultDTO]
     let groundingSessionResults: [GroundingSessionResultDTO]
-    let activityLists: [ActivityListDTO]
-    let behavioralActivationSessions: [BehavioralActivationSessionDTO]
+    let activationCategories: [ActivationCategoryDTO]
+    let activationTasks: [ActivationTaskDTO]
+    let activationSessions: [ActivationSessionDTO]
     let exerciseAssignments: [ExerciseAssignmentDTO]; let favoriteExercises: [FavoriteExerciseDTO]
 }
 private struct ExposureStepDTO: Codable {
@@ -448,20 +452,32 @@ private struct GroundingSessionResultDTO: Codable {
     let id: UUID; let performedAt: Date; let duration: Double; let type: String
     init(_ r: GroundingSessionResult) { id=r.id; performedAt=r.performedAt; duration=r.duration; type=r.type.rawValue }
 }
-private struct ActivityListDTO: Codable {
-    let id: UUID; let title: String; let activities: [String]; let isPredefined: Bool
-    init(_ l: ActivityList) { id=l.id; title=l.title; activities=l.activities; isPredefined=l.isPredefined }
+private struct ActivationCategoryDTO: Codable {
+    let id: UUID; let predefinedKey: String?; let title: String; let sfSymbol: String
+    let colorHex: String; let sortOrder: Int; let isPreset: Bool; let createdAt: Date
+    init(_ c: ActivationCategory) { id=c.id; predefinedKey=c.predefinedKey; title=c.title; sfSymbol=c.sfSymbol; colorHex=c.colorHex; sortOrder=c.sortOrder; isPreset=c.isPreset; createdAt=c.createdAt }
 }
-private struct BehavioralActivationSessionDTO: Codable {
-    let id: UUID; let startedAt: Date; let completedAt: Date?; let selectedActivity: String; let pleasureRating: Int?
-    init(_ s: BehavioralActivationSession) { id=s.id; startedAt=s.startedAt; completedAt=s.completedAt; selectedActivity=s.selectedActivity; pleasureRating=s.pleasureRating }
+private struct ActivationTaskDTO: Codable {
+    let id: UUID; let categoryId: UUID; let predefinedKey: String?; let title: String
+    let hint: String?; let pleasureTag: Bool; let masteryTag: Bool; let effortLevel: String
+    let suggestedMinutes: Int?; let sfSymbol: String; let isPreset: Bool
+    let isHiddenByUser: Bool; let sortOrder: Int; let createdAt: Date
+    init(_ t: ActivationTask) { id=t.id; categoryId=t.categoryId; predefinedKey=t.predefinedKey; title=t.title; hint=t.hint; pleasureTag=t.pleasureTag; masteryTag=t.masteryTag; effortLevel=t.effortLevelRaw; suggestedMinutes=t.suggestedMinutes; sfSymbol=t.sfSymbol; isPreset=t.isPreset; isHiddenByUser=t.isHiddenByUser; sortOrder=t.sortOrder; createdAt=t.createdAt }
+}
+private struct ActivationSessionDTO: Codable {
+    let id: UUID; let activityId: UUID; let assignmentId: UUID?; let statusRaw: String
+    let moodBefore: Int?; let moodAfter: Int?; let moodDelta: Int?
+    let barrierNote: String?; let reflectionNote: String?
+    let plannedFor: Date?; let startedAt: Date?; let completedAt: Date?
+    let actualMinutes: Int?; let createdAt: Date
+    init(_ s: ActivationSession) { id=s.id; activityId=s.activityId; assignmentId=s.assignmentId; statusRaw=s.statusRaw; moodBefore=s.moodBefore; moodAfter=s.moodAfter; moodDelta=s.moodDelta; barrierNote=s.barrierNote; reflectionNote=s.reflectionNote; plannedFor=s.plannedFor; startedAt=s.startedAt; completedAt=s.completedAt; actualMinutes=s.actualMinutes; createdAt=s.createdAt }
 }
 private struct ExerciseAssignmentDTO: Codable {
     let id: UUID; let exerciseType: String; let daysOfWeek: [Int]; let time: Date
     let isActive: Bool; let createdAt: Date; let exposureId: UUID?
     let breathingPatternType: String?; let relaxationType: String?
-    let groundingType: String?; let activityListId: UUID?; let notificationId: String?
-    init(_ a: ExerciseAssignment) { id=a.id; exerciseType=a.exerciseType.rawValue; daysOfWeek=a.daysOfWeek; time=a.time; isActive=a.isActive; createdAt=a.createdAt; exposureId=a.exposureId; breathingPatternType=a.breathingPatternType; relaxationType=a.relaxationType; groundingType=a.groundingType; activityListId=a.activityListId; notificationId=a.notificationId }
+    let groundingType: String?; let activityId: UUID?; let notificationId: String?
+    init(_ a: ExerciseAssignment) { id=a.id; exerciseType=a.exerciseType.rawValue; daysOfWeek=a.daysOfWeek; time=a.time; isActive=a.isActive; createdAt=a.createdAt; exposureId=a.exposureId; breathingPatternType=a.breathingPatternType; relaxationType=a.relaxationType; groundingType=a.groundingType; activityId=a.activityId; notificationId=a.notificationId }
 }
 private struct FavoriteExerciseDTO: Codable {
     let id: UUID; let exerciseType: String; let exerciseId: UUID?; let exerciseIdentifier: String?; let createdAt: Date
@@ -476,8 +492,8 @@ private struct FavoriteExerciseDTO: Codable {
         .modelContainer(for: [
             Exposure.self, ExposureStep.self, ExposureSessionResult.self,
             BreathingSessionResult.self, RelaxationSessionResult.self,
-            GroundingSessionResult.self, ActivityList.self,
-            BehavioralActivationSession.self, ExerciseAssignment.self,
+            GroundingSessionResult.self, ActivationCategory.self,
+            ActivationTask.self, ActivationSession.self, ExerciseAssignment.self,
             FavoriteExercise.self
         ], inMemory: true)
 }

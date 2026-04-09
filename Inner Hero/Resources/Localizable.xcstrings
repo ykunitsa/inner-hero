@@ -1653,6 +1653,16 @@
         }
       }
     },
+    "The new interface is coming soon": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скоро здесь появится новый интерфейс"
+          }
+        }
+      }
+    },
     "Behavioral activation helps you gently \"turn on\" to life when you have no energy, mood, or motivation. You choose simple actions (pleasant or meaningful) in advance, do them in small steps, and notice how your state and level of enjoyment change.": {
       "extractionState": "stale",
       "localizations": {
@@ -5806,6 +5816,732 @@
             "value": "Обратиться за помощью к продавцу в магазине"
           }
         }
+      }
+    },
+    "predefined.activation.category.achievement.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Achievement" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Достижение" } }
+      }
+    },
+    "predefined.activation.category.creative.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Creative" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Творческие" } }
+      }
+    },
+    "predefined.activation.category.physical.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Physical" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Физические" } }
+      }
+    },
+    "predefined.activation.category.pleasure.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pleasure" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Удовольствие" } }
+      }
+    },
+    "predefined.activation.category.self_care.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Self-Care" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Забота о себе" } }
+      }
+    },
+    "predefined.activation.category.social.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Social" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Социальные" } }
+      }
+    },
+    "predefined.activation.category.values.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Values" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Ценностные" } }
+      }
+    },
+    "predefined.activation.task.achievement_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The smallest overdue one" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Самое маленькое из отложенных" } }
+      }
+    },
+    "predefined.activation.task.achievement_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Do one task from your to-do list" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сделать одно дело из списка задач" } }
+      }
+    },
+    "predefined.activation.task.achievement_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The one you've been putting off" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "То, что откладывалось" } }
+      }
+    },
+    "predefined.activation.task.achievement_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Reply to an important message" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Ответить на важное сообщение" } }
+      }
+    },
+    "predefined.activation.task.achievement_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A small admin task" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Маленькая административная задача" } }
+      }
+    },
+    "predefined.activation.task.achievement_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pay a bill or make a call" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Оплатить счёт или сделать звонок" } }
+      }
+    },
+    "predefined.activation.task.achievement_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Delete junk, reply to one" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Удалить лишнее, ответить на одно" } }
+      }
+    },
+    "predefined.activation.task.achievement_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sort through your inbox" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Разобрать входящие письма" } }
+      }
+    },
+    "predefined.activation.task.achievement_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Bring something to 'done'" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Довести до «готово»" } }
+      }
+    },
+    "predefined.activation.task.achievement_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Finish a started project" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Завершить начатый проект" } }
+      }
+    },
+    "predefined.activation.task.achievement_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Throw away what you don't need" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Выбросить ненужное" } }
+      }
+    },
+    "predefined.activation.task.achievement_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Organise one drawer" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Навести порядок в одном ящике" } }
+      }
+    },
+    "predefined.activation.task.achievement_07.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "An article, video, or lesson — 15 minutes" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Статья, видео, урок — 15 минут" } }
+      }
+    },
+    "predefined.activation.task.achievement_07.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Learn something new" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Выучить что-то новое" } }
+      }
+    },
+    "predefined.activation.task.achievement_08.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Three main things" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Три главных дела" } }
+      }
+    },
+    "predefined.activation.task.achievement_08.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Plan for tomorrow" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Составить план на завтра" } }
+      }
+    },
+    "predefined.activation.task.creative_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No goal — just enjoy the process" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Без цели — просто процесс" } }
+      }
+    },
+    "predefined.activation.task.creative_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Draw or colour" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Порисовать или раскрасить" } }
+      }
+    },
+    "predefined.activation.task.creative_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "5–10 minutes, free flow" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "5–10 минут, свободным потоком" } }
+      }
+    },
+    "predefined.activation.task.creative_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Write in a journal" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Написать в дневник" } }
+      }
+    },
+    "predefined.activation.task.creative_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No expectations of yourself" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Без требований к себе" } }
+      }
+    },
+    "predefined.activation.task.creative_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Play a musical instrument" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поиграть на музыкальном инструменте" } }
+      }
+    },
+    "predefined.activation.task.creative_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A recipe you've wanted to try" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Рецепт, который давно хотелось" } }
+      }
+    },
+    "predefined.activation.task.creative_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Cook something new" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Приготовить что-то новое" } }
+      }
+    },
+    "predefined.activation.task.creative_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "On a walk or at home" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "На прогулке или дома" } }
+      }
+    },
+    "predefined.activation.task.creative_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Photograph something beautiful" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сфотографировать что-то красивое" } }
+      }
+    },
+    "predefined.activation.task.creative_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Knitting, sewing, or sculpting" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Вязание, шитьё, лепка" } }
+      }
+    },
+    "predefined.activation.task.creative_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Do some crafting" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Порукодельничать" } }
+      }
+    },
+    "predefined.activation.task.creative_07.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Water, repot, or just look" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Полить, пересадить, посмотреть" } }
+      }
+    },
+    "predefined.activation.task.creative_07.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tend to your plants" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поработать с растениями" } }
+      }
+    },
+    "predefined.activation.task.creative_08.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Art, design, or architecture" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Арт, дизайн, архитектура" } }
+      }
+    },
+    "predefined.activation.task.creative_08.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Watch inspiring content" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Посмотреть вдохновляющий контент" } }
+      }
+    },
+    "predefined.activation.task.physical_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pace doesn't matter" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Темп не важен" } }
+      }
+    },
+    "predefined.activation.task.physical_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Go for a 10–15 minute walk" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Прогуляться 10–15 минут" } }
+      }
+    },
+    "predefined.activation.task.physical_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A few exercises at home" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Пара упражнений дома" } }
+      }
+    },
+    "predefined.activation.task.physical_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Do a 5–10 minute workout" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Зарядка 5–10 минут" } }
+      }
+    },
+    "predefined.activation.task.physical_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "One or two songs" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Одна-две песни" } }
+      }
+    },
+    "predefined.activation.task.physical_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Dance at home" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Потанцевать дома" } }
+      }
+    },
+    "predefined.activation.task.physical_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "15–20 minutes" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "15–20 минут" } }
+      }
+    },
+    "predefined.activation.task.physical_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Stretch or do yoga" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сделать растяжку или йогу" } }
+      }
+    },
+    "predefined.activation.task.physical_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "With or without a destination" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Без маршрута или с целью" } }
+      }
+    },
+    "predefined.activation.task.physical_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Ride a bicycle" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поехать на велосипеде" } }
+      }
+    },
+    "predefined.activation.task.physical_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Pool or open water" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Бассейн или открытая вода" } }
+      }
+    },
+    "predefined.activation.task.physical_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Go for a swim" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поплавать" } }
+      }
+    },
+    "predefined.activation.task.physical_07.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Doesn't matter how long" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не важно как долго" } }
+      }
+    },
+    "predefined.activation.task.physical_07.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Go for a run" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Пробежаться" } }
+      }
+    },
+    "predefined.activation.task.physical_08.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "If you have no energy — this counts too" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Если совсем нет сил — это тоже движение" } }
+      }
+    },
+    "predefined.activation.task.physical_08.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Just stand up and walk around" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Просто встать и походить" } }
+      }
+    },
+    "predefined.activation.task.physical_09.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Even a light workout" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Даже лёгкая тренировка" } }
+      }
+    },
+    "predefined.activation.task.physical_09.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Go to the gym" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сходить в спортзал" } }
+      }
+    },
+    "predefined.activation.task.pleasure_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Without guilt about 'wasted' time" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Без вины за «потраченное» время" } }
+      }
+    },
+    "predefined.activation.task.pleasure_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Watch a favourite show or film" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Посмотреть любимый сериал или фильм" } }
+      }
+    },
+    "predefined.activation.task.pleasure_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A whole album, mindfully" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Целый альбом, осознанно" } }
+      }
+    },
+    "predefined.activation.task.pleasure_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Listen to your favourite music" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Послушать любимую музыку" } }
+      }
+    },
+    "predefined.activation.task.pleasure_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Something you've been craving" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "То, что давно хотелось" } }
+      }
+    },
+    "predefined.activation.task.pleasure_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Eat something really delicious" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Съесть что-то очень вкусное" } }
+      }
+    },
+    "predefined.activation.task.pleasure_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "30 minutes without distractions" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "30 минут без отвлечений" } }
+      }
+    },
+    "predefined.activation.task.pleasure_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Read a book or magazine" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Почитать книгу или журнал" } }
+      }
+    },
+    "predefined.activation.task.pleasure_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Board game, video game, or mobile" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Настолка, видеоигра, мобильная" } }
+      }
+    },
+    "predefined.activation.task.pleasure_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Play a game" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поиграть в игру" } }
+      }
+    },
+    "predefined.activation.task.pleasure_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Do nothing — it's okay too" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Ничего не делать — это тоже ок" } }
+      }
+    },
+    "predefined.activation.task.pleasure_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Look out the window with coffee or tea" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Посмотреть в окно с кофе или чаем" } }
+      }
+    },
+    "predefined.activation.task.pleasure_07.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Intentionally, not mindlessly" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Намеренно, не бесцельно" } }
+      }
+    },
+    "predefined.activation.task.pleasure_07.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Watch funny videos" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Посмотреть смешные видео" } }
+      }
+    },
+    "predefined.activation.task.pleasure_08.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "With a candle, book, or music" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Со свечой, книгой или музыкой" } }
+      }
+    },
+    "predefined.activation.task.pleasure_08.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Take a long bath" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Принять долгую ванну" } }
+      }
+    },
+    "predefined.activation.task.pleasure_09.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A flower, book, or snack" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Цветок, книга, вкусняшка" } }
+      }
+    },
+    "predefined.activation.task.pleasure_09.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Treat yourself to something small" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Побаловать себя чем-то маленьким" } }
+      }
+    },
+    "predefined.activation.task.self_care_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Even a quick one counts" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Даже краткий — уже шаг" } }
+      }
+    },
+    "predefined.activation.task.self_care_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Take a shower or bath" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Принять душ или ванну" } }
+      }
+    },
+    "predefined.activation.task.self_care_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sit down and eat without your phone" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сесть и поесть без телефона" } }
+      }
+    },
+    "predefined.activation.task.self_care_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Have a proper breakfast" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Нормально позавтракать" } }
+      }
+    },
+    "predefined.activation.task.self_care_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Choose a time and stick to it" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Выбрать время и придерживаться" } }
+      }
+    },
+    "predefined.activation.task.self_care_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Go to bed on time" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Лечь спать вовремя" } }
+      }
+    },
+    "predefined.activation.task.self_care_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Keep a bottle in plain sight" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поставить бутылку на видном месте" } }
+      }
+    },
+    "predefined.activation.task.self_care_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Drink enough water" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Выпить достаточно воды" } }
+      }
+    },
+    "predefined.activation.task.self_care_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Even if you're not going anywhere" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Даже если никуда не идёшь" } }
+      }
+    },
+    "predefined.activation.task.self_care_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Get dressed and tidy up" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Одеться и привести себя в порядок" } }
+      }
+    },
+    "predefined.activation.task.self_care_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Just the desk or just the bed" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Только стол или только кровать" } }
+      }
+    },
+    "predefined.activation.task.self_care_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tidy one spot in your room" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Убрать одно место в комнате" } }
+      }
+    },
+    "predefined.activation.task.self_care_07.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "20–30 minutes in one area" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "20–30 минут в одной зоне" } }
+      }
+    },
+    "predefined.activation.task.self_care_07.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Do a small clean-up" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сделать небольшую уборку" } }
+      }
+    },
+    "predefined.activation.task.self_care_08.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Not a ready-made dish" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не полуфабрикат" } }
+      }
+    },
+    "predefined.activation.task.self_care_08.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Cook a proper meal" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Приготовить полноценную еду" } }
+      }
+    },
+    "predefined.activation.task.self_care_09.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "15 minutes by a window or outside" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "15 минут у окна или снаружи" } }
+      }
+    },
+    "predefined.activation.task.self_care_09.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Sit in the sun" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Посидеть на солнце" } }
+      }
+    },
+    "predefined.activation.task.self_care_10.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Even for just 10 minutes" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Хотя бы на 10 минут" } }
+      }
+    },
+    "predefined.activation.task.self_care_10.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Get some fresh air" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Выйти на свежий воздух" } }
+      }
+    },
+    "predefined.activation.task.social_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Just to ask how they're doing" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Просто узнать как дела" } }
+      }
+    },
+    "predefined.activation.task.social_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Message a friend or loved one" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Написать другу или близкому" } }
+      }
+    },
+    "predefined.activation.task.social_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Not for business — just to talk" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не по делу, а просто поговорить" } }
+      }
+    },
+    "predefined.activation.task.social_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Call someone" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Позвонить кому-то" } }
+      }
+    },
+    "predefined.activation.task.social_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Café, walk, or at home" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Кафе, прогулка, дома" } }
+      }
+    },
+    "predefined.activation.task.social_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Meet someone in person" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Встретиться с кем-то лично" } }
+      }
+    },
+    "predefined.activation.task.social_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A compliment or words of thanks" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Комплимент, слова благодарности" } }
+      }
+    },
+    "predefined.activation.task.social_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Say something kind to someone" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сказать кому-то что-то приятное" } }
+      }
+    },
+    "predefined.activation.task.social_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Café, park, or library" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Кафе, парк, библиотека" } }
+      }
+    },
+    "predefined.activation.task.social_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Go somewhere with people" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Пойти в место, где есть люди" } }
+      }
+    },
+    "predefined.activation.task.social_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "The one it felt awkward to ignore" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "То, что неловко было игнорировать" } }
+      }
+    },
+    "predefined.activation.task.social_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Reply to a long-overdue message" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Ответить на давно висящее сообщение" } }
+      }
+    },
+    "predefined.activation.task.social_07.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "30+ minutes together" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "30+ минут вместе" } }
+      }
+    },
+    "predefined.activation.task.social_07.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Walk with a friend or pet" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Погулять с другом или питомцем" } }
+      }
+    },
+    "predefined.activation.task.values_01.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Small, practical help" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Маленькая практическая помощь" } }
+      }
+    },
+    "predefined.activation.task.values_01.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Help someone with a task" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Помочь кому-то с делом" } }
+      }
+    },
+    "predefined.activation.task.values_02.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A surprise, care, or attention" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сюрприз, забота, внимание" } }
+      }
+    },
+    "predefined.activation.task.values_02.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Do something for someone without being asked" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Сделать что-то для другого без просьбы" } }
+      }
+    },
+    "predefined.activation.task.values_03.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A small contribution to something important" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Небольшой вклад в важное дело" } }
+      }
+    },
+    "predefined.activation.task.values_03.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Donate or take part in a cause" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Пожертвовать или поучаствовать в акции" } }
+      }
+    },
+    "predefined.activation.task.values_04.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "10 minutes without a screen" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "10 минут без экрана" } }
+      }
+    },
+    "predefined.activation.task.values_04.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Spend time in silence or meditation" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Провести время в тишине или медитации" } }
+      }
+    },
+    "predefined.activation.task.values_05.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Park, forest, or shore — mindfully" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Парк, лес, берег — осознанно" } }
+      }
+    },
+    "predefined.activation.task.values_05.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Spend time in nature" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Побыть на природе" } }
+      }
+    },
+    "predefined.activation.task.values_06.hint": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "A letter, message, or out loud" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Письмо, сообщение или вслух" } }
+      }
+    },
+    "predefined.activation.task.values_06.title": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Thank someone sincerely" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поблагодарить кого-то искренне" } }
       }
     },
     "predefined.exposure.asking_salesperson.step1": {

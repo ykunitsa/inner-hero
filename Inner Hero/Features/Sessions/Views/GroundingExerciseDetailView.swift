@@ -52,7 +52,7 @@ struct GroundingExerciseDetailView: View {
                     groundingType: exercise.type,
                     breathingPatternType: nil,
                     relaxationType: nil,
-                    activityListId: nil
+                    activityId: nil
                 )
             }
             .padding(.horizontal, Spacing.sm)

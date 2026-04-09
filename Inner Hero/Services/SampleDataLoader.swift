@@ -74,17 +74,16 @@ struct SampleDataLoader {
         return exposures.isEmpty
     }
 
-    static func loadPredefinedActivationLists(into modelContext: ModelContext) throws {
-        for list in PredefinedActivationLists.all {
-            let activationList = ActivityList(
-                title: list.title,
-                predefinedKey: list.key.rawValue,
-                activities: list.activities,
-                isPredefined: true
-            )
-            modelContext.insert(activationList)
-        }
+    static func loadPresetActivationData(into modelContext: ModelContext) throws {
+        let existingCategories = try modelContext.fetch(FetchDescriptor<ActivationCategory>())
+        guard existingCategories.isEmpty else { return }
 
+        for category in PresetActivationData.categories {
+            modelContext.insert(category)
+        }
+        for task in PresetActivationData.tasks {
+            modelContext.insert(task)
+        }
         try modelContext.save()
     }
 }
