@@ -10,6 +10,57 @@ struct Article: Identifiable, Codable {
     let icon: String
     let category: String
     let readTime: Int
+    let sources: [ArticleSource]
+
+    init(
+        id: String,
+        title: String,
+        description: String,
+        content: String,
+        icon: String,
+        category: String,
+        readTime: Int,
+        sources: [ArticleSource] = []
+    ) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.content = content
+        self.icon = icon
+        self.category = category
+        self.readTime = readTime
+        self.sources = sources
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case description
+        case content
+        case icon
+        case category
+        case readTime
+        case sources
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        description = try container.decode(String.self, forKey: .description)
+        content = try container.decode(String.self, forKey: .content)
+        icon = try container.decode(String.self, forKey: .icon)
+        category = try container.decode(String.self, forKey: .category)
+        readTime = try container.decode(Int.self, forKey: .readTime)
+        sources = try container.decodeIfPresent([ArticleSource].self, forKey: .sources) ?? []
+    }
+}
+
+struct ArticleSource: Identifiable, Codable, Hashable {
+    let title: String
+    let url: String
+
+    var id: String { url }
 }
 
 // MARK: - Articles Container
@@ -86,5 +137,4 @@ enum ArticlesLoader {
         return Bundle.main.url(forResource: "Articles", withExtension: "json")
     }
 }
-
 

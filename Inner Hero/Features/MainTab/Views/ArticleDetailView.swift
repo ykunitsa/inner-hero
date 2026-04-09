@@ -7,9 +7,15 @@ struct ArticleDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.lg) {
                 articleHeader
+                medicalDisclaimer
                 Divider()
                     .padding(.vertical, Spacing.xxxs)
                 articleContent
+                if !article.sources.isEmpty {
+                    Divider()
+                        .padding(.vertical, Spacing.xxxs)
+                    sourcesSection
+                }
             }
             .padding(.horizontal, Spacing.sm)
             .padding(.top, Spacing.md)
@@ -74,6 +80,74 @@ struct ArticleDetailView: View {
             .foregroundStyle(TextColors.primary)
             .lineSpacing(AppTextStyle.bodyLarge.lineSpacing + 2)
             .fixedSize(horizontal: false, vertical: true)
+    }
+
+    // MARK: - Sources
+
+    private var sourcesSection: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            Text(sourcesTitle)
+                .appFont(.h3)
+                .foregroundStyle(TextColors.primary)
+
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                ForEach(Array(article.sources.enumerated()), id: \.element.id) { index, source in
+                    if let url = URL(string: source.url), !source.url.isEmpty {
+                        Link(destination: url) {
+                            HStack(alignment: .top, spacing: Spacing.xxs) {
+                                Text("\(index + 1).")
+                                    .appFont(.smallMedium)
+                                    .foregroundStyle(TextColors.secondary)
+
+                                Text(source.title)
+                                    .appFont(.smallMedium)
+                                    .foregroundStyle(AppColors.accent)
+                                    .multilineTextAlignment(.leading)
+
+                                Image(systemName: "arrow.up.right.square")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(AppColors.accent.opacity(0.9))
+                                    .padding(.top, 1)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Disclaimer
+
+    private var medicalDisclaimer: some View {
+        Text(disclaimerText)
+            .appFont(.small)
+            .foregroundStyle(TextColors.secondary)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.xs)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppColors.accent.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous))
+            .accessibilityLabel(disclaimerText)
+    }
+
+    // MARK: - Localized Text
+
+    private var isRussian: Bool {
+        Locale.preferredLanguages.first?.lowercased().hasPrefix("ru") == true
+    }
+
+    private var sourcesTitle: String {
+        isRussian ? "Источники" : "Sources"
+    }
+
+    private var disclaimerText: String {
+        if isRussian {
+            return "Информация в этой статье носит образовательный характер и не заменяет консультацию, диагностику или лечение у квалифицированного медицинского специалиста."
+        }
+        return "Information in this article is educational and does not replace professional medical advice, diagnosis, or treatment."
     }
 }
 
