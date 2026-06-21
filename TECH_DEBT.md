@@ -1,108 +1,107 @@
-# Inner Hero — Tech Debt & «Осторожно здесь»
+# Inner Hero — Tech Debt & "Careful here"
 
-Известные слабые места по состоянию на 2026-06-21. Не опираться на перечисленное как
-на образец. При работе рядом — по возможности улучшать, но не «по пути» ломать.
-Закрытые пункты — удалять из файла.
+Known weak spots as of 2026-06-21. Don't treat the items below as a model. When working
+nearby — improve where possible, but don't break things "in passing". Remove items once fixed.
 
-Приоритеты: 🔴 критично · 🟠 важно · 🟡 желательно.
+Priorities: 🔴 critical · 🟠 important · 🟡 nice-to-have.
 
 ---
 
-## 🔴 Критично
+## 🔴 Critical
 
-### 1. Тестов практически нет (<1% покрытия)
-6 тестов моделей + пустые UI-шаблоны из коробки. Не покрыты ключевые места:
+### 1. Almost no tests (<1% coverage)
+6 model tests + empty UI templates from the project boilerplate. Key areas uncovered:
 `Services/SessionCompletionService`, `Features/Schedule/ViewModels/ScheduleViewModel`,
-миграции `App/Schema/AppMigrationPlan`.
-→ В первую очередь покрыть `SessionCompletionService` (идемпотентность) и миграцию V1→V2.
+migrations in `App/Schema/AppMigrationPlan`.
+→ First cover `SessionCompletionService` (idempotency) and the V1→V2 migration.
 
-### 2. Миграция V1→V2 безвозвратно удаляет данные
-`App/Schema/AppMigrationPlan.swift` удаляет BA-assignments, completions и legacy-модели
-без архивации. Нет транзакционной гарантии между `willMigrate`/`didMigrate`; seed данных
-в `didMigrate` без проверки на дубли. Тестов нет.
-→ Сохранять архив перед удалением; добавить дедуп-проверку перед insert; покрыть тестом.
+### 2. The V1→V2 migration deletes data irreversibly
+`App/Schema/AppMigrationPlan.swift` deletes BA assignments, completions, and legacy models
+without archiving. No transactional guarantee between `willMigrate`/`didMigrate`; seed data
+in `didMigrate` runs without a duplicate check. No tests.
+→ Archive data before deleting; add a dedup check before insert; cover with a test.
 
-### 3. `fatalError` в release-сборке
-`App/Inner_HeroApp.swift:56` — при отказе in-memory фолбэка приложение крашится в проде.
-Плюс вложенный `#if DEBUG` внутри `#else` (логическая ошибка условной компиляции, ~стр. 32–56).
-→ Заменить на graceful degradation + диагностику; убрать вложенный `#if`.
+### 3. `fatalError` in release builds
+`App/Inner_HeroApp.swift:56` — if the in-memory fallback fails, the app crashes in production.
+Plus a nested `#if DEBUG` inside `#else` (a conditional-compilation logic error, ~lines 32–56).
+→ Replace with graceful degradation + diagnostics; remove the nested `#if`.
 
-### 4. Слабые связи в модели данных (риск осиротевших записей)
-`ActivationSession.activityId: UUID` и `ActivationTask.categoryId: UUID` — «ручные FK»
-вместо `@Relationship`. Нет каскадного удаления → при удалении задачи остаются
-висячие сессии. В `ExerciseAssignment` смешаны типы: часть полей `UUID?`, часть — `String?`
-(rawValue енама).
-→ Перевести на `@Relationship` с `deleteRule: .cascade`; унифицировать типы (требует миграции).
+### 4. Weak relationships in the data layer (risk of orphaned records)
+`ActivationSession.activityId: UUID` and `ActivationTask.categoryId: UUID` are "manual FKs"
+instead of `@Relationship`. No cascade delete → deleting a task leaves dangling sessions.
+In `ExerciseAssignment` the types are mixed: some fields are `UUID?`, others are `String?`
+(enum rawValue).
+→ Move to `@Relationship` with `deleteRule: .cascade`; unify the types (requires a migration).
 
 ---
 
-## 🟠 Важно
+## 🟠 Important
 
-### 5. Утечка таймера / Task без отмены
-Session-flow: `Timer.publish().autoconnect()` в `@State` без отмены в `onDisappear`.
-Анимация «рулетки» в `Features/BehavioralActivation/Views/BehavioralActivationRootView.swift`
-(~стр. 523–568) запускает `Task` без cancellation и делает `randomElement()!` / `delays.last!`
-(потенциальный краш + обновление UI закрытой вьюхи).
-→ Отменять Timer/Task в `onDisappear`; заменить force-unwrap на `?? fallback`.
+### 5. Timer / Task without cancellation
+Session flow: `Timer.publish(...).autoconnect()` in `@State` isn't cancelled in `onDisappear`.
+The "roulette" animation in `Features/BehavioralActivation/Views/BehavioralActivationRootView.swift`
+(~lines 523–568) runs a `Task { @MainActor … }` without cancellation and does `randomElement()!` /
+`delays.last!` (potential crash + updating the UI of a dismissed view).
+→ Cancel the Timer/Task in `onDisappear`; replace force-unwraps with `?? fallback`.
 
-### 6. Молчаливое проглатывание ошибок
-~36 `try?` с `?? 0`/fallback, особенно в `ScheduleViewModel` (по 5–7 подряд) — при сбое БД
-пользователь видит неверные цифры вместо лога/краша. ~21 `print()` вместо `Logger`
-(не попадают в Console.app, нет уровней).
-→ Завести `Logger` (os.log) с уровнями; не глушить ошибки БД без логирования.
+### 6. Errors swallowed silently
+~36 `try?` with `?? 0`/fallback, especially in `ScheduleViewModel` (5–7 in a row) — on a DB
+failure the user sees wrong numbers instead of a log/crash. ~21 `print()` instead of `Logger`
+(don't reach Console.app, no levels).
+→ Introduce a `Logger` (os.log) with levels; don't swallow DB errors without logging.
 
-### 7. «Массивные вьюхи»
-Крупнейшие файлы (строк): `Core/DesignSystem/Components.swift` (1265),
+### 7. "Massive views"
+Largest files (lines): `Core/DesignSystem/Components.swift` (1265),
 `Features/BehavioralActivation/Views/BehavioralActivationRootView.swift` (920),
 `Features/Sessions/Views/ActiveSessionView.swift` (880),
 `Features/Schedule/Views/ScheduleTabView.swift` (578),
 `Features/Exposures/Components/StepCardView.swift` (578),
 `Features/Sessions/Views/MuscleRelaxationSessionView.swift` (571),
 `Features/MainTab/Views/HomeView.swift` (558).
-Смешаны UI + бизнес-логика + работа с БД + таймеры.
-→ Выносить логику в ViewModel; дробить на подкомпоненты. `Components.swift` — разнести
-по `Buttons/`, `Cards/`, `Navigation/`, `Modals/`.
+They mix UI + business logic + DB work + timers.
+→ Move logic into a ViewModel; split into subcomponents. `Components.swift` — break out into
+`Buttons/`, `Cards/`, `Navigation/`, `Modals/`.
 
-### 8. Непоследовательный MVVM
-Часть фич с ViewModel (Home, Schedule, BehavioralActivation), часть без (Exposures —
-логика во вьюхах). `HomeViewModel.refresh()` принимает 11 параметров.
-→ При доработках выносить бизнес-логику в ViewModel; рассмотреть передачу агрегата вместо
-длинного списка параметров.
+### 8. Inconsistent MVVM
+Some features have a ViewModel (Home, Schedule, BehavioralActivation), others don't (Exposures —
+logic in views). `HomeViewModel.refresh()` takes 11 parameters.
+→ For changes, move business logic into a ViewModel; consider passing an aggregate instead of a
+long parameter list.
 
-### 9. `BARoute` вне `AppRoute`
-`Features/BehavioralActivation/BARoute.swift` — отдельный enum, который `NavigationRouter`
-вынужден принимать как generic `Hashable` → размытая связность.
-→ Включить `BARoute` кейсом в `AppRoute` (`case ba(BARoute)`).
+### 9. `BARoute` outside `AppRoute`
+`Features/BehavioralActivation/BARoute.swift` is a separate enum that `NavigationRouter` has to
+accept as a generic `Hashable` → blurred coupling.
+→ Fold `BARoute` into `AppRoute` as a case (`case ba(BARoute)`).
 
 ---
 
-## 🟡 Желательно
+## 🟡 Nice-to-have
 
-### 10. Дублирование UI-паттернов
-4 вида row в `SettingsView` (navRow/actionRow/linkRow/infoRow), 3 одинаковых фильтр-меню
-в BehavioralActivation, повторяющийся паттерн «сессия→результат→save» в трёх session-вьюхах.
-→ Извлечь `SettingsRow`, `FilterMenu<Item>`, общий хелпер сохранения сессии.
+### 10. Duplicated UI patterns
+4 row kinds in `SettingsView` (navRow/actionRow/linkRow/infoRow), 3 identical filter menus in
+BehavioralActivation, a repeated "session → result → save" pattern across three session views.
+→ Extract `SettingsRow`, `FilterMenu<Item>`, a shared session-save helper.
 
-### 11. Хардкод мимо дизайн-системы
-~60+ мест с захардкоженными `.frame`/`cornerRadius`/`.font(.system(size:))`/RGB-цветами
-вместо токенов (`Spacing`, `CornerRadius`, `AppTextStyle`, `AppColors`).
-→ Заменять на токены по мере правок соответствующих экранов.
+### 11. Hardcoding past the design system
+~60+ places with hardcoded `.frame`/`cornerRadius`/`.font(.system(size:))`/RGB colors instead of
+tokens (`Spacing`, `CornerRadius`, `AppTextStyle`, `AppColors`).
+→ Replace with tokens as you touch the corresponding screens.
 
-### 12. Дублирование данных-снимков
-`ExerciseCompletion` хранит снимок полей из `ExerciseAssignment` (`exerciseType`,
-`exposureId`, `*Type`, `activityId`) — при изменении assignment история показывает устаревшее.
-→ Решить осознанно: ссылка + кэш только `displayTitle`, либо явная стратегия обновления снимка.
+### 12. Snapshot data duplication
+`ExerciseCompletion` stores a snapshot of fields from `ExerciseAssignment` (`exerciseType`,
+`exposureId`, `*Type`, `activityId`) — when the assignment changes, history shows stale data.
+→ Decide deliberately: a reference + cache only `displayTitle`, or an explicit snapshot-refresh strategy.
 
-### 13. `NavigationRouter` — дублирование switch-case
-По `switch tab` в `navigate`/`navigateBack` для каждого таба.
-→ Заменить на `[AppTab: NavigationPath]`.
+### 13. `NavigationRouter` — duplicated switch-case
+A `switch tab` in `navigate`/`navigateBack` for each tab.
+→ Replace with `[AppTab: NavigationPath]`.
 
-### 14. `ArticlesLoader` — небезопасный статический кэш
-`cachedArticlesByLocalization` — mutable static, не обновляется при смене локали в рантайме.
-→ Инвалидация кэша при смене локали / thread-safe доступ.
+### 14. `ArticlesLoader` — unsafe static cache
+`cachedArticlesByLocalization` is a mutable static, not refreshed when the locale changes at runtime.
+→ Invalidate the cache on locale change / thread-safe access.
 
-### 15. Прочее
-- `SampleDataLoader` — нет дедупликации при повторной загрузке (риск дублей).
-- `NotificationManager` — пересмотреть логику дней недели и `repeats: true`.
-- `AppRouteView` грузит все `@Query`-наборы под отдельные маршруты (неэффективно на больших данных).
-- Очистить `stale`-записи в `Localizable.xcstrings`.
+### 15. Misc
+- `SampleDataLoader` — no dedup on repeat load (risk of duplicates).
+- `NotificationManager` — revisit the weekday logic and `repeats: true`.
+- `AppRouteView` loads all `@Query` sets for individual routes (inefficient on large data).
+- Clean up `stale` entries in `Localizable.xcstrings`.

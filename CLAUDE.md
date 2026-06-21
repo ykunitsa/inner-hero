@@ -1,159 +1,159 @@
 # Inner Hero — Project Guide
 
-КПТ-компаньон для тревожности (iOS). Все данные локальные, без аккаунтов и сети.
-Экспозиции, дыхание, релаксация, заземление, поведенческая активация, расписание,
-база знаний.
+A CBT companion app for anxiety (iOS). All data is local — no accounts, no network.
+Exposures, breathing, relaxation, grounding, behavioral activation, schedule,
+knowledge center.
 
-> Этот файл загружается в контекст каждой сессии. Держи его как **карту**, а не как
-> копию кода: он должен помогать сразу идти в нужный файл, а не пересказывать его.
-> Обновляй при значимых изменениях архитектуры/конвенций.
-
----
-
-## Язык и общение
-
-- **Общение с пользователем — на русском.** Объяснения, ответы, summary — по-русски.
-- **Язык кода и исходных строк — английский (primary).** `Localizable.xcstrings`
-  имеет `sourceLanguage: en`. Все новые user-facing строки **сначала пишутся на
-  английском** ключом `String(localized: "English text")`, а русский добавляется как
-  **перевод** в `.xcstrings`. Русский — secondary/translation, не source.
-  ⚠️ Частая ошибка: создавать новые лейблы/строки сразу на русском в коде. Так делать
-  не надо — source всегда английский, перевод живёт в `.xcstrings`.
-- Идентификаторы, имена типов, комментарии в коде — английские.
+> This file is loaded into context every session. Keep it as a **map**, not a copy
+> of the code: it should help jump straight to the right file, not restate it.
+> Update it on meaningful architecture/convention changes.
 
 ---
 
-## Стек
+## Language & communication
 
-| Область       | Выбор                          |
+- **Talk to the user in Russian.** Explanations, answers, summaries — in Russian.
+- **Code and source strings are in English (primary).** `Localizable.xcstrings`
+  has `sourceLanguage: en`. Every new user-facing string is **authored in English first**
+  with the key `String(localized: "English text")`; Russian is added as a **translation**
+  in `.xcstrings`. Russian is secondary/translation, never the source.
+  ⚠️ Common mistake: creating new labels/strings directly in Russian in code. Don't —
+  the source is always English; the translation lives in `.xcstrings`.
+- Identifiers, type names, and code comments are in English.
+
+---
+
+## Stack
+
+| Area          | Choice                         |
 |---------------|--------------------------------|
-| Платформа     | iOS 26+                        |
-| UI            | SwiftUI (без UIKit)            |
-| Данные        | SwiftData (локально, без сети) |
-| Состояние     | `@Observable` / `@Query` / `@Environment` (Observation Framework, не Combine) |
-| Локализация   | `Localizable.xcstrings` (EN source, RU translation) |
+| Platform      | iOS 26+                        |
+| UI            | SwiftUI (no UIKit)             |
+| Data          | SwiftData (local, no network)  |
+| State         | `@Observable` / `@Query` / `@Environment` (Observation framework, not Combine) |
+| Localization  | `Localizable.xcstrings` (EN source, RU translation) |
 
-Только SwiftUI и актуальный Swift. **UIKit не использовать.**
+SwiftUI and current Swift only. **Do not use UIKit.**
 
 ---
 
-## Команды
+## Commands
 
 ```bash
-# Сборка под симулятор
+# Build for the simulator
 xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build
 
-# Тесты
+# Tests
 xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro' test
 ```
 
-- Единственная схема: **`Inner Hero`**. Таргеты: `Inner Hero`, `Inner HeroTests`, `Inner HeroUITests`.
-- Конфигурации: `Debug`, `Release`.
+- Single scheme: **`Inner Hero`**. Targets: `Inner Hero`, `Inner HeroTests`, `Inner HeroUITests`.
+- Configurations: `Debug`, `Release`.
 
 ---
 
-## Карта проекта
+## Project map
 
 ```
 Inner Hero/
 ├── App/
-│   ├── Inner_HeroApp.swift        # Точка входа, ModelContainer, onboarding/sample data
-│   └── Schema/                    # SchemaV1, SchemaV2, AppMigrationPlan (миграции SwiftData)
+│   ├── Inner_HeroApp.swift        # Entry point, ModelContainer, onboarding/sample data
+│   └── Schema/                    # SchemaV1, SchemaV2, AppMigrationPlan (SwiftData migrations)
 ├── Core/
-│   ├── DesignSystem/              # ⭐ Токены и компоненты — ВСЕГДА начинать отсюда для UI
+│   ├── DesignSystem/              # ⭐ Tokens and components — ALWAYS start here for UI
 │   ├── Navigation/                # NavigationRouter, AppRoute, AppRouteView
-│   ├── Components/                # Общие компоненты (Charts, Modals, Schedule)
+│   ├── Components/                # Shared components (Charts, Modals, Schedule)
 │   └── Utilities/                 # BreathingController, StepTimerController, Haptics, Export
-├── Features/                      # Фичи по модулям (см. ниже)
+├── Features/                      # Features grouped by module (see below)
 │   └── <Feature>/{Views,ViewModels,Components}/
 ├── Models/                        # @Model SwiftData + Extensions/ + Predefined/
-├── Services/                      # Stateless-хелперы и менеджеры
-└── Resources/                     # Localizable.xcstrings, ассеты
+├── Services/                      # Stateless helpers and managers
+└── Resources/                     # Localizable.xcstrings, assets
 ```
 
-### Фичи (`Features/`)
-- **MainTab** — Home (сводка), таб-навигация.
-- **Schedule** — планирование упражнений по дням/времени, отметки выполнения.
-- **Exposures** — экспозиционная терапия: CRUD, шаги, таймеры, session-flow, прогресс.
-- **Sessions** — UI сессий дыхания / релаксации / заземления / экспозиции.
-- **BehavioralActivation** — списки активностей и сессии (новейший модуль, активно меняется).
-- **KnowledgeCenter** — статьи (поиск, категории).
-- **Onboarding** — первый запуск + дисклеймер.
-- **Settings** — Appearance / Privacy (app lock, PIN/биометрия) / Data (export/reset) / About.
+### Features (`Features/`)
+- **MainTab** — Home (summary), tab navigation.
+- **Schedule** — planning exercises by day/time, completion marks.
+- **Exposures** — exposure therapy: CRUD, steps, timers, session flow, progress.
+- **Sessions** — UI for breathing / relaxation / grounding / exposure sessions.
+- **BehavioralActivation** — activity lists and sessions (newest module, actively changing).
+- **KnowledgeCenter** — articles (search, categories).
+- **Onboarding** — first launch + disclaimer.
+- **Settings** — Appearance / Privacy (app lock, PIN/biometrics) / Data (export/reset) / About.
 
 ---
 
-## Конвенции
+## Conventions
 
-### Дизайн-система (`Core/DesignSystem/`) — обязательна
-Не хардкодить размеры/цвета/шрифты. Использовать токены:
+### Design system (`Core/DesignSystem/`) — mandatory
+Don't hardcode sizes/colors/fonts. Use tokens:
 
-- **Цвета:** `AppColors.*` (`DesignSystem.swift:8`) — `AppColors.primary`, `AppColors.positive` и т.п. Никаких `Color(red:green:blue:)` и `.blue`/`.green` в фичах.
-- **Отступы:** `Spacing.*` (`:73`) — вместо `padding(16)`/`spacing: 12`.
-- **Радиусы:** `CornerRadius.*` (`:93`) — вместо `cornerRadius: 20`.
-- **Иконки/тач-таргеты:** `IconSize.*` (`:121`), `TouchTarget.*` (`:113`).
-- **Прозрачности/тени:** `Opacity.*` (`:140`).
-- **Анимации/тайминги:** `AppAnimation.*` (`:170`), `InteractionTiming.*` (`:191`).
-- **Типографика:** `.appFont(.body)` и т.д. через `AppTextStyle` (`Typography.swift:14`).
-  Стили: `display, h1, h2, h3, bodyLarge, body, bodyMedium, small, smallMedium,
+- **Colors:** `AppColors.*` (`DesignSystem.swift:8`) — `AppColors.primary`, `AppColors.positive`, etc. No `Color(red:green:blue:)` or `.blue`/`.green` in features.
+- **Spacing:** `Spacing.*` (`:73`) — instead of `padding(16)`/`spacing: 12`.
+- **Corner radii:** `CornerRadius.*` (`:93`) — instead of `cornerRadius: 20`.
+- **Icons/touch targets:** `IconSize.*` (`:121`), `TouchTarget.*` (`:113`).
+- **Opacities/shadows:** `Opacity.*` (`:140`).
+- **Animations/timings:** `AppAnimation.*` (`:170`), `InteractionTiming.*` (`:191`).
+- **Typography:** `.appFont(.body)` etc. via `AppTextStyle` (`Typography.swift:14`).
+  Styles: `display, h1, h2, h3, bodyLarge, body, bodyMedium, small, smallMedium,
   caption, mono, monoLarge, statValue, buttonPrimary, buttonSmall, navItem, navItemActive`.
-  Вместо `.font(.system(size: 14, weight: .semibold))` — подобрать стиль из `AppTextStyle`.
-- Переиспользуемые компоненты — в `Components.swift` (большой файл; перед созданием
-  нового компонента проверить, нет ли уже готового: `PrimaryButton`, `CircleButton`,
-  `ExerciseRow`, `RadioCard`, `HeroFeatureCard`, навигационные пиллы и т.д.).
-- Общие модификаторы — в `ViewModifiers.swift` (`cardStyle`, `heroCardStyle`, `touchTarget`, `pageBackground`, ...).
+  Instead of `.font(.system(size: 14, weight: .semibold))`, pick a style from `AppTextStyle`.
+- Reusable components live in `Components.swift` (large file; before creating a new
+  component, check whether one already exists: `PrimaryButton`, `CircleButton`,
+  `ExerciseRow`, `RadioCard`, `HeroFeatureCard`, navigation pills, etc.).
+- Shared modifiers live in `ViewModifiers.swift` (`cardStyle`, `heroCardStyle`, `touchTarget`, `pageBackground`, ...).
 
-### Локализация
-- User-facing текст: `String(localized: "English source")`. Source — английский.
-- Перевод (RU) добавляется в `Localizable.xcstrings`, не в код.
-- Форматные строки: `String(format: String(localized: "Completed %1$d of %2$d"), a, b)`.
-- Не хардкодить отображаемый текст напрямую в `Text("...")` (исключение — данные/идентификаторы).
+### Localization
+- User-facing text: `String(localized: "English source")`. Source is English.
+- The RU translation is added in `Localizable.xcstrings`, not in code.
+- Format strings: `String(format: String(localized: "Completed %1$d of %2$d"), a, b)`.
+- Don't hardcode displayed text directly in `Text("...")` (exception — data/identifiers).
 
-### Навигация
-- Централизованный `NavigationRouter` (`@Observable @MainActor`), по `NavigationPath` на таб.
-- Маршруты — в `AppRoute` (enum). Роутинг — `switch` в `AppRouteView`.
-- `BARoute` — отдельный enum для BehavioralActivation (см. TECH_DEBT — это считается долгом).
+### Navigation
+- Centralized `NavigationRouter` (`@Observable @MainActor`), one `NavigationPath` per tab.
+- Routes live in `AppRoute` (enum). Routing is a `switch` in `AppRouteView`.
+- `BARoute` is a separate enum for BehavioralActivation (see TECH_DEBT — this is considered debt).
 
 ### MVVM
-- ViewModels: `@Observable @MainActor`, без прямого UIKit/глобалов.
-- ⚠️ MVVM применён **непоследовательно**: у части фич есть ViewModel (Home, Schedule,
-  BehavioralActivation), у части (Exposures) логика живёт во вьюхах. При новой работе —
-  тяготеть к выносу бизнес-логики в ViewModel, а не наращивать «массивные вьюхи».
+- ViewModels: `@Observable @MainActor`, no direct UIKit/globals.
+- ⚠️ MVVM is applied **inconsistently**: some features have a ViewModel (Home, Schedule,
+  BehavioralActivation), others (Exposures) keep logic in views. For new work, lean toward
+  moving business logic into a ViewModel rather than growing "massive views".
 
 ### SwiftData
-- `@Model`-классы — в `Models/`: `Exposure`, `ExposureSessionResult`, `ActivationTask`,
+- `@Model` classes live in `Models/`: `Exposure`, `ExposureSessionResult`, `ActivationTask`,
   `ActivationCategory`, `ActivationSession`, `ExerciseAssignment`, `ExerciseCompletion`,
   `FavoriteExercise`, `BreathingSessionResult`, `RelaxationSessionResult`, `GroundingSessionResult`.
-- Изменение моделей → **обязательно** новая версия схемы + стадия в `AppMigrationPlan`
-  (см. `App/Schema/`). Не менять существующие схемы «на месте».
-- Локализуемые/предзаданные данные моделей — в `Models/Extensions/` и `Models/Predefined/`.
-- Завершение упражнения — только через `Services/SessionCompletionService` (идемпотентно,
-  по `uniqueKey`). Не создавать `ExerciseCompletion` вручную.
+- Changing a model **requires** a new schema version + a stage in `AppMigrationPlan`
+  (see `App/Schema/`). Don't edit existing schemas in place.
+- Localizable/predefined model data lives in `Models/Extensions/` and `Models/Predefined/`.
+- Completing an exercise goes only through `Services/SessionCompletionService` (idempotent,
+  keyed by `uniqueKey`). Don't create `ExerciseCompletion` by hand.
 
-### Сервисы (`Services/`)
-Stateless-хелперы / менеджеры: `SessionCompletionService`, `NotificationManager` (`@MainActor`),
-`FavoritesService`, `ArticlesLoader`/`ArticlesStore`, `SampleDataLoader`. Бизнес-логику,
-работающую с `ModelContext`, держать здесь, а не во вьюхах.
+### Services (`Services/`)
+Stateless helpers / managers: `SessionCompletionService`, `NotificationManager` (`@MainActor`),
+`FavoritesService`, `ArticlesLoader`/`ArticlesStore`, `SampleDataLoader`. Keep business logic
+that touches `ModelContext` here, not in views.
 
 ### Concurrency
-- `async/await` + `@MainActor`. GCD не вводить.
-- Долгоживущие `Task` и `Timer` — отменять в `onDisappear` (сейчас это соблюдается не везде, см. TECH_DEBT).
+- `async/await` + `@MainActor`. Don't introduce GCD.
+- Long-lived `Task`s and `Timer`s — cancel them in `onDisappear` (not done everywhere yet, see TECH_DEBT).
 
 ---
 
-## Перед началом работы
+## Before starting work
 
-1. Для UI-задач — сперва посмотреть `Core/DesignSystem/` (токены и готовые компоненты).
-2. Для работы с данными — посмотреть нужный `@Model` и `App/Schema/`.
-3. Новый user-facing текст — английский ключ + перевод в `.xcstrings`.
-4. Заглянуть в **[TECH_DEBT.md](TECH_DEBT.md)** — известные слабые места и «осторожно здесь»,
-   чтобы не опираться на них как на образец и не ломать договорённости.
+1. For UI tasks — look at `Core/DesignSystem/` first (tokens and ready-made components).
+2. For data work — look at the relevant `@Model` and `App/Schema/`.
+3. New user-facing text — English key + translation in `.xcstrings`.
+4. Check **[TECH_DEBT.md](TECH_DEBT.md)** — known weak spots and "careful here", so you don't
+   rely on them as a model or break agreed conventions.
 
-## Чего не делать
-- Не использовать UIKit.
-- Не хардкодить цвета/отступы/шрифты вместо токенов дизайн-системы.
-- Не писать новые отображаемые строки на русском в коде (source — английский).
-- Не менять существующие версии схемы SwiftData без новой миграции.
-- Не плодить «массивные вьюхи» — выносить логику в ViewModel/компоненты.
+## Don't
+- Don't use UIKit.
+- Don't hardcode colors/spacing/fonts instead of design-system tokens.
+- Don't author new displayed strings in Russian in code (source is English).
+- Don't change existing SwiftData schema versions without a new migration.
+- Don't grow "massive views" — extract logic into a ViewModel/components.
