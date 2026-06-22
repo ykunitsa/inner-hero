@@ -54,4 +54,26 @@ enum TestSupport {
         )
         return fixedCalendar.date(from: components)!
     }
+
+    // MARK: - "Today"-anchored helpers
+    //
+    // Some logic (e.g. ScheduleViewModel streaks) reads `Date()` / `Calendar.current`
+    // directly and is not yet time-injectable (see TECH_DEBT A2). These helpers anchor
+    // seed data to the same real clock the code under test uses, so tests stay
+    // deterministic relative to the moment they run. Once time injection lands,
+    // prefer the fixed-date `date(...)` helper above.
+
+    /// Start of the current day in `Calendar.current`, shifted by `offsetDays`.
+    static func dayStart(offsetDays: Int = 0) -> Date {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return calendar.date(byAdding: .day, value: offsetDays, to: today) ?? today
+    }
+
+    /// Midday on the current day in `Calendar.current`, shifted by `offsetDays`.
+    /// Useful for `performedAt`-style timestamps that should fall inside a day window.
+    static func midday(offsetDays: Int = 0) -> Date {
+        Calendar.current.date(byAdding: .hour, value: 12, to: dayStart(offsetDays: offsetDays))
+            ?? dayStart(offsetDays: offsetDays)
+    }
 }
