@@ -7,6 +7,16 @@ import SwiftData
 @Observable
 final class BehavioralActivationViewModel {
 
+    /// Injected time source. Defaults to the system clock; tests pass a fixed clock/calendar
+    /// so "today", weekly windows, and staleness checks are deterministic.
+    @ObservationIgnored private let now: () -> Date
+    @ObservationIgnored private let calendar: Calendar
+
+    init(now: @escaping () -> Date = { Date() }, calendar: Calendar = .current) {
+        self.now = now
+        self.calendar = calendar
+    }
+
     // MARK: - Tab
 
     var selectedTab: Int = 0
@@ -95,7 +105,7 @@ final class BehavioralActivationViewModel {
             recentSessions
                 .filter {
                     $0.status == .completed &&
-                    ($0.completedAt.map { Calendar.current.isDateInToday($0) } ?? false)
+                    ($0.completedAt.map { calendar.isDate($0, inSameDayAs: now()) } ?? false)
                 }
                 .map { $0.activityId }
         )
@@ -103,7 +113,7 @@ final class BehavioralActivationViewModel {
         var candidates = pool.filter { !completedTodayIds.contains($0.id) }
         if candidates.isEmpty { candidates = pool }
 
-        let hour = Calendar.current.component(.hour, from: Date())
+        let hour = calendar.component(.hour, from: now())
         let lastThreeMoods = recentSessions
             .sorted { $0.createdAt > $1.createdAt }
             .prefix(3)
@@ -136,7 +146,7 @@ final class BehavioralActivationViewModel {
         // until the user explicitly resolves the session (continue / abandon / delete).
         guard interruptedSession == nil else { return }
         guard let session = sessions.first(where: { $0.status == .inProgress }) else { return }
-        if let startedAt = session.startedAt, Date().timeIntervalSince(startedAt) > Self.staleSessionThreshold {
+        if let startedAt = session.startedAt, now().timeIntervalSince(startedAt) > Self.staleSessionThreshold {
             session.status = .abandoned
             try? context.save()
         } else {
@@ -167,7 +177,7 @@ final class BehavioralActivationViewModel {
 
     func analytics(from sessions: [ActivationSession]) -> JournalAnalytics {
         let completed = sessions.filter { $0.status == .completed }
-        let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+        let weekAgo = calendar.date(byAdding: .day, value: -7, to: now()) ?? now()
         let weekly = completed.filter { ($0.completedAt ?? .distantPast) > weekAgo }
 
         func avg(_ arr: [Int]) -> Double? {

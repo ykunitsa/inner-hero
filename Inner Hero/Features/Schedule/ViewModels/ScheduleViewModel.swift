@@ -42,6 +42,16 @@ final class ScheduleViewModel {
     var isLoading = false
     var error: String?
 
+    /// Injected time source. Defaults to the system clock; tests pass a fixed clock/calendar
+    /// so streak and week-window math is deterministic.
+    @ObservationIgnored private let now: () -> Date
+    @ObservationIgnored private let calendar: Calendar
+
+    init(now: @escaping () -> Date = { Date() }, calendar: Calendar = .current) {
+        self.now = now
+        self.calendar = calendar
+    }
+
     private static let completedStatusRaw = SessionStatus.completed.rawValue
 
     static let timeFormatter: DateFormatter = {
@@ -76,7 +86,7 @@ final class ScheduleViewModel {
 
         defer { isLoading = false }
 
-        let weekday = Calendar.current.component(.weekday, from: selectedDate)
+        let weekday = calendar.component(.weekday, from: selectedDate)
         plannedAssignments = allAssignments.filter { $0.hasDay(weekday) }
 
         do {
@@ -89,7 +99,7 @@ final class ScheduleViewModel {
     }
 
     private func refreshManualCompletions(context: ModelContext, selectedDate: Date) {
-        let dayStart = Calendar.current.startOfDay(for: selectedDate)
+        let dayStart = calendar.startOfDay(for: selectedDate)
         let descriptor = FetchDescriptor<ExerciseCompletion>(
             predicate: #Predicate { $0.day == dayStart },
             sortBy: [SortDescriptor(\.createdAt, order: .forward)]
@@ -108,7 +118,6 @@ final class ScheduleViewModel {
         exposures: [Exposure],
         activationTasks: [ActivationTask]
     ) throws -> [CompletedEntry] {
-        let calendar = Calendar.current
         let dayStart = calendar.startOfDay(for: selectedDate)
         let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) ?? dayStart.addingTimeInterval(24 * 60 * 60)
 
@@ -268,7 +277,6 @@ final class ScheduleViewModel {
     }
 
     private func buildWeekProgress(context: ModelContext, selectedDate: Date) throws -> WeekProgress {
-        let calendar = Calendar.current
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: selectedDate) else {
             return .empty
         }
@@ -283,8 +291,8 @@ final class ScheduleViewModel {
     }
 
     private func countManualCompletions(context: ModelContext, from start: Date, to end: Date) -> Int {
-        let startDay = Calendar.current.startOfDay(for: start)
-        let endDay = Calendar.current.startOfDay(for: end)
+        let startDay = calendar.startOfDay(for: start)
+        let endDay = calendar.startOfDay(for: end)
         let descriptor = FetchDescriptor<ExerciseCompletion>(
             predicate: #Predicate { $0.day >= startDay && $0.day < endDay }
         )
@@ -303,8 +311,7 @@ final class ScheduleViewModel {
     }
 
     private func computeStreakDays(context: ModelContext, lookbackDays: Int) -> Int {
-        let calendar = Calendar.current
-        let todayStart = calendar.startOfDay(for: Date())
+        let todayStart = calendar.startOfDay(for: now())
         guard let lookbackStart = calendar.date(byAdding: .day, value: -(max(1, lookbackDays) - 1), to: todayStart) else { return 0 }
         let end = calendar.date(byAdding: .day, value: 1, to: todayStart) ?? Date()
         var daysWithCompletion = Set<Date>()
@@ -429,14 +436,14 @@ final class ScheduleViewModel {
         context: ModelContext,
         selectedDate: Date
     ) throws {
-        let dayStart = Calendar.current.startOfDay(for: selectedDate)
+        let dayStart = calendar.startOfDay(for: selectedDate)
         if let existing = manualCompletionByAssignmentId[assignment.id] {
             context.delete(existing)
             try context.save()
             refreshManualCompletions(context: context, selectedDate: selectedDate)
             return
         }
-        if let _ = try? SessionCompletionService.markCompletedIfNeeded(assignmentId: assignment.id, context: context, day: dayStart) {
+        if let _ = try? SessionCompletionService.markCompletedIfNeeded(assignmentId: assignment.id, context: context, day: dayStart, calendar: calendar) {
             refreshManualCompletions(context: context, selectedDate: selectedDate)
         }
     }

@@ -6,8 +6,8 @@
 //  XCTest suite doesn't touch: crash-recovery (checkInterruptedSession, which writes
 //  to the context) and filter reset / active-filter state.
 //
-//  NOTE: checkInterruptedSession compares against `Date()` for staleness; sessions are
-//  seeded relative to the real clock (see TECH_DEBT A2 on time injection).
+//  Time is injected (fixed clock), so the 24h staleness threshold is exercised
+//  deterministically.
 //
 
 import Foundation
@@ -19,13 +19,20 @@ import SwiftData
 @Suite("BehavioralActivationViewModel — crash recovery & filters")
 struct BehavioralActivationCrashRecoveryTests {
 
-    /// Inserts an in-progress session started `hoursAgo` hours ago.
+    /// Fixed "now" used by the view model under test.
+    private let fixedNow = TestSupport.date(year: 2026, month: 6, day: 22, hour: 14)
+
+    private func makeViewModel() -> BehavioralActivationViewModel {
+        BehavioralActivationViewModel(now: { self.fixedNow }, calendar: TestSupport.fixedCalendar)
+    }
+
+    /// Inserts an in-progress session started `hoursAgo` hours before the fixed now.
     @discardableResult
     private func insertInProgress(
         into context: ModelContext,
         hoursAgo: Double
     ) -> ActivationSession {
-        let startedAt = Date().addingTimeInterval(-hoursAgo * 3600)
+        let startedAt = fixedNow.addingTimeInterval(-hoursAgo * 3600)
         let session = ActivationSession(
             activityId: UUID(),
             status: .inProgress,
@@ -42,7 +49,7 @@ struct BehavioralActivationCrashRecoveryTests {
     func freshSessionOffered() throws {
         let context = try TestSupport.makeInMemoryContext()
         let session = insertInProgress(into: context, hoursAgo: 1)
-        let vm = BehavioralActivationViewModel()
+        let vm = makeViewModel()
 
         vm.checkInterruptedSession([session], context: context)
 
@@ -55,7 +62,7 @@ struct BehavioralActivationCrashRecoveryTests {
     func staleSessionAbandoned() throws {
         let context = try TestSupport.makeInMemoryContext()
         let session = insertInProgress(into: context, hoursAgo: 25) // > 24h threshold
-        let vm = BehavioralActivationViewModel()
+        let vm = makeViewModel()
 
         vm.checkInterruptedSession([session], context: context)
 
@@ -78,7 +85,7 @@ struct BehavioralActivationCrashRecoveryTests {
         let planned = ActivationSession(activityId: UUID(), status: .planned)
         context.insert(planned)
         try context.save()
-        let vm = BehavioralActivationViewModel()
+        let vm = makeViewModel()
 
         vm.checkInterruptedSession([planned], context: context)
 
@@ -91,7 +98,7 @@ struct BehavioralActivationCrashRecoveryTests {
         let context = try TestSupport.makeInMemoryContext()
         let first = insertInProgress(into: context, hoursAgo: 1)
         let second = insertInProgress(into: context, hoursAgo: 2)
-        let vm = BehavioralActivationViewModel()
+        let vm = makeViewModel()
 
         vm.checkInterruptedSession([first], context: context)
         let captured = vm.interruptedSession?.id
@@ -106,7 +113,7 @@ struct BehavioralActivationCrashRecoveryTests {
 
     @Test("resetFilters clears every filter and the search text")
     func resetFiltersClearsEverything() {
-        let vm = BehavioralActivationViewModel()
+        let vm = makeViewModel()
         vm.filterCategoryIds = [UUID()]
         vm.filterPleasure = true
         vm.filterMastery = true
@@ -125,7 +132,7 @@ struct BehavioralActivationCrashRecoveryTests {
 
     @Test("hasActiveFilters ignores search text but reflects real filters")
     func hasActiveFiltersSemantics() {
-        let vm = BehavioralActivationViewModel()
+        let vm = makeViewModel()
         #expect(!vm.hasActiveFilters)
 
         // Search text alone is not an "active filter".
