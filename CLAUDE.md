@@ -32,6 +32,7 @@ knowledge center.
 | Data          | SwiftData (local, no network)  |
 | State         | `@Observable` / `@Query` / `@Environment` (Observation framework, not Combine) |
 | Localization  | `Localizable.xcstrings` (EN source, RU translation) |
+| Tests         | **Swift Testing** (`import Testing`, `@Test` / `@Suite` / `#expect`) for new code |
 
 SwiftUI and current Swift only. **Do not use UIKit.**
 
@@ -42,11 +43,11 @@ SwiftUI and current Swift only. **Do not use UIKit.**
 ```bash
 # Build for the simulator
 xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 
 # Tests
 xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' test
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
 ```
 
 - Single scheme: **`Inner Hero`**. Targets: `Inner Hero`, `Inner HeroTests`, `Inner HeroUITests`.
@@ -140,6 +141,23 @@ that touches `ModelContext` here, not in views.
 ### Concurrency
 - `async/await` + `@MainActor`. Don't introduce GCD.
 - Long-lived `Task`s and `Timer`s — cancel them in `onDisappear` (not done everywhere yet, see TECH_DEBT).
+
+### Testing
+- **New tests use Swift Testing** (`import Testing`, `@Test` / `@Suite` / `#expect` / `#require`,
+  `@Test(arguments:)` for parameterized cases). Don't write new XCTest. Existing XCTest files
+  (`Inner_HeroTests`, `BehavioralActivationViewModelTests`) stay as-is — migrate opportunistically,
+  not in bulk. Both frameworks coexist in the same target.
+- **Pyramid is unit-heavy.** Most value is in pure logic: ViewModels (filtering, analytics,
+  streaks, smart-random), Services, `Core/Utilities` controllers, model computed properties.
+- **SwiftData tests** use an in-memory container — never the on-disk store:
+  `ModelConfiguration(isStoredInMemoryOnly: true)`. Fresh container per test = isolation.
+- **Inject time, don't read the clock.** For deterministic tests, pass `Date`/`Calendar` in
+  (as `SessionCompletionService` already does: `day: Date = Date()`, `calendar: Calendar = .current`).
+  New time-dependent logic should follow the same default-parameter injection pattern.
+- **UI tests (`Inner HeroUITests`) stay minimal** — only critical end-to-end flows (onboarding,
+  one full session, app lock). They're slow/brittle; prefer pushing logic down to testable units.
+- **Migrations need tests.** Every new `SchemaVN` + `AppMigrationPlan` stage gets a test that
+  loads old-version data and asserts it survives (see TECH_DEBT 🔴 #2).
 
 ---
 
