@@ -22,13 +22,13 @@ enum PresetActivationData {
 
     static var categories: [ActivationCategory] {
         [
-            ActivationCategory(id: selfCareId,    predefinedKey: "self_care",    title: "Self-Care",    sfSymbol: "shield.fill",           colorHex: "#34A85A", sortOrder: 0, isPreset: true),
-            ActivationCategory(id: achievementId, predefinedKey: "achievement",  title: "Achievement",  sfSymbol: "checkmark.square.fill", colorHex: "#6366F1", sortOrder: 1, isPreset: true),
-            ActivationCategory(id: pleasureId,    predefinedKey: "pleasure",     title: "Pleasure",     sfSymbol: "star.fill",             colorHex: "#F59E0B", sortOrder: 2, isPreset: true),
-            ActivationCategory(id: socialId,      predefinedKey: "social",       title: "Social",       sfSymbol: "person.2.fill",         colorHex: "#EC4899", sortOrder: 3, isPreset: true),
-            ActivationCategory(id: physicalId,    predefinedKey: "physical",     title: "Physical",     sfSymbol: "bolt.fill",             colorHex: "#E8392A", sortOrder: 4, isPreset: true),
-            ActivationCategory(id: creativeId,    predefinedKey: "creative",     title: "Creative",     sfSymbol: "paintbrush.fill",       colorHex: "#8B5CF6", sortOrder: 5, isPreset: true),
-            ActivationCategory(id: valuesId,      predefinedKey: "values",       title: "Values",       sfSymbol: "leaf.fill",             colorHex: "#059669", sortOrder: 6, isPreset: true),
+            ActivationCategory(id: selfCareId,    predefinedKey: "self_care",    title: "Self-Care",    sfSymbol: "shield",           colorHex: "#34A85A", sortOrder: 0, isPreset: true),
+            ActivationCategory(id: achievementId, predefinedKey: "achievement",  title: "Achievement",  sfSymbol: "checkmark.square", colorHex: "#6366F1", sortOrder: 1, isPreset: true),
+            ActivationCategory(id: pleasureId,    predefinedKey: "pleasure",     title: "Pleasure",     sfSymbol: "star",             colorHex: "#F59E0B", sortOrder: 2, isPreset: true),
+            ActivationCategory(id: socialId,      predefinedKey: "social",       title: "Social",       sfSymbol: "person.2",         colorHex: "#EC4899", sortOrder: 3, isPreset: true),
+            ActivationCategory(id: physicalId,    predefinedKey: "physical",     title: "Physical",     sfSymbol: "bolt",             colorHex: "#E8392A", sortOrder: 4, isPreset: true),
+            ActivationCategory(id: creativeId,    predefinedKey: "creative",     title: "Creative",     sfSymbol: "paintbrush",       colorHex: "#8B5CF6", sortOrder: 5, isPreset: true),
+            ActivationCategory(id: valuesId,      predefinedKey: "values",       title: "Values",       sfSymbol: "leaf",             colorHex: "#059669", sortOrder: 6, isPreset: true),
         ]
     }
 

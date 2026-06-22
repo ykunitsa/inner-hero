@@ -28,22 +28,22 @@ final class NotificationManager {
     
     // MARK: - Notification Management
     
-    func scheduleNotification(for assignment: ExerciseAssignment) async throws {
+    func scheduleNotification(for assignment: ExerciseAssignment, titleOverride: String? = nil) async throws {
         // Remove existing notification if any
         if let notificationId = assignment.notificationId {
             await removeNotification(identifier: notificationId)
         }
-        
+
         guard assignment.isActive else {
             return
         }
-        
+
         // Create notification identifier
         let notificationId = "exercise_\(assignment.id.uuidString)"
         assignment.notificationId = notificationId
-        
-        // Get exercise name
-        let exerciseName = assignment.displayTitle(exposures: [], activationTasks: [])
+
+        // Get exercise name (callers that hold the resolved title — e.g. behavioral activation — pass it directly)
+        let exerciseName = titleOverride ?? assignment.displayTitle(exposures: [], activationTasks: [])
         
         // Create notification content
         let content = UNMutableNotificationContent()
@@ -104,8 +104,38 @@ final class NotificationManager {
         assignment.notificationId = nil
     }
     
+    // MARK: - Behavioral Activation
+
+    /// Schedules a one-time reminder for a planned activation session.
+    func scheduleActivationReminder(sessionId: UUID, title: String, at date: Date) async {
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Time for activity")
+        content.body = title
+        content.sound = .default
+        content.userInfo = ["sessionId": sessionId.uuidString]
+
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: "ba-once-\(sessionId.uuidString)",
+            content: content,
+            trigger: trigger
+        )
+        try? await notificationCenter.add(request)
+    }
+
+    /// Removes any pending behavioral-activation reminders whose identifier references this id
+    /// (works for both one-time session ids and recurring assignment ids).
+    func cancelActivationReminders(id: UUID) async {
+        let pending = await notificationCenter.pendingNotificationRequests()
+        let identifiers = pending.map(\.identifier).filter { $0.contains(id.uuidString) }
+        guard !identifiers.isEmpty else { return }
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
+        notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
+
     // MARK: - Cleanup
-    
+
     func removeAllNotifications() async {
         notificationCenter.removeAllPendingNotificationRequests()
         notificationCenter.removeAllDeliveredNotifications()

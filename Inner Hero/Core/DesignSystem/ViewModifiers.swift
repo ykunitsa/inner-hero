@@ -26,7 +26,7 @@ struct CardStyle: ViewModifier {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(AppColors.gray200, lineWidth: 0.5)
+                    .strokeBorder(AppColors.gray200, lineWidth: BorderWidth.hairline)
             )
             .shadow(color: .black.opacity(scheme == .dark
                                           ? Opacity.lightShadow

@@ -169,25 +169,9 @@ struct BreathingSessionView: View {
             .contentShape(Rectangle())
 
             // Center: Play / Pause
-            Button {
-                togglePlayPause()
-            } label: {
-                Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(isPlaying ? .white : Color.white.opacity(0.5))
-                    .frame(width: 36, height: 36)
-                    .background(
-                        Circle()
-                            .fill(isPlaying
-                                  ? Color.white.opacity(0.25)
-                                  : Color.white.opacity(0.12))
-                    )
-            }
-            .buttonStyle(.plain)
-            .touchTarget()
-            .disabled(!controller.isBreathing && controller.elapsedTime > 0)
-            .padding(.horizontal, Spacing.xxxs)
-            .accessibilityLabel(isPlaying ? "Pause" : "Start")
+            SessionPlayPauseCircleButton(isPlaying: isPlaying, action: togglePlayPause)
+                .disabled(!controller.isBreathing && controller.elapsedTime > 0)
+                .accessibilityLabel(isPlaying ? "Pause" : "Start")
 
             // Right: Finish
             Button {

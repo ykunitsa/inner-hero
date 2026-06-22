@@ -11,8 +11,10 @@
         }
       }
     },
+    " (%lld)" : {
+
+    },
     "—" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -69,6 +71,16 @@
         }
       }
     },
+    "%@ → %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ → %2$@"
+          }
+        }
+      }
+    },
     "%@ indicator" : {
       "localizations" : {
         "ru" : {
@@ -85,6 +97,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ не найдено"
+          }
+        }
+      }
+    },
+    "%@, %lld selected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$lld selected"
           }
         }
       }
@@ -160,6 +182,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@. %lld %@%@"
+          }
+        }
+      }
+    },
+    "%@%lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$lld %3$@"
           }
         }
       }
@@ -474,6 +506,16 @@
         }
       }
     },
+    "%lld min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld мин"
+          }
+        }
+      }
+    },
     "%lld of %lld steps completed" : {
       "localizations" : {
         "en" : {
@@ -612,6 +654,9 @@
           }
         }
       }
+    },
+    "😶" : {
+
     },
     "0" : {
       "localizations" : {
@@ -796,6 +841,16 @@
         }
       }
     },
+    "Abandon" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отказаться"
+          }
+        }
+      }
+    },
     "About" : {
       "localizations" : {
         "ru" : {
@@ -879,7 +934,6 @@
       }
     },
     "Activities" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -965,7 +1019,6 @@
       }
     },
     "Activity completed" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1008,6 +1061,26 @@
         }
       }
     },
+    "Activity name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название"
+          }
+        }
+      }
+    },
+    "Activity not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активность не найдена"
+          }
+        }
+      }
+    },
     "Activity selection" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1031,7 +1104,6 @@
       }
     },
     "Add activity" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1145,6 +1217,9 @@
         }
       }
     },
+    "Add to schedule" : {
+
+    },
     "Adds an empty activity to the end of the list" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1197,6 +1272,9 @@
         }
       }
     },
+    "All" : {
+
+    },
     "All days" : {
       "localizations" : {
         "ru" : {
@@ -1243,6 +1321,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Все шаги выполнены!"
+          }
+        }
+      }
+    },
+    "Allow notifications in Settings to receive reminders." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешите уведомления в Настройках, чтобы получать напоминания."
           }
         }
       }
@@ -1604,6 +1692,16 @@
         }
       }
     },
+    "Avg. delta" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средняя дельта"
+          }
+        }
+      }
+    },
     "Back" : {
       "localizations" : {
         "ru" : {
@@ -1641,6 +1739,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "До"
+          }
+        }
+      }
+    },
+    "Before → after" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "До → после"
           }
         }
       }
@@ -1841,6 +1949,9 @@
         }
       }
     },
+    "Category" : {
+
+    },
     "CBT Tools for daily practice" : {
       "localizations" : {
         "ru" : {
@@ -1957,6 +2068,16 @@
         }
       }
     },
+    "Clear search" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистить поиск"
+          }
+        }
+      }
+    },
     "Clench both hands into fists. Feel the tension in your hands and forearms." : {
       "localizations" : {
         "ru" : {
@@ -1983,6 +2104,19 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Закрыть"
+          }
+        }
+      }
+    },
+    "Complete activity" : {
+
+    },
+    "Complete an activity and it will show up here." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполните первую активность, и она появится здесь."
           }
         }
       }
@@ -2357,6 +2491,16 @@
         }
       }
     },
+    "Date & time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дата и время"
+          }
+        }
+      }
+    },
     "Date: %@" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2375,6 +2519,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выбор дня недели"
+          }
+        }
+      }
+    },
+    "Days of the week" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дни недели"
           }
         }
       }
@@ -2555,7 +2709,6 @@
       }
     },
     "Details" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2603,6 +2756,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выполняйте активность в комфортном темпе"
+          }
+        }
+      }
+    },
+    "Does not repeat" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не повторять"
           }
         }
       }
@@ -2782,6 +2945,26 @@
         }
       }
     },
+    "e.g. Take a 10–15 minute walk" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогуляться 10–15 минут"
+          }
+        }
+      }
+    },
+    "Earlier" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ранее"
+          }
+        }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "ru" : {
@@ -2830,6 +3013,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Образование"
+          }
+        }
+      }
+    },
+    "Effort" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усилие"
+          }
+        }
+      }
+    },
+    "Effort level" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровень усилия"
           }
         }
       }
@@ -2913,6 +3116,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Отметка"
+          }
+        }
+      }
+    },
+    "Entry not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запись не найдена"
           }
         }
       }
@@ -3362,6 +3575,28 @@
         }
       }
     },
+    "Filters" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фильтры"
+          }
+        }
+      }
+    },
+    "Filters active" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фильтры активны"
+          }
+        }
+      }
+    },
     "Find 4 touch sensations: clothes, chair, floor, object in your hands." : {
       "localizations" : {
         "ru" : {
@@ -3378,6 +3613,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Найдите 5 предметов вокруг и задержите на каждом взгляд на секунду."
+          }
+        }
+      }
+    },
+    "Finding an activity…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подбираем активность…"
           }
         }
       }
@@ -3630,7 +3875,6 @@
       }
     },
     "Great" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3732,6 +3976,26 @@
         }
       }
     },
+    "Hard to start, but it got easier…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Было тяжело начать, но потом стало лучше..."
+          }
+        }
+      }
+    },
+    "Here's your pick" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вот твой вариант"
+          }
+        }
+      }
+    },
     "Hide" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3764,12 +4028,32 @@
         }
       }
     },
+    "High" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Высокое"
+          }
+        }
+      }
+    },
     "High anxiety, significant distress" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Высокая тревога, значительный дистресс"
+          }
+        }
+      }
+    },
+    "Hint (optional)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подсказка (необязательно)"
           }
         }
       }
@@ -3812,6 +4096,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Удерживайте иконку ☰ для изменения порядка или смахните влево для удаления."
+          }
+        }
+      }
+    },
+    "How did it go?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как прошло?"
+          }
+        }
+      }
+    },
+    "How did you feel beforehand?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как вы себя чувствовали до?"
+          }
+        }
+      }
+    },
+    "How do you feel right now?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как вы себя чувствуете прямо сейчас?"
           }
         }
       }
@@ -3994,6 +4308,16 @@
         }
       }
     },
+    "Incomplete" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Незавершено"
+          }
+        }
+      }
+    },
     "Increased by %lld" : {
       "localizations" : {
         "ru" : {
@@ -4109,6 +4433,26 @@
         }
       }
     },
+    "Journal" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал"
+          }
+        }
+      }
+    },
+    "Journal is empty" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал пока пуст"
+          }
+        }
+      }
+    },
     "Keep in mind" : {
       "localizations" : {
         "ru" : {
@@ -4161,12 +4505,33 @@
         }
       }
     },
+    "Last 7 days" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "за 7 дней"
+          }
+        }
+      }
+    },
     "Leave" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выйти"
+          }
+        }
+      }
+    },
+    "Leave empty for flexible timing" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оставить пустым для свободного времени"
           }
         }
       }
@@ -4351,6 +4716,26 @@
         }
       }
     },
+    "Low" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лёгкое"
+          }
+        }
+      }
+    },
+    "Low energy, tired…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет настроения, устал..."
+          }
+        }
+      }
+    },
     "Lower Body" : {
       "localizations" : {
         "ru" : {
@@ -4381,6 +4766,27 @@
         }
       }
     },
+    "M — mastery" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M — даёт ощущение достижения"
+          }
+        }
+      }
+    },
+    "M — Mastery" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M — Мастерство"
+          }
+        }
+      }
+    },
     "Mark as completed" : {
       "localizations" : {
         "ru" : {
@@ -4400,6 +4806,9 @@
           }
         }
       }
+    },
+    "Mastery" : {
+
     },
     "Maximum" : {
       "localizations" : {
@@ -4482,6 +4891,16 @@
         }
       }
     },
+    "Moderate" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Среднее"
+          }
+        }
+      }
+    },
     "Moderate anxiety, noticeable discomfort" : {
       "localizations" : {
         "ru" : {
@@ -4498,6 +4917,48 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Месяц"
+          }
+        }
+      }
+    },
+    "Mood before" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настроение до"
+          }
+        }
+      }
+    },
+    "Mood down" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↓ настроение"
+          }
+        }
+      }
+    },
+    "Mood now" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настроение сейчас"
+          }
+        }
+      }
+    },
+    "Mood up" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↑ настроение"
           }
         }
       }
@@ -4551,6 +5012,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Мой список"
+          }
+        }
+      }
+    },
+    "New activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новая активность"
           }
         }
       }
@@ -4629,6 +5100,16 @@
     },
     "No activities available" : {
 
+    },
+    "No activities match. Clear filters and try again?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет подходящих активностей. Сбросить фильтры и попробовать снова?"
+          }
+        }
+      }
     },
     "No activities yet" : {
       "extractionState" : "stale",
@@ -4908,6 +5389,16 @@
         }
       }
     },
+    "Nothing found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ничего не найдено"
+          }
+        }
+      }
+    },
     "Nothing found for your request" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4996,6 +5487,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Разрешения на уведомления"
+          }
+        }
+      }
+    },
+    "Notifications are off" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведомления отключены"
+          }
+        }
+      }
+    },
+    "of %lld min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "из %lld мин"
           }
         }
       }
@@ -5105,6 +5616,40 @@
         }
       }
     },
+    "P — pleasure" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "P — даёт удовольствие"
+          }
+        }
+      }
+    },
+    "P — Pleasure" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "P — Удовольствие"
+          }
+        }
+      }
+    },
+    "P & M" : {
+
+    },
+    "Pace doesn't matter" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Темп не важен"
+          }
+        }
+      }
+    },
     "Paced Breathing" : {
       "localizations" : {
         "ru" : {
@@ -5197,6 +5742,9 @@
           }
         }
       }
+    },
+    "Pleasure" : {
+
     },
     "Point your toes down and tense your calves and feet." : {
       "localizations" : {
@@ -9218,7 +9766,6 @@
       }
     },
     "Random activity" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9413,6 +9960,16 @@
         }
       }
     },
+    "Repeat" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторение"
+          }
+        }
+      }
+    },
     "Require Face ID on launch" : {
       "localizations" : {
         "ru" : {
@@ -9453,6 +10010,16 @@
         }
       }
     },
+    "Reset filters" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить фильтры"
+          }
+        }
+      }
+    },
     "Reset timer" : {
       "localizations" : {
         "ru" : {
@@ -9489,6 +10056,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Продолжить таймер"
+          }
+        }
+      }
+    },
+    "Run again" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запустить снова"
           }
         }
       }
@@ -9594,8 +10171,17 @@
         }
       }
     },
+    "Save schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить расписание"
+          }
+        }
+      }
+    },
     "Save session" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9646,6 +10232,9 @@
         }
       }
     },
+    "Schedule for later" : {
+
+    },
     "Schedule is not available in this context." : {
       "localizations" : {
         "ru" : {
@@ -9676,6 +10265,16 @@
         }
       }
     },
+    "Scheduled for" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запланировано"
+          }
+        }
+      }
+    },
     "Scrunch your face: squeeze your eyes shut and clench your jaw." : {
       "localizations" : {
         "ru" : {
@@ -9692,6 +10291,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поиск"
+          }
+        }
+      }
+    },
+    "Search activities…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиск активности…"
           }
         }
       }
@@ -9924,6 +10533,16 @@
         }
       }
     },
+    "Session not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сессия не найдена"
+          }
+        }
+      }
+    },
     "Session results" : {
       "localizations" : {
         "ru" : {
@@ -10128,6 +10747,16 @@
         }
       }
     },
+    "Skipped" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пропущено"
+          }
+        }
+      }
+    },
     "Slow, rhythmic breathing at a controlled rate. Helps regulate heart rate variability and reduces physiological arousal." : {
       "localizations" : {
         "ru" : {
@@ -10177,6 +10806,9 @@
           }
         }
       }
+    },
+    "Start activity" : {
+
     },
     "Start behavioral activation session" : {
       "extractionState" : "stale",
@@ -10272,6 +10904,16 @@
         }
       }
     },
+    "Status" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статус"
+          }
+        }
+      }
+    },
     "Step %1$lld of %2$lld" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -10349,6 +10991,9 @@
           }
         }
       }
+    },
+    "Step %lld of 3" : {
+
     },
     "Step %lld: %@" : {
       "localizations" : {
@@ -10447,6 +11092,16 @@
         }
       }
     },
+    "Suggested duration (min)" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рекомендуемая длительность (мин)"
+          }
+        }
+      }
+    },
     "Summary" : {
       "localizations" : {
         "ru" : {
@@ -10473,6 +11128,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Системная"
+          }
+        }
+      }
+    },
+    "Tags" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Теги"
           }
         }
       }
@@ -10613,6 +11278,7 @@
       }
     },
     "The new interface is coming soon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10684,6 +11350,17 @@
         }
       }
     },
+    "this week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "за неделю"
+          }
+        }
+      }
+    },
     "This will delete all exercises, schedules, and session results." : {
       "localizations" : {
         "ru" : {
@@ -10720,6 +11397,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Время"
+          }
+        }
+      }
+    },
+    "Time for activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время для активности"
           }
         }
       }
@@ -10908,8 +11595,17 @@
         }
       }
     },
+    "Try to remember how you felt before you started." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Постарайтесь вспомнить настроение перед началом."
+          }
+        }
+      }
+    },
     "Type" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11099,6 +11795,16 @@
         }
       }
     },
+    "Very bad" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очень плохо"
+          }
+        }
+      }
+    },
     "Very high anxiety, hard to tolerate" : {
       "localizations" : {
         "ru" : {
@@ -11163,6 +11869,16 @@
         }
       }
     },
+    "We'll pick one that fits" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Алгоритм подберёт подходящую"
+          }
+        }
+      }
+    },
     "Week" : {
       "localizations" : {
         "ru" : {
@@ -11189,6 +11905,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выходные"
+          }
+        }
+      }
+    },
+    "Weekly" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По дням недели"
           }
         }
       }
@@ -11223,6 +11949,16 @@
         }
       }
     },
+    "What got in the way?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что мешало?"
+          }
+        }
+      }
+    },
     "What it's for" : {
       "localizations" : {
         "ru" : {
@@ -11239,6 +11975,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваши достижения"
+          }
+        }
+      }
+    },
+    "What's making it hard to start?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что мешает начать?"
           }
         }
       }
@@ -11356,6 +12102,26 @@
         }
       }
     },
+    "Yes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Да"
+          }
+        }
+      }
+    },
+    "Yesterday" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вчера"
+          }
+        }
+      }
+    },
     "You brought your attention to the present moment—that really helps." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -11393,6 +12159,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вы проделали отличную работу"
+          }
+        }
+      }
+    },
+    "You didn't finish your activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы не завершили активность"
           }
         }
       }
