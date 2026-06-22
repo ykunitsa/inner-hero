@@ -9,11 +9,16 @@ Priorities: 🔴 critical · 🟠 important · 🟡 nice-to-have.
 
 ## 🔴 Critical
 
-### 1. Almost no tests (<1% coverage)
-6 model tests + empty UI templates from the project boilerplate. Key areas uncovered:
-`Services/SessionCompletionService`, `Features/Schedule/ViewModels/ScheduleViewModel`,
-migrations in `App/Schema/AppMigrationPlan`.
-→ First cover `SessionCompletionService` (idempotency) and the V1→V2 migration.
+### 1. Low test coverage (in progress)
+Now covered (Swift Testing, in-memory store via `Inner HeroTests/Support/TestModelContainer`):
+`SessionCompletionService` (idempotency), `ScheduleViewModel` (planning/streak/weekly),
+`BehavioralActivationViewModel` (crash recovery + filters; pure logic already in XCTest),
+`StepTimerController` / `BreathingController.BreathPhase` (pure math).
+Time is injectable in the schedule/BA view models (`now:` / `calendar:` init params).
+Still uncovered: **V1→V2 migration** (`App/Schema/AppMigrationPlan`), **Exposures** logic
+(currently in views — needs a ViewModel to be testable), the remaining session view models,
+and `NotificationManager`.
+→ Next: extract an Exposures ViewModel, then cover the V1→V2 migration.
 
 ### 2. The V1→V2 migration deletes data irreversibly
 `App/Schema/AppMigrationPlan.swift` deletes BA assignments, completions, and legacy models
