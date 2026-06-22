@@ -85,6 +85,31 @@ struct CircleButton: View {
     }
 }
 
+/// Play / pause circle control for dark chrome (e.g. `SessionFlowBottomPill`, breathing session bar).
+struct SessionPlayPauseCircleButton: View {
+    var isPlaying: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(isPlaying ? .white : Color.white.opacity(0.5))
+                .frame(width: 36, height: 36)
+                .background(
+                    Circle()
+                        .fill(isPlaying
+                            ? Color.white.opacity(0.25)
+                            : Color.white.opacity(0.12))
+                )
+        }
+        .buttonStyle(.plain)
+        .touchTarget()
+        .padding(.horizontal, Spacing.xxxs)
+        .accessibilityLabel(isPlaying ? String(localized: "Pause") : String(localized: "Resume"))
+    }
+}
+
 /// Arrow forward button (used in exercise list rows)
 struct ArrowButton: View {
     var size: CGFloat = IconSize.action
@@ -375,7 +400,7 @@ struct EmotionCell: View {
 /// Usage: `AppBadge(text: "Fortune Telling", style: .error)`
 struct AppBadge: View {
     enum BadgeStyle {
-        case error, success, neutral, accent
+        case error, success, neutral, accent, warning
 
         var background: Color {
             switch self {
@@ -383,6 +408,7 @@ struct AppBadge: View {
             case .success: return AppColors.positiveLight
             case .neutral: return AppColors.gray100
             case .accent:  return AppColors.accentLight
+            case .warning: return AppColors.State.warning.opacity(0.12)
             }
         }
 
@@ -392,6 +418,7 @@ struct AppBadge: View {
             case .success: return AppColors.positive
             case .neutral: return AppColors.gray600
             case .accent:  return AppColors.accent
+            case .warning: return AppColors.State.warning
             }
         }
     }
@@ -419,15 +446,69 @@ struct AppBadge: View {
 }
 
 // ─────────────────────────────────────────────
+// MARK: Filter pill (Menu label)
+// ─────────────────────────────────────────────
+
+/// Capsule label for search/filter `Menu` controls: `Title` + optional ` (n)`.
+/// Typography matches `TopTabBar`: inactive `body`, active `bodyMedium` + accent.
+/// When `selectedCount == 0`, no parentheses; when `> 0`, shows count and accent styling.
+/// Usage: `Menu { ... } label: { FilterPillMenuLabel(title:selectedCount:) }`
+struct FilterPillMenuLabel: View {
+    let title: String
+    /// Number of active selections; `0` means default (no count badge, neutral chrome).
+    let selectedCount: Int
+    var accentColor: Color = AppColors.primary
+
+    private var isActive: Bool { selectedCount > 0 }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Text(title)
+                .appFont(isActive ? .bodyMedium : .body)
+            if selectedCount > 0 {
+                Text(" (\(selectedCount))")
+                    .appFont(.bodyMedium)
+            }
+        }
+        .foregroundStyle(isActive ? accentColor : TextColors.primary)
+        .lineLimit(1)
+        .minimumScaleFactor(ContentScaling.filterPillMinimum)
+        .padding(.horizontal, Spacing.xs)
+        .frame(maxWidth: .infinity)
+        .frame(minHeight: TouchTarget.minimum)
+        .background(
+            Capsule().fill(isActive ? accentColor.opacity(Opacity.softBackground) : AppColors.cardBackground)
+        )
+        .overlay(
+            Capsule().strokeBorder(
+                isActive ? accentColor.opacity(Opacity.emphasizedBorder) : AppColors.gray200,
+                lineWidth: isActive ? BorderWidth.standard : BorderWidth.hairline
+            )
+        )
+        .accessibilityLabel(accessibilityLabel)
+    }
+
+    private var accessibilityLabel: String {
+        if selectedCount > 0 {
+            String(format: String(localized: "%@, %lld selected"), title, Int64(selectedCount))
+        } else {
+            title
+        }
+    }
+}
+
+// ─────────────────────────────────────────────
 // MARK: Top Tab Navigation Bar
 // ─────────────────────────────────────────────
 
 /// Segmented top navigation with active underline
 /// Segmented pill tab bar
 /// Usage: `TopTabBar(tabs: ["Today", "All schedules"], selection: $tab)`
+/// - Parameter floating: When `true`, outer track is transparent so content behind (e.g. scroll + `safeAreaInset`) shows through.
 struct TopTabBar: View {
     let tabs: [String]
     @Binding var selection: Int
+    var floating: Bool = false
     @Namespace private var namespace
 
     var body: some View {
@@ -459,9 +540,11 @@ struct TopTabBar: View {
             }
         }
         .padding(Spacing.xxxs)
-        .background(
-            Capsule().fill(AppColors.gray100)
-        )
+        .background {
+            if !floating {
+                Capsule().fill(AppColors.gray100)
+            }
+        }
     }
 }
 
@@ -635,6 +718,47 @@ struct FlatPillNavBar: View {
         .buttonStyle(.plain)
         .accessibilityLabel(item.accessibilityLabel)
         .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+    }
+}
+
+// ─────────────────────────────────────────────
+// MARK: Session Flow Bottom Pill (Grounding-style)
+// ─────────────────────────────────────────────
+
+/// Black capsule bar with three equal columns: back | center (timer / label) | primary action.
+/// Used by multi-step exercise flows (e.g. grounding, behavioral activation).
+struct SessionFlowBottomPill<L: View, C: View, R: View>: View {
+    @ViewBuilder let left: () -> L
+    @ViewBuilder let center: () -> C
+    @ViewBuilder let right: () -> R
+
+    init(
+        @ViewBuilder left: @escaping () -> L,
+        @ViewBuilder center: @escaping () -> C,
+        @ViewBuilder right: @escaping () -> R
+    ) {
+        self.left = left
+        self.center = center
+        self.right = right
+    }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            left()
+                .frame(maxWidth: .infinity)
+                .frame(height: TouchTarget.minimum)
+            center()
+                .frame(maxWidth: .infinity)
+                .frame(height: TouchTarget.minimum)
+            right()
+                .frame(maxWidth: .infinity)
+                .frame(height: TouchTarget.minimum)
+        }
+        .padding(.horizontal, Spacing.sm)
+        .padding(.vertical, Spacing.xxs)
+        .background(Capsule().fill(Color.black))
+        .shadow(color: .black.opacity(0.22), radius: 16, y: 6)
+        .environment(\.colorScheme, .dark)
     }
 }
 
@@ -978,6 +1102,8 @@ struct AppTextEditor: View {
     @Binding var text: String
     var placeholder: String = ""
     var minHeight: CGFloat = 100
+    /// Surface behind the field (default matches page gray; use `cardBackground` on tinted screens).
+    var fillColor: Color = AppColors.gray100
 
     @FocusState private var isFocused: Bool
 
@@ -1003,7 +1129,7 @@ struct AppTextEditor: View {
         .padding(Spacing.xs)
         .background(
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                .fill(AppColors.gray100)
+                .fill(fillColor)
         )
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)

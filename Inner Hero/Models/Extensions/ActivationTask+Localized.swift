@@ -12,4 +12,12 @@ extension ActivationTask {
         guard let key = predefinedKey else { return hint }
         return PresetActivationLookup.taskHint(forKey: key)
     }
+
+    /// SF Symbol for list rows and pills. Uses the category glyph when the task still uses the model default.
+    func listDisplaySFSymbol(category: ActivationCategory?) -> String {
+        if sfSymbol != "checkmark.circle" {
+            return sfSymbol
+        }
+        return category?.sfSymbol ?? sfSymbol
+    }
 }

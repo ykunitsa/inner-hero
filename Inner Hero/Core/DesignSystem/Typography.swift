@@ -29,6 +29,7 @@ enum AppTextStyle {
     case caption        // 11px / 500  — ALL CAPS labels, section headers
     case mono           // 15px / 700  — timer display (monospaced)
     case monoLarge      // 28px / 700  — large timer / countdown
+    case statValue      // 20px / 700  — numeric stat tiles (monospaced)
 
     // Specialised
     case buttonPrimary  // 16px / 600  — primary CTA button label
@@ -54,6 +55,7 @@ extension AppTextStyle {
         case .caption:       return .system(size: 11, weight: .semibold, design: .default)
         case .mono:          return .system(size: 15, weight: .bold,    design: .monospaced)
         case .monoLarge:     return .system(size: 28, weight: .bold,    design: .monospaced)
+        case .statValue:     return .system(size: 20, weight: .bold,    design: .monospaced)
         case .buttonPrimary: return .system(size: 16, weight: .semibold, design: .default)
         case .buttonSmall:   return .system(size: 14, weight: .semibold, design: .default)
         case .navItem:       return .system(size: 16, weight: .regular, design: .default)

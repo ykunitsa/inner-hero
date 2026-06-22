@@ -42,6 +42,17 @@ final class NavigationRouter {
         }
     }
 
+    /// Appends a hashable value to the navigation path for the given tab (e.g. `BARoute` alongside `AppRoute`).
+    func append<T: Hashable>(value: T, to tab: AppTab) {
+        switch tab {
+        case .home: pathHome.append(value)
+        case .schedule: pathSchedule.append(value)
+        case .exercises: pathExercises.append(value)
+        case .knowledge: pathKnowledge.append(value)
+        case .settings: pathSettings.append(value)
+        }
+    }
+
     func navigateBack(in tab: AppTab) {
         switch tab {
         case .home: if !pathHome.isEmpty { pathHome.removeLast() }

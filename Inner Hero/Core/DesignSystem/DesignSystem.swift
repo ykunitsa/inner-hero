@@ -80,6 +80,12 @@ enum Spacing {
     static let xl:   CGFloat = 32
     static let xxl:  CGFloat = 40
     static let xxxl: CGFloat = 48
+    /// Tight stacks (title + subtitle on one card).
+    static let tight: CGFloat = 2
+    /// Large vertical padding around empty-state illustrations.
+    static let emptyStateVertical: CGFloat = 80
+    /// Minimum space above/below an empty-state block (e.g. journal placeholder).
+    static let emptyStateInset: CGFloat = 60
 }
 
 // MARK: - Corner Radius
@@ -90,6 +96,15 @@ enum CornerRadius {
     static let lg:   CGFloat = 22
     static let xl:   CGFloat = 28
     static let pill: CGFloat = 999
+}
+
+// MARK: - Borders
+
+enum BorderWidth {
+    /// 0.5pt — card strokes, search field outline (matches `cardStyle` overlay).
+    static let hairline: CGFloat = 0.5
+    /// 1pt — emphasized outline (e.g. active filter pill).
+    static let standard: CGFloat = 1
 }
 
 // MARK: - Touch Targets
@@ -114,6 +129,10 @@ enum IconSize {
     static let inline:  CGFloat = 24
     /// SF Symbol font size for inline use
     static let glyph:   CGFloat = 17
+    /// Large illustration icons in empty states (aligned with prominent UI scale).
+    static let emptyState: CGFloat = 40
+    /// Glyphs paired with body-sized field text — matches `AppTextStyle.body` (15pt).
+    static let fieldGlyph: CGFloat = 15
 }
 
 // MARK: - Opacity Scale
@@ -131,6 +150,21 @@ enum Opacity {
     static let darkShadow:          Double = 0.20
 }
 
+// MARK: - Color from Hex
+
+extension Color {
+    init?(hex: String) {
+        var str = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        str = str.hasPrefix("#") ? String(str.dropFirst()) : str
+        guard str.count == 6, let value = UInt64(str, radix: 16) else { return nil }
+        self.init(
+            red:   Double((value >> 16) & 0xFF) / 255.0,
+            green: Double((value >>  8) & 0xFF) / 255.0,
+            blue:  Double( value        & 0xFF) / 255.0
+        )
+    }
+}
+
 // MARK: - Animation
 
 enum AppAnimation {
@@ -139,4 +173,36 @@ enum AppAnimation {
     static let fast      = Animation.easeOut(duration: 0.14)
     static let slow      = Animation.easeInOut(duration: 0.40)
     static let appear    = Animation.easeOut(duration: 0.28)
+    /// Very short tick (e.g. slot-machine label flip).
+    static let tick      = Animation.easeOut(duration: 0.07)
+}
+
+// MARK: - Content scaling
+
+enum ContentScaling {
+    /// Allow stat tiles to shrink before truncating.
+    static let statMinimum: CGFloat = 0.7
+    /// Compact pill labels (filter menus) before truncating.
+    static let filterPillMinimum: CGFloat = 0.75
+}
+
+// MARK: - Timings (seconds)
+
+enum InteractionTiming {
+    /// Slot-machine style label updates.
+    static let rouletteFrame: TimeInterval = 0.07
+    /// Winner name stays on screen with end animation before opening the session flow.
+    static let rouletteReveal: TimeInterval = 2.0
+    static let rouletteSettle: TimeInterval = 0.15
+    /// Auto-dismiss for transient bottom banners.
+    static let toastAutoDismiss: TimeInterval = 3
+}
+
+// MARK: - Mood / delta UI (Behavioral activation)
+
+enum MoodLayout {
+    /// Fixed well for emoji column in `DeltaCard`.
+    static let emojiWellHeight: CGFloat = 52
+    /// Placeholder height when delta badge is hidden.
+    static let deltaPlaceholderHeight: CGFloat = 22
 }

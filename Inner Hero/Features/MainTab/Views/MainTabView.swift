@@ -48,6 +48,9 @@ struct MainTabView: View {
                 .accessibilityLabel("Profile")
         }
         .tint(AppColors.primary)
+        // `\.navigationRouter` is a separate EnvironmentKey from Observable injection; without this,
+        // programmatic pushes (e.g. BA random roulette) see `nil` and do nothing after the animation.
+        .environment(\.navigationRouter, router)
     }
 }
 
