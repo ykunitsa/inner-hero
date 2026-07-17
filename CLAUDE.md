@@ -1,27 +1,36 @@
 # Inner Hero — Project Guide
 
 A CBT companion app for anxiety (iOS). All data is local — no accounts, no network.
-Exposures, breathing, relaxation, grounding, behavioral activation, schedule,
-knowledge center.
+**The app is mid-rebuild (redesign 2.0, July 2026).** The product source of truth is
+**`docs/redesign-spec.md`**: exercises, flows, screens, the 10 product principles (§1),
+and the implementation order (§11).
 
 > This file is loaded into context every session. Keep it as a **map**, not a copy
-> of the code: it should help jump straight to the right file, not restate it.
-> Update it on meaningful architecture/convention changes.
+> of the code. Update it on meaningful architecture/convention changes.
 
 ---
+
+## Rebuild state — read this first
+
+- Strategy: **greenfield on top of the design system + plumbing**. Old user data is
+  not migrated (author's decision, ~20 installs).
+- `_to_delete/` at the repo root holds the torn-down legacy code awaiting manual
+  deletion. **Never import, reference, or resurrect anything from it.** Git history
+  has everything if archaeology is ever needed.
+- Current shell: 4 tabs — Today / Exercises / History / Knowledge. Settings opens
+  from the gear on Today. Exercises and History are placeholders that light up as
+  flows are rebuilt in spec §11 order. Current step: **§11.1 — situational exposure form**.
+- SwiftData: **no ModelContainer exists right now.** It returns with the first new
+  model (`ExposureLogEntry`); the legacy on-disk store gets wiped once at that point.
 
 ## Language & communication
 
 - **Talk to the user in Russian.** Explanations, answers, summaries — in Russian.
-- **Code and source strings are in English (primary).** `Localizable.xcstrings`
-  has `sourceLanguage: en`. Every new user-facing string is **authored in English first**
-  with the key `String(localized: "English text")`; Russian is added as a **translation**
-  in `.xcstrings`. Russian is secondary/translation, never the source.
-  ⚠️ Common mistake: creating new labels/strings directly in Russian in code. Don't —
-  the source is always English; the translation lives in `.xcstrings`.
+- **Code and source strings are in English (primary).** `Localizable.xcstrings` has
+  `sourceLanguage: en`. Every new user-facing string is authored in English via
+  `String(localized: "English text")`; Russian is added as a translation in
+  `.xcstrings`. Never author displayed strings in Russian in code.
 - Identifiers, type names, and code comments are in English.
-
----
 
 ## Stack
 
@@ -32,11 +41,7 @@ knowledge center.
 | Data          | SwiftData (local, no network)  |
 | State         | `@Observable` / `@Query` / `@Environment` (Observation framework, not Combine) |
 | Localization  | `Localizable.xcstrings` (EN source, RU translation) |
-| Tests         | **Swift Testing** (`import Testing`, `@Test` / `@Suite` / `#expect`) for new code |
-
-SwiftUI and current Swift only. **Do not use UIKit.**
-
----
+| Tests         | **Swift Testing** (`@Test` / `@Suite` / `#expect`) for new code |
 
 ## Commands
 
@@ -50,128 +55,84 @@ xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
 ```
 
-- Single scheme: **`Inner Hero`**. Targets: `Inner Hero`, `Inner HeroTests`, `Inner HeroUITests`.
-- Configurations: `Debug`, `Release`.
-
----
+Single scheme **`Inner Hero`**; targets `Inner Hero`, `Inner HeroTests`, `Inner HeroUITests`.
+The Xcode project uses file-system-synchronized groups — files added/removed on disk
+are picked up automatically, no pbxproj edits needed.
 
 ## Project map
 
 ```
 Inner Hero/
-├── App/
-│   ├── Inner_HeroApp.swift        # Entry point, ModelContainer, onboarding/sample data
-│   └── Schema/                    # SchemaV1, SchemaV2, AppMigrationPlan (SwiftData migrations)
+├── App/Inner_HeroApp.swift        # Entry point (no ModelContainer yet — see Rebuild state)
 ├── Core/
 │   ├── DesignSystem/              # ⭐ Tokens and components — ALWAYS start here for UI
-│   ├── Navigation/                # NavigationRouter, AppRoute, AppRouteView
-│   ├── Components/                # Shared components (Charts, Modals, Schedule)
-│   └── Utilities/                 # BreathingController, StepTimerController, Haptics, Export
-├── Features/                      # Features grouped by module (see below)
-│   └── <Feature>/{Views,ViewModels,Components}/
-├── Models/                        # @Model SwiftData + Extensions/ + Predefined/
-├── Services/                      # Stateless helpers and managers
-└── Resources/                     # Localizable.xcstrings, assets
+│   ├── Navigation/                # AppTab, NavigationRouter, AppRoute, AppRouteView
+│   ├── Components/                # (empty for now — shared components return as flows land)
+│   └── Utilities/                 # HapticFeedback, ExportDocument
+├── Features/
+│   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView, HistoryView (placeholders)
+│   ├── KnowledgeCenter/           # Articles list (kept as-is)
+│   ├── Onboarding/                # 1-screen shell; becomes 3 screens per spec §7 in §11.6
+│   └── Settings/                  # Settings + AppLock; Data section returns with new models
+├── Models/                        # AppSettings (ThemeMode, AppStorageKeys). New @Model types land here
+├── Services/                      # ArticlesLoader/Store, NotificationManager (generic primitives)
+├── Resources/                     # Localizable.xcstrings, Articles.json, assets
+└── docs/redesign-spec.md          # ← product source of truth (repo root /docs)
 ```
-
-### Features (`Features/`)
-- **MainTab** — Home (summary), tab navigation.
-- **Schedule** — planning exercises by day/time, completion marks.
-- **Exposures** — exposure therapy: CRUD, steps, timers, session flow, progress.
-- **Sessions** — UI for breathing / relaxation / grounding / exposure sessions.
-- **BehavioralActivation** — activity lists and sessions (newest module, actively changing).
-- **KnowledgeCenter** — articles (search, categories).
-- **Onboarding** — first launch + disclaimer.
-- **Settings** — Appearance / Privacy (app lock, PIN/biometrics) / Data (export/reset) / About.
-
----
 
 ## Conventions
 
 ### Design system (`Core/DesignSystem/`) — mandatory
-Don't hardcode sizes/colors/fonts. Use tokens:
+Don't hardcode sizes/colors/fonts. Use tokens: `AppColors.*`, `Spacing.*`,
+`CornerRadius.*`, `IconSize.*`, `TouchTarget.*`, `Opacity.*`, `AppAnimation.*`,
+`.appFont(...)` via `AppTextStyle`. Reusable components live in `Components.swift`
+(`PrimaryButton`, `CircleButton`, `RadioCard`, `SectionHeader`, ...) and
+`ViewModifiers.swift` (`cardStyle`, `heroCardStyle`, `touchTarget`, `pageBackground`).
+See `Core/DesignSystem/USAGE.MD`.
 
-- **Colors:** `AppColors.*` (`DesignSystem.swift:8`) — `AppColors.primary`, `AppColors.positive`, etc. No `Color(red:green:blue:)` or `.blue`/`.green` in features.
-- **Spacing:** `Spacing.*` (`:73`) — instead of `padding(16)`/`spacing: 12`.
-- **Corner radii:** `CornerRadius.*` (`:93`) — instead of `cornerRadius: 20`.
-- **Icons/touch targets:** `IconSize.*` (`:121`), `TouchTarget.*` (`:113`).
-- **Opacities/shadows:** `Opacity.*` (`:140`).
-- **Animations/timings:** `AppAnimation.*` (`:170`), `InteractionTiming.*` (`:191`).
-- **Typography:** `.appFont(.body)` etc. via `AppTextStyle` (`Typography.swift:14`).
-  Styles: `display, h1, h2, h3, bodyLarge, body, bodyMedium, small, smallMedium,
-  caption, mono, monoLarge, statValue, buttonPrimary, buttonSmall, navItem, navItemActive`.
-  Instead of `.font(.system(size: 14, weight: .semibold))`, pick a style from `AppTextStyle`.
-- Reusable components live in `Components.swift` (large file; before creating a new
-  component, check whether one already exists: `PrimaryButton`, `CircleButton`,
-  `ExerciseRow`, `RadioCard`, `HeroFeatureCard`, navigation pills, etc.).
-- Shared modifiers live in `ViewModifiers.swift` (`cardStyle`, `heroCardStyle`, `touchTarget`, `pageBackground`, ...).
-
-### Localization
-- User-facing text: `String(localized: "English source")`. Source is English.
-- The RU translation is added in `Localizable.xcstrings`, not in code.
-- Format strings: `String(format: String(localized: "Completed %1$d of %2$d"), a, b)`.
-- Don't hardcode displayed text directly in `Text("...")` (exception — data/identifiers).
+### Product principles
+Every change is checked against spec §1. The ones that most often bite in code:
+no streaks/minutes/gamification (1.4); leaving a session early SAVES data, never
+discards it (1.5); predictions are captured before, never reconstructed after (1.6);
+no menus between icon and action (1.2); adaptation only via session count, no
+seen/experienced flags (1.7); no advice or recommendations anywhere (1.1).
 
 ### Navigation
-- Centralized `NavigationRouter` (`@Observable @MainActor`), one `NavigationPath` per tab.
-- Routes live in `AppRoute` (enum). Routing is a `switch` in `AppRouteView`.
-- `BARoute` is a separate enum for BehavioralActivation (see TECH_DEBT — this is considered debt).
+Centralized `NavigationRouter` (`@Observable @MainActor`, `[AppTab: NavigationPath]`).
+Routes live in `AppRoute`; routing is a `switch` in `AppRouteView`. Routes are added
+back one by one as screens land — keep the enum minimal.
 
 ### MVVM
-- ViewModels: `@Observable @MainActor`, no direct UIKit/globals.
-- ⚠️ MVVM is applied **inconsistently**: some features have a ViewModel (Home, Schedule,
-  BehavioralActivation), others (Exposures) keep logic in views. For new work, lean toward
-  moving business logic into a ViewModel rather than growing "massive views".
+ViewModels are `@Observable @MainActor`; business logic lives there, views stay thin.
+Inject time (`now: Date = Date()`, `calendar: Calendar = .current`) — never read the
+clock inside logic.
 
-### SwiftData
-- `@Model` classes live in `Models/`: `Exposure`, `ExposureSessionResult`, `ActivationTask`,
-  `ActivationCategory`, `ActivationSession`, `ExerciseAssignment`, `ExerciseCompletion`,
-  `FavoriteExercise`, `BreathingSessionResult`, `RelaxationSessionResult`, `GroundingSessionResult`.
-- Changing a model **requires** a new schema version + a stage in `AppMigrationPlan`
-  (see `App/Schema/`). Don't edit existing schemas in place.
-- Localizable/predefined model data lives in `Models/Extensions/` and `Models/Predefined/`.
-- Completing an exercise goes only through `Services/SessionCompletionService` (idempotent,
-  keyed by `uniqueKey`). Don't create `ExerciseCompletion` by hand.
-
-### Services (`Services/`)
-Stateless helpers / managers: `SessionCompletionService`, `NotificationManager` (`@MainActor`),
-`FavoritesService`, `ArticlesLoader`/`ArticlesStore`, `SampleDataLoader`. Keep business logic
-that touches `ModelContext` here, not in views.
-
-### Concurrency
-- `async/await` + `@MainActor`. Don't introduce GCD.
-- Long-lived `Task`s and `Timer`s — cancel them in `onDisappear` (not done everywhere yet, see TECH_DEBT).
+### SwiftData (pre-release phase)
+- New `@Model` types go to `Models/` and are registered in the container in
+  `App/Inner_HeroApp.swift`.
+- **No versioned schemas or migration plans until the 2.0 App Store release.**
+  Models may be edited in place; wipe dev data when the store no longer opens.
+  Versioned schemas + migration tests start at release.
+- Enum-backed fields store `String` rawValues. **Never rename a persisted rawValue.**
 
 ### Testing
-- **New tests use Swift Testing** (`import Testing`, `@Test` / `@Suite` / `#expect` / `#require`,
-  `@Test(arguments:)` for parameterized cases). Don't write new XCTest. Existing XCTest files
-  (`Inner_HeroTests`, `BehavioralActivationViewModelTests`) stay as-is — migrate opportunistically,
-  not in bulk. Both frameworks coexist in the same target.
-- **Pyramid is unit-heavy.** Most value is in pure logic: ViewModels (filtering, analytics,
-  streaks, smart-random), Services, `Core/Utilities` controllers, model computed properties.
-- **SwiftData tests** use an in-memory container — never the on-disk store:
-  `ModelConfiguration(isStoredInMemoryOnly: true)`. Fresh container per test = isolation.
-- **Inject time, don't read the clock.** For deterministic tests, pass `Date`/`Calendar` in
-  (as `SessionCompletionService` already does: `day: Date = Date()`, `calendar: Calendar = .current`).
-  New time-dependent logic should follow the same default-parameter injection pattern.
-- **UI tests (`Inner HeroUITests`) stay minimal** — only critical end-to-end flows (onboarding,
-  one full session, app lock). They're slow/brittle; prefer pushing logic down to testable units.
-- **Migrations need tests.** Every new `SchemaVN` + `AppMigrationPlan` stage gets a test that
-  loads old-version data and asserts it survives (see TECH_DEBT 🔴 #2).
+- New tests use Swift Testing; don't write new XCTest.
+- Unit-heavy pyramid: ViewModels, services, model invariants. SwiftData tests use
+  `ModelConfiguration(isStoredInMemoryOnly: true)`, fresh container per test.
+- UI tests stay minimal (launch smoke only).
 
----
+## Skills
 
-## Before starting work
-
-1. For UI tasks — look at `Core/DesignSystem/` first (tokens and ready-made components).
-2. For data work — look at the relevant `@Model` and `App/Schema/`.
-3. New user-facing text — English key + translation in `.xcstrings`.
-4. Check **[TECH_DEBT.md](TECH_DEBT.md)** — known weak spots and "careful here", so you don't
-   rely on them as a model or break agreed conventions.
+Project skills in `.claude/skills/`: **/planning** (plan a rebuild step against the
+spec before coding), **/implement-feature** (build a planned screen/flow), **/fix-bug**
+(diagnose → root cause → minimal fix → verify). Prefer invoking them for matching work.
 
 ## Don't
+
+- Don't touch or reference `_to_delete/`.
 - Don't use UIKit.
 - Don't hardcode colors/spacing/fonts instead of design-system tokens.
 - Don't author new displayed strings in Russian in code (source is English).
-- Don't change existing SwiftData schema versions without a new migration.
-- Don't grow "massive views" — extract logic into a ViewModel/components.
+- Don't rename persisted enum rawValues.
+- Don't add screens, metrics, or features that are not in the spec — when in doubt,
+  check §1 principles and ask.
