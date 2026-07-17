@@ -124,8 +124,12 @@ clock inside logic.
 ## Skills
 
 Project skills in `.claude/skills/`: **/planning** (plan a rebuild step against the
-spec before coding), **/implement-feature** (build a planned screen/flow), **/fix-bug**
-(diagnose → root cause → minimal fix → verify). Prefer invoking them for matching work.
+spec before coding), **/design-screen** (UX blueprint of a screen before implementation),
+**/implement-feature** (build a planned screen/flow), **/design-review** (check an
+implemented screen against the interface codex), **/fix-bug** (diagnose → root cause →
+minimal fix → verify). Prefer invoking them for matching work.
+
+Interface codex: **`docs/design-principles.md`** — mandatory for any UI design/review.
 
 ## Don't
 

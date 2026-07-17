@@ -13,10 +13,12 @@ description: >
 
 1. Read the relevant section of `docs/redesign-spec.md` **and** §1 (principles).
    If there is an approved plan from `/planning` in the conversation — follow it.
-2. Read `Core/DesignSystem/USAGE.MD` and check `Components.swift` for existing
+2. For UI work, read `docs/design-principles.md` (one job per screen, states,
+   tone, accessibility) and follow the `/design-screen` blueprint if one exists.
+3. Read `Core/DesignSystem/USAGE.MD` and check `Components.swift` for existing
    components before creating new ones (`PrimaryButton`, `CircleButton`, `RadioCard`,
    `SectionHeader`, `cardStyle`, ...).
-3. Check `CLAUDE.md` conventions; never reference anything in `_to_delete/`.
+4. Check `CLAUDE.md` conventions; never reference anything in `_to_delete/`.
 
 ## While writing
 
