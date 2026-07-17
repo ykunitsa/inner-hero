@@ -1,5 +1,14 @@
 import Foundation
 
+// MARK: - Breathing Pattern Type
+
+// Storage contract: rawValues are persisted. NEVER rename rawValue strings — only add new cases.
+enum BreathingPatternType: String, Codable {
+    case box = "box"
+    case fourSix = "fourSix"
+    case paced = "paced"
+}
+
 // MARK: - BreathingPattern Model
 
 struct BreathingPattern: Identifiable {
@@ -8,7 +17,7 @@ struct BreathingPattern: Identifiable {
     let name: String
     let description: String
     let icon: String
-    
+
     static var predefinedPatterns: [BreathingPattern] {
         [
             BreathingPattern(
@@ -45,9 +54,8 @@ extension BreathingPattern {
     var localizedName: String {
         name
     }
-    
+
     var localizedDescription: String {
         description
     }
 }
-

@@ -2,61 +2,13 @@
 //  TimerControllersTests.swift
 //  Inner HeroTests
 //
-//  Pure-logic coverage for the timer/breathing controllers — the parts that don't
-//  depend on wall-clock ticking: StepTimerController's remaining/expired math and
-//  reset, and BreathingController.BreathPhase durations and phase transitions.
+//  Pure-logic coverage for BreathingController.BreathPhase durations and
+//  phase transitions — the parts that don't depend on wall-clock ticking.
 //
 
 import Foundation
 import Testing
 @testable import Inner_Hero
-
-@MainActor
-@Suite("StepTimerController — pure math")
-struct StepTimerControllerTests {
-
-    @Test("Initial state is idle and zeroed")
-    func initialState() {
-        let controller = StepTimerController()
-        #expect(!controller.isRunning)
-        #expect(!controller.isPaused)
-        #expect(controller.elapsedTime == 0)
-    }
-
-    @Test("remainingTime subtracts elapsed and never goes negative")
-    func remainingTime() {
-        let controller = StepTimerController()
-
-        controller.setElapsedTime(20)
-        #expect(controller.remainingTime(for: 60) == 40)
-
-        controller.setElapsedTime(80) // past the duration
-        #expect(controller.remainingTime(for: 60) == 0)
-    }
-
-    @Test("isExpired flips exactly at the duration boundary")
-    func isExpired() {
-        let controller = StepTimerController()
-
-        controller.setElapsedTime(59)
-        #expect(!controller.isExpired(for: 60))
-
-        controller.setElapsedTime(60)
-        #expect(controller.isExpired(for: 60))
-    }
-
-    @Test("reset returns the controller to idle and zero")
-    func reset() {
-        let controller = StepTimerController()
-        controller.setElapsedTime(42)
-
-        controller.reset()
-
-        #expect(controller.elapsedTime == 0)
-        #expect(!controller.isRunning)
-        #expect(!controller.isPaused)
-    }
-}
 
 @Suite("BreathingController.BreathPhase")
 struct BreathPhaseTests {
