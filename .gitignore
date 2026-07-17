@@ -59,3 +59,6 @@ Override.xcconfig
 
 # App Store Connect
 /UploadToAppStoreConnect.log
+
+# teardown debris — the whole _to_delete/ folder is pending manual deletion
+_to_delete/git-stale-locks/
