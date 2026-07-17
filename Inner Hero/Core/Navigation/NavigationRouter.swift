@@ -1,14 +1,12 @@
 import SwiftUI
-import SwiftData
 
 // MARK: - Tab
 
 enum AppTab: String, CaseIterable {
-    case home
-    case schedule
-    case knowledge
+    case today
     case exercises
-    case settings
+    case history
+    case knowledge
 }
 
 // MARK: - Navigation Router
@@ -16,61 +14,32 @@ enum AppTab: String, CaseIterable {
 @Observable
 @MainActor
 final class NavigationRouter {
-    var pathHome = NavigationPath()
-    var pathSchedule = NavigationPath()
-    var pathExercises = NavigationPath()
-    var pathKnowledge = NavigationPath()
-    var pathSettings = NavigationPath()
+    private var paths: [AppTab: NavigationPath] = [:]
 
     func path(for tab: AppTab) -> Binding<NavigationPath> {
-        switch tab {
-        case .home: return Binding(get: { self.pathHome }, set: { self.pathHome = $0 })
-        case .schedule: return Binding(get: { self.pathSchedule }, set: { self.pathSchedule = $0 })
-        case .exercises: return Binding(get: { self.pathExercises }, set: { self.pathExercises = $0 })
-        case .knowledge: return Binding(get: { self.pathKnowledge }, set: { self.pathKnowledge = $0 })
-        case .settings: return Binding(get: { self.pathSettings }, set: { self.pathSettings = $0 })
-        }
+        Binding(
+            get: { self.paths[tab] ?? NavigationPath() },
+            set: { self.paths[tab] = $0 }
+        )
     }
 
     func navigate(to route: AppRoute, in tab: AppTab) {
-        switch tab {
-        case .home: pathHome.append(route)
-        case .schedule: pathSchedule.append(route)
-        case .exercises: pathExercises.append(route)
-        case .knowledge: pathKnowledge.append(route)
-        case .settings: pathSettings.append(route)
-        }
+        paths[tab, default: NavigationPath()].append(route)
     }
 
-    /// Appends a hashable value to the navigation path for the given tab (e.g. `BARoute` alongside `AppRoute`).
+    /// Appends any hashable value to the navigation path for the given tab.
     func append<T: Hashable>(value: T, to tab: AppTab) {
-        switch tab {
-        case .home: pathHome.append(value)
-        case .schedule: pathSchedule.append(value)
-        case .exercises: pathExercises.append(value)
-        case .knowledge: pathKnowledge.append(value)
-        case .settings: pathSettings.append(value)
-        }
+        paths[tab, default: NavigationPath()].append(value)
     }
 
     func navigateBack(in tab: AppTab) {
-        switch tab {
-        case .home: if !pathHome.isEmpty { pathHome.removeLast() }
-        case .schedule: if !pathSchedule.isEmpty { pathSchedule.removeLast() }
-        case .exercises: if !pathExercises.isEmpty { pathExercises.removeLast() }
-        case .knowledge: if !pathKnowledge.isEmpty { pathKnowledge.removeLast() }
-        case .settings: if !pathSettings.isEmpty { pathSettings.removeLast() }
-        }
+        guard var path = paths[tab], !path.isEmpty else { return }
+        path.removeLast()
+        paths[tab] = path
     }
 
     func popToRoot(in tab: AppTab) {
-        switch tab {
-        case .home: pathHome = NavigationPath()
-        case .schedule: pathSchedule = NavigationPath()
-        case .exercises: pathExercises = NavigationPath()
-        case .knowledge: pathKnowledge = NavigationPath()
-        case .settings: pathSettings = NavigationPath()
-        }
+        paths[tab] = NavigationPath()
     }
 }
 
@@ -78,6 +47,10 @@ final class NavigationRouter {
 
 private struct NavigationRouterKey: EnvironmentKey {
     static let defaultValue: NavigationRouter? = nil
+}
+
+private struct CurrentAppTabKey: EnvironmentKey {
+    static let defaultValue: AppTab = .today
 }
 
 extension EnvironmentValues {
@@ -90,8 +63,4 @@ extension EnvironmentValues {
         get { self[CurrentAppTabKey.self] }
         set { self[CurrentAppTabKey.self] = newValue }
     }
-}
-
-private struct CurrentAppTabKey: EnvironmentKey {
-    static let defaultValue: AppTab = .home
 }

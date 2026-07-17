@@ -1,144 +1,95 @@
 import Foundation
-import SwiftData
 import UserNotifications
 
+/// Generic local-notification plumbing (spec principle 1.10: the shared layer
+/// is scheduling + logging). Exercise-specific scheduling is built on top of
+/// these primitives as the new schedule models land.
 @Observable
 @MainActor
 final class NotificationManager {
     private let notificationCenter = UNUserNotificationCenter.current()
 
     init() {}
-    
+
     // MARK: - Permission Management
-    
+
     func requestAuthorization() async -> Bool {
         do {
-            let granted = try await notificationCenter.requestAuthorization(options: [.alert, .sound, .badge])
-            return granted
+            return try await notificationCenter.requestAuthorization(options: [.alert, .sound, .badge])
         } catch {
-            print("Error requesting notification permissions: \(error)")
             return false
         }
     }
-    
+
     func checkAuthorizationStatus() async -> UNAuthorizationStatus {
         let settings = await notificationCenter.notificationSettings()
         return settings.authorizationStatus
     }
-    
-    // MARK: - Notification Management
-    
-    func scheduleNotification(for assignment: ExerciseAssignment, titleOverride: String? = nil) async throws {
-        // Remove existing notification if any
-        if let notificationId = assignment.notificationId {
-            await removeNotification(identifier: notificationId)
-        }
 
-        guard assignment.isActive else {
-            return
-        }
+    // MARK: - Scheduling primitives
 
-        // Create notification identifier
-        let notificationId = "exercise_\(assignment.id.uuidString)"
-        assignment.notificationId = notificationId
+    /// Schedules a weekly repeating reminder for each of the given weekdays
+    /// (1 = Sunday ... 7 = Saturday) at the given hour/minute.
+    /// Identifiers are "\(id)_\(weekday)".
+    func scheduleWeeklyReminder(
+        id: String,
+        title: String,
+        body: String,
+        weekdays: [Int],
+        hour: Int,
+        minute: Int
+    ) async throws {
+        await removeReminder(id: id)
 
-        // Get exercise name (callers that hold the resolved title — e.g. behavioral activation — pass it directly)
-        let exerciseName = titleOverride ?? assignment.displayTitle(exposures: [], activationTasks: [])
-        
-        // Create notification content
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "Time for exercise")
-        content.body = String(format: NSLocalizedString("Reminder: %@", comment: ""), exerciseName)
+        content.title = title
+        content.body = body
         content.sound = .default
-        content.categoryIdentifier = "EXERCISE_REMINDER"
-        
-        // Create date components from time
-        let calendar = Calendar.current
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: assignment.time)
-        
-        // Create triggers for each selected day
-        var triggers: [UNNotificationRequest] = []
-        
-        for day in assignment.daysOfWeek {
+
+        for weekday in weekdays {
             var dateComponents = DateComponents()
-            dateComponents.weekday = day // 1 = Sunday, 2 = Monday, etc.
-            dateComponents.hour = timeComponents.hour
-            dateComponents.minute = timeComponents.minute
-            
+            dateComponents.weekday = weekday
+            dateComponents.hour = hour
+            dateComponents.minute = minute
+
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
             let request = UNNotificationRequest(
-                identifier: "\(notificationId)_\(day)",
+                identifier: "\(id)_\(weekday)",
                 content: content,
                 trigger: trigger
             )
-            
-            triggers.append(request)
-        }
-        
-        // Schedule all notifications
-        for request in triggers {
             try await notificationCenter.add(request)
         }
     }
-    
-    func removeNotification(identifier: String) async {
-        // Remove all related notifications (for all days)
-        var identifiers: [String] = [identifier]
-        
-        // Add day-specific identifiers
-        for day in 1...7 {
-            identifiers.append("\(identifier)_\(day)")
-        }
-        
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
-        notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiers)
-    }
-    
-    func updateNotification(for assignment: ExerciseAssignment) async throws {
-        try await scheduleNotification(for: assignment)
-    }
-    
-    func cancelNotification(for assignment: ExerciseAssignment) async {
-        guard let notificationId = assignment.notificationId else { return }
-        await removeNotification(identifier: notificationId)
-        assignment.notificationId = nil
-    }
-    
-    // MARK: - Behavioral Activation
 
-    /// Schedules a one-time reminder for a planned activation session.
-    func scheduleActivationReminder(sessionId: UUID, title: String, at date: Date) async {
+    /// Schedules a one-shot reminder at a specific date.
+    func scheduleOneTimeReminder(id: String, title: String, body: String, at date: Date) async {
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "Time for activity")
-        content.body = title
+        content.title = title
+        content.body = body
         content.sound = .default
-        content.userInfo = ["sessionId": sessionId.uuidString]
 
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        let request = UNNotificationRequest(
-            identifier: "ba-once-\(sessionId.uuidString)",
-            content: content,
-            trigger: trigger
-        )
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
         try? await notificationCenter.add(request)
     }
 
-    /// Removes any pending behavioral-activation reminders whose identifier references this id
-    /// (works for both one-time session ids and recurring assignment ids).
-    func cancelActivationReminders(id: UUID) async {
-        let pending = await notificationCenter.pendingNotificationRequests()
-        let identifiers = pending.map(\.identifier).filter { $0.contains(id.uuidString) }
-        guard !identifiers.isEmpty else { return }
+    /// Removes a reminder scheduled with `scheduleWeeklyReminder` or
+    /// `scheduleOneTimeReminder` (including all per-weekday variants).
+    func removeReminder(id: String) async {
+        var identifiers = [id]
+        for weekday in 1...7 {
+            identifiers.append("\(id)_\(weekday)")
+        }
         notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
         notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiers)
     }
 
     // MARK: - Cleanup
 
-    func removeAllNotifications() async {
+    func removeAllNotifications() {
         notificationCenter.removeAllPendingNotificationRequests()
         notificationCenter.removeAllDeliveredNotifications()
     }
 }
-

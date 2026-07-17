@@ -15,6 +15,7 @@
 
     },
     "—" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -25,6 +26,7 @@
       }
     },
     ":" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -35,6 +37,7 @@
       }
     },
     "·" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -56,6 +59,7 @@
       }
     },
     "%@ %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -71,17 +75,8 @@
         }
       }
     },
-    "%@ → %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ → %2$@"
-          }
-        }
-      }
-    },
     "%@ indicator" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -92,6 +87,7 @@
       }
     },
     "%@ not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -112,6 +108,7 @@
       }
     },
     "%@: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -128,6 +125,7 @@
       }
     },
     "%@: %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -160,6 +158,7 @@
       }
     },
     "%@. %d steps, %d sessions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -182,16 +181,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@. %lld %@%@"
-          }
-        }
-      }
-    },
-    "%@%lld %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@%2$lld %3$@"
           }
         }
       }
@@ -329,6 +318,7 @@
       }
     },
     "%d groups" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -339,6 +329,7 @@
       }
     },
     "%d m" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -349,6 +340,7 @@
       }
     },
     "%d m %d s" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -369,6 +361,7 @@
       }
     },
     "%d min %d sec" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -411,6 +404,7 @@
       }
     },
     "%d percent" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -421,6 +415,7 @@
       }
     },
     "%d s" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -431,6 +426,7 @@
       }
     },
     "%d sec" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -441,6 +437,7 @@
       }
     },
     "%d sessions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -451,6 +448,7 @@
       }
     },
     "%d steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -461,6 +459,7 @@
       }
     },
     "%d steps completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -471,6 +470,7 @@
       }
     },
     "%lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -481,6 +481,7 @@
       }
     },
     "%lld / %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -497,6 +498,7 @@
       }
     },
     "%lld / 10" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -507,6 +509,7 @@
       }
     },
     "%lld min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -517,6 +520,7 @@
       }
     },
     "%lld of %lld steps completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -555,6 +559,7 @@
       }
     },
     "%lld sessions · %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -582,6 +587,7 @@
       }
     },
     "%lld:%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -646,6 +652,7 @@
       }
     },
     "+%d more unfinished" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -655,10 +662,8 @@
         }
       }
     },
-    "😶" : {
-
-    },
     "0" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -669,6 +674,7 @@
       }
     },
     "0\n%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -679,6 +685,7 @@
       }
     },
     "0\nNo anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -689,6 +696,7 @@
       }
     },
     "0 — %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -710,6 +718,7 @@
       }
     },
     "2 exercises · 5–15 min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -731,6 +740,7 @@
       }
     },
     "3 techniques · 3–10 min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -741,6 +751,7 @@
       }
     },
     "4-6 Breathing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -751,6 +762,7 @@
       }
     },
     "5\n%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -772,6 +784,7 @@
       }
     },
     "5\nMedium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -782,6 +795,7 @@
       }
     },
     "5-4-3-2-1" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -792,6 +806,7 @@
       }
     },
     "5-4-3-2-1 · 2 min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -802,6 +817,7 @@
       }
     },
     "6 MO" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -812,6 +828,7 @@
       }
     },
     "10\n%@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -822,6 +839,7 @@
       }
     },
     "10\nMaximum" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -832,6 +850,7 @@
       }
     },
     "10 — %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -842,6 +861,7 @@
       }
     },
     "Abandon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -862,6 +882,7 @@
       }
     },
     "Actions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -883,6 +904,7 @@
       }
     },
     "Activation: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -893,6 +915,7 @@
       }
     },
     "Active" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -903,6 +926,7 @@
       }
     },
     "Active schedules" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -913,6 +937,7 @@
       }
     },
     "Active session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -934,6 +959,7 @@
       }
     },
     "Activities" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -970,9 +996,6 @@
           }
         }
       }
-    },
-    "Activity" : {
-
     },
     "Activity %1$lld: %2$@" : {
       "extractionState" : "stale",
@@ -1019,6 +1042,7 @@
       }
     },
     "Activity completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1062,6 +1086,7 @@
       }
     },
     "Activity name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1072,6 +1097,7 @@
       }
     },
     "Activity not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1104,6 +1130,7 @@
       }
     },
     "Add activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1147,6 +1174,7 @@
       }
     },
     "Add exercises to favorites for quick access" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1157,6 +1185,7 @@
       }
     },
     "Add exercises to your schedule so they appear here with reminders" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1167,6 +1196,7 @@
       }
     },
     "Add exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1188,6 +1218,7 @@
       }
     },
     "Add schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1198,6 +1229,7 @@
       }
     },
     "Add step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1208,6 +1240,7 @@
       }
     },
     "Add to favorites" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1216,9 +1249,6 @@
           }
         }
       }
-    },
-    "Add to schedule" : {
-
     },
     "Adds an empty activity to the end of the list" : {
       "extractionState" : "stale",
@@ -1232,6 +1262,7 @@
       }
     },
     "Adds an empty step to the end of the list" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1242,6 +1273,7 @@
       }
     },
     "After" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1263,6 +1295,7 @@
       }
     },
     "After session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1272,10 +1305,8 @@
         }
       }
     },
-    "All" : {
-
-    },
     "All days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1286,6 +1317,7 @@
       }
     },
     "All done for today 🎉" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1296,6 +1328,7 @@
       }
     },
     "All schedules" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1306,6 +1339,7 @@
       }
     },
     "All steps completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1316,6 +1350,7 @@
       }
     },
     "All steps completed!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1326,6 +1361,7 @@
       }
     },
     "Allow notifications in Settings to receive reminders." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1336,6 +1372,7 @@
       }
     },
     "Also completed today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1357,6 +1394,7 @@
       }
     },
     "Anxiety before" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1378,6 +1416,7 @@
       }
     },
     "Anxiety dynamics" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1399,6 +1438,7 @@
       }
     },
     "Anxiety dynamics chart by date" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1420,6 +1460,7 @@
       }
     },
     "Anxiety dynamics from %lld to %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1436,6 +1477,7 @@
       }
     },
     "Anxiety level" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1446,6 +1488,7 @@
       }
     },
     "Anxiety level after session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1467,6 +1510,7 @@
       }
     },
     "Anxiety progress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1477,6 +1521,7 @@
       }
     },
     "Anxiety progress chart" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1517,6 +1562,7 @@
       }
     },
     "Are you sure you want to delete \"%@\"? This action cannot be undone." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1549,6 +1595,7 @@
       }
     },
     "Are you sure you want to delete this schedule?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1559,6 +1606,7 @@
       }
     },
     "Are you sure you want to end the breathing session?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1569,6 +1617,7 @@
       }
     },
     "Are you sure you want to end the muscle relaxation session?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1579,6 +1628,7 @@
       }
     },
     "Are you sure you want to end this exercise?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1610,7 +1660,11 @@
         }
       }
     },
+    "Article not found" : {
+
+    },
     "Article of the day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1631,6 +1685,7 @@
       }
     },
     "Assignment not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1663,6 +1718,7 @@
       }
     },
     "avg" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1673,6 +1729,7 @@
       }
     },
     "Avg After" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1683,6 +1740,7 @@
       }
     },
     "Avg Before" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1693,6 +1751,7 @@
       }
     },
     "Avg. delta" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1703,6 +1762,7 @@
       }
     },
     "Back" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1724,6 +1784,7 @@
       }
     },
     "Basic information" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1734,6 +1795,7 @@
       }
     },
     "Before" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1744,6 +1806,7 @@
       }
     },
     "Before → after" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1754,6 +1817,7 @@
       }
     },
     "Before session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1764,6 +1828,7 @@
       }
     },
     "Behavioral activation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1806,6 +1871,7 @@
       }
     },
     "Bend your arms and tense your biceps. Squeeze as much as is comfortable." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1849,6 +1915,7 @@
       }
     },
     "Box Breathing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1869,6 +1936,7 @@
       }
     },
     "Breathing · 4·4·4·4" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1890,6 +1958,7 @@
       }
     },
     "Breathing technique" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1900,6 +1969,7 @@
       }
     },
     "Breathing: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1920,6 +1990,7 @@
       }
     },
     "Build momentum through meaningful daily actions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1940,6 +2011,7 @@
       }
     },
     "Catch 2 smells or just 2 sensations of the air." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1948,9 +2020,6 @@
           }
         }
       }
-    },
-    "Category" : {
-
     },
     "CBT Tools for daily practice" : {
       "localizations" : {
@@ -1963,6 +2032,7 @@
       }
     },
     "Change" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1973,6 +2043,7 @@
       }
     },
     "Change %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1994,6 +2065,7 @@
       }
     },
     "Chest & Back" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2004,6 +2076,7 @@
       }
     },
     "Choose a technique that fits how you're feeling right now." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2013,10 +2086,8 @@
         }
       }
     },
-    "Choose activity" : {
-
-    },
     "Choose exercise" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2027,6 +2098,7 @@
       }
     },
     "Choose exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2059,6 +2131,7 @@
       }
     },
     "Choose technique" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2069,6 +2142,7 @@
       }
     },
     "Clear search" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2079,6 +2153,7 @@
       }
     },
     "Clench both hands into fists. Feel the tension in your hands and forearms." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2089,6 +2164,7 @@
       }
     },
     "Clench your fists, tense your arms, and raise your shoulders. Hold the overall tension." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2099,6 +2175,7 @@
       }
     },
     "Close" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2108,10 +2185,11 @@
         }
       }
     },
-    "Complete activity" : {
+    "Coming back soon" : {
 
     },
     "Complete an activity and it will show up here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2122,6 +2200,7 @@
       }
     },
     "Complete calm, no anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2132,6 +2211,7 @@
       }
     },
     "Complete current step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2164,6 +2244,7 @@
       }
     },
     "Completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2185,6 +2266,7 @@
       }
     },
     "Completed %1$d of %2$d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2206,6 +2288,7 @@
       }
     },
     "Completion progress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2216,6 +2299,7 @@
       }
     },
     "Completion time: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2268,6 +2352,7 @@
       }
     },
     "Continue active session: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2278,6 +2363,7 @@
       }
     },
     "Continue session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2299,6 +2385,7 @@
       }
     },
     "Controlled techniques to calm the nervous system" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2309,6 +2396,7 @@
       }
     },
     "Core" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2319,6 +2407,7 @@
       }
     },
     "Could not find data to start the exercise." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2329,6 +2418,7 @@
       }
     },
     "Create a schedule for regular exercise reminders" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2339,6 +2429,7 @@
       }
     },
     "Create a schedule to get reminders and track your exercise routine" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2360,6 +2451,7 @@
       }
     },
     "Create exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2370,6 +2462,7 @@
       }
     },
     "Create schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2391,6 +2484,7 @@
       }
     },
     "Create your first exposure to work with anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2401,6 +2495,7 @@
       }
     },
     "Created by me" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2411,6 +2506,7 @@
       }
     },
     "Current active step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2432,6 +2528,7 @@
       }
     },
     "Current step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2442,6 +2539,7 @@
       }
     },
     "D" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2452,6 +2550,7 @@
       }
     },
     "Danger zone" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2472,6 +2571,7 @@
       }
     },
     "Data" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2482,6 +2582,7 @@
       }
     },
     "Date" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2492,6 +2593,7 @@
       }
     },
     "Date & time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2524,6 +2626,7 @@
       }
     },
     "Days of the week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2534,6 +2637,7 @@
       }
     },
     "Days of week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2544,6 +2648,7 @@
       }
     },
     "Decreased by %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2554,6 +2659,7 @@
       }
     },
     "Delete" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2597,6 +2703,7 @@
       }
     },
     "Delete everything permanently" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2607,6 +2714,7 @@
       }
     },
     "Delete exposure?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2617,6 +2725,7 @@
       }
     },
     "Delete schedule?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2627,6 +2736,7 @@
       }
     },
     "Delete step %d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2648,6 +2758,7 @@
       }
     },
     "Describe how you feel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2658,6 +2769,7 @@
       }
     },
     "Describe the sequence of actions. Each step can have its own timer." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2668,6 +2780,7 @@
       }
     },
     "Describe the sequence of actions. Each step can have its own timer. Hold the ☰ icon to reorder or swipe left to delete." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2678,6 +2791,7 @@
       }
     },
     "Description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2699,6 +2813,7 @@
       }
     },
     "Description of the anxiety-provoking situation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2709,6 +2824,7 @@
       }
     },
     "Details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2740,6 +2856,7 @@
       }
     },
     "Display period selection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2761,6 +2878,7 @@
       }
     },
     "Does not repeat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2771,6 +2889,7 @@
       }
     },
     "Done" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2781,6 +2900,7 @@
       }
     },
     "Double tap to resume" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2791,6 +2911,7 @@
       }
     },
     "Double tap to resume session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2801,6 +2922,7 @@
       }
     },
     "Double tap to save" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2811,6 +2933,7 @@
       }
     },
     "Double tap to view details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2821,6 +2944,7 @@
       }
     },
     "Double-tap to end session without saving" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2842,6 +2966,7 @@
       }
     },
     "Double-tap to open" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2852,6 +2977,7 @@
       }
     },
     "Double-tap to open details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2884,6 +3010,7 @@
       }
     },
     "Double-tap to return to session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2905,6 +3032,7 @@
       }
     },
     "Double-tap to save and finish" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2926,6 +3054,7 @@
       }
     },
     "Duration" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2936,6 +3065,7 @@
       }
     },
     "Duration: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2946,6 +3076,7 @@
       }
     },
     "e.g. Take a 10–15 minute walk" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2956,6 +3087,7 @@
       }
     },
     "Earlier" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2966,6 +3098,7 @@
       }
     },
     "Edit" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2987,6 +3120,7 @@
       }
     },
     "Edit schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3018,6 +3152,7 @@
       }
     },
     "Effort" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3028,6 +3163,7 @@
       }
     },
     "Effort level" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3038,6 +3174,7 @@
       }
     },
     "End exercise?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3048,6 +3185,7 @@
       }
     },
     "End session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3058,6 +3196,7 @@
       }
     },
     "End session early" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3068,6 +3207,7 @@
       }
     },
     "End session?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3111,6 +3251,7 @@
       }
     },
     "Entry" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3121,6 +3262,7 @@
       }
     },
     "Entry not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3131,6 +3273,7 @@
       }
     },
     "Equal-length inhale, hold, exhale, and hold phases. Used by Navy SEALs to maintain calm under pressure and improve focus." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3141,6 +3284,7 @@
       }
     },
     "Error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3162,6 +3306,7 @@
       }
     },
     "Every day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3194,6 +3339,7 @@
       }
     },
     "Exercise type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3204,6 +3350,7 @@
       }
     },
     "Exercise unavailable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3224,6 +3371,7 @@
       }
     },
     "Exercises, schedules, and session results" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3234,6 +3382,7 @@
       }
     },
     "Exhale" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3244,6 +3393,7 @@
       }
     },
     "Exhale and relax your chest and back. Breathe calmly and naturally." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3254,6 +3404,7 @@
       }
     },
     "Exhale and release the tension. Let your back and stomach relax." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3264,6 +3415,7 @@
       }
     },
     "Export" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3274,6 +3426,7 @@
       }
     },
     "Export data" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3284,6 +3437,7 @@
       }
     },
     "Export data (JSON)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3294,6 +3448,7 @@
       }
     },
     "Exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3304,6 +3459,7 @@
       }
     },
     "Exposure · %lld steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3314,6 +3470,7 @@
       }
     },
     "Exposure description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3324,6 +3481,7 @@
       }
     },
     "Exposure is a gentle courage practice: you learn to stay with anxiety and notice that you can be with it—it's unpleasant but bearable. Sometimes anxiety goes down during the step, sometimes later. Both are okay." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3334,6 +3492,7 @@
       }
     },
     "Exposure name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3344,6 +3503,7 @@
       }
     },
     "Exposure session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3354,6 +3514,7 @@
       }
     },
     "Exposure steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3375,6 +3536,7 @@
       }
     },
     "Exposure steps. %d of %d completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3385,6 +3547,7 @@
       }
     },
     "Exposure: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3433,6 +3596,7 @@
       }
     },
     "Extreme anxiety, panic" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3443,6 +3607,7 @@
       }
     },
     "Face" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3453,6 +3618,7 @@
       }
     },
     "Face & Jaw" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3463,6 +3629,7 @@
       }
     },
     "Face your fears gradually" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3473,6 +3640,7 @@
       }
     },
     "Failed to create session: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3494,6 +3662,7 @@
       }
     },
     "Failed to load sessions." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3515,6 +3684,7 @@
       }
     },
     "Failed to save result." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3546,6 +3716,7 @@
       }
     },
     "Favorite exercises" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3556,6 +3727,7 @@
       }
     },
     "Feet & Calves" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3566,6 +3738,7 @@
       }
     },
     "Fill in all required fields" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3598,6 +3771,7 @@
       }
     },
     "Find 4 touch sensations: clothes, chair, floor, object in your hands." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3608,6 +3782,7 @@
       }
     },
     "Find 5 objects around you and hold your gaze on each for a second." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3618,6 +3793,7 @@
       }
     },
     "Finding an activity…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3628,6 +3804,7 @@
       }
     },
     "Finish" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3638,6 +3815,7 @@
       }
     },
     "Finish exercise" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3648,6 +3826,7 @@
       }
     },
     "Finish for today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3668,6 +3847,7 @@
       }
     },
     "Finish session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3700,6 +3880,7 @@
       }
     },
     "Full Body Relaxation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3710,6 +3891,7 @@
       }
     },
     "Full sequence of progressive muscle relaxation for all major muscle groups. Helps release deep tension throughout the body." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3720,6 +3902,7 @@
       }
     },
     "Fully relax your legs. Feel them become heavy and calm." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3730,6 +3913,7 @@
       }
     },
     "Fully relax your legs. Feel them become heavy and loose." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3740,6 +3924,7 @@
       }
     },
     "Get comfortable. On \"Tense\" phases, tense the muscle group moderately (no pain) and hold. On \"Release\" phases, fully let go and notice the sensations. Breathe steadily.\n\nTip: if tensing is difficult, ease off or skip that step — staying comfortable matters." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3783,6 +3968,7 @@
       }
     },
     "Give a short name and describe the situation that causes anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3804,6 +3990,7 @@
       }
     },
     "Go to today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3865,6 +4052,7 @@
       }
     },
     "Gradually facing fears and anxieties at your own pace" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3875,6 +4063,7 @@
       }
     },
     "Great" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3885,6 +4074,7 @@
       }
     },
     "Grounding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3895,6 +4085,7 @@
       }
     },
     "Grounding · %lld min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3905,6 +4096,7 @@
       }
     },
     "Grounding · 2 min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3926,6 +4118,7 @@
       }
     },
     "Grounding technique: find 5 things you see, 4 things you touch, 3 sounds, 2 smells (or air sensations), and 1 taste." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3947,6 +4140,7 @@
       }
     },
     "Grounding: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3957,6 +4151,7 @@
       }
     },
     "groups" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3967,6 +4162,7 @@
       }
     },
     "Hands & Forearms" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3977,6 +4173,7 @@
       }
     },
     "Hard to start, but it got easier…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3987,6 +4184,7 @@
       }
     },
     "Here's your pick" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4008,6 +4206,7 @@
       }
     },
     "Hide all steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4029,6 +4228,7 @@
       }
     },
     "High" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4039,6 +4239,7 @@
       }
     },
     "High anxiety, significant distress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4049,6 +4250,7 @@
       }
     },
     "Hint (optional)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4069,6 +4271,7 @@
       }
     },
     "Hold" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4101,6 +4304,7 @@
       }
     },
     "How did it go?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4111,6 +4315,7 @@
       }
     },
     "How did you feel beforehand?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4121,6 +4326,7 @@
       }
     },
     "How do you feel right now?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4142,6 +4348,7 @@
       }
     },
     "How to do it" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4163,6 +4370,7 @@
       }
     },
     "If anxiety stays high, it doesn’t mean you’re failing. Try to stay with it and notice: the wave of anxiety can shift, come and go." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4258,6 +4466,7 @@
       }
     },
     "Improving" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4279,6 +4488,7 @@
       }
     },
     "In progress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4289,6 +4499,7 @@
       }
     },
     "Inactive" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4299,6 +4510,7 @@
       }
     },
     "Inactive schedules" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4309,6 +4521,7 @@
       }
     },
     "Incomplete" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4319,6 +4532,7 @@
       }
     },
     "Increased by %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4350,6 +4564,7 @@
       }
     },
     "Inhale" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4360,6 +4575,7 @@
       }
     },
     "Inhale for 4 seconds, exhale for 6 seconds. Activates the parasympathetic nervous system to reduce anxiety and promote relaxation." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4434,6 +4650,7 @@
       }
     },
     "Journal" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4444,6 +4661,7 @@
       }
     },
     "Journal is empty" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4454,6 +4672,7 @@
       }
     },
     "Keep in mind" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4485,6 +4704,7 @@
       }
     },
     "last" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4517,6 +4737,7 @@
       }
     },
     "Leave" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4527,6 +4748,7 @@
       }
     },
     "Leave empty for flexible timing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4537,6 +4759,7 @@
       }
     },
     "Leave session?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4547,6 +4770,7 @@
       }
     },
     "Legs & Thighs" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4557,6 +4781,7 @@
       }
     },
     "Let everything go. Let your arms drop and shoulders relax. Feel the relief." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4567,6 +4792,7 @@
       }
     },
     "Let the tension leave your face. Relax your jaw and eyes." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4599,6 +4825,7 @@
       }
     },
     "level" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4674,6 +4901,7 @@
       }
     },
     "Look around" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4717,6 +4945,7 @@
       }
     },
     "Low" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4727,6 +4956,7 @@
       }
     },
     "Low energy, tired…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4737,6 +4967,7 @@
       }
     },
     "Lower Body" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4747,6 +4978,7 @@
       }
     },
     "Lower your arms and relax them. Feel the tension leave your upper arms." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4757,6 +4989,7 @@
       }
     },
     "Lower your shoulders to a natural position. Let them feel heavy and relaxed." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4767,6 +5000,7 @@
       }
     },
     "M — mastery" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4788,6 +5022,7 @@
       }
     },
     "Mark as completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4798,6 +5033,7 @@
       }
     },
     "Mark step as completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4807,10 +5043,8 @@
         }
       }
     },
-    "Mastery" : {
-
-    },
     "Maximum" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4821,6 +5055,7 @@
       }
     },
     "Medium" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4831,6 +5066,7 @@
       }
     },
     "Mild anxiety, manageable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4852,6 +5088,7 @@
       }
     },
     "Min / 7d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4862,6 +5099,7 @@
       }
     },
     "Min today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4872,6 +5110,7 @@
       }
     },
     "Minutes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4882,6 +5121,7 @@
       }
     },
     "MO" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4892,6 +5132,7 @@
       }
     },
     "Moderate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4902,6 +5143,7 @@
       }
     },
     "Moderate anxiety, noticeable discomfort" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4912,6 +5154,7 @@
       }
     },
     "Month" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4922,6 +5165,7 @@
       }
     },
     "Mood before" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4943,6 +5187,7 @@
       }
     },
     "Mood now" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4986,6 +5231,7 @@
       }
     },
     "Move step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -4996,6 +5242,7 @@
       }
     },
     "Muscle relaxation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5017,6 +5264,7 @@
       }
     },
     "New activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5038,6 +5286,7 @@
       }
     },
     "New exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5048,6 +5297,7 @@
       }
     },
     "New schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5068,6 +5318,7 @@
       }
     },
     "Next step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5078,6 +5329,7 @@
       }
     },
     "Next week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5098,10 +5350,8 @@
         }
       }
     },
-    "No activities available" : {
-
-    },
     "No activities match. Clear filters and try again?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5134,6 +5384,7 @@
       }
     },
     "No anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5165,6 +5416,7 @@
       }
     },
     "No change" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5186,6 +5438,7 @@
       }
     },
     "No data" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5196,6 +5449,7 @@
       }
     },
     "No exercises scheduled" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5206,6 +5460,7 @@
       }
     },
     "No exposures available" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5216,6 +5471,7 @@
       }
     },
     "No favorite exercises" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5224,6 +5480,9 @@
           }
         }
       }
+    },
+    "No records yet" : {
+
     },
     "No results" : {
       "localizations" : {
@@ -5246,6 +5505,7 @@
       }
     },
     "No scheduled exercises" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5256,6 +5516,7 @@
       }
     },
     "No schedules" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5277,6 +5538,7 @@
       }
     },
     "No schedules yet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5287,6 +5549,7 @@
       }
     },
     "No sessions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5297,6 +5560,7 @@
       }
     },
     "No sessions yet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5318,6 +5582,7 @@
       }
     },
     "Not completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5328,6 +5593,7 @@
       }
     },
     "Not done" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5338,6 +5604,7 @@
       }
     },
     "Not selected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5359,6 +5626,7 @@
       }
     },
     "Notes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5369,6 +5637,7 @@
       }
     },
     "Notes: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5390,6 +5659,7 @@
       }
     },
     "Nothing found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5411,6 +5681,7 @@
       }
     },
     "Nothing scheduled today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5421,6 +5692,7 @@
       }
     },
     "Notice 1 taste in your mouth or take a small sip of water and notice the taste." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5431,6 +5703,7 @@
       }
     },
     "Notice 3 sounds: near, far, and the quietest." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5441,6 +5714,7 @@
       }
     },
     "Notice avoidance and safety behaviors without judgment. When you can, gently return to the step." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5462,6 +5736,7 @@
       }
     },
     "Notification permission is required for schedule reminders." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5472,6 +5747,7 @@
       }
     },
     "Notification permission is required for schedule reminders. Please enable them in settings." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5482,6 +5758,7 @@
       }
     },
     "Notification permissions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5492,6 +5769,7 @@
       }
     },
     "Notifications are off" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5502,6 +5780,7 @@
       }
     },
     "of %lld min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5512,6 +5791,7 @@
       }
     },
     "Off" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5522,6 +5802,7 @@
       }
     },
     "OK" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5543,6 +5824,7 @@
       }
     },
     "On" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5553,6 +5835,7 @@
       }
     },
     "on schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5574,6 +5857,7 @@
       }
     },
     "One day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5617,6 +5901,7 @@
       }
     },
     "P — pleasure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5637,10 +5922,8 @@
         }
       }
     },
-    "P & M" : {
-
-    },
     "Pace doesn't matter" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5651,6 +5934,7 @@
       }
     },
     "Paced Breathing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5671,6 +5955,7 @@
       }
     },
     "Paused" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5681,6 +5966,7 @@
       }
     },
     "Personalized · Activity based" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5691,6 +5977,7 @@
       }
     },
     "Personalized · Fear hierarchy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5734,6 +6021,7 @@
       }
     },
     "Pinned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5743,10 +6031,8 @@
         }
       }
     },
-    "Pleasure" : {
-
-    },
     "Point your toes down and tense your calves and feet." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5768,6 +6054,7 @@
       }
     },
     "Praise for completing the session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5778,6 +6065,7 @@
       }
     },
     "Predefined" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9622,6 +9910,7 @@
       }
     },
     "Previous step" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9632,6 +9921,7 @@
       }
     },
     "Previous week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9652,6 +9942,7 @@
       }
     },
     "Profile" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9662,6 +9953,7 @@
       }
     },
     "Progress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9672,6 +9964,7 @@
       }
     },
     "Progressive muscle relaxation for tension relief" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9693,6 +9986,7 @@
       }
     },
     "Progressive muscle relaxation helps reduce anxiety and body tension through mindful tensing and releasing. You learn to notice where stress builds up in your body and gently release it." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9714,6 +10008,7 @@
       }
     },
     "Quick access" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9724,6 +10019,7 @@
       }
     },
     "Quick Relaxation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9745,6 +10041,7 @@
       }
     },
     "Raise your shoulders toward your ears. Hold and feel the tension." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9766,6 +10063,7 @@
       }
     },
     "Random activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9787,6 +10085,7 @@
       }
     },
     "Rate your anxiety level now (0–10)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9808,6 +10107,7 @@
       }
     },
     "Rate your current anxiety level before the session (0–10). This helps you compare before vs after." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9839,7 +10139,11 @@
         }
       }
     },
+    "Rebuild in progress" : {
+
+    },
     "Relax" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9850,6 +10154,7 @@
       }
     },
     "Relax your stomach muscles. Let your belly go soft." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9870,6 +10175,7 @@
       }
     },
     "Relaxation · %lld min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9880,6 +10186,7 @@
       }
     },
     "Relaxation: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9890,6 +10197,7 @@
       }
     },
     "Release the tension in your face. Relax your jaw and eyes." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9900,6 +10208,7 @@
       }
     },
     "Release the tension in your feet and calves. Let them relax naturally." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9910,6 +10219,7 @@
       }
     },
     "Reminder: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9920,6 +10230,7 @@
       }
     },
     "Remove completion mark" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9930,6 +10241,7 @@
       }
     },
     "Remove from favorites" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9951,6 +10263,7 @@
       }
     },
     "Removes all data permanently" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9961,6 +10274,7 @@
       }
     },
     "Repeat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9981,6 +10295,7 @@
       }
     },
     "Reset" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -9991,6 +10306,7 @@
       }
     },
     "Reset all data" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10001,6 +10317,7 @@
       }
     },
     "Reset all data?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10011,6 +10328,7 @@
       }
     },
     "Reset filters" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10021,6 +10339,7 @@
       }
     },
     "Reset timer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10031,6 +10350,7 @@
       }
     },
     "Rest" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10051,6 +10371,7 @@
       }
     },
     "Resume timer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10061,6 +10382,7 @@
       }
     },
     "Run again" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10082,6 +10404,7 @@
       }
     },
     "sample.session.note1" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10092,6 +10415,7 @@
       }
     },
     "sample.session.note2" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10102,6 +10426,7 @@
       }
     },
     "sample.session.note3" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10112,6 +10437,7 @@
       }
     },
     "sample.session.note4" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10122,6 +10448,7 @@
       }
     },
     "sample.session.note5" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10132,6 +10459,7 @@
       }
     },
     "Save" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10142,6 +10470,7 @@
       }
     },
     "Save as JSON" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10152,6 +10481,7 @@
       }
     },
     "Save changes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10162,6 +10492,7 @@
       }
     },
     "Save exposure" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10172,6 +10503,7 @@
       }
     },
     "Save schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10182,6 +10514,7 @@
       }
     },
     "Save session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10192,6 +10525,7 @@
       }
     },
     "Save session result" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10213,6 +10547,7 @@
       }
     },
     "Saves the exposure and closes the editor" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10223,6 +10558,7 @@
       }
     },
     "Schedule" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10232,10 +10568,8 @@
         }
       }
     },
-    "Schedule for later" : {
-
-    },
     "Schedule is not available in this context." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10246,6 +10580,7 @@
       }
     },
     "Scheduled" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10256,6 +10591,7 @@
       }
     },
     "Scheduled exercises" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10266,6 +10602,7 @@
       }
     },
     "Scheduled for" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10276,6 +10613,7 @@
       }
     },
     "Scrunch your face: squeeze your eyes shut and clench your jaw." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10296,6 +10634,7 @@
       }
     },
     "Search activities…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10317,6 +10656,7 @@
       }
     },
     "Seconds" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10369,6 +10709,7 @@
       }
     },
     "Select at least one day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10379,6 +10720,7 @@
       }
     },
     "Select day of week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10400,6 +10742,7 @@
       }
     },
     "selected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10454,6 +10797,7 @@
       }
     },
     "Sensory awareness techniques to reduce anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10464,6 +10808,7 @@
       }
     },
     "Session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10474,6 +10819,7 @@
       }
     },
     "Session date" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10484,6 +10830,7 @@
       }
     },
     "Session date: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10494,6 +10841,7 @@
       }
     },
     "Session details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10504,6 +10852,7 @@
       }
     },
     "Session history" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10514,6 +10863,7 @@
       }
     },
     "Session history for \"%@\" is empty" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10524,6 +10874,7 @@
       }
     },
     "Session history for this exposure is empty" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10534,6 +10885,7 @@
       }
     },
     "Session not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10544,6 +10896,7 @@
       }
     },
     "Session results" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10587,6 +10940,7 @@
       }
     },
     "Session: %@, duration %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10614,6 +10968,7 @@
       }
     },
     "sessions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10634,7 +10989,11 @@
         }
       }
     },
+    "Sessions will appear here after your first exercise." : {
+
+    },
     "Set up" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10645,6 +11004,7 @@
       }
     },
     "Set up a schedule to track your progress" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10665,6 +11025,7 @@
       }
     },
     "Short supportive message and tips" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10675,6 +11036,7 @@
       }
     },
     "Short version of progressive muscle relaxation focusing on key tension areas. Good for quick stress relief during the day." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10685,6 +11047,7 @@
       }
     },
     "Shoulders" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10706,6 +11069,7 @@
       }
     },
     "Show all steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10738,6 +11102,7 @@
       }
     },
     "Six months" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10748,6 +11113,7 @@
       }
     },
     "Skipped" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10758,6 +11124,7 @@
       }
     },
     "Slow, rhythmic breathing at a controlled rate. Helps regulate heart rate variability and reduces physiological arousal." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10768,6 +11135,7 @@
       }
     },
     "Smells" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10778,6 +11146,7 @@
       }
     },
     "Sounds" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10788,6 +11157,7 @@
       }
     },
     "Stable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10798,6 +11168,7 @@
       }
     },
     "Start" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10806,9 +11177,6 @@
           }
         }
       }
-    },
-    "Start activity" : {
-
     },
     "Start behavioral activation session" : {
       "extractionState" : "stale",
@@ -10822,6 +11190,7 @@
       }
     },
     "Start next" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10843,6 +11212,7 @@
       }
     },
     "Start session" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10864,6 +11234,7 @@
       }
     },
     "Start timer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10885,6 +11256,7 @@
       }
     },
     "Start with a manageable step and progress gradually." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10895,6 +11267,7 @@
       }
     },
     "Start your journey" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10905,6 +11278,7 @@
       }
     },
     "Status" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10937,6 +11311,7 @@
       }
     },
     "Step %d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10947,6 +11322,7 @@
       }
     },
     "Step %d of %d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10957,6 +11333,7 @@
       }
     },
     "Step %d: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10967,6 +11344,7 @@
       }
     },
     "Step %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10992,10 +11370,8 @@
         }
       }
     },
-    "Step %lld of 3" : {
-
-    },
     "Step %lld: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -11012,6 +11388,7 @@
       }
     },
     "Step completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11022,6 +11399,7 @@
       }
     },
     "Step not yet completed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11032,6 +11410,7 @@
       }
     },
     "steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11042,6 +11421,7 @@
       }
     },
     "Steps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11052,6 +11432,7 @@
       }
     },
     "Stomach" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11062,6 +11443,7 @@
       }
     },
     "Straighten your legs and point your toes down. Tense your thighs, calves, and feet." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11072,6 +11454,7 @@
       }
     },
     "Streak" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11093,6 +11476,7 @@
       }
     },
     "Suggested duration (min)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11103,6 +11487,7 @@
       }
     },
     "Summary" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11133,6 +11518,7 @@
       }
     },
     "Tags" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11143,6 +11529,7 @@
       }
     },
     "Take a deep breath and pull your shoulders back. Slightly arch your back." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11153,6 +11540,7 @@
       }
     },
     "Take a deep breath. Slightly arch your back and tense your stomach." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11163,6 +11551,7 @@
       }
     },
     "Take a moment. You can continue when you're ready." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11206,6 +11595,7 @@
       }
     },
     "Taste" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11216,6 +11606,7 @@
       }
     },
     "Tense" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11226,6 +11617,7 @@
       }
     },
     "Tense your stomach muscles. Make your belly firm." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11236,6 +11628,7 @@
       }
     },
     "Tense your thigh muscles. Straighten your legs and make them stiff." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11255,6 +11648,9 @@
           }
         }
       }
+    },
+    "The exposure log lands here first." : {
+
     },
     "The file contains exercises, schedules, and session results." : {
       "extractionState" : "stale",
@@ -11300,6 +11696,7 @@
       }
     },
     "The schedule may have been removed or changed." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11331,6 +11728,7 @@
       }
     },
     "This action cannot be undone." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11362,6 +11760,7 @@
       }
     },
     "This will delete all exercises, schedules, and session results." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11372,6 +11771,7 @@
       }
     },
     "This will delete all exercises, schedules, and session results. This action cannot be undone." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11382,6 +11782,7 @@
       }
     },
     "time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11392,6 +11793,7 @@
       }
     },
     "Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11402,6 +11804,7 @@
       }
     },
     "Time for activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11412,6 +11815,7 @@
       }
     },
     "Time for exercise" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11422,6 +11826,7 @@
       }
     },
     "Time left" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11432,6 +11837,7 @@
       }
     },
     "Time remaining: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11442,6 +11848,7 @@
       }
     },
     "Time's up" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11452,6 +11859,7 @@
       }
     },
     "Timer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11462,6 +11870,7 @@
       }
     },
     "Timer %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11472,6 +11881,7 @@
       }
     },
     "Timer for step %d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11504,6 +11914,7 @@
       }
     },
     "timers" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11535,6 +11946,7 @@
       }
     },
     "Today's plan" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11545,6 +11957,7 @@
       }
     },
     "Tomorrow" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11555,6 +11968,7 @@
       }
     },
     "total" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11576,6 +11990,7 @@
       }
     },
     "Total time: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11586,6 +12001,7 @@
       }
     },
     "Trend: %1$@, change %2$@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11596,6 +12012,7 @@
       }
     },
     "Try to remember how you felt before you started." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11606,6 +12023,7 @@
       }
     },
     "Type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11616,6 +12034,7 @@
       }
     },
     "Unavailable. Enter a description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11626,6 +12045,7 @@
       }
     },
     "Unavailable. Enter a name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11658,6 +12078,7 @@
       }
     },
     "Unclench your fists. Fully relax your arms and notice the difference between tension and relaxation." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11668,6 +12089,7 @@
       }
     },
     "Undo step completion" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11698,6 +12120,7 @@
       }
     },
     "Upper Arms" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11708,6 +12131,7 @@
       }
     },
     "Upper Body" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11796,6 +12220,7 @@
       }
     },
     "Very bad" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11806,6 +12231,7 @@
       }
     },
     "Very high anxiety, hard to tolerate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11816,6 +12242,7 @@
       }
     },
     "Very low anxiety" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11870,6 +12297,7 @@
       }
     },
     "We'll pick one that fits" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11880,6 +12308,7 @@
       }
     },
     "Week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11890,6 +12319,7 @@
       }
     },
     "Weekdays" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11900,6 +12330,7 @@
       }
     },
     "Weekends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11910,6 +12341,7 @@
       }
     },
     "Weekly" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11930,6 +12362,7 @@
       }
     },
     "Well done!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11940,6 +12373,7 @@
       }
     },
     "What do you feel now? What thoughts/sensations were there during the session? What helped?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11950,6 +12384,7 @@
       }
     },
     "What got in the way?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11960,6 +12395,7 @@
       }
     },
     "What it's for" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11970,6 +12406,7 @@
       }
     },
     "What you achieved" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11980,6 +12417,7 @@
       }
     },
     "What's making it hard to start?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11990,6 +12428,7 @@
       }
     },
     "When active, you will receive reminders at the selected time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12021,6 +12460,7 @@
       }
     },
     "While you pause" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12031,6 +12471,7 @@
       }
     },
     "Why this matters" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12052,6 +12493,7 @@
       }
     },
     "With timer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12062,6 +12504,7 @@
       }
     },
     "WK" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12072,6 +12515,7 @@
       }
     },
     "Worsening" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12093,6 +12537,7 @@
       }
     },
     "Year" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12103,6 +12548,7 @@
       }
     },
     "Yes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12113,6 +12559,7 @@
       }
     },
     "Yesterday" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12134,6 +12581,7 @@
       }
     },
     "You completed a relaxation exercise—that's self-care." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12144,6 +12592,7 @@
       }
     },
     "You completed the session—that's already a big step. Even if anxiety was high, you practiced staying with the feelings and moving forward." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12154,6 +12603,7 @@
       }
     },
     "You did a great job" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12164,6 +12614,7 @@
       }
     },
     "You didn't finish your activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12218,6 +12669,7 @@
       }
     },
     "You're doing great!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12261,6 +12713,7 @@
       }
     },
     "Your progress so far has been saved." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12271,6 +12724,7 @@
       }
     },
     "YR" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {

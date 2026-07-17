@@ -1,59 +1,47 @@
 import SwiftUI
-import SwiftData
 
 struct MainTabView: View {
-    @State private var selectedTab: AppTab = .home
-    @State private var scheduleViewModel = ScheduleViewModel()
+    @State private var selectedTab: AppTab = .today
     @State private var router = NavigationRouter()
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView(path: router.path(for: .home))
+            TodayView(path: router.path(for: .today))
                 .environment(router)
-                .environment(\.currentAppTab, .home)
-                .environment(\.scheduleViewModel, scheduleViewModel)
-                .tag(AppTab.home)
-                .tabItem { Image(systemName: "sparkles") }
-                .accessibilityLabel("Summary")
+                .environment(\.currentAppTab, .today)
+                .tag(AppTab.today)
+                .tabItem { Image(systemName: "sun.max") }
+                .accessibilityLabel("Today")
 
             ExercisesView(path: router.path(for: .exercises))
                 .environment(router)
                 .environment(\.currentAppTab, .exercises)
-                .environment(\.scheduleViewModel, scheduleViewModel)
                 .tag(AppTab.exercises)
                 .tabItem { Image(systemName: "figure.mind.and.body") }
                 .accessibilityLabel("Exercises")
 
-            ScheduleTabView(path: router.path(for: .schedule))
+            HistoryView(path: router.path(for: .history))
                 .environment(router)
-                .environment(\.currentAppTab, .schedule)
-                .environment(\.scheduleViewModel, scheduleViewModel)
-                .tag(AppTab.schedule)
-                .tabItem { Image(systemName: "calendar") }
-                .accessibilityLabel("Schedule")
+                .environment(\.currentAppTab, .history)
+                .tag(AppTab.history)
+                .tabItem { Image(systemName: "clock.arrow.circlepath") }
+                .accessibilityLabel("History")
 
             KnowledgeCenterView(path: router.path(for: .knowledge))
                 .environment(router)
                 .environment(\.currentAppTab, .knowledge)
-                .environment(\.scheduleViewModel, scheduleViewModel)
                 .tag(AppTab.knowledge)
                 .tabItem { Image(systemName: "book.pages") }
                 .accessibilityLabel("Knowledge center")
-
-            SettingsView(path: router.path(for: .settings))
-                .environment(router)
-                .environment(\.currentAppTab, .settings)
-                .tag(AppTab.settings)
-                .tabItem { Image(systemName: "person.circle") }
-                .accessibilityLabel("Profile")
         }
         .tint(AppColors.primary)
-        // `\.navigationRouter` is a separate EnvironmentKey from Observable injection; without this,
-        // programmatic pushes (e.g. BA random roulette) see `nil` and do nothing after the animation.
+        // `\.navigationRouter` is a separate EnvironmentKey from Observable injection;
+        // programmatic pushes read it from the environment.
         .environment(\.navigationRouter, router)
     }
 }
 
 #Preview {
     MainTabView()
+        .environment(ArticlesStore())
 }
