@@ -30,8 +30,8 @@ struct TodayView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(value: AppRoute.settings) {
-                        Image(systemName: "gearshape")
+                    CircleButton(systemImage: "gearshape") {
+                        path.append(AppRoute.settings)
                     }
                     .accessibilityLabel(String(localized: "Settings"))
                 }
