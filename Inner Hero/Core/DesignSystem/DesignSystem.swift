@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Brand Colors
 //
-// Primary palette extracted from CBT Tools redesign mockups.
+// Inner Hero brand palette (assets in Resources/Assets.xcassets/Colors).
 // Use semantic aliases (AppColors.*) in views — never raw hex values.
 
 enum AppColors {
@@ -24,12 +24,16 @@ enum AppColors {
     static let positiveLight = Color("PositiveLight")
 
     // MARK: Neutrals
+    //
+    // ⚠️ Naming gotcha: the number does NOT track darkness. gray400 is the
+    // DARKER text gray (secondary), gray600 is LIGHTER (tertiary). Pick by
+    // the role in the comment, not by the number.
     static let black         = Color("AppBlack")
     static let cardBackground = Color("CardBackground") // card / elevated surface (#FFF light, #2C2C2E dark)
     static let gray100       = Color("Gray100") // page background
     static let gray200       = Color("Gray200") // dividers / card borders
-    static let gray300       = Color("Gray300") // disabled borders
-    static let gray400       = Color("Gray400") // secondary text
+    static let gray300       = Color("Gray300") // disabled borders (too light for text)
+    static let gray400       = Color("Gray400") // secondary text, placeholders
     static let gray600       = Color("Gray600") // tertiary text
     static let white         = Color.white
 
@@ -37,20 +41,17 @@ enum AppColors {
     enum State {
         static let success = AppColors.positive
         static let warning = Color("StateWarning")
-        static let error   = AppColors.primary
+        /// Distinct from `primary` (brand): errors must not look like CTAs.
+        static let error   = Color("StateError")
         static let info    = Color("StateInfo")
         static let neutral = AppColors.gray400
     }
 
-    // MARK: Anxiety Scale (for exposure sessions — kept from original)
-    static func anxietyColor(for level: Int) -> Color {
-        switch level {
-        case 0...3: return positive
-        case 4...6: return State.warning
-        case 7...10: return primary
-        default: return gray400
-        }
-    }
+    // NOTE: There is deliberately NO color scale for anxiety levels.
+    // The 0–10 scale measures intensity only (spec §3) — colouring it
+    // green→red would encode a "high anxiety = bad" judgment that
+    // contradicts the inhibitory-learning model (success = stayed,
+    // not lower anxiety). Intensity controls use a single neutral color.
 }
 
 // MARK: - Text Colors
@@ -64,6 +65,10 @@ enum TextColors {
     /// White text for use on colored surfaces (red/purple cards)
     static let onColor: Color   = .white
     static let onColorSecondary = Color.white.opacity(0.8)
+    /// Content on `AppColors.black` surfaces. AppBlack inverts to
+    /// near-white in dark mode, so its content must invert too —
+    /// plain `.white` becomes invisible there.
+    static let onBlack = Color(.systemBackground)
 }
 
 // MARK: - Spacing
@@ -112,7 +117,6 @@ enum BorderWidth {
 
 enum TouchTarget {
     static let minimum:  CGFloat = 44
-    static let standard: CGFloat = 44
     static let large:    CGFloat = 56
 }
 
@@ -173,8 +177,6 @@ enum AppAnimation {
     static let fast      = Animation.easeOut(duration: 0.14)
     static let slow      = Animation.easeInOut(duration: 0.40)
     static let appear    = Animation.easeOut(duration: 0.28)
-    /// Very short tick (e.g. slot-machine label flip).
-    static let tick      = Animation.easeOut(duration: 0.07)
 }
 
 // MARK: - Content scaling
@@ -182,27 +184,11 @@ enum AppAnimation {
 enum ContentScaling {
     /// Allow stat tiles to shrink before truncating.
     static let statMinimum: CGFloat = 0.7
-    /// Compact pill labels (filter menus) before truncating.
-    static let filterPillMinimum: CGFloat = 0.75
 }
 
 // MARK: - Timings (seconds)
 
 enum InteractionTiming {
-    /// Slot-machine style label updates.
-    static let rouletteFrame: TimeInterval = 0.07
-    /// Winner name stays on screen with end animation before opening the session flow.
-    static let rouletteReveal: TimeInterval = 2.0
-    static let rouletteSettle: TimeInterval = 0.15
     /// Auto-dismiss for transient bottom banners.
     static let toastAutoDismiss: TimeInterval = 3
-}
-
-// MARK: - Mood / delta UI (Behavioral activation)
-
-enum MoodLayout {
-    /// Fixed well for emoji column in `DeltaCard`.
-    static let emojiWellHeight: CGFloat = 52
-    /// Placeholder height when delta badge is hidden.
-    static let deltaPlaceholderHeight: CGFloat = 22
 }

@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Components.swift
 //
-// Reusable SwiftUI components matching the CBT Tools redesign.
+// Reusable SwiftUI components of the Inner Hero design system.
 // All components respect light/dark mode and Dynamic Type.
 
 // ─────────────────────────────────────────────
@@ -30,9 +30,9 @@ struct PrimaryButtonLabel: View {
                     .appFont(.buttonPrimary)
             }
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(TextColors.onBlack)
         .frame(maxWidth: .infinity)
-        .frame(height: 52)
+        .frame(minHeight: 52)
         .background(Capsule().fill(color))
     }
 }
@@ -52,7 +52,7 @@ struct PrimaryButton: View {
             ZStack {
                 if isLoading {
                     ProgressView()
-                        .tint(.white)
+                        .tint(TextColors.onBlack)
                 } else {
                     PrimaryButtonLabel(title: title, systemImage: systemImage, color: color)
                 }
@@ -63,25 +63,37 @@ struct PrimaryButton: View {
     }
 }
 
-/// Compact icon-only circular button
-/// Usage: `CircleButton(systemImage: "xmark", background: .red) { ... }`
+/// Compact icon-only circular button.
+/// Default — round glass, matching iOS 26 system toolbar buttons (back, etc.).
+/// Variants via `background`: `AppColors.gray100` for a sheet-style close
+/// circle, `AppColors.black` + `foreground: TextColors.onBlack` for the
+/// prominent dark variant.
+/// Usage: `CircleButton(systemImage: "gearshape") { ... }`
 struct CircleButton: View {
     let systemImage: String
     var size: CGFloat           = TouchTarget.minimum
     var iconSize: CGFloat       = 17
-    var background: Color       = AppColors.black
-    var foreground: Color       = .white
+    /// `nil` → system glass circle; a color → flat filled circle.
+    var background: Color?      = nil
+    var foreground: Color       = TextColors.primary
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: systemImage)
-                .font(.system(size: iconSize, weight: .semibold))
-                .foregroundStyle(foreground)
-                .frame(width: size, height: size)
-                .background(Circle().fill(background))
+            if let background {
+                icon.background(Circle().fill(background))
+            } else {
+                icon.glassEffect(in: .circle)
+            }
         }
         .buttonStyle(.plain)
+    }
+
+    private var icon: some View {
+        Image(systemName: systemImage)
+            .font(.system(size: iconSize, weight: .semibold))
+            .foregroundStyle(foreground)
+            .frame(width: size, height: size)
     }
 }
 
@@ -110,69 +122,19 @@ struct SessionPlayPauseCircleButton: View {
     }
 }
 
-/// Arrow forward button (used in exercise list rows)
-struct ArrowButton: View {
-    var size: CGFloat = IconSize.action
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Image(systemName: "chevron.right")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: size, height: size)
-                .background(Circle().fill(AppColors.black))
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-// ─────────────────────────────────────────────
-// MARK: Progress Bar
-// ─────────────────────────────────────────────
-
-/// Standalone inline progress bar (step N of M)
-/// Usage: `StepProgressBar(current: 2, total: 5, color: .red)`
-struct StepProgressBar: View {
-    let current: Int
-    let total: Int
-    var color: Color = AppColors.primary
-    var height: CGFloat = 4
-
-    private var progress: Double {
-        guard total > 0 else { return 0 }
-        return Double(current) / Double(total)
-    }
-
-    var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(AppColors.gray200)
-                    .frame(height: height)
-                Capsule()
-                    .fill(color)
-                    .frame(width: geo.size.width * progress, height: height)
-                    .animation(AppAnimation.standard, value: progress)
-            }
-        }
-        .frame(height: height)
-    }
-}
-
 // ─────────────────────────────────────────────
 // MARK: Hero Feature Card
 // ─────────────────────────────────────────────
 
-/// Large coloured hero card (Daily check-in / main exercise prompt)
-/// Usage: `HeroFeatureCard(subtitle: "Afternoon Check-in", title: "Identify your cognitive distortions")`
+/// Large coloured hero card — the single accent card of a screen
+/// (e.g. "Log an exposure · Just happened" on Today).
+/// Always available, no dismiss/favourite chrome (spec §2.1).
+/// Usage: `HeroFeatureCard(subtitle: "Just happened", title: "Log an exposure")`
 struct HeroFeatureCard: View {
     let subtitle: String
     let title: String
     var color: Color     = AppColors.primary
     var icon: String     = "sun.max"
-    var onDismiss: (() -> Void)? = nil
-    var onFavourite: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -195,34 +157,6 @@ struct HeroFeatureCard: View {
                 .appFont(.h2)
                 .foregroundStyle(TextColors.onColor)
                 .fixedSize(horizontal: false, vertical: true)
-
-            // Actions
-            if onDismiss != nil || onFavourite != nil {
-                HStack {
-                    Spacer()
-                    if let dismiss = onDismiss {
-                        CircleButton(
-                            systemImage: "xmark",
-                            size: 44,
-                            iconSize: 15,
-                            background: AppColors.primary.opacity(0.35),
-                            foreground: .white,
-                            action: dismiss
-                        )
-                    }
-                    if let fav = onFavourite {
-                        CircleButton(
-                            systemImage: "heart",
-                            size: 44,
-                            iconSize: 15,
-                            background: AppColors.primary.opacity(0.35),
-                            foreground: .white,
-                            action: fav
-                        )
-                    }
-                }
-                .padding(.top, Spacing.md)
-            }
         }
         .padding(Spacing.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -237,8 +171,8 @@ struct HeroFeatureCard: View {
 // MARK: Exercise List Row
 // ─────────────────────────────────────────────
 
-/// White card row for exercise lists
-/// Usage: `ExerciseRow(title: "Thought Record", meta: "5 min · Reframing", icon: "doc.text")`
+/// Card row for exercise lists (launcher, history feed)
+/// Usage: `ExerciseRow(title: "Breathing", meta: "Box · 10 min", icon: "wind")`
 struct ExerciseRow: View {
     let title: String
     let meta: String
@@ -271,13 +205,19 @@ struct ExerciseRow: View {
 
                 Spacer()
 
-                ArrowButton(action: action)
+                // Decorative affordance — the whole row is the button
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(TextColors.onBlack)
+                    .frame(width: IconSize.action, height: IconSize.action)
+                    .background(Circle().fill(AppColors.black))
+                    .accessibilityHidden(true)
             }
             .padding(.horizontal, Spacing.sm)
             .padding(.vertical, Spacing.xs)
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.lg, style: .continuous)
-                    .fill(.white)
+                    .fill(AppColors.cardBackground)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: CornerRadius.lg, style: .continuous)
@@ -337,47 +277,7 @@ struct RadioCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .fill(isSelected ? accentColor.opacity(0.03) : .white)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .strokeBorder(
-                        isSelected ? accentColor : AppColors.gray200,
-                        lineWidth: isSelected ? 1.5 : 0.5
-                    )
-            )
-        }
-        .buttonStyle(.plain)
-        .animation(AppAnimation.fast, value: isSelected)
-    }
-}
-
-// ─────────────────────────────────────────────
-// MARK: Emotion Picker Cell
-// ─────────────────────────────────────────────
-
-/// Emoji grid cell for mood selection
-/// Usage: `EmotionCell(emoji: "😌", label: "Calm", isSelected: $selected)`
-struct EmotionCell: View {
-    let emoji: String
-    let label: String
-    @Binding var isSelected: Bool
-    var accentColor: Color = AppColors.accent
-
-    var body: some View {
-        Button { isSelected.toggle() } label: {
-            VStack(spacing: Spacing.xxs) {
-                Text(emoji)
-                    .font(.system(size: 28))
-                Text(label)
-                    .appFont(.smallMedium)
-                    .foregroundStyle(TextColors.primary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, Spacing.sm)
-            .background(
-                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .fill(isSelected ? accentColor.opacity(0.08) : .white)
+                    .fill(isSelected ? accentColor.opacity(0.03) : AppColors.cardBackground)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
@@ -404,17 +304,17 @@ struct AppBadge: View {
 
         var background: Color {
             switch self {
-            case .error:   return AppColors.primaryLight
+            case .error:   return AppColors.State.error.opacity(Opacity.subtleBorder)
             case .success: return AppColors.positiveLight
             case .neutral: return AppColors.gray100
             case .accent:  return AppColors.accentLight
-            case .warning: return AppColors.State.warning.opacity(0.12)
+            case .warning: return AppColors.State.warning.opacity(Opacity.subtleBorder)
             }
         }
 
         var foreground: Color {
             switch self {
-            case .error:   return AppColors.primary
+            case .error:   return AppColors.State.error
             case .success: return AppColors.positive
             case .neutral: return AppColors.gray600
             case .accent:  return AppColors.accent
@@ -446,121 +346,22 @@ struct AppBadge: View {
 }
 
 // ─────────────────────────────────────────────
-// MARK: Filter pill (Menu label)
+// MARK: Quote Card
 // ─────────────────────────────────────────────
 
-/// Capsule label for search/filter `Menu` controls: `Title` + optional ` (n)`.
-/// Typography matches `TopTabBar`: inactive `body`, active `bodyMedium` + accent.
-/// When `selectedCount == 0`, no parentheses; when `> 0`, shows count and accent styling.
-/// Usage: `Menu { ... } label: { FilterPillMenuLabel(title:selectedCount:) }`
-struct FilterPillMenuLabel: View {
-    let title: String
-    /// Number of active selections; `0` means default (no count badge, neutral chrome).
-    let selectedCount: Int
-    var accentColor: Color = AppColors.primary
-
-    private var isActive: Bool { selectedCount > 0 }
-
-    var body: some View {
-        HStack(spacing: 0) {
-            Text(title)
-                .appFont(isActive ? .bodyMedium : .body)
-            if selectedCount > 0 {
-                Text(" (\(selectedCount))")
-                    .appFont(.bodyMedium)
-            }
-        }
-        .foregroundStyle(isActive ? accentColor : TextColors.primary)
-        .lineLimit(1)
-        .minimumScaleFactor(ContentScaling.filterPillMinimum)
-        .padding(.horizontal, Spacing.xs)
-        .frame(maxWidth: .infinity)
-        .frame(minHeight: TouchTarget.minimum)
-        .background(
-            Capsule().fill(isActive ? accentColor.opacity(Opacity.softBackground) : AppColors.cardBackground)
-        )
-        .overlay(
-            Capsule().strokeBorder(
-                isActive ? accentColor.opacity(Opacity.emphasizedBorder) : AppColors.gray200,
-                lineWidth: isActive ? BorderWidth.standard : BorderWidth.hairline
-            )
-        )
-        .accessibilityLabel(accessibilityLabel)
-    }
-
-    private var accessibilityLabel: String {
-        if selectedCount > 0 {
-            String(format: String(localized: "%@, %lld selected"), title, Int64(selectedCount))
-        } else {
-            title
-        }
-    }
-}
-
-// ─────────────────────────────────────────────
-// MARK: Top Tab Navigation Bar
-// ─────────────────────────────────────────────
-
-/// Segmented top navigation with active underline
-/// Segmented pill tab bar
-/// Usage: `TopTabBar(tabs: ["Today", "All schedules"], selection: $tab)`
-/// - Parameter floating: When `true`, outer track is transparent so content behind (e.g. scroll + `safeAreaInset`) shows through.
-struct TopTabBar: View {
-    let tabs: [String]
-    @Binding var selection: Int
-    var floating: Bool = false
-    @Namespace private var namespace
-
-    var body: some View {
-        HStack(spacing: Spacing.xxxs) {
-            ForEach(tabs.indices, id: \.self) { i in
-                Button {
-                    withAnimation(AppAnimation.standard) { selection = i }
-                    HapticFeedback.selection()
-                } label: {
-                    Text(tabs[i])
-                        .appFont(selection == i ? .bodyMedium : .body)
-                        .foregroundStyle(selection == i ? TextColors.primary : TextColors.secondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, Spacing.xxs)
-                        .background {
-                            if selection == i {
-                                Capsule()
-                                    .fill(Color(.systemBackground))
-                                    .shadow(
-                                        color: Color.black.opacity(Opacity.lightShadow),
-                                        radius: 4, x: 0, y: 2
-                                    )
-                                    .matchedGeometryEffect(id: "tab_indicator", in: namespace)
-                            }
-                        }
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(selection == i ? .isSelected : [])
-            }
-        }
-        .padding(Spacing.xxxs)
-        .background {
-            if !floating {
-                Capsule().fill(AppColors.gray100)
-            }
-        }
-    }
-}
-
-// ─────────────────────────────────────────────
-// MARK: Thought Record Card
-// ─────────────────────────────────────────────
-
-/// Quoted thought display with red left border
-/// Usage: `RecordedThoughtCard(text: "I made one mistake...")`
-struct RecordedThoughtCard: View {
+/// Quoted text display with a coloured left border.
+/// Used to show the user's own earlier words back to them:
+/// prediction reminder on the exposure "after" screen (spec §3),
+/// forecast comparison in BA (spec §6).
+/// Usage: `QuoteCard(label: "Your prediction", text: "It will overwhelm me...")`
+struct QuoteCard: View {
+    let label: String
     let text: String
     var accentColor: Color = AppColors.primary
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xxs) {
-            SectionLabel(text: "Your Recorded Thought")
+            SectionLabel(text: label)
             Text(text)
                 .appFont(.bodyMedium)
                 .foregroundStyle(TextColors.primary)
@@ -570,7 +371,7 @@ struct RecordedThoughtCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                .fill(Color.white)
+                .fill(AppColors.cardBackground)
         )
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
@@ -626,102 +427,6 @@ struct BreathingCircle: View {
 }
 
 // ─────────────────────────────────────────────
-// MARK: Flat Pill Nav Bar (Main Tab navigation)
-// ─────────────────────────────────────────────
-
-/// Floating pill nav bar where ALL items are uniform — no prominent center button.
-/// Use this for main app tab navigation (replaces UITabBar).
-///
-/// Usage:
-/// ```swift
-/// FlatPillNavBar(
-///     items: [
-///         .init(systemImage: "heart.gauge.open", tag: 0, accessibilityLabel: "Home"),
-///         .init(systemImage: "figure.mind.and.body", tag: 1, accessibilityLabel: "Exercises"),
-///         .init(systemImage: "calendar", tag: 2, accessibilityLabel: "Schedule"),
-///         .init(systemImage: "book.pages", tag: 3, accessibilityLabel: "Knowledge"),
-///         .init(systemImage: "gear", tag: 4, accessibilityLabel: "Settings"),
-///     ],
-///     selection: $selectedTab
-/// )
-/// ```
-struct FlatPillNavBar: View {
-
-    struct NavItem {
-        let systemImage: String
-        let activeSystemImage: String  // filled/bold variant for active state
-        let tag: Int
-        var accessibilityLabel: String = ""
-
-        /// Convenience init — uses same icon for both states
-        init(systemImage: String,
-             activeSystemImage: String? = nil,
-             tag: Int,
-             accessibilityLabel: String = "") {
-            self.systemImage       = systemImage
-            self.activeSystemImage = activeSystemImage ?? systemImage
-            self.tag               = tag
-            self.accessibilityLabel = accessibilityLabel
-        }
-    }
-
-    let items: [NavItem]
-    @Binding var selection: Int
-    /// Called when the already-selected tab is tapped (use for pop-to-root etc.)
-    var onReselect: ((Int) -> Void)? = nil
-
-    @Namespace private var pillNS
-
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(items, id: \.tag) { item in
-                flatNavButton(item)
-            }
-        }
-        .padding(.horizontal, Spacing.xxs)
-        .padding(.vertical, Spacing.xxs)
-        .background(Capsule().fill(Color.black))
-        .shadow(color: .black.opacity(0.25), radius: 20, y: 8)
-        .environment(\.colorScheme, .dark)
-    }
-
-    @ViewBuilder
-    private func flatNavButton(_ item: NavItem) -> some View {
-        let isSelected = selection == item.tag
-
-        Button {
-            if isSelected {
-                onReselect?(item.tag)
-            } else {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                withAnimation(AppAnimation.spring) {
-                    selection = item.tag
-                }
-            }
-        } label: {
-            ZStack {
-                // Sliding pill background via matchedGeometryEffect
-                if isSelected {
-                    Capsule()
-                        .fill(Color.white.opacity(0.15))
-                        .matchedGeometryEffect(id: "pill", in: pillNS)
-                }
-
-                Image(systemName: isSelected ? item.activeSystemImage : item.systemImage)
-                    .font(.system(size: 18, weight: isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.white : Color.white.opacity(0.4))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 44)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(item.accessibilityLabel)
-        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
-    }
-}
-
-// ─────────────────────────────────────────────
 // MARK: Session Flow Bottom Pill (Grounding-style)
 // ─────────────────────────────────────────────
 
@@ -746,146 +451,19 @@ struct SessionFlowBottomPill<L: View, C: View, R: View>: View {
         HStack(spacing: 0) {
             left()
                 .frame(maxWidth: .infinity)
-                .frame(height: TouchTarget.minimum)
+                .frame(minHeight: TouchTarget.minimum)
             center()
                 .frame(maxWidth: .infinity)
-                .frame(height: TouchTarget.minimum)
+                .frame(minHeight: TouchTarget.minimum)
             right()
                 .frame(maxWidth: .infinity)
-                .frame(height: TouchTarget.minimum)
+                .frame(minHeight: TouchTarget.minimum)
         }
         .padding(.horizontal, Spacing.sm)
         .padding(.vertical, Spacing.xxs)
         .background(Capsule().fill(Color.black))
         .shadow(color: .black.opacity(0.22), radius: 16, y: 6)
         .environment(\.colorScheme, .dark)
-    }
-}
-
-// ─────────────────────────────────────────────
-// MARK: Bottom Pill Navigation Bar (with center button)
-// ─────────────────────────────────────────────
-
-/// Pill-shaped floating bottom navigation bar.
-/// Matches the black pill from the mockups with icon tabs,
-/// a prominent center stop/record button, and an optional trailing CTA.
-///
-/// Usage:
-/// ```swift
-/// BottomPillNavBar(
-///     items: [
-///         .init(systemImage: "face.smiling",  tag: 0),
-///         .init(systemImage: "play.circle",   tag: 1),
-///         .init(systemImage: "plus.square",   tag: 2),
-///         .init(systemImage: "person",        tag: 4),
-///     ],
-///     centerItem: .init(systemImage: "stop.fill", tag: 3),
-///     selection: $selectedTab,
-///     onTrailingTap: { /* next / continue */ }
-/// )
-/// ```
-struct BottomPillNavBar: View {
-
-    struct NavItem {
-        let systemImage: String
-        let tag: Int
-        var accessibilityLabel: String = ""
-    }
-
-    /// Regular icon tabs (excluding center)
-    let items: [NavItem]
-    /// The prominent center button (stop/record/active action)
-    let centerItem: NavItem
-    /// Currently selected tab tag
-    @Binding var selection: Int
-    /// Optional trailing arrow CTA (pass nil to hide)
-    var onTrailingTap: (() -> Void)? = nil
-
-    // Center button is "active" when its tag is selected
-    private var centerIsActive: Bool { selection == centerItem.tag }
-
-    var body: some View {
-        HStack(spacing: 0) {
-            // ── Left icon items ────────────────────────
-            HStack(spacing: 4) {
-                ForEach(items.prefix(items.count / 2), id: \.tag) { item in
-                    pillIconButton(item)
-                }
-            }
-
-            // ── Center button ──────────────────────────
-            Button {
-                selection = centerItem.tag
-            } label: {
-                Image(systemName: centerItem.systemImage)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(centerIsActive ? .white : Color.white.opacity(0.5))
-                    .frame(width: 36, height: 36)
-                    .background(
-                        Circle()
-                            .fill(centerIsActive
-                                  ? Color.white.opacity(0.25)
-                                  : Color.white.opacity(0.12))
-                    )
-            }
-            .buttonStyle(.plain)
-            .touchTarget()
-            .accessibilityLabel(centerItem.accessibilityLabel.isEmpty
-                                ? centerItem.systemImage
-                                : centerItem.accessibilityLabel)
-            .padding(.horizontal, 4)
-
-            // ── Right icon items ───────────────────────
-            HStack(spacing: 4) {
-                ForEach(items.suffix(items.count - items.count / 2), id: \.tag) { item in
-                    pillIconButton(item)
-                }
-            }
-
-            // ── Trailing CTA arrow (optional) ──────────
-            if let onTrailing = onTrailingTap {
-                Spacer().frame(width: Spacing.xxs)
-                Button(action: onTrailing) {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 36, height: 36)
-                        .background(Circle().fill(Color.white.opacity(0.18)))
-                }
-                .buttonStyle(.plain)
-                .touchTarget()
-                .accessibilityLabel("Next")
-            }
-        }
-        .padding(.horizontal, Spacing.sm)
-        .padding(.vertical, Spacing.xxs)
-        .background(
-            Capsule()
-                .fill(Color.black)
-        )
-        .shadow(color: .black.opacity(0.22), radius: 16, y: 6)
-        .environment(\.colorScheme, .dark)
-    }
-
-    @ViewBuilder
-    private func pillIconButton(_ item: NavItem) -> some View {
-        let isSelected = selection == item.tag
-        Button {
-            withAnimation(AppAnimation.fast) { selection = item.tag }
-        } label: {
-            Image(systemName: item.systemImage)
-                .font(.system(size: 17, weight: isSelected ? .semibold : .regular))
-                .foregroundStyle(isSelected ? .white : Color.white.opacity(0.45))
-                .frame(width: 44, height: 44)
-                .background(
-                    Circle()
-                        .fill(isSelected
-                              ? Color.white.opacity(0.15)
-                              : .clear)
-                )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(item.accessibilityLabel.isEmpty ? item.systemImage : item.accessibilityLabel)
     }
 }
 
@@ -929,71 +507,30 @@ struct SectionHeader: View {
 // MARK: Exercise Step Header
 // ─────────────────────────────────────────────
 
-/// Top navigation bar for exercise flows. Three variants:
-///
-/// `.progress` — back chevron + progress bar + "2/5" counter
-/// `.titled`   — X close button + centered title + optional gear icon
-/// `.stepped`  — back chevron + "Step 3 of 5" label (right-aligned)
+/// Top bar for full-screen exercise flows:
+/// X close + centred title + optional category label + optional gear.
+/// (Step/progress variants removed — every 2.0 form is a single screen.)
 ///
 /// Usage:
 /// ```swift
-/// // Variant 1 — distortion / mood flows
 /// ExerciseStepHeader(
-///     variant: .progress(current: 2, total: 5, color: AppColors.primary),
-///     onBack: { dismiss() }
-/// )
-///
-/// // Variant 2 — Guided Breathing style
-/// ExerciseStepHeader(
-///     variant: .titled("Guided Breathing", category: "RELAXATION"),
+///     title: "Guided Breathing",
+///     category: "RELAXATION",
 ///     onBack: { dismiss() },
 ///     onSettings: { showSettings = true }
 /// )
-///
-/// // Variant 3 — Thought Record style
-/// ExerciseStepHeader(
-///     variant: .stepped(current: 3, total: 5),
-///     onBack: { dismiss() }
-/// )
 /// ```
 struct ExerciseStepHeader: View {
-
-    enum Variant {
-        /// Back + coloured progress bar + "N/M"
-        case progress(current: Int, total: Int, color: Color = AppColors.primary)
-        /// X close + centred title + optional category label + gear
-        case titled(String, category: String? = nil)
-        /// Back + "Step N of M" pill (right)
-        case stepped(current: Int, total: Int)
-    }
-
-    let variant: Variant
-    /// Back / close action
+    let title: String
+    var category: String? = nil
+    /// Close action
     var onBack: (() -> Void)? = nil
-    /// Gear / settings action (only shown in `.titled`)
+    /// Gear / settings action
     var onSettings: (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: Spacing.xxs) {
-            // ── Leading button ─────────────────────────
-            leadingButton
-
-            // ── Center content ─────────────────────────
-            centerContent
-
-            // ── Trailing ───────────────────────────────
-            trailingContent
-        }
-        .padding(.horizontal, Spacing.sm)
-        .frame(height: 44)
-    }
-
-    // MARK: Sub-views
-
-    @ViewBuilder
-    private var leadingButton: some View {
-        switch variant {
-        case .titled:
+            // ── Close ──────────────────────────────────
             Button {
                 onBack?()
             } label: {
@@ -1002,41 +539,14 @@ struct ExerciseStepHeader: View {
                     .foregroundStyle(TextColors.primary)
                     .frame(width: 32, height: 32)
                     .background(Circle().fill(AppColors.gray100))
+                    .touchTarget()
             }
             .buttonStyle(.plain)
 
-        default:
-            Button {
-                onBack?()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(TextColors.primary)
-                    .frame(width: 32, height: 32)
-                    .background(Circle().fill(AppColors.gray100))
-            }
-            .buttonStyle(.plain)
-        }
-    }
-
-    @ViewBuilder
-    private var centerContent: some View {
-        switch variant {
-        case .progress(let current, let total, let color):
-            // Progress bar + counter
-            HStack(spacing: Spacing.xxs) {
-                StepProgressBar(current: current, total: total, color: color)
-                Text("\(current)/\(total)")
-                    .appFont(.small)
-                    .foregroundStyle(TextColors.secondary)
-                    .monospacedDigit()
-                    .fixedSize()
-            }
-
-        case .titled(let title, let category):
+            // ── Title ──────────────────────────────────
             VStack(spacing: 2) {
-                if let cat = category {
-                    Text(cat.uppercased())
+                if let category {
+                    Text(category.uppercased())
                         .appFont(.caption)
                         .foregroundStyle(AppColors.positive)
                 }
@@ -1046,23 +556,7 @@ struct ExerciseStepHeader: View {
             }
             .frame(maxWidth: .infinity)
 
-        case .stepped(let current, let total):
-            Spacer()
-            Text("Step \(current) of \(total)")
-                .appFont(.small)
-                .foregroundStyle(TextColors.secondary)
-                .padding(.horizontal, Spacing.sm)
-                .padding(.vertical, 5)
-                .background(
-                    Capsule().fill(AppColors.gray100)
-                )
-        }
-    }
-
-    @ViewBuilder
-    private var trailingContent: some View {
-        switch variant {
-        case .titled:
+            // ── Settings / balance spacer ──────────────
             if let settings = onSettings {
                 Button(action: settings) {
                     Image(systemName: "gearshape")
@@ -1070,17 +564,15 @@ struct ExerciseStepHeader: View {
                         .foregroundStyle(TextColors.primary)
                         .frame(width: 32, height: 32)
                         .background(Circle().fill(AppColors.gray100))
+                        .touchTarget()
                 }
                 .buttonStyle(.plain)
             } else {
-                // Keep layout balanced
-                Color.clear.frame(width: 32, height: 32)
+                Color.clear.frame(width: 44, height: 44)
             }
-
-        default:
-            // Keep layout balanced with leading button
-            Color.clear.frame(width: 32, height: 32)
         }
+        .padding(.horizontal, Spacing.sm)
+        .frame(minHeight: 44)
     }
 }
 
@@ -1109,11 +601,12 @@ struct AppTextEditor: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            // Placeholder
+            // Placeholder — gray400: gray300 is below readable contrast,
+            // and the exposure form is filled in under stress
             if text.isEmpty {
                 Text(placeholder)
                     .appFont(.body)
-                    .foregroundStyle(AppColors.gray300)
+                    .foregroundStyle(AppColors.gray400)
                     .padding(.horizontal, 4)
                     .padding(.top, 8)
                     .allowsHitTesting(false)
@@ -1144,122 +637,474 @@ struct AppTextEditor: View {
 }
 
 // ─────────────────────────────────────────────
-// MARK: Thought Record Section Card
+// MARK: Intensity Slider (0–10)
 // ─────────────────────────────────────────────
 
-/// Single section card inside a Thought Record exercise step.
-/// Combines: ALL CAPS label, content text or placeholder,
-/// optional distortion badge, optional hint line.
+/// Discrete 0–10 slider for anxiety intensity and BA ratings.
+///
+/// Deliberately NEUTRAL in color: the scale measures intensity only
+/// (spec §3) — no green→red "good/bad" encoding. Value is shown inside
+/// the thumb; no words on the scale.
 ///
 /// Usage:
 /// ```swift
-/// // Filled section
-/// ThoughtRecordSection(
-///     label: "Automatic Thought",
-///     content: "I'm going to fail this presentation...",
-///     badge: "Fortune Telling"
-/// )
-///
-/// // Empty / input section
-/// ThoughtRecordSection(
-///     label: "Evidence Against",
-///     placeholder: "What facts contradict this thought?",
-///     hint: "Think of times you've succeeded before."
-/// )
-///
-/// // Active / highlighted section (underline accent)
-/// ThoughtRecordSection(
-///     label: "Alternative Thought",
-///     isActive: true
-/// )
+/// IntensitySlider(value: $anxiety)                 // 0...10
+/// IntensitySlider(value: $mastery, range: 0...10)
 /// ```
-struct ThoughtRecordSection: View {
-    let label: String
-    var content: String?          = nil
-    var placeholder: String?      = nil
-    var hint: String?             = nil
-    var badge: String?            = nil
-    /// Highlights the section with a coloured bottom border (active input step)
-    var isActive: Bool            = false
-    var accentColor: Color        = AppColors.primary
+/// Give the field a name for VoiceOver at the call site:
+/// `.accessibilityLabel(String(localized: "Anxiety"))`
+struct IntensitySlider: View {
+    @Binding var value: Int
+    var range: ClosedRange<Int> = 0...10
+    var accentColor: Color = AppColors.accent
+
+    private let thumbSize: CGFloat = 32
+    private let trackHeight: CGFloat = 6
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.xxs) {
-            // Label
-            SectionLabel(text: label)
+        GeometryReader { geo in
+            let usableWidth = max(geo.size.width - thumbSize, 1)
+            let steps = CGFloat(max(range.count - 1, 1))
+            let fraction = CGFloat(value - range.lowerBound) / steps
+            let thumbX = usableWidth * fraction
 
-            // Content or placeholder
-            if let text = content {
-                Text(text)
-                    .appFont(.body)
-                    .foregroundStyle(TextColors.primary)
-                    .fixedSize(horizontal: false, vertical: true)
-            } else if let ph = placeholder {
-                Text(ph)
-                    .appFont(.body)
-                    .foregroundStyle(AppColors.gray300)
+            ZStack(alignment: .leading) {
+                // Track
+                Capsule()
+                    .fill(AppColors.gray200)
+                    .frame(height: trackHeight)
+                // Fill up to the thumb
+                Capsule()
+                    .fill(accentColor.opacity(Opacity.emphasizedBorder))
+                    .frame(width: thumbX + thumbSize / 2, height: trackHeight)
+                // Thumb with the current value inside
+                Circle()
+                    .fill(accentColor)
+                    .frame(width: thumbSize, height: thumbSize)
+                    .overlay(
+                        Text("\(value)")
+                            .appFont(.smallMedium)
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                            .minimumScaleFactor(ContentScaling.statMinimum)
+                    )
+                    .offset(x: thumbX)
             }
+            .frame(maxHeight: .infinity)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { gesture in
+                        let newValue = Self.value(
+                            atX: gesture.location.x,
+                            usableWidth: usableWidth,
+                            thumbSize: thumbSize,
+                            range: range
+                        )
+                        if newValue != value {
+                            value = newValue
+                            HapticFeedback.selection()
+                        }
+                    }
+            )
+        }
+        .frame(height: TouchTarget.minimum)
+        .animation(AppAnimation.fast, value: value)
+        .accessibilityElement()
+        .accessibilityValue("\(value)")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment: value = min(value + 1, range.upperBound)
+            case .decrement: value = max(value - 1, range.lowerBound)
+            @unknown default: break
+            }
+        }
+    }
 
-            // Distortion badge
-            if let badgeText = badge {
-                AppBadge(
-                    text: badgeText,
-                    style: .error,
-                    systemImage: "exclamationmark.triangle"
+    /// Pure mapping from a horizontal touch position to a scale value.
+    /// `x` is the touch location, `usableWidth` = track width minus thumb.
+    static func value(
+        atX x: CGFloat,
+        usableWidth: CGFloat,
+        thumbSize: CGFloat,
+        range: ClosedRange<Int>
+    ) -> Int {
+        guard range.count > 1 else { return range.lowerBound }
+        let steps = CGFloat(range.count - 1)
+        let raw = (x - thumbSize / 2) / max(usableWidth, 1)
+        let clamped = min(max(raw, 0), 1)
+        return range.lowerBound + Int((clamped * steps).rounded())
+    }
+}
+
+// ─────────────────────────────────────────────
+// MARK: Chips
+// ─────────────────────────────────────────────
+
+/// Tappable suggestion chip — tap inserts its text into a field
+/// (spec §3: prompts from past sessions; NOT saved entities).
+/// Usage: `SuggestionChip(text: "Metro ride") { situation = "Metro ride" }`
+struct SuggestionChip: View {
+    let text: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(text)
+                .appFont(.body)
+                .foregroundStyle(TextColors.primary)
+                .lineLimit(1)
+                .padding(.horizontal, Spacing.xs)
+                .padding(.vertical, Spacing.xxs)
+                .background(Capsule().fill(AppColors.cardBackground))
+                .overlay(
+                    Capsule().strokeBorder(AppColors.gray200, lineWidth: BorderWidth.hairline)
                 )
-            }
+                .touchTarget(width: 0)
+        }
+        .buttonStyle(.plain)
+    }
+}
 
-            // Hint
-            if let hintText = hint {
-                HStack(spacing: 5) {
-                    Image(systemName: "clock")
-                        .font(.system(size: 11))
-                        .foregroundStyle(AppColors.gray300)
-                    Text(hintText)
-                        .appFont(.small)
-                        .foregroundStyle(AppColors.gray300)
+/// Selectable chip for multi-select sets (e.g. safety behaviors, spec §3).
+/// Usage: `SelectableChip(text: "Breathing", isSelected: $selected)`
+struct SelectableChip: View {
+    let text: String
+    @Binding var isSelected: Bool
+    var accentColor: Color = AppColors.accent
+
+    var body: some View {
+        Button {
+            isSelected.toggle()
+            HapticFeedback.selection()
+        } label: {
+            Text(text)
+                .appFont(isSelected ? .bodyMedium : .body)
+                .foregroundStyle(isSelected ? accentColor : TextColors.primary)
+                .lineLimit(1)
+                .padding(.horizontal, Spacing.xs)
+                .padding(.vertical, Spacing.xxs)
+                .background(
+                    Capsule().fill(isSelected
+                                   ? accentColor.opacity(Opacity.softBackground)
+                                   : AppColors.cardBackground)
+                )
+                .overlay(
+                    Capsule().strokeBorder(
+                        isSelected ? accentColor.opacity(Opacity.emphasizedBorder) : AppColors.gray200,
+                        lineWidth: isSelected ? BorderWidth.standard : BorderWidth.hairline
+                    )
+                )
+                .touchTarget(width: 0)
+        }
+        .buttonStyle(.plain)
+        .animation(AppAnimation.fast, value: isSelected)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+/// Wrapping flow layout for chip groups.
+/// Usage: `ChipFlowLayout { ForEach(chips) { SelectableChip(...) } }`
+struct ChipFlowLayout: Layout {
+    var spacing: CGFloat = Spacing.xxs
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        var x: CGFloat = 0, y: CGFloat = 0, rowHeight: CGFloat = 0
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > 0, x + size.width > maxWidth {
+                x = 0
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+        return CGSize(width: proposal.width ?? x, height: y + rowHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX, y = bounds.minY, rowHeight: CGFloat = 0
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > bounds.minX, x + size.width > bounds.maxX {
+                x = bounds.minX
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            subview.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+    }
+}
+
+// ─────────────────────────────────────────────
+// MARK: Segmented Choice
+// ─────────────────────────────────────────────
+
+/// One option of a `SegmentedChoice`.
+struct ChoiceOption<Value: Hashable>: Identifiable {
+    let value: Value
+    let title: String
+    var id: Value { value }
+}
+
+/// Single-select group of 2–4 full-word options, one tap each
+/// (codex §2: segments instead of typing numbers).
+///
+/// `.vertical` (default) — stacked rows with a radio dot; fits long labels
+/// ("wanted to leave, but stayed").
+/// `.horizontal` — equal-width segments without a dot; for short options
+/// ("yes" / "no").
+///
+/// Usage:
+/// ```swift
+/// SegmentedChoice(
+///     options: [
+///         ChoiceOption(value: Outcome.stayed, title: String(localized: "Stayed until the end")),
+///         ChoiceOption(value: Outcome.stayedHard, title: String(localized: "Wanted to leave, but stayed")),
+///         ChoiceOption(value: Outcome.left, title: String(localized: "Left early")),
+///     ],
+///     selection: $outcome
+/// )
+/// ```
+struct SegmentedChoice<Value: Hashable>: View {
+    let options: [ChoiceOption<Value>]
+    @Binding var selection: Value?
+    var axis: Axis = .vertical
+    var accentColor: Color = AppColors.accent
+
+    var body: some View {
+        switch axis {
+        case .vertical:
+            VStack(spacing: Spacing.xxs) {
+                ForEach(options) { option in
+                    optionCard(option, showDot: true)
+                }
+            }
+        case .horizontal:
+            HStack(spacing: Spacing.xxs) {
+                ForEach(options) { option in
+                    optionCard(option, showDot: false)
+                        .frame(maxWidth: .infinity)
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Spacing.sm)
-        .background(
-            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                .fill(AppColors.gray100)
-        )
-        .overlay(alignment: .bottom) {
-            if isActive {
-                Rectangle()
-                    .fill(accentColor)
-                    .frame(height: 2)
-                    .clipShape(
-                        RoundedRectangle(cornerRadius: 1, style: .continuous)
-                    )
+    }
+
+    @ViewBuilder
+    private func optionCard(_ option: ChoiceOption<Value>, showDot: Bool) -> some View {
+        let isSelected = selection == option.value
+
+        Button {
+            selection = option.value
+            HapticFeedback.selection()
+        } label: {
+            HStack(spacing: Spacing.xs) {
+                if showDot {
+                    ZStack {
+                        Circle()
+                            .strokeBorder(
+                                isSelected ? accentColor : AppColors.gray300,
+                                lineWidth: isSelected ? 2 : 1.5
+                            )
+                            .frame(width: 20, height: 20)
+                        if isSelected {
+                            Circle()
+                                .fill(accentColor)
+                                .frame(width: 10, height: 10)
+                        }
+                    }
+                }
+                Text(option.title)
+                    .appFont(isSelected ? .bodyMedium : .body)
+                    .foregroundStyle(TextColors.primary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: showDot ? .infinity : nil, alignment: showDot ? .leading : .center)
             }
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.xs)
+            .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .fill(isSelected ? accentColor.opacity(0.03) : AppColors.cardBackground)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .strokeBorder(
+                        isSelected ? accentColor : AppColors.gray200,
+                        lineWidth: isSelected ? 1.5 : 0.5
+                    )
+            )
         }
-        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous))
+        .buttonStyle(.plain)
+        .animation(AppAnimation.fast, value: isSelected)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
-// MARK: - BottomPillNavBar Preview
-#Preview("Bottom Pill Nav") {
-    @Previewable @State var tab = 0
+// ─────────────────────────────────────────────
+// MARK: Input Control Previews
+// ─────────────────────────────────────────────
 
-    VStack {
-        Spacer()
-        BottomPillNavBar(
-            items: [
-                .init(systemImage: "face.smiling",  tag: 0, accessibilityLabel: "Mood"),
-                .init(systemImage: "play.circle",   tag: 1, accessibilityLabel: "Play"),
-                .init(systemImage: "plus.square",   tag: 2, accessibilityLabel: "Add"),
-                .init(systemImage: "person",        tag: 4, accessibilityLabel: "Profile"),
-            ],
-            centerItem: .init(systemImage: "stop.fill", tag: 3, accessibilityLabel: "Stop"),
-            selection: $tab,
-            onTrailingTap: {}
-        )
-        .padding(.horizontal, Spacing.lg)
-        .padding(.bottom, Spacing.lg)
+#Preview("Input Controls") {
+    @Previewable @State var anxiety = 6
+    @Previewable @State var chipOn = true
+    @Previewable @State var chipOff = false
+    @Previewable @State var outcome: String? = "stayed"
+    @Previewable @State var answer: String? = nil
+
+    ScrollView {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
+            SectionLabel(text: "Anxiety")
+            IntensitySlider(value: $anxiety)
+
+            SectionLabel(text: "Suggestions")
+            ChipFlowLayout {
+                SuggestionChip(text: "Metro ride") {}
+                SuggestionChip(text: "Call to the bank") {}
+                SuggestionChip(text: "Crowded store") {}
+            }
+
+            SectionLabel(text: "Safety behaviors")
+            ChipFlowLayout {
+                SelectableChip(text: "Nothing", isSelected: $chipOff)
+                SelectableChip(text: "Breathing", isSelected: $chipOn)
+                SelectableChip(text: "Phone", isSelected: $chipOff)
+                SelectableChip(text: "Distraction", isSelected: $chipOff)
+            }
+
+            SectionLabel(text: "What did you do")
+            SegmentedChoice(
+                options: [
+                    ChoiceOption(value: "stayed", title: "Stayed until the end"),
+                    ChoiceOption(value: "stayedHard", title: "Wanted to leave, but stayed"),
+                    ChoiceOption(value: "left", title: "Left early"),
+                ],
+                selection: $outcome
+            )
+
+            SectionLabel(text: "Managed to relax?")
+            SegmentedChoice(
+                options: [
+                    ChoiceOption(value: "yes", title: "Yes"),
+                    ChoiceOption(value: "no", title: "No"),
+                ],
+                selection: $answer,
+                axis: .horizontal
+            )
+        }
+        .padding(Spacing.lg)
     }
     .background(AppColors.gray100)
 }
+
+#Preview("Buttons & Badges") {
+    ScrollView {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
+            SectionLabel(text: "Primary buttons")
+            PrimaryButton(title: "Start") {}
+            PrimaryButton(title: "Save", systemImage: "checkmark", color: AppColors.primary) {}
+            PrimaryButton(title: "Saving", isLoading: true) {}
+
+            SectionLabel(text: "Circle buttons")
+            HStack(spacing: Spacing.sm) {
+                CircleButton(systemImage: "gearshape") {} // default — round glass (iOS 26 toolbar style)
+                CircleButton(systemImage: "xmark",
+                             background: AppColors.gray100) {} // sheet-style close
+                CircleButton(systemImage: "arrow.up",
+                             background: AppColors.black,
+                             foreground: TextColors.onBlack) {} // prominent
+            }
+
+            SectionLabel(text: "Badges")
+            ChipFlowLayout {
+                AppBadge(text: "Situational", style: .neutral)
+                AppBadge(text: "Completed", style: .success)
+                AppBadge(text: "Error", style: .error, systemImage: "exclamationmark.triangle")
+                AppBadge(text: "Accent", style: .accent)
+                AppBadge(text: "Warning", style: .warning)
+            }
+        }
+        .padding(Spacing.lg)
+    }
+    .background(AppColors.gray100)
+}
+
+#Preview("Cards & Rows") {
+    @Previewable @State var radioOn = true
+    @Previewable @State var radioOff = false
+    @Previewable @State var notes = ""
+
+    ScrollView {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
+            HeroFeatureCard(
+                subtitle: "Just happened",
+                title: "Log an exposure",
+                color: AppColors.primary,
+                icon: "square.and.pencil"
+            )
+
+            SectionHeader(title: "Exercises", onSeeAll: {})
+            ExerciseRow(title: "Breathing", meta: "Box · 10 min", icon: "wind", iconColor: AppColors.positive) {}
+            ExerciseRow(title: "Relaxation (PMR)", meta: "7 groups · today", icon: "figure.mind.and.body") {}
+
+            SectionLabel(text: "Radio cards")
+            RadioCard(
+                title: "7 groups",
+                description: "Whole arm ×2, face, neck, torso, whole leg ×2 · ~15 min",
+                isSelected: $radioOn
+            )
+            RadioCard(
+                title: "4 groups",
+                description: "Arms, face + neck, torso, legs · ~10 min",
+                isSelected: $radioOff
+            )
+
+            SectionLabel(text: "Quote card")
+            QuoteCard(label: "Your prediction", text: "It will overwhelm me so much I'll leave in two minutes.")
+
+            SectionLabel(text: "Text editor")
+            AppTextEditor(text: $notes, placeholder: "Describe the situation...", fillColor: AppColors.cardBackground)
+
+            SectionLabel(text: "Card style modifier")
+            Text("Any content").appFont(.body).frame(maxWidth: .infinity).cardStyle()
+        }
+        .padding(Spacing.lg)
+    }
+    .background(AppColors.gray100)
+}
+
+#Preview("Headers & Session Chrome") {
+    @Previewable @State var isPlaying = true
+
+    VStack(spacing: Spacing.xl) {
+        ExerciseStepHeader(title: "Guided Breathing", category: "Relaxation", onBack: {}, onSettings: {})
+        ExerciseStepHeader(title: "Situational log", onBack: {})
+
+        HStack(spacing: Spacing.xl) {
+            BreathingCircle(phase: .exhale)
+                .frame(width: 120, height: 120)
+        }
+        .frame(maxWidth: .infinity)
+
+        SessionFlowBottomPill(
+            left: {
+                CircleButton(systemImage: "chevron.left",
+                             background: .white.opacity(0.12)) {}
+            },
+            center: {
+                Text("02:41").appFont(.mono).foregroundStyle(.white)
+            },
+            right: {
+                SessionPlayPauseCircleButton(isPlaying: isPlaying) { isPlaying.toggle() }
+            }
+        )
+        .padding(.horizontal, Spacing.lg)
+    }
+    .padding(.vertical, Spacing.xl)
+    .background(AppColors.gray100)
+}
+

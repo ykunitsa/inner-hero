@@ -11,9 +11,6 @@
         }
       }
     },
-    " (%lld)" : {
-
-    },
     "—" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -93,16 +90,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ не найдено"
-          }
-        }
-      }
-    },
-    "%@, %lld selected" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$lld selected"
           }
         }
       }
@@ -470,7 +457,6 @@
       }
     },
     "%lld" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -614,6 +600,7 @@
       }
     },
     "%lld/%lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5308,6 +5295,7 @@
       }
     },
     "Next" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11355,6 +11343,7 @@
       }
     },
     "Step %lld of %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

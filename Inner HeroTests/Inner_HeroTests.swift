@@ -6,22 +6,23 @@
 //  new 2.0 data models.
 //
 
-import XCTest
+import Testing
 import SwiftUI
 @testable import Inner_Hero
 
-final class Inner_HeroTests: XCTestCase {
+@Suite("App shell")
+struct AppShellTests {
 
-    /// Test: MainTabView initializes without errors
+    @Test("MainTabView initializes without crashing")
     @MainActor
-    func testMainTabViewInitialization() throws {
+    func mainTabViewInitializes() {
         let view = MainTabView()
-        XCTAssertNotNil(view, "MainTabView should be created")
+        #expect(String(describing: view).isEmpty == false)
     }
 
-    /// Test: all app tabs are distinct
-    func testAppTabsAreDistinct() throws {
+    @Test("All app tabs are distinct")
+    func appTabsAreDistinct() {
         let tabs = AppTab.allCases
-        XCTAssertEqual(Set(tabs.map(\.rawValue)).count, tabs.count)
+        #expect(Set(tabs.map(\.rawValue)).count == tabs.count)
     }
 }
