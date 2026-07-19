@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: Card Styles
 // ─────────────────────────────────────────────
 
-/// Standard white surface card with subtle shadow
+/// Standard surface card with subtle shadow (adapts to light/dark via CardBackground asset)
 struct CardStyle: ViewModifier {
     @Environment(\.colorScheme) private var scheme
     var cornerRadius: CGFloat = CornerRadius.lg
@@ -20,9 +20,7 @@ struct CardStyle: ViewModifier {
             .padding(padding)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(scheme == .dark
-                          ? Color(red: 0.13, green: 0.13, blue: 0.15)
-                          : Color.white)
+                    .fill(AppColors.cardBackground)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -134,52 +132,6 @@ extension View {
 }
 
 // ─────────────────────────────────────────────
-// MARK: Progress Bar
-// ─────────────────────────────────────────────
-
-struct ProgressBarModifier: ViewModifier {
-    var progress: Double        // 0.0 – 1.0
-    var color: Color            = AppColors.primary
-    var trackColor: Color       = AppColors.gray200
-    var height: CGFloat         = 4
-    var cornerRadius: CGFloat   = 2
-
-    func body(content: Content) -> some View {
-        content.overlay(alignment: .top) {
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(trackColor)
-                        .frame(height: height)
-                    Capsule()
-                        .fill(color)
-                        .frame(width: geo.size.width * CGFloat(max(0, min(1, progress))),
-                               height: height)
-                        .animation(AppAnimation.standard, value: progress)
-                }
-            }
-            .frame(height: height)
-        }
-    }
-}
-
-extension View {
-    func progressBar(
-        progress: Double,
-        color: Color = AppColors.primary,
-        trackColor: Color = AppColors.gray200,
-        height: CGFloat = 4
-    ) -> some View {
-        modifier(ProgressBarModifier(
-            progress: progress,
-            color: color,
-            trackColor: trackColor,
-            height: height
-        ))
-    }
-}
-
-// ─────────────────────────────────────────────
 // MARK: Page Background
 // ─────────────────────────────────────────────
 
@@ -229,40 +181,3 @@ extension View {
     }
 }
 
-// ─────────────────────────────────────────────
-// MARK: Shimmer Skeleton (loading state)
-// ─────────────────────────────────────────────
-
-struct ShimmerModifier: ViewModifier {
-    @State private var phase: CGFloat = 0
-
-    func body(content: Content) -> some View {
-        content
-            .overlay(
-                GeometryReader { geo in
-                    LinearGradient(
-                        gradient: Gradient(stops: [
-                            .init(color: .clear,                          location: phase - 0.3),
-                            .init(color: .white.opacity(0.5),             location: phase),
-                            .init(color: .clear,                          location: phase + 0.3),
-                        ]),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(width: geo.size.width)
-                }
-            )
-            .clipped()
-            .onAppear {
-                withAnimation(
-                    .linear(duration: 1.4).repeatForever(autoreverses: false)
-                ) { phase = 1.3 }
-            }
-    }
-}
-
-extension View {
-    func shimmer() -> some View {
-        modifier(ShimmerModifier())
-    }
-}

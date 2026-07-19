@@ -76,9 +76,9 @@ struct ArticleDetailView: View {
 
     private var articleContent: some View {
         Text(article.content)
-            .appFont(.bodyLarge)
+            .appFont(.body)
             .foregroundStyle(TextColors.primary)
-            .lineSpacing(AppTextStyle.bodyLarge.lineSpacing + 2)
+            .lineSpacing(AppTextStyle.body.lineSpacing + 2)
             .fixedSize(horizontal: false, vertical: true)
     }
 

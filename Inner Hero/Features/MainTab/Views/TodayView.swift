@@ -30,8 +30,13 @@ struct TodayView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    CircleButton(systemImage: "gearshape") {
+                    // Plain system button: the iOS 26 toolbar supplies its own
+                    // round glass chrome — a custom background inside it
+                    // renders as a stretched pill.
+                    Button {
                         path.append(AppRoute.settings)
+                    } label: {
+                        Image(systemName: "gearshape")
                     }
                     .accessibilityLabel(String(localized: "Settings"))
                 }

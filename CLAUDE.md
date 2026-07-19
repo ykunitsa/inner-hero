@@ -85,9 +85,12 @@ Inner Hero/
 ### Design system (`Core/DesignSystem/`) — mandatory
 Don't hardcode sizes/colors/fonts. Use tokens: `AppColors.*`, `Spacing.*`,
 `CornerRadius.*`, `IconSize.*`, `TouchTarget.*`, `Opacity.*`, `AppAnimation.*`,
-`.appFont(...)` via `AppTextStyle`. Reusable components live in `Components.swift`
-(`PrimaryButton`, `CircleButton`, `RadioCard`, `SectionHeader`, ...) and
-`ViewModifiers.swift` (`cardStyle`, `heroCardStyle`, `touchTarget`, `pageBackground`).
+`.appFont(...)` via `AppTextStyle` (scales with Dynamic Type). Reusable components
+live in `Components.swift` (`PrimaryButton`, `CircleButton`, `RadioCard`,
+`SectionHeader`, form inputs `IntensitySlider` / `SuggestionChip` / `SelectableChip` /
+`SegmentedChoice`, ...) and `ViewModifiers.swift` (`cardStyle`, `heroCardStyle`,
+`touchTarget`, `pageBackground`). Card surfaces use `AppColors.cardBackground`,
+never raw `.white`. The 0–10 anxiety scale is intentionally colour-neutral.
 See `Core/DesignSystem/USAGE.MD`.
 
 ### Product principles

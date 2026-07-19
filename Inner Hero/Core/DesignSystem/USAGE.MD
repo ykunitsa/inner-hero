@@ -1,6 +1,7 @@
-# CBT Tools — Design System
+# Inner Hero — Design System
 
-Полная документация по дизайн-системе. Актуальна для редизайна приложения.
+Полная документация по дизайн-системе. Актуальна для редизайна 2.0
+(июль 2026, после чистки легаси-компонентов).
 
 ---
 
@@ -11,15 +12,9 @@ Inner Hero/Core/DesignSystem/
 ├── DesignSystem.swift      ← токены: цвета, спейсинг, радиусы, анимации
 ├── Typography.swift        ← шрифты, TextStyle enum, готовые Text-компоненты
 ├── ViewModifiers.swift     ← .cardStyle(), .heroCardStyle(), .pageBackground() и др.
-└── Components.swift        ← готовые UI-компоненты (кнопки, карточки, badge и др.)
+├── Components.swift        ← готовые UI-компоненты (кнопки, карточки, инпуты)
+└── HomeBackground.swift    ← .homeBackground() — фон главных экранов
 ```
-
----
-
-## Подключение
-
-Файлы уже лежат в той же группе `Core/DesignSystem` — дополнительных `import` не нужно.
-Все enum'ы и компоненты доступны глобально в рамках таргета.
 
 ---
 
@@ -39,27 +34,42 @@ Inner Hero/Core/DesignSystem/
 
 ### Палитра
 
-| Токен | Hex | Использование |
-|-------|-----|---------------|
+| Токен | Light | Использование |
+|-------|-------|---------------|
 | `AppColors.primary` | `#E53726` | CTA, hero-карточки, акцент |
 | `AppColors.primaryDark` | `#C42D1E` | Pressed/hover состояние |
 | `AppColors.primaryLight` | `#FDECEA` | Фон badge, icon-container |
-| `AppColors.accent` | `#6B5CE7` | Эмоциональный поток, mood |
-| `AppColors.accentLight` | `#EEF0FD` | Фон selected emotion cell |
-| `AppColors.positive` | `#27AE60` | Breathing, success, прогресс |
+| `AppColors.accent` | `#6B5CE7` | Инпуты (слайдер, чипсы, сегменты) |
+| `AppColors.accentLight` | `#EEF0FD` | Фон выбранного состояния |
+| `AppColors.positive` | `#27AE60` | Дыхание, success |
 | `AppColors.black` | `#1A1A1A` | Основные CTA-кнопки |
+| `AppColors.cardBackground` | `#FFF` / `#2C2C2E` | Поверхность карточек (light/dark) |
 | `AppColors.gray100` | `#F4F4F6` | Фон страниц |
 | `AppColors.gray200` | `#E8E8EC` | Делители, бордеры карточек |
-| `AppColors.gray400` | `#9898A8` | Secondary text |
+| `AppColors.gray300` | — | Disabled-бордеры (слишком светлый для текста) |
+| `AppColors.gray400` | `#9898A8` | Secondary text, плейсхолдеры |
+| `AppColors.gray600` | — | Tertiary text |
+
+> ⚠️ **Нейминг серых:** номер НЕ отражает темноту. `gray400` — более тёмный
+> текстовый серый, `gray600` — светлее. Выбирай по роли из комментария.
 
 ### Семантические цвета
 
 ```swift
 AppColors.State.success  // зелёный
 AppColors.State.warning  // оранжевый
-AppColors.State.error    // красный (= primary)
+AppColors.State.error    // тёмно-красный StateError — НЕ равен primary:
+                         // ошибка не должна выглядеть как CTA
 AppColors.State.info     // синий
 ```
+
+### Шкала тревоги — намеренно БЕЗ цвета
+
+Функции `anxietyColor` больше нет. Шкала 0–10 измеряет только интенсивность
+(спека §3): зелёно-красная раскраска кодировала бы оценку «высокая тревога =
+плохо», что противоречит модели inhibitory learning (успех = «остался», а не
+«тревога снизилась»). Инпуты интенсивности используют один нейтральный цвет
+(`AppColors.accent`).
 
 ### Текстовые цвета
 
@@ -69,54 +79,55 @@ TextColors.secondary        // .secondary
 TextColors.tertiary         // secondary * 0.65
 TextColors.onColor          // белый — для текста поверх цветных карточек
 TextColors.onColorSecondary // белый * 0.8 — subtitle на цветном фоне
+TextColors.onBlack          // контент на AppColors.black — инвертируется
+                            // вместе с поверхностью (в dark AppBlack светлый!)
 ```
+
+> ⚠️ На поверхности `AppColors.black` никогда не клади чистый `.white` —
+> в тёмной теме AppBlack становится почти белым и контент исчезает.
+> Только `TextColors.onBlack`.
 
 ---
 
 ## 2. Типографика (`Typography.swift`)
 
-### Использование
+**Все стили масштабируются с Dynamic Type**: размер привязан к системному
+текст-стилю через `@ScaledMetric` внутри `.appFont(...)`. Размеры в таблице —
+для дефолтного (Large) размера контента.
 
 ```swift
-Text("CBT Tools")
-    .appFont(.h1)
-
-Text("Identify your cognitive distortions")
-    .appFont(.h2)
-    .foregroundStyle(TextColors.onColor)
-
-Text("5 min · Reframing")
-    .appFont(.small)
-    .foregroundStyle(TextColors.secondary)
+Text("Inner Hero").appFont(.h1)
+Text("Box breathing · 10 min").appFont(.small).foregroundStyle(TextColors.secondary)
 ```
 
-### Таблица стилей
+| Style | Размер | Вес | Анкер | Использование |
+|-------|--------|-----|-------|---------------|
+| `.display` | 34 | 700 | largeTitle | Онбординг, сплэш |
+| `.h1` | 28 | 700 | title | Заголовок экрана |
+| `.h2` | 22 | 700 | title2 | Заголовок карточки |
+| `.h3` | 17 | 600 | headline | Подзаголовок секции |
+| `.body` | 17 | 400 | body | Основной текст (= системный body iOS) |
+| `.bodyMedium` | 17 | 500 | body | Выделенный основной текст |
+| `.small` | 13 | 400 | footnote | Мета, теги, дата |
+| `.smallMedium` | 13 | 500 | footnote | Badge, active label |
+| `.caption` | 11 | 600 | caption2 | ALL CAPS заголовки секций |
+| `.mono` | 15 | 700 | subheadline | Таймер compact (mono) |
+| `.monoLarge` | 28 | 700 | title | Таймер large (mono) |
+| `.statValue` | 20 | 700 | title3 | Числовые доли «6 из 7» (mono) |
+| `.buttonPrimary` | 16 | 600 | callout | Текст основной кнопки |
+| `.buttonSmall` | 14 | 600 | subheadline | Компактная кнопка |
 
-| Style | Размер | Вес | Использование |
-|-------|--------|-----|---------------|
-| `.display` | 34px | 700 | Онбординг, сплэш |
-| `.h1` | 28px | 700 | Заголовок экрана |
-| `.h2` | 22px | 700 | Заголовок карточки |
-| `.h3` | 17px | 600 | Подзаголовок секции |
-| `.bodyLarge` | 17px | 400 | Важный основной текст |
-| `.body` | 15px | 400 | Основной текст |
-| `.bodyMedium` | 15px | 500 | Выделенный основной текст |
-| `.small` | 13px | 400 | Мета, теги, дата |
-| `.smallMedium` | 13px | 500 | Badge, active label |
-| `.caption` | 11px | 600 | ALL CAPS заголовки секций |
-| `.mono` | 15px | 700 | Таймер compact |
-| `.monoLarge` | 28px | 700 | Таймер large |
-| `.buttonPrimary` | 16px | 600 | Текст основной кнопки |
-
-> **Минимальный размер шрифта в интерфейсе — 11px (`.caption`).** Ничего меньше.
+> Минимальный размер шрифта — 11 (`.caption`). Ничего меньше.
+> `AppTextStyle.fixedFont` существует для редких мест, где ViewModifier
+> неприменим, — он НЕ масштабируется, используй осознанно.
 
 ### Готовые Text-компоненты
 
 ```swift
-AppTitle(text: "CBT Tools")
+AppTitle(text: "Exercises")
 CardTitle(text: "Guided Breathing")
-MetaLabel(text: "5 min · Reframing")
-SectionLabel(text: "Your Recorded Thought") // выводится как CAPS
+MetaLabel(text: "Box · 10 min")
+SectionLabel(text: "Your prediction") // выводится как CAPS
 ```
 
 ---
@@ -127,7 +138,6 @@ SectionLabel(text: "Your Recorded Thought") // выводится как CAPS
 
 ```swift
 .padding(.horizontal, Spacing.sm)    // 16
-.padding(.vertical, Spacing.xs)      // 12
 VStack(spacing: Spacing.md)          // 20
 ```
 
@@ -141,6 +151,7 @@ VStack(spacing: Spacing.md)          // 20
 | `Spacing.lg` | 24 |
 | `Spacing.xl` | 32 |
 | `Spacing.xxl` | 40 |
+| `Spacing.xxxl` | 48 |
 
 ---
 
@@ -153,303 +164,127 @@ RoundedRectangle(cornerRadius: CornerRadius.lg, style: .continuous)
 | Токен | pt | Использование |
 |-------|----|---------------|
 | `CornerRadius.sm` | 8 | Icon container, badge |
-| `CornerRadius.md` | 14 | Radio card, thought card |
+| `CornerRadius.md` | 14 | Radio card, quote card, инпуты |
 | `CornerRadius.lg` | 22 | Стандартная карточка |
 | `CornerRadius.xl` | 28 | Hero card |
-| `CornerRadius.pill` | 999 | Кнопки, progress bar |
+| `CornerRadius.pill` | 999 | Кнопки, капсулы |
 
 ---
 
 ## 5. View Modifiers (`ViewModifiers.swift`)
 
-### `.cardStyle()` — белая карточка с тенью
-
 ```swift
-VStack { /* ... */ }
-    .cardStyle()
-
-// Кастомизация:
-VStack { /* ... */ }
-    .cardStyle(cornerRadius: CornerRadius.md, padding: Spacing.sm)
-```
-
-### `.heroCardStyle()` — цветная hero-карточка
-
-```swift
-VStack { /* ... */ }
-    .heroCardStyle(color: AppColors.primary)
-```
-
-### `.accentCardStyle()` — лёгкий тинт с цветным бордером
-
-```swift
-VStack { /* ... */ }
-    .accentCardStyle(accentColor: AppColors.accent)
-```
-
-### `.pageBackground()` — фон страницы
-
-```swift
-NavigationStack {
-    ScrollView { /* ... */ }
-        .pageBackground()
-}
-```
-
-### `.progressBar()`
-
-```swift
-HStack { /* ... */ }
-    .progressBar(progress: 0.4, color: AppColors.primary)
-```
-
-### `.touchTarget()` — минимальная зона касания 44×44
-
-```swift
-Image(systemName: "xmark")
-    .touchTarget()
-```
-
-### `.iconContainer()` — контейнер иконки
-
-```swift
-Image(systemName: "doc.text")
-    .iconContainer(
-        size: IconSize.card,
-        backgroundColor: AppColors.primaryLight
-    )
-```
-
-### `.shimmer()` — skeleton loading
-
-```swift
-RoundedRectangle(cornerRadius: CornerRadius.lg)
-    .fill(AppColors.gray200)
-    .frame(height: 80)
-    .shimmer()
+content.cardStyle()                                  // карточка-поверхность с тенью (light/dark)
+content.heroCardStyle(color: AppColors.primary)      // цветная hero-карточка
+content.accentCardStyle(accentColor: AppColors.accent) // лёгкий тинт + цветной бордер
+scrollView.pageBackground()                          // серый фон страницы
+scrollView.homeBackground()                          // фон с верхним свечением (главные экраны)
+Image(...).touchTarget()                             // зона касания ≥44×44
+Image(...).iconContainer(size: IconSize.card, backgroundColor: AppColors.primaryLight)
 ```
 
 ---
 
 ## 6. Компоненты (`Components.swift`)
 
-### PrimaryButton
+### Кнопки
 
 ```swift
-PrimaryButton(title: "Continue") {
-    // action
-}
+PrimaryButton(title: "Start") { ... }
+PrimaryButton(title: "Save", color: AppColors.primary, isLoading: isSaving) { ... }
+// Внутри NavigationLink — label-версия, чтобы тап обрабатывал link:
+NavigationLink(value: route) { PrimaryButtonLabel(title: "Start session") }
 
-// С кастомным цветом:
-PrimaryButton(title: "Start Exercise", color: AppColors.primary) {
-    // action
-}
-
-// Состояние загрузки:
-PrimaryButton(title: "Saving...", isLoading: true) {}
+// ⚠️ В .toolbar НЕ используй CircleButton: iOS 26 сам оборачивает элементы
+// тулбара в стеклянную капсулу, и кастомный фон внутри неё растягивается.
+// В тулбаре — обычный Button { } label: { Image(systemName:) }.
+CircleButton(systemImage: "gearshape") { openSettings() }  // вне тулбаров; дефолт — круглое стекло
+CircleButton(systemImage: "xmark",                         // круг-«закрыть» в стиле системных шитов
+             background: AppColors.gray100) { dismiss() }
+CircleButton(systemImage: "arrow.up",                      // акцентный тёмный вариант
+             background: AppColors.black,
+             foreground: TextColors.onBlack) { submit() }
+SessionPlayPauseCircleButton(isPlaying: isPlaying) { toggle() } // тёмный chrome сессий
 ```
 
-### CircleButton
+### Карточки
 
 ```swift
-CircleButton(
-    systemImage: "xmark",
-    background: AppColors.primaryOverlay,
-    foreground: .white
-) { dismiss() }
+// Единственная акцентная карточка экрана («Записать экспозицию»).
+// Всегда доступна — без dismiss и избранного.
+HeroFeatureCard(subtitle: "Just happened", title: "Log an exposure",
+                color: AppColors.primary, icon: "square.and.pencil")
+
+// Строка лаунчера упражнений / ленты истории (вся строка — кнопка,
+// стрелка декоративная)
+ExerciseRow(title: "Breathing", meta: "Box · 10 min", icon: "wind") { open() }
+
+// Цитата пользователю его же слов: напоминание предсказания (§3),
+// сравнение с прогнозом BA (§6)
+QuoteCard(label: "Your prediction", text: "It will overwhelm me...")
+
+// Выбор с описанием (ступень ПМР, тип дыхания)
+RadioCard(title: "7 groups", description: "~15 min · whole arm, face, torso...",
+          isSelected: $selected)
 ```
 
-### HeroFeatureCard
+### Инпуты форм (спека §3 — ситуативная форма и далее)
 
 ```swift
-HeroFeatureCard(
-    subtitle: "Afternoon Check-in",
-    title: "Identify your cognitive distortions",
-    color: AppColors.primary,
-    icon: "sun.max",
-    onDismiss: { /* skip */ },
-    onFavourite: { /* save */ }
-)
-```
+// Слайдер 0–10: тревога, оценки BA. Нейтральный цвет, значение в бегунке.
+IntensitySlider(value: $anxiety)
+    .accessibilityLabel(String(localized: "Anxiety"))
 
-### ExerciseRow
-
-```swift
-ExerciseRow(
-    title: "Thought Record",
-    meta: "5 min · Reframing",
-    icon: "doc.text",
-    iconColor: AppColors.primary
-) {
-    // navigate
-}
-```
-
-### RadioCard
-
-```swift
-@State private var selected = false
-
-RadioCard(
-    title: "Catastrophizing",
-    description: "Expecting the worst-case scenario to happen.",
-    isSelected: $selected
-)
-```
-
-### EmotionCell (в сетке 3 колонки)
-
-```swift
-@State private var selectedEmotion: String? = nil
-
-LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3), spacing: Spacing.xxs) {
-    ForEach(emotions) { emotion in
-        EmotionCell(
-            emoji: emotion.emoji,
-            label: emotion.label,
-            isSelected: Binding(
-                get: { selectedEmotion == emotion.id },
-                set: { if $0 { selectedEmotion = emotion.id } }
-            ),
-            accentColor: AppColors.accent
-        )
+// Чипсы-подсказки из прошлых сессий — тап подставляет текст в поле
+ChipFlowLayout {
+    ForEach(suggestions, id: \.self) { s in
+        SuggestionChip(text: s) { situation = s }
     }
 }
-```
 
-### AppBadge
+// Мультивыбор (охранное поведение)
+ChipFlowLayout {
+    SelectableChip(text: "Breathing", isSelected: $breathing)
+    SelectableChip(text: "Phone", isSelected: $phone)
+}
 
-```swift
-AppBadge(text: "Fortune Telling", style: .error, systemImage: "exclamationmark.triangle")
-AppBadge(text: "Completed", style: .success)
-AppBadge(text: "5 min", style: .neutral)
-```
-
-### TopTabBar
-
-```swift
-@State private var selectedTab = 0
-
-TopTabBar(tabs: ["Daily", "Journal", "Discover"], selection: $selectedTab)
-```
-
-### StepProgressBar
-
-```swift
-// Прогресс 2 из 5
-StepProgressBar(current: 2, total: 5, color: AppColors.primary)
-    .frame(height: 4)
-```
-
-### RecordedThoughtCard
-
-```swift
-RecordedThoughtCard(
-    text: "\"I made one mistake in the presentation, now my boss thinks I'm completely incompetent.\""
-)
-```
-
-### SectionHeader
-
-```swift
-// С кнопкой "See All"
-SectionHeader(title: "Exercises", onSeeAll: { navigate() })
-
-// Без кнопки
-SectionHeader(title: "Current Mood")
-```
-
-### ExerciseStepHeader
-
-Три варианта — подбирай по экрану:
-
-```swift
-// Вариант 1 — прогресс-бар (Distortion picker, Mood check)
-ExerciseStepHeader(
-    variant: .progress(current: 2, total: 5, color: AppColors.primary),
-    onBack: { dismiss() }
-)
-
-// Вариант 2 — с заголовком и шестерёнкой (Guided Breathing)
-ExerciseStepHeader(
-    variant: .titled("Guided Breathing", category: "RELAXATION"),
-    onBack: { dismiss() },
-    onSettings: { showSettings = true }
-)
-
-// Вариант 3 — "Step N of M" (Thought Record)
-ExerciseStepHeader(
-    variant: .stepped(current: 3, total: 5),
-    onBack: { dismiss() }
-)
-```
-
-### AppTextEditor
-
-```swift
-@State private var notes = ""
-
-AppTextEditor(
-    text: $notes,
-    placeholder: "Describe the situation or thought...",
-    minHeight: 120
-)
-```
-
-### ThoughtRecordSection
-
-```swift
-// Заполненная секция с badge
-ThoughtRecordSection(
-    label: "Automatic Thought",
-    content: "I'm going to fail this presentation...",
-    badge: "Fortune Telling"
-)
-
-// Пустая секция с placeholder и hint
-ThoughtRecordSection(
-    label: "Evidence Against",
-    placeholder: "What facts contradict this thought?",
-    hint: "Think of times you've succeeded before."
-)
-
-// Активная секция (цветной bottom border — текущий шаг ввода)
-ThoughtRecordSection(
-    label: "Alternative Thought",
-    isActive: true,
-    accentColor: AppColors.primary
-)
-```
-
-### BottomPillNavBar
-
-```swift
-@State private var selectedTab = 0
-
-BottomPillNavBar(
-    items: [
-        .init(systemImage: "face.smiling",  tag: 0, accessibilityLabel: "Mood"),
-        .init(systemImage: "play.circle",   tag: 1, accessibilityLabel: "Play"),
-        .init(systemImage: "plus.square",   tag: 2, accessibilityLabel: "Add"),
-        .init(systemImage: "person",        tag: 4, accessibilityLabel: "Profile"),
+// Сегментный выбор, один тап. Вертикальный — для длинных подписей:
+SegmentedChoice(
+    options: [
+        ChoiceOption(value: Outcome.stayed, title: String(localized: "Stayed until the end")),
+        ChoiceOption(value: Outcome.stayedHard, title: String(localized: "Wanted to leave, but stayed")),
+        ChoiceOption(value: Outcome.left, title: String(localized: "Left early")),
     ],
-    centerItem: .init(systemImage: "stop.fill", tag: 3, accessibilityLabel: "Stop"),
-    selection: $selectedTab,
-    onTrailingTap: { /* next / continue action */ }
+    selection: $outcome
 )
-.padding(.horizontal, Spacing.lg)
+// Горизонтальный — для коротких («да/нет»):
+SegmentedChoice(options: yesNo, selection: $answer, axis: .horizontal)
+
+// Многострочный ввод
+AppTextEditor(text: $notes, placeholder: "Describe the situation...", minHeight: 120)
 ```
 
-Параметры:
-- `items` — обычные иконки, делятся пополам вокруг центра. Левая половина — `items.prefix(n/2)`, правая — остаток
-- `centerItem` — выделенная круглая кнопка по центру (stop/record). Активна когда `selection == centerItem.tag`
-- `onTrailingTap` — опциональная стрелка-CTA справа. Передай `nil` если не нужна
-
-### BreathingCircle
+### Прочее
 
 ```swift
+AppBadge(text: "Situational", style: .neutral)   // error/success/neutral/accent/warning
+SectionHeader(title: "Exercises", onSeeAll: { }) // или без onSeeAll
+SectionLabel(text: "Safety behaviors")           // ALL CAPS метка секции
+
+// Верхняя панель полноэкранного флоу: X + заголовок + категория + шестерёнка
+ExerciseStepHeader(title: "Guided Breathing", category: "RELAXATION",
+                   onBack: { dismiss() }, onSettings: { show = true })
+
+// Нижняя капсула сессии: назад | таймер | действие
+SessionFlowBottomPill(
+    left:   { CircleButton(...) },
+    center: { Text(time).appFont(.mono) },
+    right:  { SessionPlayPauseCircleButton(...) }
+)
+
 BreathingCircle(phase: .inhale, color: AppColors.positive)
-    .frame(width: 160, height: 160)
+// ⚠️ Для квадратного дыхания (4-4-4-4) потребуется 4-я фаза
+// (задержка после выдоха) — доработка в §11.3, см. таск DS-10.
 ```
 
 ---
@@ -457,28 +292,29 @@ BreathingCircle(phase: .inhale, color: AppColors.positive)
 ## 7. Анимации
 
 ```swift
-withAnimation(AppAnimation.standard) { /* state change */ }
-withAnimation(AppAnimation.spring)   { /* springy UI */  }
-withAnimation(AppAnimation.fast)     { /* quick toggle */ }
+withAnimation(AppAnimation.standard) { ... }  // 0.22 easeOut — дефолт
+withAnimation(AppAnimation.spring)   { ... }  // пружина для переключений
+withAnimation(AppAnimation.fast)     { ... }  // 0.14 — мелкие тумблеры
+withAnimation(AppAnimation.slow)     { ... }  // 0.40 — крупные переходы
 ```
+
+Кодекс §7: анимации тонкие и быстрые, салютов и празднований не бывает.
+Хаптика — только функциональная: `HapticFeedback.selection()` на выбор
+значения, `.notification(.success)` на сохранение.
 
 ---
 
 ## 8. Размеры иконок
 
-```swift
-Image(systemName: "sun.max")
-    .font(.system(size: IconSize.glyph))   // 17px — inline
-    .frame(width: IconSize.card, height: IconSize.card) // 44px — list row
-```
-
 | Токен | pt | Использование |
 |-------|----|---------------|
 | `IconSize.hero` | 56 | Hero-карточка |
 | `IconSize.card` | 44 | List row, контейнер |
-| `IconSize.action` | 36 | Arrow-кнопка |
+| `IconSize.action` | 36 | Круглая стрелка в ExerciseRow |
 | `IconSize.inline` | 24 | Navigation |
 | `IconSize.glyph` | 17 | SF Symbol font size |
+| `IconSize.fieldGlyph` | 15 | Глиф рядом с body-текстом поля |
+| `IconSize.emptyState` | 40 | Иллюстрация пустого состояния |
 
 ---
 
@@ -487,89 +323,22 @@ Image(systemName: "sun.max")
 ### ✅ Делай так
 
 ```swift
-// Цвета — всегда через токены
-.foregroundStyle(AppColors.primary)
-.background(AppColors.gray100)
-
-// Типографика — всегда через .appFont()
-Text("Hello").appFont(.body)
-
-// Спейсинг — всегда через Spacing.*
-.padding(Spacing.sm)
-VStack(spacing: Spacing.xs)
-
-// Карточки — через модификаторы
-content.cardStyle()
-
-// Touch target — явно
-Image(...).touchTarget()
+.foregroundStyle(AppColors.primary)      // цвета — токены
+Text("Hello").appFont(.body)             // шрифты — .appFont()
+.padding(Spacing.sm)                     // спейсинг — Spacing.*
+content.cardStyle()                      // карточки — модификаторы
+Image(...).touchTarget()                 // зоны касания — явно
 ```
 
 ### ❌ Не делай так
 
 ```swift
-// Хардкод цветов
-Color(hex: "#E53726")
-Color.red
-Color(red: 0.95, ...)
-
-// Хардкод размеров шрифта
-.font(.system(size: 15))
-
-// Хардкод паддингов
-.padding(16)
-.padding(.horizontal, 20)
-
-// Маленькие tap-зоны
-Image(systemName: "xmark")  // без touchTarget()
+Color(hex: "#E53726"); Color.red; Color(red: 0.95, ...)  // хардкод цветов
+.fill(.white)                       // поверхность карточки — только cardBackground
+.font(.system(size: 15))            // хардкод шрифта — не масштабируется
+.padding(16)                        // хардкод паддингов
+Image(systemName: "xmark")          // без touchTarget()
 ```
 
----
-
-## 10. Пример экрана
-
-```swift
-struct DailyView: View {
-    @State private var tabIndex = 0
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.lg) {
-                // Tab bar
-                TopTabBar(
-                    tabs: ["Daily", "Journal", "Discover"],
-                    selection: $tabIndex
-                )
-
-                // Hero card
-                HeroFeatureCard(
-                    subtitle: "Afternoon Check-in",
-                    title: "Identify your cognitive distortions",
-                    color: AppColors.primary,
-                    icon: "sun.max",
-                    onDismiss: {},
-                    onFavourite: {}
-                )
-
-                // Section
-                HStack {
-                    CardTitle(text: "Exercises")
-                    Spacer()
-                    Button("See All") {}
-                        .appFont(.small)
-                        .foregroundStyle(TextColors.secondary)
-                }
-
-                VStack(spacing: Spacing.xxs) {
-                    ExerciseRow(title: "Thought Record", meta: "5 min · Reframing", icon: "doc.text") {}
-                    ExerciseRow(title: "Guided Breathing", meta: "3 min · Relaxation", icon: "wind") {}
-                }
-            }
-            .padding(.horizontal, Spacing.sm)
-            .padding(.top, Spacing.md)
-        }
-        .pageBackground()
-        .navigationTitle("CBT Tools")
-    }
-}
-```
+Не существует в этой системе (и не должно появиться): бейджи непрочитанного,
+стрики, прогресс-кольца по дням, конфетти, «мотивирующие» тексты — кодекс §8.
