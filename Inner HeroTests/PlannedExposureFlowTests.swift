@@ -136,22 +136,34 @@ struct RandomTargetTests {
 @Suite("Planned exposure — before")
 struct PlannedExposureBeforeTests {
 
-    @Test("Start requires activity, feared outcome and confidence")
+    @Test("Start requires activity and feared outcome; confidence comes seeded")
     func startValidation() {
         let model = PlannedExposureFlowViewModel()
+        // Seeded with the option that claims the least, so the scale shows it
+        // wants an answer without asserting one.
+        #expect(model.confidence == .fiftyFifty)
         #expect(!model.canStart)
 
         model.activity = "Walk"
         #expect(!model.canStart)
 
         model.fearedOutcome = "I'll run away"
-        #expect(!model.canStart)
-
-        model.confidence = .fiftyFifty
         #expect(model.canStart)
 
         model.activity = "   "
         #expect(!model.canStart)
+    }
+
+    @Test("An untouched form is not a draft, despite the seeded confidence")
+    func seededConfidenceIsNotADraft() {
+        let model = PlannedExposureFlowViewModel()
+        #expect(!model.hasBeforeDraft)
+
+        model.confidence = .certain
+        #expect(!model.hasBeforeDraft)
+
+        model.activity = "Walk"
+        #expect(model.hasBeforeDraft)
     }
 
     @Test("Start inserts the prediction block; fact columns stay empty")
@@ -167,7 +179,10 @@ struct PlannedExposureBeforeTests {
         let entry = try #require(saved.first)
         #expect(saved.count == 1)
         #expect(entry.createdAt == start)
-        #expect(entry.situation == "Walk to the park")
+        #expect(entry.activity == "Walk to the park")
+        // The fact column stays empty until "after" — the plan lives in
+        // `activity` and is never overwritten by it.
+        #expect(entry.situation.isEmpty)
         #expect(entry.fearedOutcome == "I'll leave in two minutes")
         #expect(entry.confidence == .likely)
         #expect(entry.expectedAnxiety == PlannedExposureFlowViewModel.defaultIntensity)
@@ -182,7 +197,9 @@ struct PlannedExposureBeforeTests {
         #expect(entry.predictionOutcomeRaw == nil)
 
         #expect(model.stage == .during)
-        #expect(model.actualSituation == "Walk to the park")
+        // "What actually happened" is seeded from the prediction, so the after
+        // screen offers the feared sentence to edit into the truth.
+        #expect(model.actualSituation == "I'll leave in two minutes")
         #expect(model.targetDuration == TimeInterval(target))
     }
 
@@ -396,5 +413,27 @@ struct PlannedExposureAfterTests {
         #expect(all.count == 2)
         let suggestions = SituationalExposureFormViewModel.situationSuggestions(from: all)
         #expect(suggestions == ["Metro", "Walk to the park"])
+    }
+
+    @Test("Recording the fact leaves the plan intact")
+    func afterBlockDoesNotOverwriteThePlan() throws {
+        let context = try makeContext()
+        let model = try modelAtAfterStage(in: context)
+        // Seeded from the prediction, then edited into what really happened.
+        #expect(model.actualSituation == "I'll leave in two minutes")
+        model.actualSituation = "Got tense around minute three but stayed"
+        model.predictionOutcome = .didNotComeTrue
+        model.behavior = .stayed
+        model.toggleNothing()
+        try model.saveAfter(in: context)
+
+        let entry = try #require(try context.fetch(FetchDescriptor<ExposureLogEntry>()).first)
+        #expect(entry.situation == "Got tense around minute three but stayed")
+        #expect(entry.activity == "Walk to the park")
+        #expect(entry.fearedOutcome == "I'll leave in two minutes")
+
+        // The story of the session must not end up in the activity chips.
+        let suggestions = SituationalExposureFormViewModel.situationSuggestions(from: [entry])
+        #expect(suggestions == ["Walk to the park"])
     }
 }

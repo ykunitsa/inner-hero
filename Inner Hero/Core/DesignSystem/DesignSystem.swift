@@ -25,17 +25,30 @@ enum AppColors {
 
     // MARK: Neutrals
     //
-    // ⚠️ Naming gotcha: the number does NOT track darkness. gray400 is the
-    // DARKER text gray (secondary), gray600 is LIGHTER (tertiary). Pick by
-    // the role in the comment, not by the number.
+    // ⚠️ Pick by the role in the comment, not by the number — and mind the
+    // contrast note: only gray600 clears 4.5:1 for text. gray400 sits at
+    // ~2.9:1 on white, which is placeholder-only territory.
     static let black         = Color("AppBlack")
     static let cardBackground = Color("CardBackground") // card / elevated surface (#FFF light, #2C2C2E dark)
     static let gray100       = Color("Gray100") // page background
-    static let gray200       = Color("Gray200") // dividers / card borders
+    static let gray200       = Color("Gray200") // dividers / decorative card edges (NOT control outlines — see controlBorder)
     static let gray300       = Color("Gray300") // disabled borders (too light for text)
-    static let gray400       = Color("Gray400") // secondary text, placeholders
-    static let gray600       = Color("Gray600") // tertiary text
+    static let gray400       = Color("Gray400") // placeholders only — fails text contrast
+    static let gray600       = Color("Gray600") // quiet text that still has to be read
     static let white         = Color.white
+
+    /// The ring of an unselected **state indicator** — today that means the
+    /// radio dot, and nothing else.
+    ///
+    /// Controls are told apart by their *fill*, not by an outline: a 3:1
+    /// stroke around every chip and option turned the exposure forms into a
+    /// wireframe. The dot is the exception because it is small, it is the
+    /// thing that actually encodes selected/unselected, and at `gray300`
+    /// (~1.5:1) it was invisible. 3.24:1 light / 4.27:1 dark, at
+    /// `BorderWidth.standard`.
+    ///
+    /// Do **not** reach for this to outline a chip, card or field.
+    static let controlBorder = Color("ControlBorder")
 
     // MARK: Semantic State Colors
     enum State {
@@ -60,7 +73,11 @@ enum TextColors {
     /// Main body text — adapts to light/dark automatically
     static let primary: Color   = .primary
     static let secondary: Color = .secondary
-    static let tertiary: Color  = .secondary.opacity(0.65)
+    /// Quietest text tier. NOT `.secondary` dimmed further: `.secondary` is
+    /// already 60% black in light mode, and another 0.65 lands near 2.7:1 —
+    /// below the 4.5:1 small text needs (codex §6). `gray600` is the token
+    /// designed for this role and holds contrast in both themes.
+    static let tertiary: Color  = AppColors.gray600
     static let toolbar: Color   = .primary
     /// White text for use on colored surfaces (red/purple cards)
     static let onColor: Color   = .white
@@ -111,8 +128,11 @@ enum CornerRadius {
 enum BorderWidth {
     /// 0.5pt — card strokes, search field outline (matches `cardStyle` overlay).
     static let hairline: CGFloat = 0.5
-    /// 1pt — emphasized outline (e.g. active filter pill).
+    /// 1pt — outline of an interactive control (`AppColors.controlBorder`).
     static let standard: CGFloat = 1
+    /// 1.5pt — the same control once selected, so the state reads at a glance
+    /// without the layout shifting.
+    static let emphasized: CGFloat = 1.5
 }
 
 // MARK: - Touch Targets
@@ -142,7 +162,24 @@ enum IconSize {
     /// Large illustration icons in empty states (aligned with prominent UI scale).
     static let emptyState: CGFloat = 40
     /// Glyphs paired with body-sized field text — matches `AppTextStyle.body` (15pt).
+    ///
+    /// ⚠️ Prefer `.appFont(.bodyMedium)` on the `Image` instead: a raw
+    /// `.system(size:)` is frozen at this value and stops tracking Dynamic
+    /// Type, so the label grows and the glyph next to it does not (codex §6).
     static let fieldGlyph: CGFloat = 15
+}
+
+// MARK: - Field Sizes
+
+/// Intrinsic sizes of form controls that have no natural content size.
+/// Wrap in `@ScaledMetric` at the use site so they track Dynamic Type.
+enum FieldSize {
+    /// Multiline editor height — about three lines of body text, enough to
+    /// show that more than a phrase is welcome without eating the screen.
+    static let editorMinHeight: CGFloat = 80
+    /// Inline "your own…" chip field. A chip inside `ChipFlowLayout` gets an
+    /// unspecified proposal, so a text field needs an explicit width.
+    static let inlineChipField: CGFloat = 140
 }
 
 // MARK: - Opacity Scale

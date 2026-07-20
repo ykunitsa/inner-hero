@@ -73,7 +73,16 @@ enum PredictionOutcome: String, CaseIterable {
 @Model
 final class ExposureLogEntry {
     var createdAt: Date
+    /// What actually happened. On a planned session this is written at "after"
+    /// and is the counterpart of `fearedOutcome` (spec §3, after-block item 3)
+    /// — NOT the name of the activity, which lives in `activity`. Empty while
+    /// a planned session has not reached its "after" screen.
     var situation: String
+    /// What the person set out to do — planned sessions only. Kept apart from
+    /// `situation` because the "after" screen overwrites that one: with a
+    /// single column the plan was destroyed the moment the fact was recorded,
+    /// and the suggestion chips lost their source.
+    var activity: String?
     /// Anxiety intensity 0–10 (situational) / overall difficulty (planned).
     /// Intensity only — no tolerability semantics. Nil while a planned
     /// session has not reached its "after" screen.
@@ -126,7 +135,10 @@ final class ExposureLogEntry {
         targetDurationSeconds: Int
     ) {
         self.createdAt = plannedAt
-        self.situation = activity
+        self.activity = activity
+        // No fact yet — the "after" screen fills this in. Leaving it empty is
+        // the truthful state for a session that was started but not finished.
+        self.situation = ""
         self.safetyBehaviors = []
         self.fearedOutcome = fearedOutcome
         self.confidenceRaw = confidence.rawValue

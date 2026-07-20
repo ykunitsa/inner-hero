@@ -243,7 +243,7 @@ struct ExerciseRow: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: CornerRadius.lg, style: .continuous)
-                    .strokeBorder(AppColors.gray200, lineWidth: 0.5)
+                    .strokeBorder(AppColors.gray200, lineWidth: BorderWidth.hairline)
             )
         }
         .buttonStyle(.plain)
@@ -271,17 +271,17 @@ struct RadioCard: View {
                 ZStack {
                     Circle()
                         .strokeBorder(
-                            isSelected ? accentColor : AppColors.gray300,
-                            lineWidth: isSelected ? 2 : 1.5
+                            isSelected ? accentColor : AppColors.controlBorder,
+                            lineWidth: isSelected ? BorderWidth.emphasized : BorderWidth.standard
                         )
-                        .frame(width: 20, height: 20)
+                        .frame(width: radioDiameter, height: radioDiameter)
                     if isSelected {
                         Circle()
                             .fill(accentColor)
-                            .frame(width: 10, height: 10)
+                            .frame(width: radioFillDiameter, height: radioFillDiameter)
                     }
                 }
-                .padding(.top, 2)
+                .padding(.top, Spacing.xxxs)
 
                 // Content
                 VStack(alignment: .leading, spacing: 3) {
@@ -299,19 +299,17 @@ struct RadioCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .fill(isSelected ? accentColor.opacity(0.03) : AppColors.cardBackground)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .strokeBorder(
-                        isSelected ? accentColor : AppColors.gray200,
-                        lineWidth: isSelected ? 1.5 : 0.5
-                    )
+                    .fill(isSelected
+                          ? accentColor.opacity(Opacity.mediumBackground)
+                          : AppColors.cardBackground)
             )
         }
         .buttonStyle(.plain)
         .animation(AppAnimation.fast, value: isSelected)
     }
+
+    @ScaledMetric(relativeTo: .body) private var radioDiameter: CGFloat = 20
+    @ScaledMetric(relativeTo: .body) private var radioFillDiameter: CGFloat = 10
 }
 
 // ─────────────────────────────────────────────
@@ -371,44 +369,49 @@ struct AppBadge: View {
 // MARK: Quote Card
 // ─────────────────────────────────────────────
 
-/// Quoted text display with a coloured left border.
-/// Used to show the user's own earlier words back to them:
-/// prediction reminder on the exposure "after" screen (spec §3),
-/// forecast comparison in BA (spec §6).
-/// Usage: `QuoteCard(label: "Your prediction", text: "It will overwhelm me...")`
+/// Quoted text display: the user's own earlier words shown back to them —
+/// prediction reminder on the exposure "after" screen (spec §3), forecast
+/// comparison in BA (spec §6).
+///
+/// Deliberately **not a plate at all**: no fill, no shadow, no outline —
+/// just a rule and the words. Every interactive control on these screens is
+/// a filled shape, so anything filled reads as "you can touch this"; the one
+/// element that must read as read-only therefore gets no fill. It also stops
+/// the reminder from being the heaviest object on a screen of questions,
+/// which the earlier shadowed white card was.
+///
+/// The label is rendered by the *caller*, so it lands flush with the other
+/// `SectionLabel`s on the screen; swallowing it inside the container pushed
+/// it in by `Spacing.sm` and broke the left edge of the form.
+///
+/// Usage:
+/// ```swift
+/// VStack(alignment: .leading, spacing: Spacing.xxs) {
+///     SectionLabel(text: "Your prediction · probably")
+///     QuoteCard(text: "It will overwhelm me...")
+/// }
+/// ```
 struct QuoteCard: View {
-    let label: String
     let text: String
-    var accentColor: Color = AppColors.primary
+    /// The "these are your words" rule. Neutral by default: on the exposure
+    /// "after" screen the brand red would be the only red on the screen, and
+    /// it would sit on the one thing you cannot tap.
+    var accentColor: Color = AppColors.gray300
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.xxs) {
-            SectionLabel(text: label)
+        HStack(alignment: .top, spacing: Spacing.xs) {
+            Capsule()
+                .fill(accentColor)
+                .frame(width: BorderWidth.emphasized * 2)
+
             Text(text)
                 .appFont(.bodyMedium)
                 .foregroundStyle(TextColors.primary)
                 .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(Spacing.sm)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            // A white card, not a gray field: this is the user's own words
-            // shown back, not an input. The soft shadow keeps it readable
-            // as a plate even on an all-white form screen.
-            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                .fill(AppColors.cardBackground)
-        )
-        .overlay(alignment: .leading) {
-            Rectangle()
-                .fill(accentColor)
-                .frame(width: 3)
-                .clipShape(
-                    RoundedRectangle(cornerRadius: 2, style: .continuous)
-                )
-                .padding(.vertical, 1)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous))
-        .shadow(color: .black.opacity(Opacity.standardShadow), radius: 8, y: 2)
+        .padding(.vertical, Spacing.xxs)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -606,18 +609,17 @@ struct ExerciseStepHeader: View {
 ///
 /// Usage:
 /// ```swift
-/// AppTextEditor(
-///     text: $notes,
-///     placeholder: "Describe the situation or thought...",
-///     minHeight: 100
-/// )
+/// AppTextEditor(text: $notes, placeholder: "Describe the situation…")
 /// ```
 struct AppTextEditor: View {
     @Binding var text: String
     var placeholder: String = ""
-    var minHeight: CGFloat = 100
-    /// Surface behind the field (default matches page gray; use `cardBackground` on tinted screens).
-    var fillColor: Color = AppColors.gray100
+    var minHeight: CGFloat = FieldSize.editorMinHeight
+    /// Surface behind the field. A `cardBackground` plate on the form's gray
+    /// ground, like every other control — a *gray* field on iOS reads as
+    /// disabled or read-only, which is the opposite of "type here".
+    /// `QuoteCard` stays clear of the confusion by having no fill at all.
+    var fillColor: Color = AppColors.cardBackground
 
     @FocusState private var isFocused: Bool
 
@@ -648,9 +650,12 @@ struct AppTextEditor: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                // The one stroke this field keeps. Accent, not a gray:
+                // `gray300` sat at ~1.5:1 on the fill, which is not a focus
+                // indicator anyone can see (codex §6).
                 .strokeBorder(
-                    isFocused ? AppColors.gray300 : .clear,
-                    lineWidth: 1
+                    isFocused ? AppColors.accent : .clear,
+                    lineWidth: BorderWidth.emphasized
                 )
         )
         .animation(AppAnimation.fast, value: isFocused)
@@ -690,6 +695,9 @@ struct IntensitySlider: View {
                 .animation(AppAnimation.fast, value: value)
                 .accessibilityHidden(true) // the slider itself carries the value
 
+            // Deliberately the system slider, not the `TickTrack` ruler the
+            // range control uses: a single value needs no custom drawing, and
+            // the native control brings its own drag feel and VoiceOver.
             Slider(
                 value: Binding(
                     get: { Double(value) },
@@ -730,11 +738,7 @@ struct DurationRangeSlider: View {
     var bounds: ClosedRange<Int> = 1...20
     var accentColor: Color = AppColors.accent
 
-    private let minorTickHeight: CGFloat = Spacing.xs
-    private let majorTickHeight: CGFloat = Spacing.md
-    private let markerHeight: CGFloat = Spacing.xl
-    private let markerWidth: CGFloat = Spacing.xxxs
-    private let tickWidth: CGFloat = 1.5
+    private var geometry: TickTrackGeometry { TickTrackGeometry(bounds: bounds) }
 
     var body: some View {
         VStack(spacing: Spacing.xxs) {
@@ -753,9 +757,13 @@ struct DurationRangeSlider: View {
                 let maxX = position(of: maxMinutes, width: width)
 
                 ZStack(alignment: .leading) {
-                    ruler(width: width)
+                    TickTrack(
+                        geometry: geometry,
+                        highlighted: minMinutes...maxMinutes,
+                        accentColor: accentColor
+                    )
 
-                    marker
+                    TrackMarker(accentColor: accentColor)
                         .offset(x: minX - TouchTarget.minimum / 2)
                         .highPriorityGesture(
                             DragGesture(minimumDistance: 0, coordinateSpace: .named("durationRange"))
@@ -774,7 +782,7 @@ struct DurationRangeSlider: View {
                             }
                         }
 
-                    marker
+                    TrackMarker(accentColor: accentColor)
                         .offset(x: maxX - TouchTarget.minimum / 2)
                         .highPriorityGesture(
                             DragGesture(minimumDistance: 0, coordinateSpace: .named("durationRange"))
@@ -800,53 +808,12 @@ struct DurationRangeSlider: View {
         }
     }
 
-    /// Vertical tick per minute; every 5th is taller. Ticks inside the
-    /// selected range pick up the accent color.
-    private func ruler(width: CGFloat) -> some View {
-        Canvas { context, size in
-            for tick in bounds.lowerBound...bounds.upperBound {
-                let x = position(of: tick, width: width)
-                let isMajor = tick % 5 == 0 || tick == bounds.lowerBound || tick == bounds.upperBound
-                let height = isMajor ? majorTickHeight : minorTickHeight
-                let rect = CGRect(
-                    x: x - tickWidth / 2,
-                    y: (size.height - height) / 2,
-                    width: tickWidth,
-                    height: height
-                )
-                let isInRange = (minMinutes...maxMinutes).contains(tick)
-                context.fill(
-                    Path(roundedRect: rect, cornerRadius: tickWidth / 2),
-                    with: .color(isInRange ? accentColor : AppColors.gray300)
-                )
-            }
-        }
-        .frame(height: markerHeight)
-        .accessibilityHidden(true)
-    }
-
-    /// Rounded vertical bar, taller than the ticks; hit area is padded to
-    /// TouchTarget.minimum.
-    private var marker: some View {
-        RoundedRectangle(cornerRadius: markerWidth / 2, style: .continuous)
-            .fill(accentColor)
-            .frame(width: markerWidth, height: markerHeight)
-            .shadow(color: .black.opacity(Opacity.standardShadow), radius: 2, y: 1)
-            .frame(width: TouchTarget.minimum, height: TouchTarget.minimum)
-            .contentShape(Rectangle())
-    }
-
-    /// Ruler coordinates: ticks span the full width edge to edge.
     private func position(of value: Int, width: CGFloat) -> CGFloat {
-        let span = CGFloat(max(bounds.upperBound - bounds.lowerBound, 1))
-        let inset = tickWidth / 2
-        return inset + CGFloat(value - bounds.lowerBound) / span * (width - tickWidth)
+        geometry.position(of: value, width: width)
     }
 
     private func value(atX x: CGFloat, width: CGFloat) -> Int {
-        let span = CGFloat(bounds.upperBound - bounds.lowerBound)
-        let fraction = (x - tickWidth / 2) / max(width - tickWidth, 1)
-        return bounds.lowerBound + Int((fraction * span).rounded())
+        geometry.value(atX: x, width: width)
     }
 
     private func update(_ binding: inout Int, to newValue: Int) {
@@ -885,7 +852,7 @@ struct SuggestionChip: View {
             .padding(.vertical, Spacing.xxxs + 2)
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.sm, style: .continuous)
-                    .fill(AppColors.gray100)
+                    .fill(AppColors.cardBackground)
             )
             .touchTarget(width: 0)
         }
@@ -965,14 +932,8 @@ struct SelectableChip: View {
                 .padding(.vertical, Spacing.xxs)
                 .background(
                     Capsule().fill(isSelected
-                                   ? accentColor.opacity(Opacity.softBackground)
+                                   ? accentColor.opacity(Opacity.mediumBackground)
                                    : AppColors.cardBackground)
-                )
-                .overlay(
-                    Capsule().strokeBorder(
-                        isSelected ? accentColor.opacity(Opacity.emphasizedBorder) : AppColors.gray200,
-                        lineWidth: isSelected ? BorderWidth.standard : BorderWidth.hairline
-                    )
                 )
                 .touchTarget(width: 0)
         }
@@ -1033,94 +994,129 @@ struct ChoiceOption<Value: Hashable>: Identifiable {
 /// Single-select group of 2–4 full-word options, one tap each
 /// (codex §2: segments instead of typing numbers).
 ///
-/// `.vertical` (default) — stacked rows with a radio dot; fits long labels
-/// ("wanted to leave, but stayed").
-/// `.horizontal` — equal-width segments without a dot; for short options
-/// ("yes" / "no").
+/// - `.cards` (default) — stacked outlined cards with a radio dot. For a set
+///   of **distinct facts** with sentence-length labels ("wanted to leave, but
+///   stayed"): each option is its own answer, and the box around it says so.
+/// - `.segments` — equal-width horizontal segments. Two or three very short
+///   options only ("yes" / "no"); four rarely fit at any Dynamic Type size.
+///
+/// For options that form a **gradient** rather than a set — how sure, how
+/// much — use `ScaleChoice` instead. It stays one line tall no matter how
+/// many options there are, and it shows the ordering the cards can't.
 ///
 /// Usage:
 /// ```swift
 /// SegmentedChoice(
-///     options: [
-///         ChoiceOption(value: Outcome.stayed, title: String(localized: "Stayed until the end")),
-///         ChoiceOption(value: Outcome.stayedHard, title: String(localized: "Wanted to leave, but stayed")),
-///         ChoiceOption(value: Outcome.left, title: String(localized: "Left early")),
-///     ],
-///     selection: $outcome
+///     options: ExposureBehavior.allCases.map { ChoiceOption(value: $0, title: $0.title) },
+///     selection: $behavior
 /// )
+/// SegmentedChoice(options: yesNo, selection: $answer, style: .segments)
 /// ```
 struct SegmentedChoice<Value: Hashable>: View {
+
+    enum Style {
+        case cards
+        case segments
+    }
+
     let options: [ChoiceOption<Value>]
     @Binding var selection: Value?
-    var axis: Axis = .vertical
+    var style: Style = .cards
     var accentColor: Color = AppColors.accent
 
     var body: some View {
-        switch axis {
-        case .vertical:
+        switch style {
+        case .cards:
             VStack(spacing: Spacing.xxs) {
                 ForEach(options) { option in
-                    optionCard(option, showDot: true)
+                    optionCard(option)
                 }
             }
-        case .horizontal:
+        case .segments:
             HStack(spacing: Spacing.xxs) {
                 ForEach(options) { option in
-                    optionCard(option, showDot: false)
+                    optionSegment(option)
                         .frame(maxWidth: .infinity)
                 }
             }
         }
     }
 
-    @ViewBuilder
-    private func optionCard(_ option: ChoiceOption<Value>, showDot: Bool) -> some View {
+    // The dot tracks Dynamic Type so it stays optically tied to the label.
+    @ScaledMetric(relativeTo: .body) private var radioDiameter: CGFloat = 20
+    @ScaledMetric(relativeTo: .body) private var radioFillDiameter: CGFloat = 10
+
+    private func optionCard(_ option: ChoiceOption<Value>) -> some View {
         let isSelected = selection == option.value
 
-        Button {
-            selection = option.value
-            HapticFeedback.selection()
+        return Button {
+            select(option)
         } label: {
             HStack(spacing: Spacing.xs) {
-                if showDot {
-                    ZStack {
+                ZStack {
+                    Circle()
+                        .strokeBorder(
+                            isSelected ? accentColor : AppColors.controlBorder,
+                            lineWidth: isSelected ? BorderWidth.emphasized : BorderWidth.standard
+                        )
+                        .frame(width: radioDiameter, height: radioDiameter)
+                    if isSelected {
                         Circle()
-                            .strokeBorder(
-                                isSelected ? accentColor : AppColors.gray300,
-                                lineWidth: isSelected ? 2 : 1.5
-                            )
-                            .frame(width: 20, height: 20)
-                        if isSelected {
-                            Circle()
-                                .fill(accentColor)
-                                .frame(width: 10, height: 10)
-                        }
+                            .fill(accentColor)
+                            .frame(width: radioFillDiameter, height: radioFillDiameter)
                     }
                 }
                 Text(option.title)
                     .appFont(isSelected ? .bodyMedium : .body)
                     .foregroundStyle(TextColors.primary)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: showDot ? .infinity : nil, alignment: showDot ? .leading : .center)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, Spacing.sm)
             .padding(.vertical, Spacing.xs)
             .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
+            // Fill, not outline. A 3:1 stroke on every option turned the form
+            // into a wireframe; the filled shape carries the affordance and
+            // the radio dot carries the state.
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .fill(isSelected ? accentColor.opacity(0.03) : AppColors.cardBackground)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                    .strokeBorder(
-                        isSelected ? accentColor : AppColors.gray200,
-                        lineWidth: isSelected ? 1.5 : 0.5
-                    )
+                    .fill(isSelected
+                          ? accentColor.opacity(Opacity.mediumBackground)
+                          : AppColors.cardBackground)
             )
         }
         .buttonStyle(.plain)
         .animation(AppAnimation.fast, value: isSelected)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    private func optionSegment(_ option: ChoiceOption<Value>) -> some View {
+        let isSelected = selection == option.value
+
+        return Button {
+            select(option)
+        } label: {
+            Text(option.title)
+                .appFont(isSelected ? .bodyMedium : .body)
+                .foregroundStyle(isSelected ? TextColors.onColor : TextColors.primary)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, Spacing.xxs)
+                .padding(.vertical, Spacing.xxs)
+                .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
+                .background(
+                    RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                        .fill(isSelected ? accentColor : AppColors.cardBackground)
+                )
+        }
+        .buttonStyle(.plain)
+        .animation(AppAnimation.fast, value: isSelected)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    private func select(_ option: ChoiceOption<Value>) {
+        selection = option.value
+        HapticFeedback.selection()
     }
 }
 
@@ -1172,7 +1168,7 @@ struct SegmentedChoice<Value: Hashable>: View {
                     ChoiceOption(value: "no", title: "No"),
                 ],
                 selection: $answer,
-                axis: .horizontal
+                style: .segments
             )
         }
         .padding(Spacing.lg)
@@ -1242,11 +1238,11 @@ struct SegmentedChoice<Value: Hashable>: View {
                 isSelected: $radioOff
             )
 
-            SectionLabel(text: "Quote card")
-            QuoteCard(label: "Your prediction", text: "It will overwhelm me so much I'll leave in two minutes.")
+            SectionLabel(text: "Your prediction · probably")
+            QuoteCard(text: "It will overwhelm me so much I'll leave in two minutes.")
 
             SectionLabel(text: "Text editor")
-            AppTextEditor(text: $notes, placeholder: "Describe the situation...", fillColor: AppColors.cardBackground)
+            AppTextEditor(text: $notes, placeholder: "Describe the situation...")
 
             SectionLabel(text: "Card style modifier")
             Text("Any content").appFont(.body).frame(maxWidth: .infinity).cardStyle()

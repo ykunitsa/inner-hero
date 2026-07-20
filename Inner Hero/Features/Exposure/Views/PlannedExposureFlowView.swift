@@ -56,26 +56,31 @@ struct PlannedExposureFlowView: View {
 
     // MARK: Session lifecycle
 
-    private func start() -> Bool {
+    private func start() async -> Bool {
+        // Permission first, while the user is still on the "before" screen
+        // and nothing is running. Asking after `startSession` put the system
+        // dialog on top of a session whose clock had already begun — the
+        // exposure started with the person answering an iOS prompt.
+        // Already-decided permissions resolve without showing anything.
+        notificationsAuthorized = await notificationManager.requestAuthorization()
+
         do {
             try viewModel.startSession(in: modelContext)
         } catch {
             return false
         }
         guard viewModel.stage == .during else { return false }
-        Task {
-            notificationsAuthorized = await notificationManager.requestAuthorization()
-            guard notificationsAuthorized else { return }
-            // Scheduled from the remaining time so the permission dialog
-            // doesn't shift the hidden end moment.
+
+        if notificationsAuthorized {
             let remaining = viewModel.targetDuration - viewModel.elapsed(now: Date())
-            guard remaining > 0 else { return }
-            await notificationManager.scheduleOneTimeSignal(
-                id: Self.endSignalNotificationID,
-                title: String(localized: "Time"),
-                body: String(localized: "The exposure is done"),
-                after: remaining
-            )
+            if remaining > 0 {
+                await notificationManager.scheduleOneTimeSignal(
+                    id: Self.endSignalNotificationID,
+                    title: String(localized: "Time"),
+                    body: String(localized: "The exposure is done"),
+                    after: remaining
+                )
+            }
         }
         return true
     }

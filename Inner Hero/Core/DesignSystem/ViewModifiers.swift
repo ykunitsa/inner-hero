@@ -131,10 +131,90 @@ extension View {
     }
 }
 
-// NOTE: there is deliberately no `pageBackground()` here. A screen is either
-// a hub (`.homeBackground()` — grouped gray, so cards float on it) or a piece
-// of work (`AppColors.cardBackground` — one continuous surface). A third,
-// in-between page gray only produced drift. See USAGE.MD § "Фон экрана".
+// Screens sit on one of three grounds. Pick by what the screen *is*; never
+// invent a fourth. See USAGE.MD § "Фон экрана".
+//
+//  • hub          `.homeBackground()`  — grouped gray + the accent glow
+//  • form         `.formBackground()`  — flat page gray, controls are
+//                                        `cardBackground` plates on it
+//  • single task  `AppColors.cardBackground` — one continuous surface,
+//                                        for screens with no controls at all
+//
+// Forms used to be "one continuous surface" too. That stopped being true the
+// moment controls started being identified by their *fill*: the screen is now
+// a stack of discrete plates, so it needs a ground for them to sit on. A gray
+// plate on white also reads as disabled on iOS — which is exactly what the
+// white-page version was reported as looking like.
+//
+// Whatever a form uses here, its `PinnedScrim` must use the same colour, or
+// the pinned header and footer paint bands across the page.
+
+extension View {
+    /// Ground of a form screen. Pairs with `cardBackground` controls.
+    func formBackground() -> some View {
+        background(AppColors.gray100.ignoresSafeArea())
+    }
+}
+
+// ─────────────────────────────────────────────
+// MARK: Pinned Form Scrims
+// ─────────────────────────────────────────────
+
+/// Backdrop for a bar pinned over a scrolling form — the title band at the
+/// top, the primary-action pill at the bottom.
+///
+/// The band itself is **opaque**, and the fade lives entirely *outside* it.
+/// A scrim that fades within its own bounds looks fine behind running text
+/// and broken behind anything with an edge: a chip or a slider caught in the
+/// half-transparent zone reads as clipped, not as scrolled-under.
+struct PinnedScrim: ViewModifier {
+    enum Edge {
+        case top
+        case bottom
+    }
+
+    var edge: Edge
+    var fadeHeight: CGFloat = Spacing.md
+    /// Must match the page behind the form, or the band shows as a stripe.
+    var surface: Color = AppColors.gray100
+
+    func body(content: Content) -> some View {
+        content
+            .background(surface)
+            .overlay(alignment: edge == .top ? .bottom : .top) {
+                LinearGradient(
+                    colors: edge == .top
+                        ? [surface, surface.opacity(0)]
+                        : [surface.opacity(0), surface],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: fadeHeight)
+                // Pushed clear of the band, so the opaque part never eats
+                // into the fade and vice versa.
+                .offset(y: edge == .top ? fadeHeight : -fadeHeight)
+                .allowsHitTesting(false)
+            }
+    }
+}
+
+extension View {
+    /// Opaque header band plus a fade below it.
+    func pinnedHeaderBackground(
+        fadeHeight: CGFloat = Spacing.md,
+        surface: Color = AppColors.gray100
+    ) -> some View {
+        modifier(PinnedScrim(edge: .top, fadeHeight: fadeHeight, surface: surface))
+    }
+
+    /// Opaque footer band plus a fade above it.
+    func pinnedFooterBackground(
+        fadeHeight: CGFloat = Spacing.md,
+        surface: Color = AppColors.gray100
+    ) -> some View {
+        modifier(PinnedScrim(edge: .bottom, fadeHeight: fadeHeight, surface: surface))
+    }
+}
 
 // ─────────────────────────────────────────────
 // MARK: Icon Container
