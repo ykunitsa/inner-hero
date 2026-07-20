@@ -5844,6 +5844,16 @@
         }
       }
     },
+    "No exposure planned for today" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиция на сегодня не запланирована"
+          }
+        }
+      }
+    },
     "No exposures available" : {
       "extractionState" : "stale",
       "localizations" : {

@@ -64,7 +64,10 @@ enum TextColors {
     static let toolbar: Color   = .primary
     /// White text for use on colored surfaces (red/purple cards)
     static let onColor: Color   = .white
-    static let onColorSecondary = Color.white.opacity(0.8)
+    /// Subtitle on colored surfaces. Kept high (0.9, not 0.8): at 13pt on
+    /// `PrimaryRed` every step down costs contrast the small size can't
+    /// afford — see the note on `HeroFeatureCard`.
+    static let onColorSecondary = Color.white.opacity(0.9)
     /// Content on `AppColors.black` surfaces. AppBlack inverts to
     /// near-white in dark mode, so its content must invert too —
     /// plain `.white` becomes invisible there.
@@ -133,6 +136,9 @@ enum IconSize {
     static let inline:  CGFloat = 24
     /// SF Symbol font size for inline use
     static let glyph:   CGFloat = 17
+    /// SF Symbol font size for the glyph inside a `hero` container.
+    /// Wrap in `@ScaledMetric` at the use site so it tracks Dynamic Type.
+    static let heroGlyph: CGFloat = 26
     /// Large illustration icons in empty states (aligned with prominent UI scale).
     static let emptyState: CGFloat = 40
     /// Glyphs paired with body-sized field text — matches `AppTextStyle.body` (15pt).

@@ -62,3 +62,7 @@ Override.xcconfig
 
 # teardown debris — the whole _to_delete/ folder is pending manual deletion
 _to_delete/git-stale-locks/
+
+# ios-simulator-skill writes a per-project device cache here regardless of where
+# the plugin itself is installed (scripts/xcode/config.py). Machine-local state.
+.claude/skills/ios-simulator-skill/

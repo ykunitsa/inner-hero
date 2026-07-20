@@ -178,11 +178,25 @@ RoundedRectangle(cornerRadius: CornerRadius.lg, style: .continuous)
 content.cardStyle()                                  // карточка-поверхность с тенью (light/dark)
 content.heroCardStyle(color: AppColors.primary)      // цветная hero-карточка
 content.accentCardStyle(accentColor: AppColors.accent) // лёгкий тинт + цветной бордер
-scrollView.pageBackground()                          // серый фон страницы
-scrollView.homeBackground()                          // фон с верхним свечением (главные экраны)
+scrollView.homeBackground()                          // фон-хаб: серый + верхнее свечение
 Image(...).touchTarget()                             // зона касания ≥44×44
 Image(...).iconContainer(size: IconSize.card, backgroundColor: AppColors.primaryLight)
 ```
+
+### Фон экрана
+
+Ровно два варианта, третьего нет:
+
+| Экран | Фон | Почему |
+|---|---|---|
+| **Хаб** — набор отдельных карточек: 4 таба, настройки, онбординг | `.homeBackground()` | серый нужен, чтобы карточки на нём *плавали* |
+| **Работа** — одна непрерывная задача: форма, шаг флоу, таймер | `.background(AppColors.cardBackground.ignoresSafeArea())` | делить нечего; серый под белыми полями превращает «одну работу» в «контейнер со штуками» |
+
+Промежуточного «серого фона страницы» (`gray100` во всю высоту) быть не должно —
+он давал дрейф внутри одного флоу. `AppColors.gray100` остаётся, но только как
+поверхность **компонента** (капсулы, well'ы), не как фон экрана.
+
+Внутри одного флоу фон не меняется между шагами.
 
 ---
 

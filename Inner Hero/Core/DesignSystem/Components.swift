@@ -142,14 +142,19 @@ struct HeroFeatureCard: View {
     var color: Color     = AppColors.primary
     var icon: String     = "pencil"
 
+    /// Glyph and its circle scale together with Dynamic Type, so the icon
+    /// keeps its proportion to the growing title instead of shrinking away.
+    @ScaledMetric(relativeTo: .title2) private var glyphSize  = IconSize.heroGlyph
+    @ScaledMetric(relativeTo: .title2) private var circleSize = IconSize.hero
+
     var body: some View {
         HStack(spacing: Spacing.sm) {
             // Icon
             Image(systemName: icon)
-                .font(.system(size: 26, weight: .medium))
+                .font(.system(size: glyphSize, weight: .medium))
                 .foregroundStyle(color)
-                .frame(width: IconSize.hero, height: IconSize.hero)
-                .background(Circle().fill(.white))
+                .frame(width: circleSize, height: circleSize)
+                .background(Circle().fill(TextColors.onColor))
 
             // Labels
             VStack(alignment: .leading, spacing: Spacing.xxxs) {
@@ -157,8 +162,10 @@ struct HeroFeatureCard: View {
                     .appFont(.h2)
                     .foregroundStyle(TextColors.onColor)
                     .fixedSize(horizontal: false, vertical: true)
+                // `smallMedium`, not `small`: the extra stroke weight is what
+                // keeps 13pt legible against the accent surface.
                 Text(subtitle)
-                    .appFont(.small)
+                    .appFont(.smallMedium)
                     .foregroundStyle(TextColors.onColorSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
