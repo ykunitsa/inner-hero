@@ -10,8 +10,12 @@ import SwiftUI
 // ─────────────────────────────────────────────
 
 /// Reusable label for primary-style CTA. Use as content of `PrimaryButton` or as `NavigationLink` label so the link receives the tap.
+/// Reacts to `.disabled(...)` on the enclosing control: gray surface + muted
+/// text instead of an opacity fade (gray-on-gray washout).
 /// Usage: `PrimaryButtonLabel(title: "Start session", systemImage: "play.fill", color: .positive)` inside NavigationLink.
 struct PrimaryButtonLabel: View {
+    @Environment(\.isEnabled) private var isEnabled
+
     let title: String
     var systemImage: String? = nil
     var color: Color = AppColors.black
@@ -30,10 +34,11 @@ struct PrimaryButtonLabel: View {
                     .appFont(.buttonPrimary)
             }
         }
-        .foregroundStyle(TextColors.onBlack)
+        .foregroundStyle(isEnabled ? TextColors.onBlack : AppColors.gray400)
         .frame(maxWidth: .infinity)
         .frame(minHeight: 52)
-        .background(Capsule().fill(color))
+        .background(Capsule().fill(isEnabled ? color : AppColors.gray200))
+        .animation(AppAnimation.fast, value: isEnabled)
     }
 }
 
@@ -126,39 +131,49 @@ struct SessionPlayPauseCircleButton: View {
 // MARK: Hero Feature Card
 // ─────────────────────────────────────────────
 
-/// Large coloured hero card — the single accent card of a screen
-/// (e.g. "Log an exposure · Just happened" on Today).
+/// Coloured hero action card — the single accent card of a screen
+/// (e.g. "Log an exposure" on Today). Reads as a prominent action row:
+/// icon circle, title with subtitle, arrow affordance.
 /// Always available, no dismiss/favourite chrome (spec §2.1).
-/// Usage: `HeroFeatureCard(subtitle: "Just happened", title: "Log an exposure")`
+/// Usage: `HeroFeatureCard(subtitle: "While it's fresh", title: "Log an exposure")`
 struct HeroFeatureCard: View {
     let subtitle: String
     let title: String
     var color: Color     = AppColors.primary
-    var icon: String     = "sun.max"
+    var icon: String     = "pencil"
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        HStack(spacing: Spacing.sm) {
             // Icon
             Image(systemName: icon)
                 .font(.system(size: 26, weight: .medium))
                 .foregroundStyle(color)
                 .frame(width: IconSize.hero, height: IconSize.hero)
                 .background(Circle().fill(.white))
-                .padding(.bottom, Spacing.lg)
 
-            // Subtitle
-            Text(subtitle)
-                .appFont(.small)
-                .foregroundStyle(TextColors.onColorSecondary)
-                .padding(.bottom, Spacing.xxs)
+            // Labels
+            VStack(alignment: .leading, spacing: Spacing.xxxs) {
+                Text(title)
+                    .appFont(.h2)
+                    .foregroundStyle(TextColors.onColor)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(subtitle)
+                    .appFont(.small)
+                    .foregroundStyle(TextColors.onColorSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
-            // Title
-            Text(title)
-                .appFont(.h2)
+            Spacer(minLength: Spacing.xs)
+
+            // Decorative affordance — the whole card is the button
+            Image(systemName: "arrow.right")
+                .font(.system(size: IconSize.glyph, weight: .semibold))
                 .foregroundStyle(TextColors.onColor)
-                .fixedSize(horizontal: false, vertical: true)
+                .frame(width: IconSize.action, height: IconSize.action)
+                .background(Circle().fill(.white.opacity(Opacity.prominentBackground)))
+                .accessibilityHidden(true)
         }
-        .padding(Spacing.lg)
+        .padding(Spacing.md)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: CornerRadius.xl, style: .continuous)
@@ -640,11 +655,11 @@ struct AppTextEditor: View {
 // MARK: Intensity Slider (0–10)
 // ─────────────────────────────────────────────
 
-/// Discrete 0–10 slider for anxiety intensity and BA ratings.
+/// Discrete 0–10 slider for anxiety intensity and BA ratings:
+/// the current value above a standard system `Slider`.
 ///
 /// Deliberately NEUTRAL in color: the scale measures intensity only
-/// (spec §3) — no green→red "good/bad" encoding. Value is shown inside
-/// the thumb; no words on the scale.
+/// (spec §3) — no green→red "good/bad" encoding, no words on the scale.
 ///
 /// Usage:
 /// ```swift
@@ -652,88 +667,39 @@ struct AppTextEditor: View {
 /// IntensitySlider(value: $mastery, range: 0...10)
 /// ```
 /// Give the field a name for VoiceOver at the call site:
-/// `.accessibilityLabel(String(localized: "Anxiety"))`
+/// `.accessibilityLabel(String(localized: "Anxiety level"))`
 struct IntensitySlider: View {
     @Binding var value: Int
     var range: ClosedRange<Int> = 0...10
     var accentColor: Color = AppColors.accent
 
-    private let thumbSize: CGFloat = 32
-    private let trackHeight: CGFloat = 6
-
     var body: some View {
-        GeometryReader { geo in
-            let usableWidth = max(geo.size.width - thumbSize, 1)
-            let steps = CGFloat(max(range.count - 1, 1))
-            let fraction = CGFloat(value - range.lowerBound) / steps
-            let thumbX = usableWidth * fraction
+        VStack(spacing: Spacing.xxxs) {
+            Text("\(value)")
+                .appFont(.statValue)
+                .monospacedDigit()
+                .foregroundStyle(TextColors.primary)
+                .contentTransition(.numericText())
+                .animation(AppAnimation.fast, value: value)
+                .accessibilityHidden(true) // the slider itself carries the value
 
-            ZStack(alignment: .leading) {
-                // Track
-                Capsule()
-                    .fill(AppColors.gray200)
-                    .frame(height: trackHeight)
-                // Fill up to the thumb
-                Capsule()
-                    .fill(accentColor.opacity(Opacity.emphasizedBorder))
-                    .frame(width: thumbX + thumbSize / 2, height: trackHeight)
-                // Thumb with the current value inside
-                Circle()
-                    .fill(accentColor)
-                    .frame(width: thumbSize, height: thumbSize)
-                    .overlay(
-                        Text("\(value)")
-                            .appFont(.smallMedium)
-                            .monospacedDigit()
-                            .foregroundStyle(.white)
-                            .minimumScaleFactor(ContentScaling.statMinimum)
-                    )
-                    .offset(x: thumbX)
-            }
-            .frame(maxHeight: .infinity)
-            .contentShape(Rectangle())
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { gesture in
-                        let newValue = Self.value(
-                            atX: gesture.location.x,
-                            usableWidth: usableWidth,
-                            thumbSize: thumbSize,
-                            range: range
-                        )
-                        if newValue != value {
-                            value = newValue
+            Slider(
+                value: Binding(
+                    get: { Double(value) },
+                    set: { newValue in
+                        let stepped = Int(newValue.rounded())
+                        if stepped != value {
+                            value = stepped
                             HapticFeedback.selection()
                         }
                     }
+                ),
+                in: Double(range.lowerBound)...Double(range.upperBound),
+                step: 1
             )
+            .tint(accentColor)
+            .accessibilityValue("\(value)")
         }
-        .frame(height: TouchTarget.minimum)
-        .animation(AppAnimation.fast, value: value)
-        .accessibilityElement()
-        .accessibilityValue("\(value)")
-        .accessibilityAdjustableAction { direction in
-            switch direction {
-            case .increment: value = min(value + 1, range.upperBound)
-            case .decrement: value = max(value - 1, range.lowerBound)
-            @unknown default: break
-            }
-        }
-    }
-
-    /// Pure mapping from a horizontal touch position to a scale value.
-    /// `x` is the touch location, `usableWidth` = track width minus thumb.
-    static func value(
-        atX x: CGFloat,
-        usableWidth: CGFloat,
-        thumbSize: CGFloat,
-        range: ClosedRange<Int>
-    ) -> Int {
-        guard range.count > 1 else { return range.lowerBound }
-        let steps = CGFloat(range.count - 1)
-        let raw = (x - thumbSize / 2) / max(usableWidth, 1)
-        let clamped = min(max(raw, 0), 1)
-        return range.lowerBound + Int((clamped * steps).rounded())
     }
 }
 
@@ -1041,7 +1007,7 @@ struct SegmentedChoice<Value: Hashable>: View {
     ScrollView {
         VStack(alignment: .leading, spacing: Spacing.lg) {
             HeroFeatureCard(
-                subtitle: "Just happened",
+                subtitle: "While it's fresh",
                 title: "Log an exposure",
                 color: AppColors.primary,
                 icon: "square.and.pencil"

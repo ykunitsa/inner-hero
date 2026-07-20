@@ -30,6 +30,7 @@ enum AppStorageKeys {
     static let appLockEnabled = "settings.appLockEnabled"
     static let hasCompletedOnboarding = "hasCompletedOnboarding"
     static let hasLoadedSampleData = "hasLoadedSampleData"
+    static let hasWipedLegacyStore = "storage.hasWipedLegacyStore.v2"
 }
 
 

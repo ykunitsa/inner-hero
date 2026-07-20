@@ -5,6 +5,8 @@ import SwiftUI
 struct TodayView: View {
     @Binding var path: NavigationPath
 
+    @State private var showExposureForm = false
+
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
         switch hour {
@@ -19,7 +21,7 @@ struct TodayView: View {
         NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.sm) {
-                    placeholderCard
+                    exposureCard
                 }
                 .padding(.horizontal, Spacing.sm)
                 .padding(.top, Spacing.xxs)
@@ -44,20 +46,24 @@ struct TodayView: View {
             .navigationDestination(for: AppRoute.self) { route in
                 AppRouteView(route: route)
             }
+            .sheet(isPresented: $showExposureForm) {
+                SituationalExposureFormView()
+            }
         }
     }
 
-    private var placeholderCard: some View {
-        VStack(alignment: .leading, spacing: Spacing.xxs) {
-            Text(String(localized: "Rebuild in progress"))
-                .appFont(.h3)
-                .foregroundStyle(TextColors.primary)
-            Text(String(localized: "The exposure log lands here first."))
-                .appFont(.body)
-                .foregroundStyle(TextColors.secondary)
+    /// The single accent card of Today — always available (spec §2.1).
+    private var exposureCard: some View {
+        Button {
+            showExposureForm = true
+        } label: {
+            HeroFeatureCard(
+                subtitle: String(localized: "While it's fresh"),
+                title: String(localized: "Log an exposure"),
+                icon: "pencil"
+            )
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .cardStyle()
+        .buttonStyle(.plain)
     }
 }
 
