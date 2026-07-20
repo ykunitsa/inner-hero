@@ -14,9 +14,6 @@ struct SituationalExposureFormView: View {
     @State private var showDiscardConfirmation = false
     @State private var showSaveError = false
     @State private var isNoteExpanded = false
-    @State private var isAddingCustomChip = false
-    @State private var customChipDraft = ""
-    @FocusState private var customChipFocused: Bool
 
     @State private var scrollPosition = ScrollPosition()
 
@@ -116,12 +113,8 @@ struct SituationalExposureFormView: View {
                 minHeight: 80
             )
             if !viewModel.situationSuggestions.isEmpty {
-                ChipFlowLayout {
-                    ForEach(viewModel.situationSuggestions, id: \.self) { suggestion in
-                        SuggestionChip(text: suggestion) {
-                            viewModel.applySuggestion(suggestion)
-                        }
-                    }
+                SuggestionChipsRow(suggestions: viewModel.situationSuggestions) {
+                    viewModel.applySuggestion($0)
                 }
             }
         }
@@ -150,46 +143,14 @@ struct SituationalExposureFormView: View {
     private var safetySection: some View {
         VStack(alignment: .leading, spacing: Spacing.xxs) {
             SectionLabel(text: String(localized: "Did anything to feel better"))
-            ChipFlowLayout {
-                SelectableChip(
-                    text: String(localized: "Nothing"),
-                    isSelected: Binding(
-                        get: { viewModel.isNothingSelected },
-                        set: { _ in viewModel.toggleNothing() }
-                    )
-                )
-                ForEach(viewModel.safetyBehaviorOptions, id: \.self) { option in
-                    SelectableChip(
-                        text: option,
-                        isSelected: Binding(
-                            get: { viewModel.selectedSafetyBehaviors.contains(option) },
-                            set: { _ in viewModel.toggleSafetyBehavior(option) }
-                        )
-                    )
-                }
-                customChip
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var customChip: some View {
-        if isAddingCustomChip {
-            TextField(String(localized: "Your own…"), text: $customChipDraft)
-                .appFont(.body)
-                .foregroundStyle(TextColors.primary)
-                .focused($customChipFocused)
-                .submitLabel(.done)
-                .onSubmit { commitCustomChip() }
-                .frame(width: 140)
-                .padding(.horizontal, Spacing.xs)
-                .padding(.vertical, Spacing.xxs)
-                .background(Capsule().fill(AppColors.gray100))
-        } else {
-            AddCustomChipButton {
-                isAddingCustomChip = true
-                customChipFocused = true
-            }
+            SafetyBehaviorPicker(
+                options: viewModel.safetyBehaviorOptions,
+                isNothingSelected: viewModel.isNothingSelected,
+                selected: viewModel.selectedSafetyBehaviors,
+                onToggleNothing: { viewModel.toggleNothing() },
+                onToggle: { viewModel.toggleSafetyBehavior($0) },
+                onAddCustom: { viewModel.addCustomSafetyBehavior($0) }
+            )
         }
     }
 
@@ -278,41 +239,6 @@ struct SituationalExposureFormView: View {
         }
     }
 
-    private func commitCustomChip() {
-        viewModel.addCustomSafetyBehavior(customChipDraft)
-        customChipDraft = ""
-        isAddingCustomChip = false
-    }
-}
-
-/// Accent-tinted "add your own" chip — visually separated from the
-/// selectable behavior chips around it.
-private struct AddCustomChipButton: View {
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: Spacing.xxxs) {
-                Image(systemName: "plus")
-                    .font(.system(size: IconSize.fieldGlyph, weight: .semibold))
-                Text(String(localized: "Your own…"))
-                    .appFont(.body)
-                    .lineLimit(1)
-            }
-            .foregroundStyle(AppColors.accent)
-            .padding(.horizontal, Spacing.xs)
-            .padding(.vertical, Spacing.xxs)
-            .background(Capsule().fill(AppColors.accent.opacity(Opacity.subtleBackground)))
-            .overlay(
-                Capsule().strokeBorder(
-                    AppColors.accent.opacity(Opacity.emphasizedBorder),
-                    lineWidth: BorderWidth.standard
-                )
-            )
-            .touchTarget(width: 0)
-        }
-        .buttonStyle(.plain)
-    }
 }
 
 #Preview {

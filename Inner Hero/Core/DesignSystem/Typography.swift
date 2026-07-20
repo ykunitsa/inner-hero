@@ -33,6 +33,7 @@ enum AppTextStyle: CaseIterable {
     case caption        // 11px / 500  — ALL CAPS labels, section headers
     case mono           // 15px / 700  — timer display (monospaced)
     case monoLarge      // 28px / 700  — large timer / countdown
+    case timerDisplay   // 56px / 700  — session stopwatch, the screen's only content (monospaced)
     case statValue      // 20px / 700  — numeric stat tiles (monospaced)
 
     // Specialised
@@ -58,6 +59,7 @@ extension AppTextStyle {
         case .caption:       return 11
         case .mono:          return 15
         case .monoLarge:     return 28
+        case .timerDisplay:  return 56
         case .statValue:     return 20
         case .buttonPrimary: return 16
         case .buttonSmall:   return 14
@@ -71,14 +73,14 @@ extension AppTextStyle {
         case .body, .small:                 return .regular
         case .bodyMedium, .smallMedium:     return .medium
         case .caption:                      return .semibold
-        case .mono, .monoLarge, .statValue: return .bold
+        case .mono, .monoLarge, .timerDisplay, .statValue: return .bold
         case .buttonPrimary, .buttonSmall:  return .semibold
         }
     }
 
     var design: Font.Design {
         switch self {
-        case .mono, .monoLarge, .statValue: return .monospaced
+        case .mono, .monoLarge, .timerDisplay, .statValue: return .monospaced
         default:                            return .default
         }
     }
@@ -86,7 +88,7 @@ extension AppTextStyle {
     /// System text style the size is anchored to for Dynamic Type scaling.
     var relativeTextStyle: Font.TextStyle {
         switch self {
-        case .display:                return .largeTitle
+        case .display, .timerDisplay: return .largeTitle
         case .h1, .monoLarge:         return .title
         case .h2:                     return .title2
         case .h3:                     return .headline

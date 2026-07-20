@@ -21,7 +21,7 @@ struct TypographyTests {
 
     @Test("Exactly the timer/stat styles are monospaced")
     func monospacedDesign() {
-        let monoStyles: [AppTextStyle] = [.mono, .monoLarge, .statValue]
+        let monoStyles: [AppTextStyle] = [.mono, .monoLarge, .timerDisplay, .statValue]
         for style in AppTextStyle.allCases {
             #expect(
                 (style.design == .monospaced) == monoStyles.contains(style),

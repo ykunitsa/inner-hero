@@ -20,7 +20,8 @@ and the implementation order (§11).
 - Current shell: 4 tabs — Today / Exercises / History / Knowledge. Settings opens
   from the gear on Today. Exercises and History are placeholders that light up as
   flows are rebuilt in spec §11 order. §11.1 (situational exposure form, hero card
-  on Today → sheet) is done. Current step: **§11.2 — planned exposure session**.
+  on Today → sheet) and §11.2 (planned exposure: before → hidden-random-end timer →
+  after, launched from the Exercises row) are done. Current step: **§11.3 — breathing**.
 - SwiftData: container lives in `App/Inner_HeroApp.swift` (`StoreBootstrap`),
   currently holding `ExposureLogEntry`. The legacy 1.x store is wiped once on first
   2.0 launch; a store that stops opening after an in-place model edit is recreated
@@ -73,8 +74,8 @@ Inner Hero/
 │   ├── Components/                # (empty for now — shared components return as flows land)
 │   └── Utilities/                 # HapticFeedback, ExportDocument
 ├── Features/
-│   ├── MainTab/Views/             # MainTabView, TodayView; ExercisesView, HistoryView (placeholders)
-│   ├── Exposure/                  # Situational form (§11.1): Views + ViewModels
+│   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView; HistoryView (placeholder)
+│   ├── Exposure/                  # §11.1 situational form + §11.2 planned flow: Views/ViewModels/Components
 │   ├── KnowledgeCenter/           # Articles list (kept as-is)
 │   ├── Onboarding/                # 1-screen shell; becomes 3 screens per spec §7 in §11.6
 │   └── Settings/                  # Settings + AppLock; Data section returns with new models

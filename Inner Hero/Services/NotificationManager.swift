@@ -75,8 +75,23 @@ final class NotificationManager {
         try? await notificationCenter.add(request)
     }
 
-    /// Removes a reminder scheduled with `scheduleWeeklyReminder` or
-    /// `scheduleOneTimeReminder` (including all per-weekday variants).
+    /// Schedules a one-shot signal with second precision (calendar triggers
+    /// only resolve to the minute). Used as the session-end vibration when
+    /// the app is in the background (spec §3: planned exposure timer).
+    func scheduleOneTimeSignal(id: String, title: String, body: String, after seconds: TimeInterval) async {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(seconds, 1), repeats: false)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+        try? await notificationCenter.add(request)
+    }
+
+    /// Removes a reminder scheduled with `scheduleWeeklyReminder`,
+    /// `scheduleOneTimeReminder` or `scheduleOneTimeSignal` (including all
+    /// per-weekday variants).
     func removeReminder(id: String) async {
         var identifiers = [id]
         for weekday in 1...7 {
