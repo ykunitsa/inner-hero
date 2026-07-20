@@ -1116,6 +1116,16 @@
         }
       }
     },
+    "Add a note" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить заметку"
+          }
+        }
+      }
+    },
     "Add activity" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1369,6 +1379,17 @@
         }
       }
     },
+    "Anxiety" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тревога"
+          }
+        }
+      }
+    },
     "Anxiety after session: %lld" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1464,7 +1485,6 @@
       }
     },
     "Anxiety level" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2162,7 +2182,6 @@
       }
     },
     "Close" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -2400,6 +2419,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не удалось найти данные для запуска упражнения."
+          }
+        }
+      }
+    },
+    "Couldn't save. Try again." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить. Попробуй ещё раз."
           }
         }
       }
@@ -2777,6 +2806,16 @@
         }
       }
     },
+    "Describe the situation…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опиши ситуацию…"
+          }
+        }
+      }
+    },
     "Description" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2831,6 +2870,16 @@
         }
       }
     },
+    "Did anything to feel better" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Делал что-то, чтобы стало легче"
+          }
+        }
+      }
+    },
     "Did not like at all" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2842,6 +2891,26 @@
         }
       }
     },
+    "Discard" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не сохранять"
+          }
+        }
+      }
+    },
+    "Discard this entry?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не сохранять запись?"
+          }
+        }
+      }
+    },
     "Display period selection" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2849,6 +2918,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выбор периода отображения"
+          }
+        }
+      }
+    },
+    "Distraction" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отвлекался"
           }
         }
       }
@@ -4658,6 +4737,27 @@
         }
       }
     },
+    "Just happened" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Случилось только что"
+          }
+        }
+      }
+    },
+    "Keep editing" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить"
+          }
+        }
+      }
+    },
     "Keep in mind" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4752,6 +4852,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выйти из сеанса?"
+          }
+        }
+      }
+    },
+    "Left early" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ушёл раньше"
           }
         }
       }
@@ -4883,6 +4993,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Название списка"
+          }
+        }
+      }
+    },
+    "Log an exposure" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Записать экспозицию"
           }
         }
       }
@@ -5602,6 +5722,16 @@
         }
       }
     },
+    "Note" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заметка"
+          }
+        }
+      }
+    },
     "Note any small progress—it adds up." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5609,6 +5739,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Отметьте любой маленький прогресс — он накапливается."
+          }
+        }
+      }
+    },
+    "Note…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заметка…"
           }
         }
       }
@@ -5631,6 +5771,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Заметки: %@"
+          }
+        }
+      }
+    },
+    "Nothing" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ничего"
           }
         }
       }
@@ -5790,7 +5940,6 @@
       }
     },
     "OK" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5971,6 +6120,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Персонализировано · иерархия страхов"
+          }
+        }
+      }
+    },
+    "Phone" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Телефон"
           }
         }
       }
@@ -10127,9 +10286,6 @@
         }
       }
     },
-    "Rebuild in progress" : {
-
-    },
     "Relax" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -10447,7 +10603,6 @@
       }
     },
     "Save" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11276,6 +11431,16 @@
         }
       }
     },
+    "Stayed until the end" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Остался до конца"
+          }
+        }
+      }
+    },
     "Step %1$lld of %2$lld" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -11637,9 +11802,6 @@
           }
         }
       }
-    },
-    "The exposure log lands here first." : {
-
     },
     "The file contains exercises, schedules, and session results." : {
       "extractionState" : "stale",
@@ -12241,6 +12403,16 @@
         }
       }
     },
+    "Wanted to leave, but stayed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хотел уйти, но остался"
+          }
+        }
+      }
+    },
     "Warm-up" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -12361,6 +12533,16 @@
         }
       }
     },
+    "What did you do" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что сделал"
+          }
+        }
+      }
+    },
     "What do you feel now? What thoughts/sensations were there during the session? What helped?" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -12379,6 +12561,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Что мешало?"
+          }
+        }
+      }
+    },
+    "What happened" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что было"
           }
         }
       }
@@ -12444,6 +12636,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "При включении приложение будет запрашивать подтверждение личности только при запуске."
+          }
+        }
+      }
+    },
+    "While it's fresh" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По горячим следам"
           }
         }
       }
@@ -12697,6 +12899,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваша активность"
+          }
+        }
+      }
+    },
+    "Your own…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Свой…"
           }
         }
       }

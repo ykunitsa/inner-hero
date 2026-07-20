@@ -111,7 +111,7 @@ enum ArticlesLoader {
             if available.contains(preferred) {
                 return preferred
             }
-            if let languageCode = Locale(identifier: preferred).languageCode,
+            if let languageCode = Locale(identifier: preferred).language.languageCode?.identifier,
                available.contains(languageCode) {
                 return languageCode
             }

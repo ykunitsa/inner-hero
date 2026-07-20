@@ -212,8 +212,8 @@ SessionPlayPauseCircleButton(isPlaying: isPlaying) { toggle() } // тёмный 
 ```swift
 // Единственная акцентная карточка экрана («Записать экспозицию»).
 // Всегда доступна — без dismiss и избранного.
-HeroFeatureCard(subtitle: "Just happened", title: "Log an exposure",
-                color: AppColors.primary, icon: "square.and.pencil")
+HeroFeatureCard(subtitle: "While it's fresh", title: "Log an exposure",
+                color: AppColors.primary, icon: "pencil")
 
 // Строка лаунчера упражнений / ленты истории (вся строка — кнопка,
 // стрелка декоративная)
@@ -231,9 +231,10 @@ RadioCard(title: "7 groups", description: "~15 min · whole arm, face, torso..."
 ### Инпуты форм (спека §3 — ситуативная форма и далее)
 
 ```swift
-// Слайдер 0–10: тревога, оценки BA. Нейтральный цвет, значение в бегунке.
+// Слайдер 0–10: тревога, оценки BA. Системный Slider, нейтральный цвет,
+// текущее значение крупно над слайдером.
 IntensitySlider(value: $anxiety)
-    .accessibilityLabel(String(localized: "Anxiety"))
+    .accessibilityLabel(String(localized: "Anxiety level"))
 
 // Чипсы-подсказки из прошлых сессий — тап подставляет текст в поле
 ChipFlowLayout {

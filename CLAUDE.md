@@ -19,9 +19,12 @@ and the implementation order (§11).
   has everything if archaeology is ever needed.
 - Current shell: 4 tabs — Today / Exercises / History / Knowledge. Settings opens
   from the gear on Today. Exercises and History are placeholders that light up as
-  flows are rebuilt in spec §11 order. Current step: **§11.1 — situational exposure form**.
-- SwiftData: **no ModelContainer exists right now.** It returns with the first new
-  model (`ExposureLogEntry`); the legacy on-disk store gets wiped once at that point.
+  flows are rebuilt in spec §11 order. §11.1 (situational exposure form, hero card
+  on Today → sheet) is done. Current step: **§11.2 — planned exposure session**.
+- SwiftData: container lives in `App/Inner_HeroApp.swift` (`StoreBootstrap`),
+  currently holding `ExposureLogEntry`. The legacy 1.x store is wiped once on first
+  2.0 launch; a store that stops opening after an in-place model edit is recreated
+  automatically (pre-release: no versioned schemas).
 
 ## Language & communication
 
@@ -63,18 +66,19 @@ are picked up automatically, no pbxproj edits needed.
 
 ```
 Inner Hero/
-├── App/Inner_HeroApp.swift        # Entry point (no ModelContainer yet — see Rebuild state)
+├── App/Inner_HeroApp.swift        # Entry point + StoreBootstrap (ModelContainer, legacy wipe)
 ├── Core/
 │   ├── DesignSystem/              # ⭐ Tokens and components — ALWAYS start here for UI
 │   ├── Navigation/                # AppTab, NavigationRouter, AppRoute, AppRouteView
 │   ├── Components/                # (empty for now — shared components return as flows land)
 │   └── Utilities/                 # HapticFeedback, ExportDocument
 ├── Features/
-│   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView, HistoryView (placeholders)
+│   ├── MainTab/Views/             # MainTabView, TodayView; ExercisesView, HistoryView (placeholders)
+│   ├── Exposure/                  # Situational form (§11.1): Views + ViewModels
 │   ├── KnowledgeCenter/           # Articles list (kept as-is)
 │   ├── Onboarding/                # 1-screen shell; becomes 3 screens per spec §7 in §11.6
 │   └── Settings/                  # Settings + AppLock; Data section returns with new models
-├── Models/                        # AppSettings (ThemeMode, AppStorageKeys). New @Model types land here
+├── Models/                        # AppSettings (ThemeMode, AppStorageKeys), ExposureLogEntry (@Model)
 ├── Services/                      # ArticlesLoader/Store, NotificationManager (generic primitives)
 ├── Resources/                     # Localizable.xcstrings, Articles.json, assets
 └── docs/redesign-spec.md          # ← product source of truth (repo root /docs)
