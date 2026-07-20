@@ -11,6 +11,286 @@
         }
       }
     },
+    "%lld–%lld min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld–%2$lld мин"
+          }
+        }
+      }
+    },
+    "Definitely" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Точно будет"
+          }
+        }
+      }
+    },
+    "Describe the activity…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опиши, что собираешься сделать…"
+          }
+        }
+      }
+    },
+    "Did it come true" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбылось"
+          }
+        }
+      }
+    },
+    "Elapsed time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прошло времени"
+          }
+        }
+      }
+    },
+    "Expected anxiety" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ожидаемая тревога"
+          }
+        }
+      }
+    },
+    "Fifty-fifty" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "50 на 50"
+          }
+        }
+      }
+    },
+    "Finish early" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закончить раньше"
+          }
+        }
+      }
+    },
+    "How hard was it overall" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Насколько тяжело было за всю сессию"
+          }
+        }
+      }
+    },
+    "How sure are you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Насколько уверен"
+          }
+        }
+      }
+    },
+    "It will overwhelm me and I'll leave in a couple of minutes…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Накроет так, что уйду через пару минут…"
+          }
+        }
+      }
+    },
+    "Minimum" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Минимум"
+          }
+        }
+      }
+    },
+    "No" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет"
+          }
+        }
+      }
+    },
+    "Partially" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Частично"
+          }
+        }
+      }
+    },
+    "Probably" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скорее да"
+          }
+        }
+      }
+    },
+    "Save as is" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить как есть"
+          }
+        }
+      }
+    },
+    "Save without the summary?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить без итогов?"
+          }
+        }
+      }
+    },
+    "Success is staying, not calming down" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Успех — остаться, а не успокоиться"
+          }
+        }
+      }
+    },
+    "The exposure ends at a random moment inside the range" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конец — в случайный момент внутри диапазона"
+          }
+        }
+      }
+    },
+    "The exposure is done" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспозиция закончилась"
+          }
+        }
+      }
+    },
+    "Time range" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Диапазон времени"
+          }
+        }
+      }
+    },
+    "Unlikely" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вряд ли"
+          }
+        }
+      }
+    },
+    "Vibration will tell you when it's done" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибрация скажет, когда закончится"
+          }
+        }
+      }
+    },
+    "Vibration works while the screen is on" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибрация придёт, пока экран включён"
+          }
+        }
+      }
+    },
+    "What actually happened" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что было на самом деле"
+          }
+        }
+      }
+    },
+    "What do you fear anxiety will do" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чего боишься — что тревога сделает"
+          }
+        }
+      }
+    },
+    "What will you do" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что будешь делать"
+          }
+        }
+      }
+    },
+    "Your prediction · %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твоё предсказание · %@"
+          }
+        }
+      }
+    },
     "—" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -495,7 +775,6 @@
       }
     },
     "%lld min" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -3514,7 +3793,6 @@
       }
     },
     "Exposure" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -5151,7 +5429,6 @@
       }
     },
     "Maximum" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -11311,12 +11588,11 @@
       }
     },
     "Start" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Начало"
+            "value" : "Начать"
           }
         }
       }
@@ -11944,7 +12220,6 @@
       }
     },
     "Time" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12739,7 +13014,6 @@
       }
     },
     "Yes" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12931,6 +13205,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ГОД"
+          }
+        }
+      }
+    },
+    "Hold for 3 seconds" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удерживай 3 секунды"
           }
         }
       }

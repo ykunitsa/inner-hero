@@ -385,12 +385,11 @@ struct QuoteCard: View {
         .padding(Spacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
+            // A white card, not a gray field: this is the user's own words
+            // shown back, not an input. The soft shadow keeps it readable
+            // as a plate even on an all-white form screen.
             RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
                 .fill(AppColors.cardBackground)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                .strokeBorder(AppColors.gray200, lineWidth: 0.5)
         )
         .overlay(alignment: .leading) {
             Rectangle()
@@ -402,6 +401,7 @@ struct QuoteCard: View {
                 .padding(.vertical, 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous))
+        .shadow(color: .black.opacity(Opacity.standardShadow), radius: 8, y: 2)
     }
 }
 
@@ -704,11 +704,159 @@ struct IntensitySlider: View {
 }
 
 // ─────────────────────────────────────────────
+// MARK: Duration Range Slider
+// ─────────────────────────────────────────────
+
+/// Tick-mark ruler with two draggable markers for a min–max duration in
+/// minutes (spec §3: the planned exposure time range; the exact end is
+/// picked randomly inside it). The selected range reads large above the
+/// ruler; ticks inside the range are accented; markers never cross — a
+/// real range is what makes the random end unpredictable.
+///
+/// Usage:
+/// ```swift
+/// DurationRangeSlider(minMinutes: $rangeMin, maxMinutes: $rangeMax)  // 1...20
+/// ```
+struct DurationRangeSlider: View {
+    @Binding var minMinutes: Int
+    @Binding var maxMinutes: Int
+    var bounds: ClosedRange<Int> = 1...20
+    var accentColor: Color = AppColors.accent
+
+    private let minorTickHeight: CGFloat = Spacing.xs
+    private let majorTickHeight: CGFloat = Spacing.md
+    private let markerHeight: CGFloat = Spacing.xl
+    private let markerWidth: CGFloat = Spacing.xxxs
+    private let tickWidth: CGFloat = 1.5
+
+    var body: some View {
+        VStack(spacing: Spacing.xxs) {
+            Text(String(localized: "\(minMinutes)–\(maxMinutes) min"))
+                .appFont(.statValue)
+                .monospacedDigit()
+                .foregroundStyle(TextColors.primary)
+                .contentTransition(.numericText())
+                .animation(AppAnimation.fast, value: minMinutes)
+                .animation(AppAnimation.fast, value: maxMinutes)
+                .accessibilityHidden(true) // each marker reads its own value
+
+            GeometryReader { geo in
+                let width = max(geo.size.width, 1)
+                let minX = position(of: minMinutes, width: width)
+                let maxX = position(of: maxMinutes, width: width)
+
+                ZStack(alignment: .leading) {
+                    ruler(width: width)
+
+                    marker
+                        .offset(x: minX - TouchTarget.minimum / 2)
+                        .highPriorityGesture(
+                            DragGesture(minimumDistance: 0, coordinateSpace: .named("durationRange"))
+                                .onChanged { gesture in
+                                    let proposed = value(atX: gesture.location.x, width: width)
+                                    update(&minMinutes, to: min(max(proposed, bounds.lowerBound), maxMinutes - 1))
+                                }
+                        )
+                        .accessibilityLabel(String(localized: "Minimum"))
+                        .accessibilityValue(String(localized: "\(minMinutes) min"))
+                        .accessibilityAdjustableAction { direction in
+                            switch direction {
+                            case .increment: update(&minMinutes, to: min(minMinutes + 1, maxMinutes - 1))
+                            case .decrement: update(&minMinutes, to: max(minMinutes - 1, bounds.lowerBound))
+                            @unknown default: break
+                            }
+                        }
+
+                    marker
+                        .offset(x: maxX - TouchTarget.minimum / 2)
+                        .highPriorityGesture(
+                            DragGesture(minimumDistance: 0, coordinateSpace: .named("durationRange"))
+                                .onChanged { gesture in
+                                    let proposed = value(atX: gesture.location.x, width: width)
+                                    update(&maxMinutes, to: max(min(proposed, bounds.upperBound), minMinutes + 1))
+                                }
+                        )
+                        .accessibilityLabel(String(localized: "Maximum"))
+                        .accessibilityValue(String(localized: "\(maxMinutes) min"))
+                        .accessibilityAdjustableAction { direction in
+                            switch direction {
+                            case .increment: update(&maxMinutes, to: min(maxMinutes + 1, bounds.upperBound))
+                            case .decrement: update(&maxMinutes, to: max(maxMinutes - 1, minMinutes + 1))
+                            @unknown default: break
+                            }
+                        }
+                }
+                .coordinateSpace(name: "durationRange")
+                .frame(maxHeight: .infinity, alignment: .center)
+            }
+            .frame(height: TouchTarget.minimum)
+        }
+    }
+
+    /// Vertical tick per minute; every 5th is taller. Ticks inside the
+    /// selected range pick up the accent color.
+    private func ruler(width: CGFloat) -> some View {
+        Canvas { context, size in
+            for tick in bounds.lowerBound...bounds.upperBound {
+                let x = position(of: tick, width: width)
+                let isMajor = tick % 5 == 0 || tick == bounds.lowerBound || tick == bounds.upperBound
+                let height = isMajor ? majorTickHeight : minorTickHeight
+                let rect = CGRect(
+                    x: x - tickWidth / 2,
+                    y: (size.height - height) / 2,
+                    width: tickWidth,
+                    height: height
+                )
+                let isInRange = (minMinutes...maxMinutes).contains(tick)
+                context.fill(
+                    Path(roundedRect: rect, cornerRadius: tickWidth / 2),
+                    with: .color(isInRange ? accentColor : AppColors.gray300)
+                )
+            }
+        }
+        .frame(height: markerHeight)
+        .accessibilityHidden(true)
+    }
+
+    /// Rounded vertical bar, taller than the ticks; hit area is padded to
+    /// TouchTarget.minimum.
+    private var marker: some View {
+        RoundedRectangle(cornerRadius: markerWidth / 2, style: .continuous)
+            .fill(accentColor)
+            .frame(width: markerWidth, height: markerHeight)
+            .shadow(color: .black.opacity(Opacity.standardShadow), radius: 2, y: 1)
+            .frame(width: TouchTarget.minimum, height: TouchTarget.minimum)
+            .contentShape(Rectangle())
+    }
+
+    /// Ruler coordinates: ticks span the full width edge to edge.
+    private func position(of value: Int, width: CGFloat) -> CGFloat {
+        let span = CGFloat(max(bounds.upperBound - bounds.lowerBound, 1))
+        let inset = tickWidth / 2
+        return inset + CGFloat(value - bounds.lowerBound) / span * (width - tickWidth)
+    }
+
+    private func value(atX x: CGFloat, width: CGFloat) -> Int {
+        let span = CGFloat(bounds.upperBound - bounds.lowerBound)
+        let fraction = (x - tickWidth / 2) / max(width - tickWidth, 1)
+        return bounds.lowerBound + Int((fraction * span).rounded())
+    }
+
+    private func update(_ binding: inout Int, to newValue: Int) {
+        guard newValue != binding else { return }
+        binding = newValue
+        HapticFeedback.selection()
+    }
+}
+
+// ─────────────────────────────────────────────
 // MARK: Chips
 // ─────────────────────────────────────────────
 
 /// Tappable suggestion chip — tap inserts its text into a field
 /// (spec §3: prompts from past sessions; NOT saved entities).
+/// Deliberately small and NOT capsule-shaped: an insert-arrow glyph on a
+/// quiet rounded rect, so it never reads as a `SelectableChip` toggle.
 /// Usage: `SuggestionChip(text: "Metro ride") { situation = "Metro ride" }`
 struct SuggestionChip: View {
     let text: String
@@ -716,19 +864,77 @@ struct SuggestionChip: View {
 
     var body: some View {
         Button(action: action) {
-            Text(text)
-                .appFont(.body)
-                .foregroundStyle(TextColors.primary)
-                .lineLimit(1)
-                .padding(.horizontal, Spacing.xs)
-                .padding(.vertical, Spacing.xxs)
-                .background(Capsule().fill(AppColors.cardBackground))
-                .overlay(
-                    Capsule().strokeBorder(AppColors.gray200, lineWidth: BorderWidth.hairline)
-                )
-                .touchTarget(width: 0)
+            HStack(spacing: Spacing.xxxs) {
+                Image(systemName: "arrow.up.left")
+                    .appFont(.smallMedium)
+                    .foregroundStyle(TextColors.secondary)
+                    .accessibilityHidden(true)
+                Text(text)
+                    .appFont(.small)
+                    .foregroundStyle(TextColors.primary)
+                    .lineLimit(1)
+            }
+            .padding(.horizontal, Spacing.xxs)
+            .padding(.vertical, Spacing.xxxs + 2)
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.sm, style: .continuous)
+                    .fill(AppColors.gray100)
+            )
+            .touchTarget(width: 0)
         }
         .buttonStyle(.plain)
+    }
+}
+
+/// Single-line, horizontally scrolling row of suggestion chips. Edges fade
+/// out when there is more content in that direction — the fade is the
+/// scroll affordance.
+/// Usage: `SuggestionChipsRow(suggestions: chips) { field = $0 }`
+struct SuggestionChipsRow: View {
+    let suggestions: [String]
+    let onSelect: (String) -> Void
+
+    @State private var edges = EdgeOverflow()
+
+    private struct EdgeOverflow: Equatable {
+        var leading = false
+        var trailing = false
+    }
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Spacing.xxs) {
+                ForEach(suggestions, id: \.self) { suggestion in
+                    SuggestionChip(text: suggestion) { onSelect(suggestion) }
+                }
+            }
+        }
+        .onScrollGeometryChange(for: EdgeOverflow.self) { geometry in
+            EdgeOverflow(
+                leading: geometry.contentOffset.x > 1,
+                trailing: geometry.contentOffset.x + geometry.containerSize.width
+                    < geometry.contentSize.width - 1
+            )
+        } action: { _, overflow in
+            withAnimation(AppAnimation.fast) { edges = overflow }
+        }
+        .mask(fadeMask)
+    }
+
+    private var fadeMask: some View {
+        HStack(spacing: 0) {
+            LinearGradient(
+                colors: [edges.leading ? .clear : .black, .black],
+                startPoint: .leading, endPoint: .trailing
+            )
+            .frame(width: Spacing.md)
+            Rectangle().fill(.black)
+            LinearGradient(
+                colors: [.black, edges.trailing ? .clear : .black],
+                startPoint: .leading, endPoint: .trailing
+            )
+            .frame(width: Spacing.md)
+        }
     }
 }
 

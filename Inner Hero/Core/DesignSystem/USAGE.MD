@@ -113,6 +113,7 @@ Text("Box breathing · 10 min").appFont(.small).foregroundStyle(TextColors.secon
 | `.caption` | 11 | 600 | caption2 | ALL CAPS заголовки секций |
 | `.mono` | 15 | 700 | subheadline | Таймер compact (mono) |
 | `.monoLarge` | 28 | 700 | title | Таймер large (mono) |
+| `.timerDisplay` | 56 | 700 | largeTitle | Секундомер сессии — единственный контент экрана (mono) |
 | `.statValue` | 20 | 700 | title3 | Числовые доли «6 из 7» (mono) |
 | `.buttonPrimary` | 16 | 600 | callout | Текст основной кнопки |
 | `.buttonSmall` | 14 | 600 | subheadline | Компактная кнопка |
@@ -236,12 +237,15 @@ RadioCard(title: "7 groups", description: "~15 min · whole arm, face, torso..."
 IntensitySlider(value: $anxiety)
     .accessibilityLabel(String(localized: "Anxiety level"))
 
-// Чипсы-подсказки из прошлых сессий — тап подставляет текст в поле
-ChipFlowLayout {
-    ForEach(suggestions, id: \.self) { s in
-        SuggestionChip(text: s) { situation = s }
-    }
-}
+// Чипсы-подсказки из прошлых сессий — тап подставляет текст в поле.
+// Намеренно мелкие и НЕ капсулы (глиф-стрелка на тихом прямоугольнике),
+// чтобы не путались с SelectableChip-тумблерами. Живут в одну строку
+// с горизонтальным скроллом; края ряда гаснут, если есть продолжение.
+SuggestionChipsRow(suggestions: chips) { field = $0 }
+
+// Линейка с рисками и двумя маркерами: диапазон времени планируемой
+// экспозиции (спека §3). Маркеры не пересекаются (max ≥ min + 1).
+DurationRangeSlider(minMinutes: $rangeMin, maxMinutes: $rangeMax)  // 1...20
 
 // Мультивыбор (охранное поведение)
 ChipFlowLayout {
