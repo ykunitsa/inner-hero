@@ -16,29 +16,22 @@ struct PlannedExposureAfterView: View {
     @State private var showSaveError = false
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    VStack(alignment: .leading, spacing: Spacing.md) {
-                        predictionCard
-                        outcomeSection
-                        actualSituationSection
-                        behaviorSection
-                        safetySection
-                        difficultySection
-                    }
-                    .padding(.horizontal, Spacing.sm)
-
-                    // Room for the pinned Save block so the last field can
-                    // scroll fully above it.
-                    Color.clear
-                        .frame(height: Spacing.xxxl * 2)
-                }
+        ScrollView {
+            VStack(alignment: .leading, spacing: Spacing.md) {
+                predictionCard
+                outcomeSection
+                actualSituationSection
+                behaviorSection
+                safetySection
+                difficultySection
             }
-            saveButton
+            .padding(.horizontal, Spacing.sm)
         }
+        // An inset, not a ZStack overlay: the button has to shorten the
+        // scrollable area, not float over it.
+        .safeAreaInset(edge: .bottom) { saveButton }
         .scrollDismissesKeyboard(.interactively)
-        .background(AppColors.cardBackground.ignoresSafeArea())
+        .formBackground()
         // The pinned pill sits low, near the physical bottom edge — same
         // placement as the situational sheet; the keyboard still pushes it up.
         .ignoresSafeArea(.container, edges: .bottom)
@@ -63,14 +56,14 @@ struct PlannedExposureAfterView: View {
 
     private var header: some View {
         ZStack {
-            Text(String(localized: "Exposure"))
+            Text(String(localized: "Planned exposure"))
                 .appFont(.h3)
                 .foregroundStyle(TextColors.primary)
                 .lineLimit(1)
                 .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
             HStack {
                 Spacer()
-                CircleButton(systemImage: "xmark", background: AppColors.gray100) {
+                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
                     showPartialSaveConfirmation = true
                 }
                 .accessibilityLabel(String(localized: "Close"))
@@ -79,16 +72,7 @@ struct PlannedExposureAfterView: View {
         .padding(.horizontal, Spacing.sm)
         .padding(.top, Spacing.sm)
         .padding(.bottom, Spacing.xs)
-        .background(
-            LinearGradient(
-                stops: [
-                    .init(color: AppColors.cardBackground, location: 0.65),
-                    .init(color: AppColors.cardBackground.opacity(0), location: 1),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .pinnedHeaderBackground()
     }
 
     // MARK: Sections
@@ -98,10 +82,16 @@ struct PlannedExposureAfterView: View {
         if let entry = viewModel.entry,
            let fearedOutcome = entry.fearedOutcome,
            let confidence = entry.confidence {
-            QuoteCard(
-                label: String(localized: "Your prediction · \(confidence.title.localizedLowercase)"),
-                text: fearedOutcome
-            )
+            // Same label-outside-the-container shape as every other block,
+            // so the reminder shares the form's left edge instead of sitting
+            // indented above it.
+            VStack(alignment: .leading, spacing: Spacing.xxs) {
+                SectionLabel(
+                    text: String(localized: "Your prediction · \(confidence.title.localizedLowercase)")
+                )
+                QuoteCard(text: fearedOutcome)
+            }
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -113,7 +103,7 @@ struct PlannedExposureAfterView: View {
                     ChoiceOption(value: $0, title: $0.title)
                 },
                 selection: $viewModel.predictionOutcome,
-                axis: .horizontal
+                style: .segments
             )
         }
     }
@@ -123,8 +113,7 @@ struct PlannedExposureAfterView: View {
             SectionLabel(text: String(localized: "What actually happened"))
             AppTextEditor(
                 text: $viewModel.actualSituation,
-                placeholder: String(localized: "Describe the situation…"),
-                minHeight: 80
+                placeholder: String(localized: "Describe the situation…")
             )
         }
     }
@@ -171,16 +160,7 @@ struct PlannedExposureAfterView: View {
             .padding(.horizontal, Spacing.lg)
             .padding(.top, Spacing.md)
             .padding(.bottom, Spacing.lg)
-            .background(
-                LinearGradient(
-                    stops: [
-                        .init(color: AppColors.cardBackground.opacity(0), location: 0),
-                        .init(color: AppColors.cardBackground, location: 0.35),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .pinnedFooterBackground()
     }
 
     private func save() {

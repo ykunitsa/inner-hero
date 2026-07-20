@@ -42,7 +42,16 @@ final class PlannedExposureFlowViewModel {
 
     var activity = ""
     var fearedOutcome = ""
-    var confidence: PredictionConfidence?
+    /// Seeded, unlike the two text fields: the scale is a slider, and a slider
+    /// always points somewhere. `fiftyFifty` and not one of the ends — the
+    /// default has to be the option that claims the least, because this field
+    /// feeds the "predictions that didn't come true" share (spec §5). Same
+    /// reasoning as `defaultIntensity` starting mid-scale.
+    ///
+    /// Consequence worth knowing: a user who skips the question still records
+    /// "fifty-fifty". Telling that apart from a deliberate answer would need a
+    /// separate "field was touched" flag, which does not exist.
+    var confidence: PredictionConfidence = .fiftyFifty
     var expectedAnxiety = PlannedExposureFlowViewModel.defaultIntensity
     var rangeMinMinutes = PlannedExposureFlowViewModel.defaultRangeMinMinutes
     var rangeMaxMinutes = PlannedExposureFlowViewModel.defaultRangeMaxMinutes
@@ -105,15 +114,17 @@ final class PlannedExposureFlowViewModel {
         fearedOutcome.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// The prediction is the point of a planned session — all three parts of
-    /// it are required. The time range and expected anxiety have defaults.
+    /// Only the two written parts of the prediction are required — confidence,
+    /// the time range and expected anxiety all come seeded.
     var canStart: Bool {
-        !trimmedActivity.isEmpty && !trimmedFearedOutcome.isEmpty && confidence != nil
+        !trimmedActivity.isEmpty && !trimmedFearedOutcome.isEmpty
     }
 
     /// Anything worth protecting from an accidental close on "before".
+    /// Confidence is deliberately not counted: it is seeded, so counting it
+    /// would make an untouched form prompt "Discard this entry?" on close.
     var hasBeforeDraft: Bool {
-        !trimmedActivity.isEmpty || !trimmedFearedOutcome.isEmpty || confidence != nil
+        !trimmedActivity.isEmpty || !trimmedFearedOutcome.isEmpty
     }
 
     /// Uniform pick inside [min, max] — the user must not be able to predict
@@ -128,7 +139,7 @@ final class PlannedExposureFlowViewModel {
 
     /// Inserts the entry with the prediction block and starts the session.
     func startSession(in context: ModelContext, now: Date = Date()) throws {
-        guard canStart, let confidence, entry == nil else { return }
+        guard canStart, entry == nil else { return }
         let minSeconds = rangeMinMinutes * 60
         let maxSeconds = rangeMaxMinutes * 60
         let target = Self.randomTargetSeconds(
@@ -152,9 +163,12 @@ final class PlannedExposureFlowViewModel {
         entry = newEntry
         startedAt = now
         targetDuration = TimeInterval(target)
-        // Pre-fill "what actually happened" with the plan — editing it is
-        // optional, which keeps the after screen keyboard-free on a bad day.
-        actualSituation = trimmedActivity
+        // Pre-fill "what actually happened" with the PREDICTION, not the plan.
+        // The field sits right under "did it come true" (spec §3), so it is
+        // the counterpart of the fear, not of the activity name: the user
+        // edits "I'll leave in two minutes" into what really happened. Seeded
+        // with the activity it answered a question nobody asked.
+        actualSituation = trimmedFearedOutcome
         stage = .during
     }
 

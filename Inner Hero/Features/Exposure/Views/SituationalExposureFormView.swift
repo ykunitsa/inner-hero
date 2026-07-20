@@ -18,31 +18,24 @@ struct SituationalExposureFormView: View {
     @State private var scrollPosition = ScrollPosition()
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                // Single explicit stack: loose ScrollView children overlap
-                // instead of stacking.
-                VStack(alignment: .leading, spacing: 0) {
-                    VStack(alignment: .leading, spacing: Spacing.md) {
-                        situationSection
-                        anxietySection
-                        behaviorSection
-                        safetySection
-                        noteSection
-                    }
-                    .padding(.horizontal, Spacing.sm)
-
-                    // Room for the pinned Save block so the last field can
-                    // scroll fully above it.
-                    Color.clear
-                        .frame(height: Spacing.xxxl * 2)
-                }
+        ScrollView {
+            VStack(alignment: .leading, spacing: Spacing.md) {
+                situationSection
+                anxietySection
+                behaviorSection
+                safetySection
+                noteSection
             }
-            .scrollPosition($scrollPosition)
-            saveButton
+            .padding(.horizontal, Spacing.sm)
         }
+        .scrollPosition($scrollPosition)
+        // An inset, not a ZStack overlay: the button has to shorten the
+        // scrollable area, not float over it. Overlaid, it silently swallowed
+        // the last field whenever the content was barely taller than the
+        // screen — and "add a note" is exactly that last field.
+        .safeAreaInset(edge: .bottom) { saveButton }
         .scrollDismissesKeyboard(.interactively)
-        .background(AppColors.cardBackground.ignoresSafeArea())
+        .formBackground()
         // The save pill nests into the sheet's bottom rounding (tab-bar
         // height); the keyboard still pushes it up when open.
         .ignoresSafeArea(.container, edges: .bottom)
@@ -77,7 +70,7 @@ struct SituationalExposureFormView: View {
                 .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
             HStack {
                 Spacer()
-                CircleButton(systemImage: "xmark", background: AppColors.gray100) {
+                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
                     attemptClose()
                 }
                 .accessibilityLabel(String(localized: "Close"))
@@ -88,18 +81,7 @@ struct SituationalExposureFormView: View {
         // inside the sheet's corner radius.
         .padding(.top, Spacing.sm)
         .padding(.bottom, Spacing.xs)
-        .background(
-            // Mirror of the Save scrim: content fades out under the header
-            // instead of hitting a hard edge.
-            LinearGradient(
-                stops: [
-                    .init(color: AppColors.cardBackground, location: 0.65),
-                    .init(color: AppColors.cardBackground.opacity(0), location: 1),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .pinnedHeaderBackground()
     }
 
     // MARK: Sections
@@ -109,8 +91,7 @@ struct SituationalExposureFormView: View {
             SectionLabel(text: String(localized: "What happened"))
             AppTextEditor(
                 text: $viewModel.situation,
-                placeholder: String(localized: "Describe the situation…"),
-                minHeight: 80
+                placeholder: String(localized: "Describe the situation…")
             )
             if !viewModel.situationSuggestions.isEmpty {
                 SuggestionChipsRow(suggestions: viewModel.situationSuggestions) {
@@ -160,8 +141,7 @@ struct SituationalExposureFormView: View {
                 SectionLabel(text: String(localized: "Note"))
                 AppTextEditor(
                     text: $viewModel.note,
-                    placeholder: String(localized: "Note…"),
-                    minHeight: 80
+                    placeholder: String(localized: "Note…")
                 )
                 // Scroll AFTER the editor is inserted and laid out — doing it
                 // in the button action measures the pre-expansion height and
@@ -183,7 +163,7 @@ struct SituationalExposureFormView: View {
                 } label: {
                     HStack(spacing: Spacing.xxxs) {
                         Image(systemName: "plus")
-                            .font(.system(size: IconSize.fieldGlyph, weight: .semibold))
+                            .appFont(.bodyMedium)
                             .accessibilityHidden(true)
                         Text(String(localized: "Add a note"))
                             .appFont(.body)
@@ -206,18 +186,7 @@ struct SituationalExposureFormView: View {
             .padding(.horizontal, Spacing.lg)
             .padding(.top, Spacing.md)
             .padding(.bottom, Spacing.lg)
-            .background(
-                // Fade instead of a hard edge: content visibly continues under
-                // the button, signalling the form scrolls.
-                LinearGradient(
-                    stops: [
-                        .init(color: AppColors.cardBackground.opacity(0), location: 0),
-                        .init(color: AppColors.cardBackground, location: 0.35),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .pinnedFooterBackground()
     }
 
     private func save() {

@@ -198,7 +198,10 @@ struct MetaLabel: View {
 /// ALL CAPS section header — "YOUR PREDICTION"
 struct SectionLabel: View {
     let text: String
-    var color: Color = TextColors.tertiary
+    /// Secondary, not tertiary: at 11pt ALL CAPS this is the smallest text on
+    /// a form, and it names the field the user is about to answer — it has to
+    /// survive a bad day and a bright room (codex §6).
+    var color: Color = TextColors.secondary
 
     var body: some View {
         Text(text.uppercased())

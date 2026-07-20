@@ -16,6 +16,9 @@ struct SafetyBehaviorPicker: View {
     @State private var isAddingCustomChip = false
     @State private var customChipDraft = ""
     @FocusState private var customChipFocused: Bool
+    /// `ChipFlowLayout` proposes an unspecified size, so the field needs an
+    /// explicit width — scaled, or it clips its own text at large type sizes.
+    @ScaledMetric(relativeTo: .body) private var draftFieldWidth = FieldSize.inlineChipField
 
     var body: some View {
         ChipFlowLayout {
@@ -48,10 +51,10 @@ struct SafetyBehaviorPicker: View {
                 .focused($customChipFocused)
                 .submitLabel(.done)
                 .onSubmit { commitCustomChip() }
-                .frame(width: 140)
+                .frame(width: draftFieldWidth)
                 .padding(.horizontal, Spacing.xs)
                 .padding(.vertical, Spacing.xxs)
-                .background(Capsule().fill(AppColors.gray100))
+                .background(Capsule().fill(AppColors.cardBackground))
         } else {
             AddCustomChipButton {
                 isAddingCustomChip = true
@@ -76,7 +79,7 @@ private struct AddCustomChipButton: View {
         Button(action: action) {
             HStack(spacing: Spacing.xxxs) {
                 Image(systemName: "plus")
-                    .font(.system(size: IconSize.fieldGlyph, weight: .semibold))
+                    .appFont(.bodyMedium)
                 Text(String(localized: "Your own…"))
                     .appFont(.body)
                     .lineLimit(1)
@@ -84,13 +87,9 @@ private struct AddCustomChipButton: View {
             .foregroundStyle(AppColors.accent)
             .padding(.horizontal, Spacing.xs)
             .padding(.vertical, Spacing.xxs)
-            .background(Capsule().fill(AppColors.accent.opacity(Opacity.subtleBackground)))
-            .overlay(
-                Capsule().strokeBorder(
-                    AppColors.accent.opacity(Opacity.emphasizedBorder),
-                    lineWidth: BorderWidth.standard
-                )
-            )
+            // Accent tint, no outline — same fill-carries-the-affordance rule
+            // as the chips around it; the accent is what sets it apart.
+            .background(Capsule().fill(AppColors.accent.opacity(Opacity.softBackground)))
             .touchTarget(width: 0)
         }
         .buttonStyle(.plain)

@@ -42,6 +42,11 @@ final class SituationalExposureFormViewModel {
     // MARK: Derived chips (pure, testable)
 
     /// Recent distinct situations, newest first — suggestion chips.
+    ///
+    /// A planned entry offers its `activity` ("metro ride"), not its
+    /// `situation` — after the session that column holds how the fear actually
+    /// played out ("got tense but stayed"), which is a story, not something to
+    /// paste into a "what happened" field next time.
     nonisolated static func situationSuggestions(
         from entries: [ExposureLogEntry],
         limit: Int = suggestionLimit
@@ -49,7 +54,8 @@ final class SituationalExposureFormViewModel {
         var seen = Set<String>()
         var result: [String] = []
         for entry in entries.sorted(by: { $0.createdAt > $1.createdAt }) {
-            let text = entry.situation.trimmingCharacters(in: .whitespacesAndNewlines)
+            let source = entry.activity ?? entry.situation
+            let text = source.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !text.isEmpty, seen.insert(text).inserted else { continue }
             result.append(text)
             if result.count == limit { break }

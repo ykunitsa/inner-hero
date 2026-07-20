@@ -151,6 +151,17 @@
         }
       }
     },
+    "Planned exposure" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Планируемая экспозиция"
+          }
+        }
+      }
+    },
     "Probably" : {
       "localizations" : {
         "ru" : {
@@ -1946,9 +1957,7 @@
         }
       }
     },
-    "Article not found" : {
-
-    },
+    "Article not found" : {},
     "Article of the day" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2471,7 +2480,14 @@
       }
     },
     "Coming back soon" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скоро вернётся"
+          }
+        }
+      }
     },
     "Complete an activity and it will show up here." : {
       "extractionState" : "stale",
@@ -5876,9 +5892,7 @@
         }
       }
     },
-    "No records yet" : {
-
-    },
+    "No records yet" : {},
     "No results" : {
       "localizations" : {
         "ru" : {
@@ -11419,9 +11433,7 @@
         }
       }
     },
-    "Sessions will appear here after your first exercise." : {
-
-    },
+    "Sessions will appear here after your first exercise." : {},
     "Set up" : {
       "extractionState" : "stale",
       "localizations" : {

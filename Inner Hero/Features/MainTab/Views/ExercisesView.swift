@@ -10,7 +10,17 @@ struct ExercisesView: View {
 
     @State private var showPlannedExposure = false
 
-    private struct LauncherRow: Identifiable {
+    /// Tiles are given a floor, not a fixed height: the corrective phrase is
+    /// spec-required content and has to be allowed to grow — Russian runs
+    /// ~15% longer than the English source, before Dynamic Type.
+    @ScaledMetric(relativeTo: .body) private var tileMinHeight: CGFloat = 150
+
+    private static let columns = [
+        GridItem(.flexible(), spacing: Spacing.xs),
+        GridItem(.flexible(), spacing: Spacing.xs),
+    ]
+
+    private struct LauncherTile: Identifiable {
         var id: String { title }
         let title: String
         let subtitle: String
@@ -18,7 +28,7 @@ struct ExercisesView: View {
         var action: (() -> Void)? = nil
     }
 
-    private var rows: [LauncherRow] {
+    private var tiles: [LauncherTile] {
         [
             .init(
                 title: String(localized: "Exposures"),
@@ -26,7 +36,7 @@ struct ExercisesView: View {
                 // criterion, not marketing.
                 subtitle: String(localized: "Success is staying, not calming down"),
                 icon: "leaf",
-                // One tap from the row to the "before" screen — no menu
+                // One tap from the tile to the "before" screen — no menu
                 // between icon and action (principle 1.2).
                 action: { showPlannedExposure = true }
             ),
@@ -51,9 +61,9 @@ struct ExercisesView: View {
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView {
-                VStack(spacing: Spacing.xs) {
-                    ForEach(rows) { row in
-                        launcherRow(row)
+                LazyVGrid(columns: Self.columns, spacing: Spacing.xs) {
+                    ForEach(tiles) { tile in
+                        launcherTile(tile)
                     }
                 }
                 .padding(.horizontal, Spacing.sm)
@@ -73,45 +83,61 @@ struct ExercisesView: View {
     }
 
     @ViewBuilder
-    private func launcherRow(_ row: LauncherRow) -> some View {
-        if let action = row.action {
+    private func launcherTile(_ tile: LauncherTile) -> some View {
+        if let action = tile.action {
             Button(action: action) {
-                launcherRowContent(row)
+                tileContent(tile, isActive: true)
             }
             .buttonStyle(.plain)
         } else {
-            launcherRowContent(row)
-                .opacity(0.55)
+            // Inactive tiles are muted by *role colours*, not by a blanket
+            // `.opacity`. Dimming the whole tile dragged the subtitle below
+            // readable contrast — and "not built yet" is precisely the thing
+            // the user needs to be able to read (codex §6).
+            tileContent(tile, isActive: false)
+                .accessibilityRemoveTraits(.isButton)
         }
     }
 
-    private func launcherRowContent(_ row: LauncherRow) -> some View {
-        HStack(spacing: Spacing.sm) {
-            Image(systemName: row.icon)
-                .font(.system(size: IconSize.glyph + 4, weight: .medium))
-                .foregroundStyle(AppColors.primary)
-                .frame(width: IconSize.hero, height: IconSize.hero)
+    private func tileContent(_ tile: LauncherTile, isActive: Bool) -> some View {
+        let tint = isActive ? AppColors.primary : AppColors.gray400
+
+        return VStack(alignment: .leading, spacing: Spacing.xs) {
+            Image(systemName: tile.icon)
+                // `.appFont`, not `.system(size:)` — a frozen point size
+                // drops the glyph out of Dynamic Type.
+                .appFont(.h3)
+                .foregroundStyle(tint)
+                .frame(width: IconSize.card, height: IconSize.card)
                 .background(
                     RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                        .fill(AppColors.primary.opacity(Opacity.subtleBackground))
+                        .fill(tint.opacity(Opacity.subtleBackground))
                 )
 
-            VStack(alignment: .leading, spacing: Spacing.xxxs) {
-                Text(row.title)
-                    .appFont(.h3)
-                    .foregroundStyle(TextColors.primary)
-                Text(row.subtitle)
-                    .appFont(.small)
-                    .foregroundStyle(TextColors.secondary)
-            }
+            Spacer(minLength: Spacing.xxs)
 
-            Spacer(minLength: 0)
+            VStack(alignment: .leading, spacing: Spacing.xxxs) {
+                Text(tile.title)
+                    .appFont(.h3)
+                    .foregroundStyle(isActive ? TextColors.primary : TextColors.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(tile.subtitle)
+                    .appFont(.small)
+                    .foregroundStyle(isActive ? TextColors.secondary : TextColors.tertiary)
+                    // No lineLimit: the corrective phrase is the point of the
+                    // tile (spec 2.2) and must never be clipped to fit.
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
-        .padding(.horizontal, Spacing.sm)
-        .padding(.vertical, Spacing.sm)
-        .cardStyle(cornerRadius: CornerRadius.lg, padding: 0)
+        .frame(
+            maxWidth: .infinity,
+            minHeight: tileMinHeight,
+            maxHeight: .infinity,
+            alignment: .topLeading
+        )
+        .cardStyle(cornerRadius: CornerRadius.lg, padding: Spacing.sm)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(row.title). \(row.subtitle)")
+        .accessibilityLabel("\(tile.title). \(tile.subtitle)")
     }
 }
 
