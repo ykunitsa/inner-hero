@@ -5,30 +5,24 @@ import SwiftUI
 struct TodayView: View {
     @Binding var path: NavigationPath
 
-    @State private var showExposureForm = false
+    @Environment(\.scenePhase) private var scenePhase
 
-    private var greeting: String {
-        let hour = Calendar.current.component(.hour, from: Date())
-        switch hour {
-        case 5..<12:  return String(localized: "Good morning")
-        case 12..<17: return String(localized: "Good afternoon")
-        case 17..<22: return String(localized: "Good evening")
-        default:      return String(localized: "Good night")
-        }
-    }
+    @State private var viewModel = TodayViewModel()
+    @State private var showExposureForm = false
 
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.sm) {
                     exposureCard
+                    scheduleSection
                 }
                 .padding(.horizontal, Spacing.sm)
                 .padding(.top, Spacing.xxs)
                 .padding(.bottom, Spacing.xxl)
             }
             .homeBackground()
-            .navigationTitle(greeting)
+            .navigationTitle(viewModel.greeting)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -49,6 +43,9 @@ struct TodayView: View {
             .sheet(isPresented: $showExposureForm) {
                 SituationalExposureFormView()
             }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active { viewModel.refresh() }
+            }
         }
     }
 
@@ -64,6 +61,20 @@ struct TodayView: View {
             )
         }
         .buttonStyle(.plain)
+    }
+
+    /// Spec §2.1: when nothing is planned, a quiet line of text — not a card,
+    /// not an invitation to go configure something.
+    @ViewBuilder
+    private var scheduleSection: some View {
+        if !viewModel.hasPlannedExposure {
+            Text(viewModel.emptyScheduleText)
+                .appFont(.body)
+                .foregroundStyle(TextColors.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, Spacing.xs)
+                .padding(.top, Spacing.xxs)
+        }
     }
 }
 
