@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "conorluddy": {
+      "source": {
+        "source": "github",
+        "repo": "conorluddy/ios-simulator-skill"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "ios-simulator-skill@conorluddy": true
+  }
+}

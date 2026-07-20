@@ -63,6 +63,61 @@ Single scheme **`Inner Hero`**; targets `Inner Hero`, `Inner HeroTests`, `Inner 
 The Xcode project uses file-system-synchronized groups — files added/removed on disk
 are picked up automatically, no pbxproj edits needed.
 
+### Running tests fast
+
+The 43 unit tests execute in **0.1s**. A naive `xcodebuild … test` takes **90s** —
+all of it overhead. Don't use it. Use `./scripts/test.sh` (see below), or its two
+steps directly:
+
+```bash
+xcrun simctl boot "iPhone 17 Pro"          # once per machine session; ignore "already booted"
+
+xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -only-testing "Inner HeroTests" build-for-testing            # ~5s
+
+xcodebuild -project "Inner Hero.xcodeproj" -scheme "Inner Hero" \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -only-testing "Inner HeroTests" \
+  -parallel-testing-enabled NO test-without-building           # ~6s
+```
+
+Where the 90s went, and why each flag matters:
+
+- `-parallel-testing-enabled NO` — Xcode *clones the simulator* for parallel runs
+  (`Clone 1 of iPhone 17 Pro` in the log). For a suite that runs in 0.1s the cloning
+  costs vastly more than the tests. Biggest single win: 90s → 49s.
+- `build-for-testing` / `test-without-building` — plain `test` rebuilds the whole
+  scheme including the UI-test target and its runner app even when `-only-testing`
+  names just the unit bundle. Splitting the phases: 49s → 11s.
+- pre-booted simulator — a cold boot is otherwise paid on every run.
+- `-only-testing "Inner HeroTests"` — keeps `Inner HeroUITests` (4 tests, **310s**)
+  out of the loop. Run the UI suite deliberately before a merge, not while iterating.
+
+**Pacing:** an incremental build (~5s) is the loop while editing; run tests once when
+a change set is complete, not after every edit. Note `Executed 0 tests` in xcodebuild
+output is the legacy XCTest counter — Swift Testing reports separately
+(`Test run with 43 tests in 12 suites passed`). Don't read it as a failure.
+
+Known pre-existing failure: `SituationalExposureFormUITests/testAddNoteScrolls…`
+fails on clean `main` too (simulator runner signing) — not a regression.
+
+### Build output without the noise
+
+The `ios-simulator-skill` plugin (project scope, see `.claude/settings.json`) collapses
+a build to one line:
+
+```bash
+P=$(echo ~/.claude/plugins/cache/conorluddy/ios-simulator-skill/*/skills/ios-simulator-skill)
+python3 $P/scripts/build_and_test.py --project "Inner Hero.xcodeproj" \
+  --scheme "Inner Hero" --simulator "iPhone 17 Pro"
+# → Build: SUCCESS (0 errors, 0 warnings) [xcresult-…]   ·  --get-errors <id> for detail
+```
+
+`--simulator` is required (the plugin defaults to iPhone 15, absent here). Its own
+`--test` path does not expose the flags above, so it is slower than `scripts/test.sh`
+— use it for builds, not test runs.
+
 ## Project map
 
 ```
