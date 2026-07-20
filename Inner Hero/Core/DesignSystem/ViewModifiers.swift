@@ -131,22 +131,10 @@ extension View {
     }
 }
 
-// ─────────────────────────────────────────────
-// MARK: Page Background
-// ─────────────────────────────────────────────
-
-struct PageBackgroundModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .background(AppColors.gray100.ignoresSafeArea())
-    }
-}
-
-extension View {
-    func pageBackground() -> some View {
-        modifier(PageBackgroundModifier())
-    }
-}
+// NOTE: there is deliberately no `pageBackground()` here. A screen is either
+// a hub (`.homeBackground()` — grouped gray, so cards float on it) or a piece
+// of work (`AppColors.cardBackground` — one continuous surface). A third,
+// in-between page gray only produced drift. See USAGE.MD § "Фон экрана".
 
 // ─────────────────────────────────────────────
 // MARK: Icon Container

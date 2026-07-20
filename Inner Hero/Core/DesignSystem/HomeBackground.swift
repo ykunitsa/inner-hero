@@ -5,8 +5,11 @@ import SwiftUI
 struct HomeTopGlowBackground: View {
     @Environment(\.colorScheme) private var colorScheme
     
+    /// Kept low on purpose: on screens that carry an accent hero card the
+    /// glow sits directly behind it, and anything stronger reads as a second
+    /// red wash competing with the card instead of warming the page.
     private var glowOpacity: Double {
-        colorScheme == .dark ? 0.22 : 0.14
+        colorScheme == .dark ? 0.12 : 0.08
     }
     
     private var glowBlur: CGFloat {

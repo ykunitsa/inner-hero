@@ -53,7 +53,9 @@ struct PlannedExposureSessionView: View {
                 .padding(.bottom, Spacing.lg)
         }
         .frame(maxWidth: .infinity)
-        .pageBackground()
+        // Same surface as the before/after steps — the background must not
+        // shift underneath the user mid-session.
+        .background(AppColors.cardBackground.ignoresSafeArea())
         // Same low placement as the pinned pills on the form screens.
         .ignoresSafeArea(.container, edges: .bottom)
         .task { await watchForEndSignals() }
