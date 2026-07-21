@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<!-- The PMR voice has to keep running once the screen goes dark (spec §5):
+	     the exercise is done with eyes closed, so a dark screen is the normal
+	     case, not the exception. Paired with the .playback audio session in
+	     Core/Utilities/AudioSession.swift. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+</dict>
 </plist>

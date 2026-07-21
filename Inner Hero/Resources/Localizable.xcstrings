@@ -2326,12 +2326,11 @@
       }
     },
     "Change" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Изменение"
+            "value" : "Сменить"
           }
         }
       }
@@ -3249,7 +3248,6 @@
       }
     },
     "Done" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -10586,12 +10584,11 @@
       }
     },
     "Relax" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Расслабить"
+            "value" : "Расслабься"
           }
         }
       }
@@ -13388,6 +13385,1377 @@
           }
         }
       }
+    },
+    "Get comfortable. Close your eyes when you're ready. We'll start in a moment." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Устройся удобно. Закрой глаза, когда будешь готов. Сейчас начнём."
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "Get comfortable" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Устройся удобно"
+          }
+        }
+      }
+    },
+    "Close your eyes when you're ready" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрой глаза, когда будешь готов"
+          }
+        }
+      }
+    },
+    "Tense your %1$@ — %2$@. Hold it." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напряги %1$@ — %2$@. Держи."
+          }
+        }
+      }
+    },
+    "Tense your %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напряги %@"
+          }
+        }
+      }
+    },
+    "And release. Let the tension go, and notice how different it feels." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабь. Дай напряжению уйти и заметь, насколько это ощущается иначе."
+          }
+        }
+      }
+    },
+    "And release again. Let it go a little further." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "И снова отпусти. Дай уйти ещё немного."
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "Release your %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабь %@"
+          }
+        }
+      }
+    },
+    "notice the difference" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "заметь разницу"
+          }
+        }
+      }
+    },
+    "Notice any tension in your %@ — and let it go." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заметь напряжение — %@. И отпусти его."
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "Let your %@ go" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабь %@"
+          }
+        }
+      }
+    },
+    "notice any tension, and let it go" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "заметь напряжение и дай ему уйти"
+          }
+        }
+      }
+    },
+    "That's the end of the practice. Rest here for a moment, and come back when you're ready." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На этом всё. Побудь так ещё немного и возвращайся, когда будешь готов."
+          }
+        }
+      }
+    },
+    "Rest here a moment" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Побудь так ещё немного"
+          }
+        }
+      }
+    },
+    "Breathe evenly. On each exhale, say one word to yourself: relax." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыши ровно. На каждом выдохе говори про себя одно слово: расслабься."
+          }
+        }
+      }
+    },
+    "Breathe evenly" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дыши ровно"
+          }
+        }
+      }
+    },
+    "one word on each exhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "одно слово на каждом выдохе"
+          }
+        }
+      }
+    },
+    "Relax." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабься."
+          }
+        }
+      }
+    },
+    "on the exhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "на выдохе"
+          }
+        }
+      }
+    },
+    "right hand and forearm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правая кисть и предплечье"
+          }
+        }
+      }
+    },
+    "right upper arm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правый бицепс"
+          }
+        }
+      }
+    },
+    "left hand and forearm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левая кисть и предплечье"
+          }
+        }
+      }
+    },
+    "left upper arm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левый бицепс"
+          }
+        }
+      }
+    },
+    "forehead" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лоб"
+          }
+        }
+      }
+    },
+    "eyes and nose" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "глаза и нос"
+          }
+        }
+      }
+    },
+    "jaw and mouth" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "челюсть и рот"
+          }
+        }
+      }
+    },
+    "neck" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "шея"
+          }
+        }
+      }
+    },
+    "chest, shoulders and back" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "грудь, плечи и спина"
+          }
+        }
+      }
+    },
+    "stomach" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "живот"
+          }
+        }
+      }
+    },
+    "right thigh" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правое бедро"
+          }
+        }
+      }
+    },
+    "right calf" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правая голень"
+          }
+        }
+      }
+    },
+    "right foot" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правая ступня"
+          }
+        }
+      }
+    },
+    "left thigh" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левое бедро"
+          }
+        }
+      }
+    },
+    "left calf" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левая голень"
+          }
+        }
+      }
+    },
+    "left foot" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левая ступня"
+          }
+        }
+      }
+    },
+    "right arm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правая рука"
+          }
+        }
+      }
+    },
+    "left arm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левая рука"
+          }
+        }
+      }
+    },
+    "face" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лицо"
+          }
+        }
+      }
+    },
+    "torso" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "корпус"
+          }
+        }
+      }
+    },
+    "right leg" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правая нога"
+          }
+        }
+      }
+    },
+    "left leg" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левая нога"
+          }
+        }
+      }
+    },
+    "arms" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "руки"
+          }
+        }
+      }
+    },
+    "face and neck" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лицо и шея"
+          }
+        }
+      }
+    },
+    "legs" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ноги"
+          }
+        }
+      }
+    },
+    "make a fist" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сожми кулак"
+          }
+        }
+      }
+    },
+    "bend your arm at the elbow" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "согни руку в локте"
+          }
+        }
+      }
+    },
+    "raise your eyebrows" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "подними брови"
+          }
+        }
+      }
+    },
+    "squeeze your eyes shut, wrinkle your nose" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "зажмурься, сморщи нос"
+          }
+        }
+      }
+    },
+    "clench your teeth, press your tongue to the roof of your mouth" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сожми зубы, прижми язык к нёбу"
+          }
+        }
+      }
+    },
+    "press your chin toward your chest" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "прижми подбородок к груди"
+          }
+        }
+      }
+    },
+    "pull your shoulder blades together, take a deep breath" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сведи лопатки, глубоко вдохни"
+          }
+        }
+      }
+    },
+    "tighten your stomach" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "напряги живот"
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "tighten your thigh" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "напряги бедро"
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "pull your toes toward you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "потяни носок на себя"
+          }
+        }
+      }
+    },
+    "curl your toes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "поджми пальцы"
+          }
+        }
+      }
+    },
+    "make a fist and bend your arm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сожми кулак и согни руку"
+          }
+        }
+      }
+    },
+    "squeeze your eyes shut, clench your teeth" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "зажмурься, сожми зубы"
+          }
+        }
+      }
+    },
+    "pull your shoulder blades together, tighten your stomach" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сведи лопатки, напряги живот"
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "tighten your thigh, pull your toes toward you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "напряги бедро, потяни носок на себя"
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "make fists, bend your arms" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сожми кулаки, согни руки"
+          }
+        }
+      }
+    },
+    "squeeze your eyes shut, clench your teeth, press your chin down" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "зажмурься, сожми зубы, прижми подбородок к груди"
+          }
+        }
+      }
+    },
+    "tighten your thighs, pull your toes toward you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "напряги бёдра, потяни носки на себя"
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "16 groups" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "16 групп"
+          }
+        }
+      }
+    },
+    "7 groups" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 групп"
+          }
+        }
+      }
+    },
+    "4 groups" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 группы"
+          }
+        }
+      }
+    },
+    "4 groups, no tension" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 группы, без напряжения"
+          }
+        }
+      }
+    },
+    "On the exhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По команде на выдохе"
+          }
+        }
+      }
+    },
+    "tense and release, one muscle at a time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "напряжение и расслабление, по одной мышце"
+          }
+        }
+      }
+    },
+    "whole arm, face, neck, torso, whole leg" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "рука целиком, лицо, шея, корпус, нога целиком"
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "arms, face and neck, torso, legs" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "руки, лицо и шея, корпус, ноги"
+          }
+        }
+      }
+    },
+    "the same four, release only" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "те же четыре, только расслабление"
+          }
+        }
+      }
+    },
+    "a word on the exhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "слово на выдохе"
+          }
+        }
+      }
+    },
+    "Tense the muscles, then let them go. Letting go is the part being trained." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напряги мышцы, потом расслабь. Тренируется именно расслабление."
+          }
+        }
+      }
+    },
+    "Headphones or a quiet place. The voice will guide you." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наушники или тихое место. Голос будет вести."
+          }
+        }
+      }
+    },
+    "~%@ min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~%@ мин"
+          }
+        }
+      }
+    },
+    "Five in a row you managed to relax. Try %@?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пять раз подряд ты успевал расслабиться. Попробовать «%@»?"
+          }
+        }
+      }
+    },
+    "Twice in a row you didn't. Back to %@?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Два раза подряд не получилось. Вернуться к «%@»?"
+          }
+        }
+      }
+    },
+    "Couldn't save" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить"
+          }
+        }
+      }
+    },
+    "Try again in a moment." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попробуй ещё раз через минуту."
+          }
+        }
+      }
+    },
+    "%1$d of %2$d · %3$@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d из %2$d · %3$@"
+          }
+        }
+      }
+    },
+    "End early" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закончить раньше"
+          }
+        }
+      }
+    },
+    "Time elapsed" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прошло времени"
+          }
+        }
+      }
+    },
+    "Step" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ступень"
+          }
+        }
+      }
+    },
+    "~%1$@ min · %2$@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~%1$@ мин · %2$@"
+          }
+        }
+      }
+    },
+    "Letting go is the part you train" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренируется расслабление"
+          }
+        }
+      }
+    },
+    "pmr.group.rightHandForearm.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right hand and forearm"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правую кисть и предплечье"
+          }
+        }
+      }
+    },
+    "pmr.group.rightBicep.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right upper arm"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правый бицепс"
+          }
+        }
+      }
+    },
+    "pmr.group.leftHandForearm.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left hand and forearm"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левую кисть и предплечье"
+          }
+        }
+      }
+    },
+    "pmr.group.leftBicep.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left upper arm"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левый бицепс"
+          }
+        }
+      }
+    },
+    "pmr.group.forehead.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "forehead"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лоб"
+          }
+        }
+      }
+    },
+    "pmr.group.upperFace.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eyes and nose"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "глаза и нос"
+          }
+        }
+      }
+    },
+    "pmr.group.lowerFace.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jaw and mouth"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "челюсть и рот"
+          }
+        }
+      }
+    },
+    "pmr.group.neck.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "neck"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "шею"
+          }
+        }
+      }
+    },
+    "pmr.group.chestShouldersBack.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chest, shoulders and back"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "грудь, плечи и спину"
+          }
+        }
+      }
+    },
+    "pmr.group.abdomen.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "stomach"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "живот"
+          }
+        }
+      }
+    },
+    "pmr.group.rightThigh.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right thigh"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правое бедро"
+          }
+        }
+      }
+    },
+    "pmr.group.rightCalf.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right calf"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правую голень"
+          }
+        }
+      }
+    },
+    "pmr.group.rightFoot.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right foot"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правую ступню"
+          }
+        }
+      }
+    },
+    "pmr.group.leftThigh.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left thigh"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левое бедро"
+          }
+        }
+      }
+    },
+    "pmr.group.leftCalf.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left calf"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левую голень"
+          }
+        }
+      }
+    },
+    "pmr.group.leftFoot.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left foot"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левую ступню"
+          }
+        }
+      }
+    },
+    "pmr.group.rightArm.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right arm"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правую руку"
+          }
+        }
+      }
+    },
+    "pmr.group.leftArm.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left arm"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левую руку"
+          }
+        }
+      }
+    },
+    "pmr.group.face.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "face"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лицо"
+          }
+        }
+      }
+    },
+    "pmr.group.torso.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "torso"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "корпус"
+          }
+        }
+      }
+    },
+    "pmr.group.rightLeg.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "right leg"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "правую ногу"
+          }
+        }
+      }
+    },
+    "pmr.group.leftLeg.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "left leg"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "левую ногу"
+          }
+        }
+      }
+    },
+    "pmr.group.arms.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "arms"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "руки"
+          }
+        }
+      }
+    },
+    "pmr.group.faceAndNeck.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "face and neck"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лицо и шею"
+          }
+        }
+      }
+    },
+    "pmr.group.legs.accusative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "legs"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ноги"
+          }
+        }
+      }
+    },
+    "Let your %@ go — notice any tension that's left, and let it drain away." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расслабь %@ — заметь, если осталось напряжение, и дай ему уйти."
+          }
+        }
+      }
+    },
+    "pull your stomach in" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "втяни живот"
+          }
+        }
+      }
+    },
+    "straighten your leg at the knee" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "выпрями ногу в колене"
+          }
+        }
+      }
+    },
+    "pull your shoulder blades together, pull your stomach in" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сведи лопатки, втяни живот"
+          }
+        }
+      }
+    },
+    "straighten your leg, pull your toes toward you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "выпрями ногу, потяни носок на себя"
+          }
+        }
+      }
+    },
+    "straighten your legs, pull your toes toward you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "выпрями ноги, потяни носки на себя"
+          }
+        }
+      }
+    },
+    "Find a quiet place and settle in. Close your eyes when you're ready. We'll start in a moment." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найди тихое место, расположись удобно. Когда будешь готов, закрой глаза. Сейчас начнём."
+          }
+        }
+      }
+    },
+    "And release again. Let the tension drain a little further." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Снова расслабь. Дай напряжению уйти ещё немного."
+          }
+        }
+      }
+    },
+    "arms, face, neck, torso, legs" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "руки, лицо, шея, корпус и ноги"
+          }
+        }
+      }
+    },
+    "This is the basic system voice. A better one can be downloaded in Settings → Accessibility → Spoken Content → Voices." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сейчас звучит базовый системный голос. Более качественный можно скачать: Настройки → Универсальный доступ → Устный контент → Голоса."
+          }
+        }
+      },
+      "extractionState" : "stale"
+    },
+    "Basic system voice. A better one: Settings → Accessibility → Spoken Content." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Базовый системный голос. Лучше — в Настройках: Универсальный доступ → Устный контент."
+          }
+        }
+      },
+      "extractionState" : "stale"
     }
   },
   "version" : "1.0"
