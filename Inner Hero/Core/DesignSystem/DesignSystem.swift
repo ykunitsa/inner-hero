@@ -37,6 +37,20 @@ enum AppColors {
     static let gray600       = Color("Gray600") // quiet text that still has to be read
     static let white         = Color.white
 
+    /// The surface of a running exercise session (breathing, spec §4).
+    ///
+    /// **Deliberately dark in both themes — it has no light variant.** Fifteen
+    /// minutes of light-gray screen goes into a fully dilated pupil in the
+    /// evening, and an adaptive token would fail exactly the argument it exists
+    /// for. Watch Breathe, Tide and Calm all land in the same place.
+    ///
+    /// Because the surface does not adapt, the *content* on it must be told
+    /// where it is: pair this with `.environment(\.colorScheme, .dark)` on the
+    /// subtree, so `TextColors.primary`, `cardBackground` and the grays resolve
+    /// to their dark values in light mode too. The colorset pins the surface,
+    /// the environment pins everything drawn on it — see USAGE.MD.
+    static let sessionSurface = Color("SessionSurface")
+
     /// The ring of an unselected **state indicator** — today that means the
     /// radio dot, and nothing else.
     ///

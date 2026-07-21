@@ -19,6 +19,11 @@ struct PrimaryButtonLabel: View {
     let title: String
     var systemImage: String? = nil
     var color: Color = AppColors.black
+    /// Overrides the label colour. Needed when `color` is a fixed hue rather
+    /// than `AppBlack`: the default flips with the colour scheme (so it stays
+    /// legible on a surface that inverts), and on a green capsule inside a
+    /// force-dark subtree that flip lands on black.
+    var titleColor: Color? = nil
 
     var body: some View {
         Group {
@@ -34,7 +39,7 @@ struct PrimaryButtonLabel: View {
                     .appFont(.buttonPrimary)
             }
         }
-        .foregroundStyle(isEnabled ? TextColors.onBlack : AppColors.gray400)
+        .foregroundStyle(isEnabled ? (titleColor ?? TextColors.onBlack) : AppColors.gray400)
         .frame(maxWidth: .infinity)
         .frame(minHeight: 52)
         .background(Capsule().fill(isEnabled ? color : AppColors.gray200))
@@ -49,6 +54,8 @@ struct PrimaryButton: View {
     let title: String
     var systemImage: String? = nil
     var color: Color = AppColors.black
+    /// See `PrimaryButtonLabel.titleColor`.
+    var titleColor: Color? = nil
     var isLoading: Bool = false
     let action: () -> Void
 
@@ -59,7 +66,12 @@ struct PrimaryButton: View {
                     ProgressView()
                         .tint(TextColors.onBlack)
                 } else {
-                    PrimaryButtonLabel(title: title, systemImage: systemImage, color: color)
+                    PrimaryButtonLabel(
+                        title: title,
+                        systemImage: systemImage,
+                        color: color,
+                        titleColor: titleColor
+                    )
                 }
             }
         }
@@ -416,57 +428,28 @@ struct QuoteCard: View {
 }
 
 // ─────────────────────────────────────────────
-// MARK: Breathing Circle
-// ─────────────────────────────────────────────
-
-/// Animated breathing circle (Guided Breathing screen)
-/// Usage: `BreathingCircle(phase: viewModel.breathPhase, color: .green)`
-struct BreathingCircle: View {
-    enum BreathPhase { case inhale, hold, exhale }
-    let phase: BreathPhase
-    var color: Color = AppColors.positive
-    var duration: TimeInterval = 3
-
-    private var scale: CGFloat {
-        switch phase {
-        case .inhale: return 1.15
-        case .hold:   return 1.15
-        case .exhale: return 0.88
-        }
-    }
-
-    var body: some View {
-        ZStack {
-            // Halo
-            Circle()
-                .fill(color.opacity(0.12))
-                .scaleEffect(scale + 0.12)
-            // Main circle
-            Circle()
-                .fill(color)
-                .scaleEffect(scale)
-        }
-        .frame(width: 160, height: 160)
-        .animation(.easeInOut(duration: duration), value: phase)
-    }
-}
-
-// ─────────────────────────────────────────────
 // MARK: Session Flow Bottom Pill (Grounding-style)
 // ─────────────────────────────────────────────
 
-/// Black capsule bar with three equal columns: back | center (timer / label) | primary action.
-/// Used by multi-step exercise flows (e.g. grounding, behavioral activation).
+/// Dark capsule bar with three equal columns: back | center (timer / label) | primary action.
+/// Used by multi-step exercise flows (e.g. breathing, grounding).
+///
+/// `background` exists because the default black disappears on
+/// `AppColors.sessionSurface` — a dark capsule on a dark screen is not a
+/// control any more. Session screens pass a raised fill instead.
 struct SessionFlowBottomPill<L: View, C: View, R: View>: View {
     @ViewBuilder let left: () -> L
     @ViewBuilder let center: () -> C
     @ViewBuilder let right: () -> R
+    var background: Color = .black
 
     init(
+        background: Color = .black,
         @ViewBuilder left: @escaping () -> L,
         @ViewBuilder center: @escaping () -> C,
         @ViewBuilder right: @escaping () -> R
     ) {
+        self.background = background
         self.left = left
         self.center = center
         self.right = right
@@ -486,8 +469,8 @@ struct SessionFlowBottomPill<L: View, C: View, R: View>: View {
         }
         .padding(.horizontal, Spacing.sm)
         .padding(.vertical, Spacing.xxs)
-        .background(Capsule().fill(Color.black))
-        .shadow(color: .black.opacity(0.22), radius: 16, y: 6)
+        .background(Capsule().fill(background))
+        .shadow(color: .black.opacity(Opacity.darkShadow), radius: 16, y: 6)
         .environment(\.colorScheme, .dark)
     }
 }
@@ -988,6 +971,10 @@ struct ChipFlowLayout: Layout {
 struct ChoiceOption<Value: Hashable>: Identifiable {
     let value: Value
     let title: String
+    /// Optional SF Symbol, honoured by the `.segments` style only — a glyph in
+    /// a stacked card would compete with the radio dot that already carries
+    /// the state.
+    var systemImage: String? = nil
     var id: Value { value }
 }
 
@@ -1096,18 +1083,25 @@ struct SegmentedChoice<Value: Hashable>: View {
         return Button {
             select(option)
         } label: {
-            Text(option.title)
-                .appFont(isSelected ? .bodyMedium : .body)
-                .foregroundStyle(isSelected ? TextColors.onColor : TextColors.primary)
-                .fixedSize(horizontal: false, vertical: true)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, Spacing.xxs)
-                .padding(.vertical, Spacing.xxs)
-                .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
-                .background(
-                    RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                        .fill(isSelected ? accentColor : AppColors.cardBackground)
-                )
+            HStack(spacing: Spacing.xxxs) {
+                if let systemImage = option.systemImage {
+                    Image(systemName: systemImage)
+                        .appFont(.bodyMedium)
+                        .accessibilityHidden(true)
+                }
+                Text(option.title)
+                    .appFont(isSelected ? .bodyMedium : .body)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.center)
+            }
+            .foregroundStyle(isSelected ? TextColors.onColor : TextColors.primary)
+            .padding(.horizontal, Spacing.xxs)
+            .padding(.vertical, Spacing.xxs)
+            .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .fill(isSelected ? accentColor : AppColors.cardBackground)
+            )
         }
         .buttonStyle(.plain)
         .animation(AppAnimation.fast, value: isSelected)
@@ -1258,12 +1252,6 @@ struct SegmentedChoice<Value: Hashable>: View {
     VStack(spacing: Spacing.xl) {
         ExerciseStepHeader(title: "Guided Breathing", category: "Relaxation", onBack: {}, onSettings: {})
         ExerciseStepHeader(title: "Situational log", onBack: {})
-
-        HStack(spacing: Spacing.xl) {
-            BreathingCircle(phase: .exhale)
-                .frame(width: 120, height: 120)
-        }
-        .frame(maxWidth: .infinity)
 
         SessionFlowBottomPill(
             left: {

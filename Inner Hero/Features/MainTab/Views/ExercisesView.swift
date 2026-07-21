@@ -9,6 +9,7 @@ struct ExercisesView: View {
     @Binding var path: NavigationPath
 
     @State private var showPlannedExposure = false
+    @State private var showBreathing = false
 
     /// Tiles are given a floor, not a fixed height: the corrective phrase is
     /// spec-required content and has to be allowed to grow — Russian runs
@@ -42,8 +43,12 @@ struct ExercisesView: View {
             ),
             .init(
                 title: String(localized: "Breathing"),
-                subtitle: String(localized: "Coming back soon"),
-                icon: "wind"
+                // Corrective phrase (spec 2.2): breathing is applied
+                // relaxation — a skill trained on a schedule, not something
+                // reached for when the anxiety is already peaking.
+                subtitle: String(localized: "Training, not first aid"),
+                icon: "wind",
+                action: { showBreathing = true }
             ),
             .init(
                 title: String(localized: "Relaxation"),
@@ -78,6 +83,9 @@ struct ExercisesView: View {
             }
             .fullScreenCover(isPresented: $showPlannedExposure) {
                 PlannedExposureFlowView()
+            }
+            .fullScreenCover(isPresented: $showBreathing) {
+                BreathingFlowView()
             }
         }
     }

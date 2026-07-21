@@ -29,16 +29,30 @@ after the teardown — audit while splitting.
 `Localizable.xcstrings` (~320 KB) still carries keys for deleted screens, plus old
 `stale` entries. Prune once the new screens stabilize (script it; don't hand-edit).
 
+### 5. UIKit escape hatches (recorded, not accidental)
+CLAUDE.md says no UIKit. Two files break it on purpose, both wrapping an API with no
+SwiftUI equivalent on iOS 26 — keep the exceptions to these files:
+- `Core/Utilities/HapticFeedback.swift` — the feedback generators.
+- `Core/Utilities/ScreenAwake.swift` — `isIdleTimerDisabled`, so the breathing session
+  doesn't go dark (and take CoreHaptics with it) mid-exercise. See the plan doc
+  `docs/plans/11.3-breathing.md` §2, decision 8.
+
 ## 🟡 Nice-to-have
 
-### 5. `ArticlesLoader` — unsafe static cache
+### 6. `ArticlesLoader` — unsafe static cache
 `cachedArticlesByLocalization` is a mutable static, not refreshed when the locale
 changes at runtime. Invalidate on locale change / thread-safe access.
 
-### 6. Hardcoded values past the design system
+### 7. Hardcoded values past the design system
 Kept files still contain some hardcoded `.font(.system(size:))` / frames (e.g. row
 chevrons at size 13). Replace with tokens as screens get touched.
 
-### 7. Onboarding is the old single screen
+### 8. Exposure duration slider could move to the scrolling ruler
+`DurationRangeSlider` still uses the static `TickTrack`; §11.3 introduced
+`ScrollingTickRuler` (tape under a fixed marker). Worth unifying **only** if the
+exposure control keeps its two markers — the ruler is single-value today, so this is
+a real component change, not a swap.
+
+### 9. Onboarding is the old single screen
 Becomes the 3-screen zero-questions flow (spec §7) in §11.6. Until then the old
 welcome/disclaimer screen stays.
