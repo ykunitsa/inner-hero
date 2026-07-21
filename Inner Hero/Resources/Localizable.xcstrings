@@ -2199,12 +2199,11 @@
       }
     },
     "Box breathing" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Квадратное дыхание"
+            "value" : "Квадратное"
           }
         }
       }
@@ -4164,12 +4163,11 @@
       }
     },
     "Finish" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Завершить"
+            "value" : "Закончить"
           }
         }
       }
@@ -13237,6 +13235,156 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Удерживай 3 секунды"
+          }
+        }
+      }
+    },
+    "Training, not first aid" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренировка, а не скорая помощь"
+          }
+        }
+      }
+    },
+    "4-4-4-4 · inhale, hold, exhale, hold" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4-4-4-4 · вдох, задержка, выдох, задержка"
+          }
+        }
+      }
+    },
+    "Equal phases with holds. Demands the most attention" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Равные фазы с задержками. Больше всего требует внимания"
+          }
+        }
+      }
+    },
+    "4-6" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4-6"
+          }
+        }
+      }
+    },
+    "Inhale 4, exhale 6" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вдох 4, выдох 6"
+          }
+        }
+      }
+    },
+    "The exhale is longer than the inhale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдох длиннее вдоха"
+          }
+        }
+      }
+    },
+    "Rhythmic" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ритмичное"
+          }
+        }
+      }
+    },
+    "Inhale 4, exhale 4" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вдох 4, выдох 4"
+          }
+        }
+      }
+    },
+    "An even cycle, no holds. Easiest not to lose track" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ровный цикл без задержек. Проще всего не сбиться"
+          }
+        }
+      }
+    },
+    "%@ min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ мин"
+          }
+        }
+      }
+    },
+    "Did you manage to relax?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Успел расслабиться?"
+          }
+        }
+      }
+    },
+    "%1$@ · %2$@ min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ мин"
+          }
+        }
+      }
+    },
+    "%1$@ · %2$@ of %3$@ min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ из %3$@ мин"
+          }
+        }
+      }
+    },
+    "Five in a row you relaxed in time. Try %@ min?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пять раз подряд успевал расслабиться. Попробовать %@ мин?"
+          }
+        }
+      }
+    },
+    "Twice in a row you didn't relax in time. Back to %@ min?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Два раза подряд не успевал расслабиться. Вернуться на %@ мин?"
           }
         }
       }

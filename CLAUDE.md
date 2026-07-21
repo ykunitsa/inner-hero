@@ -21,9 +21,11 @@ and the implementation order (§11).
   from the gear on Today. Exercises and History are placeholders that light up as
   flows are rebuilt in spec §11 order. §11.1 (situational exposure form, hero card
   on Today → sheet) and §11.2 (planned exposure: before → hidden-random-end timer →
-  after, launched from the Exercises row) are done. Current step: **§11.3 — breathing**.
+  after, launched from the Exercises row) are done. Current step: **§11.3 — breathing**
+  (code complete, `docs/plans/11.3-breathing.md`; awaiting device verification of
+  haptics and the session screen — CoreHaptics doesn't run in the simulator).
 - SwiftData: container lives in `App/Inner_HeroApp.swift` (`StoreBootstrap`),
-  currently holding `ExposureLogEntry`. The legacy 1.x store is wiped once on first
+  currently holding `ExposureLogEntry` and `BreathingSessionEntry`. The legacy 1.x store is wiped once on first
   2.0 launch; a store that stops opening after an in-place model edit is recreated
   automatically (pre-release: no versioned schemas).
 
@@ -130,6 +132,7 @@ Inner Hero/
 │   └── Utilities/                 # HapticFeedback, ExportDocument
 ├── Features/
 │   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView; HistoryView (placeholder)
+│   ├── Breathing/                 # §11.3 flow: before → session → after + ladder rule
 │   ├── Exposure/                  # §11.1 situational form + §11.2 planned flow: Views/ViewModels/Components
 │   ├── KnowledgeCenter/           # Articles list (kept as-is)
 │   ├── Onboarding/                # 1-screen shell; becomes 3 screens per spec §7 in §11.6
@@ -197,7 +200,9 @@ Interface codex: **`docs/design-principles.md`** — mandatory for any UI design
 ## Don't
 
 - Don't touch or reference `_to_delete/`.
-- Don't use UIKit.
+- Don't use UIKit. Two recorded exceptions wrap APIs with no SwiftUI equivalent:
+  `Core/Utilities/HapticFeedback.swift` and `Core/Utilities/ScreenAwake.swift`
+  (TECH_DEBT #5). Don't add a third without saying why in the file.
 - Don't hardcode colors/spacing/fonts instead of design-system tokens.
 - Don't author new displayed strings in Russian in code (source is English).
 - Don't rename persisted enum rawValues.

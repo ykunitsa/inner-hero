@@ -188,6 +188,110 @@ struct ScaleChoice<Value: Hashable>: View {
     }
 }
 
+// ─────────────────────────────────────────────
+// MARK: Scrolling Tick Ruler
+// ─────────────────────────────────────────────
+
+/// A ruler that moves under a fixed marker: the value reads large above a
+/// centred marker, and the ticked tape scrolls beneath it.
+///
+/// Unlike `ScaleChoice` and `IntensitySlider` — where the marker moves along a
+/// static track — here the marker is the still point. Reach for it only when
+/// the stops are a **named ladder** the user steps along rather than a range
+/// they sweep (today: breathing duration, spec §4).
+///
+/// Ticks are all the same height and carry no labels: with a ladder there is no
+/// "every fifth" to mark, and the number above the marker is the only reading
+/// that matters. Snapping is strict — every resting position is a ladder step,
+/// because a value between steps would have nothing to compare against in the
+/// ladder rule.
+struct ScrollingTickRuler: View {
+    let values: [Int]
+    @Binding var selection: Int
+    /// How a value reads above the marker.
+    let label: (Int) -> String
+    var accentColor: Color = AppColors.positive
+    /// Spoken value for VoiceOver, which never sees the tape.
+    var accessibilityValue: (Int) -> String
+
+    @ScaledMetric(relativeTo: .body) private var stepWidth: CGFloat = 44
+    @ScaledMetric(relativeTo: .body) private var tickHeight: CGFloat = 20
+
+    @State private var scrolledValue: Int?
+
+    var body: some View {
+        VStack(spacing: Spacing.xs) {
+            Text(label(selection))
+                .appFont(.monoLarge)
+                .foregroundStyle(TextColors.primary)
+                .contentTransition(.numericText())
+                .animation(AppAnimation.fast, value: selection)
+
+            ZStack {
+                tape
+                marker
+            }
+            .frame(height: TickTrack.markerHeight)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityValue(accessibilityValue(selection))
+        .accessibilityAdjustableAction { direction in
+            guard let index = values.firstIndex(of: selection) else { return }
+            // "Increment" moves right along the tape, which is the way the
+            // values are ordered — not necessarily "more minutes".
+            let next = direction == .increment ? index + 1 : index - 1
+            guard values.indices.contains(next) else { return }
+            selection = values[next]
+        }
+    }
+
+    private var tape: some View {
+        GeometryReader { proxy in
+            // Half a viewport of margin on each side, so the first and last
+            // steps can reach the centre marker.
+            let sideMargin = max((proxy.size.width - stepWidth) / 2, 0)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 0) {
+                    ForEach(values, id: \.self) { value in
+                        RoundedRectangle(cornerRadius: TrackMarker.width / 2, style: .continuous)
+                            .fill(value == selection ? accentColor : AppColors.gray300)
+                            .frame(width: TrackMarker.width / 2, height: tickHeight)
+                            .frame(width: stepWidth, height: TickTrack.markerHeight)
+                            .id(value)
+                    }
+                }
+                .scrollTargetLayout()
+            }
+            .scrollIndicators(.hidden)
+            .contentMargins(.horizontal, sideMargin, for: .scrollContent)
+            .scrollTargetBehavior(.viewAligned)
+            .scrollPosition(id: $scrolledValue, anchor: .center)
+            .onAppear { scrolledValue = selection }
+            .onChange(of: scrolledValue) { _, newValue in
+                guard let newValue, newValue != selection else { return }
+                selection = newValue
+                HapticFeedback.selection()
+            }
+            // The value can also change from outside — the ladder rule offers a
+            // step and the tape has to travel there.
+            .onChange(of: selection) { _, newValue in
+                guard scrolledValue != newValue else { return }
+                withAnimation(AppAnimation.standard) { scrolledValue = newValue }
+            }
+        }
+        .accessibilityHidden(true)
+    }
+
+    private var marker: some View {
+        RoundedRectangle(cornerRadius: TrackMarker.width / 2, style: .continuous)
+            .fill(accentColor)
+            .frame(width: TrackMarker.width, height: TickTrack.markerHeight)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+}
+
 // MARK: - Preview
 
 #Preview("Tick Tracks") {

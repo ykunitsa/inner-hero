@@ -49,7 +49,7 @@ private struct RootAppView: View {
 /// is wiped once on first 2.0 launch, and a store that no longer opens after
 /// an in-place model edit is recreated from scratch.
 private enum StoreBootstrap {
-    static let schema = Schema([ExposureLogEntry.self])
+    static let schema = Schema([ExposureLogEntry.self, BreathingSessionEntry.self])
 
     static func wipeLegacyStoreIfNeeded() {
         let defaults = UserDefaults.standard
