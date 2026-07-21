@@ -10,6 +10,7 @@ struct ExercisesView: View {
 
     @State private var showPlannedExposure = false
     @State private var showBreathing = false
+    @State private var showRelaxation = false
 
     /// Tiles are given a floor, not a fixed height: the corrective phrase is
     /// spec-required content and has to be allowed to grow — Russian runs
@@ -52,8 +53,11 @@ struct ExercisesView: View {
             ),
             .init(
                 title: String(localized: "Relaxation"),
-                subtitle: String(localized: "Coming back soon"),
-                icon: "figure.mind.and.body"
+                // Corrective phrase (spec 2.2): in PMR the release phase is the
+                // skill — tensing is only there to make the contrast findable.
+                subtitle: String(localized: "Letting go is the part you train"),
+                icon: "figure.mind.and.body",
+                action: { showRelaxation = true }
             ),
             .init(
                 title: String(localized: "Behavioral Activation"),
@@ -86,6 +90,9 @@ struct ExercisesView: View {
             }
             .fullScreenCover(isPresented: $showBreathing) {
                 BreathingFlowView()
+            }
+            .fullScreenCover(isPresented: $showRelaxation) {
+                PMRFlowView()
             }
         }
     }

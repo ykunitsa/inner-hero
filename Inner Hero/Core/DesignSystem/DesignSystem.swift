@@ -206,6 +206,10 @@ enum Opacity {
     static let subtleBorder:        Double = 0.12
     static let standardBorder:      Double = 0.20
     static let emphasizedBorder:    Double = 0.35
+    /// Content on a session surface that has dimmed itself (PMR, spec §5).
+    /// Low enough not to light a dark room, high enough to answer "is this
+    /// still running?" without a tap.
+    static let dimmedContent:       Double = 0.12
     static let lightShadow:         Double = 0.04
     static let standardShadow:      Double = 0.08
     static let darkShadow:          Double = 0.20
@@ -248,4 +252,7 @@ enum ContentScaling {
 enum InteractionTiming {
     /// Auto-dismiss for transient bottom banners.
     static let toastAutoDismiss: TimeInterval = 3
+    /// How long the PMR session screen stays awake before dimming itself, and
+    /// how long a tap wakes it back up for (spec §5).
+    static let sessionDimDelay: TimeInterval = 10
 }
