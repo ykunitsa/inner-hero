@@ -78,11 +78,22 @@ final class NotificationManager {
     /// Schedules a one-shot signal with second precision (calendar triggers
     /// only resolve to the minute). Used as the session-end vibration when
     /// the app is in the background (spec §3: planned exposure timer).
-    func scheduleOneTimeSignal(id: String, title: String, body: String, after seconds: TimeInterval) async {
+    ///
+    /// - Parameter sound: pass `nil` for a silent delivery. The BA tail reminder
+    ///   (spec §6: "одно тихое напоминание") uses it — it asks whether something
+    ///   from hours ago happened, which never warrants pulling attention with a
+    ///   chime.
+    func scheduleOneTimeSignal(
+        id: String,
+        title: String,
+        body: String,
+        after seconds: TimeInterval,
+        sound: UNNotificationSound? = .default
+    ) async {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
-        content.sound = .default
+        content.sound = sound
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(seconds, 1), repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)

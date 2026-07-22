@@ -11,6 +11,7 @@ struct ExercisesView: View {
     @State private var showPlannedExposure = false
     @State private var showBreathing = false
     @State private var showRelaxation = false
+    @State private var showActivation = false
 
     /// Tiles are given a floor, not a fixed height: the corrective phrase is
     /// spec-required content and has to be allowed to grow — Russian runs
@@ -61,8 +62,12 @@ struct ExercisesView: View {
             ),
             .init(
                 title: String(localized: "Behavioral Activation"),
-                subtitle: String(localized: "Coming back soon"),
-                icon: "figure.walk"
+                // Corrective phrase (spec 2.2): BA inverts the order people
+                // expect — you do not wait to feel like it, the feeling follows
+                // the doing.
+                subtitle: String(localized: "Action comes before the wish"),
+                icon: "figure.walk",
+                action: { showActivation = true }
             ),
         ]
     }
@@ -93,6 +98,9 @@ struct ExercisesView: View {
             }
             .fullScreenCover(isPresented: $showRelaxation) {
                 PMRFlowView()
+            }
+            .fullScreenCover(isPresented: $showActivation) {
+                BAFlowView()
             }
         }
     }

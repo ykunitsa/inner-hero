@@ -31,6 +31,9 @@ enum AppStorageKeys {
     static let hasCompletedOnboarding = "hasCompletedOnboarding"
     static let hasLoadedSampleData = "hasLoadedSampleData"
     static let hasWipedLegacyStore = "storage.hasWipedLegacyStore.v2"
+    /// One-time seeding of the BA activity store (spec §6). A data-migration
+    /// flag, not a "has seen" flag — see `BAPreset.seedIfNeeded`.
+    static let hasSeededBAPreset = "storage.hasSeededBAPreset"
 }
 
 

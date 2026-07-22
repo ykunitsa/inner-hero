@@ -14,6 +14,9 @@ struct Inner_HeroApp: App {
     init() {
         StoreBootstrap.wipeLegacyStoreIfNeeded()
         modelContainer = StoreBootstrap.makeContainer()
+        // The BA store has to exist before the first "Одно дело" card is drawn;
+        // an empty shelf is not a state that screen can do anything useful with.
+        BAPreset.seedIfNeeded(in: modelContainer.mainContext)
     }
 
     var body: some Scene {
@@ -53,6 +56,8 @@ private enum StoreBootstrap {
         ExposureLogEntry.self,
         BreathingSessionEntry.self,
         PMRSessionEntry.self,
+        BAActivity.self,
+        BALogEntry.self,
     ])
 
     static func wipeLegacyStoreIfNeeded() {
@@ -81,5 +86,10 @@ private enum StoreBootstrap {
             let url = URL(filePath: storeURL.path() + suffix)
             try? FileManager.default.removeItem(at: url)
         }
+        // Flags that describe the *contents* of the store have to die with it.
+        // The BA seed flag means "this store has been seeded"; leaving it set
+        // across a reset gives the user an activity store that is empty forever,
+        // and during the pre-release phase a reset is routine (CLAUDE.md).
+        UserDefaults.standard.removeObject(forKey: AppStorageKeys.hasSeededBAPreset)
     }
 }
