@@ -646,6 +646,52 @@ struct AppTextEditor: View {
     }
 }
 
+/// Single-line counterpart to `AppTextEditor`, same grammar: a `cardBackground`
+/// plate on the form's gray ground, no outline until focus.
+///
+/// Exists because a one-line answer in a page-tall editor reads as a request for
+/// an essay — and, more practically, leaves no room for the controls under it.
+///
+/// Unlike `AppTextEditor`, focus is **passed in**. That editor owns a private
+/// `@FocusState`, so `.focused(_:)` applied from outside does not reach its inner
+/// `TextEditor` and autofocus silently does nothing; here the caller holds the
+/// state and the field binds to it directly.
+///
+/// Usage:
+/// ```swift
+/// @FocusState private var isFocused: Bool
+/// AppTextField(text: $title, placeholder: "Go for a walk…", isFocused: $isFocused)
+/// ```
+struct AppTextField: View {
+    @Binding var text: String
+    var placeholder: String = ""
+    var isFocused: FocusState<Bool>.Binding
+
+    var body: some View {
+        TextField(text: $text) {
+            Text(placeholder).foregroundStyle(AppColors.gray400)
+        }
+        .textFieldStyle(.plain)
+        .appFont(.body)
+        .foregroundStyle(TextColors.primary)
+        .focused(isFocused)
+        .padding(Spacing.xs)
+        .frame(minHeight: TouchTarget.minimum)
+        .background(
+            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                .fill(AppColors.cardBackground)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                .strokeBorder(
+                    isFocused.wrappedValue ? AppColors.accent : .clear,
+                    lineWidth: BorderWidth.emphasized
+                )
+        )
+        .animation(AppAnimation.fast, value: isFocused.wrappedValue)
+    }
+}
+
 // ─────────────────────────────────────────────
 // MARK: Intensity Slider (0–10)
 // ─────────────────────────────────────────────

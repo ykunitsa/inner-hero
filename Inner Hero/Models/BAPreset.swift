@@ -8,29 +8,41 @@ import SwiftData
 /// fifteen activities before the exercise can be used once, and inventing things
 /// is exactly what a person low on energy cannot do.
 ///
-/// Baskets are assigned by how much *initiative* each one takes, not by minutes
-/// or by how worthy it sounds. Anything involving another person answering is at
-/// least medium, because the cost is no longer under the user's control.
+/// **The draft is balanced, not just graded.** Clinical BA materials sort
+/// activities into three kinds — routine, necessary and pleasurable — and are
+/// explicit that *each* difficulty level should hold some of each, because a week
+/// made only of chores and a week made only of treats both fail. The seed list
+/// below therefore holds two of each kind in every basket.
+///
+/// The kind that matters most and is easiest to forget is **necessary**: bills,
+/// appointments, paperwork. Their cost grows while they are avoided, which is
+/// exactly what makes them hard to start and worth having on the shelf.
 nonisolated enum BAPreset {
 
-    static let activities: [(title: String, effort: BAEffort)] = [
-        (String(localized: "Step out on the balcony"), .easy),
-        (String(localized: "Wash the dishes"), .easy),
-        (String(localized: "Text a friend"), .easy),
-        (String(localized: "Take a shower"), .easy),
-        (String(localized: "Make the bed"), .easy),
-        (String(localized: "Water the plants"), .easy),
+    static let activities: [(title: String, effort: BAEffort, kind: BAKind)] = [
+        // Easy — minutes, nobody else involved, nothing to schedule.
+        (String(localized: "Wash the dishes"), .easy, .routine),
+        (String(localized: "Take a shower"), .easy, .routine),
+        (String(localized: "Open the post"), .easy, .necessary),
+        (String(localized: "Take the rubbish out"), .easy, .necessary),
+        (String(localized: "Step out on the balcony"), .easy, .pleasurable),
+        (String(localized: "Text a friend"), .easy, .pleasurable),
 
-        (String(localized: "Put on music and sit with it"), .medium),
-        (String(localized: "Cook a meal"), .medium),
-        (String(localized: "Go for a walk"), .medium),
-        (String(localized: "Tidy the desk"), .medium),
-        (String(localized: "Go to the shop"), .medium),
-        (String(localized: "Do the laundry"), .medium),
+        // Medium — a chunk of the day, or a small appointment with the world.
+        (String(localized: "Cook a meal"), .medium, .routine),
+        (String(localized: "Do the laundry"), .medium, .routine),
+        (String(localized: "Pay a bill"), .medium, .necessary),
+        (String(localized: "Book an appointment"), .medium, .necessary),
+        (String(localized: "Go for a walk"), .medium, .pleasurable),
+        (String(localized: "Put on music and sit with it"), .medium, .pleasurable),
 
-        (String(localized: "Call someone close"), .hard),
-        (String(localized: "Go to the gym"), .hard),
-        (String(localized: "Meet a friend"), .hard),
+        // Hard — leaving the house, other people, or a task that has been growing.
+        (String(localized: "Go to the gym"), .hard, .routine),
+        (String(localized: "Clean one room properly"), .hard, .routine),
+        (String(localized: "Do the weekly food shop"), .hard, .necessary),
+        (String(localized: "Sort out the paperwork"), .hard, .necessary),
+        (String(localized: "Meet a friend"), .hard, .pleasurable),
+        (String(localized: "Call someone close"), .hard, .pleasurable),
     ]
 
     /// Seeds the store once, ever.
@@ -40,12 +52,21 @@ nonisolated enum BAPreset {
     /// would quietly overrule it. The flag records a one-time data migration, not
     /// anything about what the user has seen — the `sessions == 0` rule
     /// (principle 1.7) still runs off the log count alone.
+    ///
+    /// It is cleared whenever the store itself is deleted (`StoreBootstrap`),
+    /// because a flag describing the contents of a store must not outlive it.
     @MainActor
     static func seedIfNeeded(in context: ModelContext, defaults: UserDefaults = .standard) {
         guard !defaults.bool(forKey: AppStorageKeys.hasSeededBAPreset) else { return }
 
         for activity in activities {
-            context.insert(BAActivity(title: activity.title, effort: activity.effort))
+            context.insert(
+                BAActivity(
+                    title: activity.title,
+                    effort: activity.effort,
+                    kind: activity.kind
+                )
+            )
         }
         // The flag is only set if the write actually landed: a failed save must
         // leave the app able to try again, not with an empty store it believes is

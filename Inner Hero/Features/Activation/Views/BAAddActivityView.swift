@@ -20,16 +20,20 @@ struct BAAddActivityView: View {
         BAEffort.allCases.map { ChoiceOption(value: $0, title: $0.title) }
     }
 
+    private var kindOptions: [ChoiceOption<BAKind>] {
+        BAKind.allCases.map { ChoiceOption(value: $0, title: $0.title) }
+    }
+
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: Spacing.md) {
                 VStack(alignment: .leading, spacing: Spacing.xxs) {
                     SectionLabel(text: String(localized: "What will you do?"))
-                    AppTextEditor(
+                    AppTextField(
                         text: $viewModel.draftTitle,
-                        placeholder: String(localized: "Go for a walk…")
+                        placeholder: String(localized: "Go for a walk…"),
+                        isFocused: $isTitleFocused
                     )
-                    .focused($isTitleFocused)
                 }
 
                 VStack(alignment: .leading, spacing: Spacing.xxs) {
@@ -43,6 +47,23 @@ struct BAAddActivityView: View {
                             set: { viewModel.draftEffort = $0 ?? viewModel.draftEffort }
                         ),
                         style: .segments
+                    )
+                }
+
+                VStack(alignment: .leading, spacing: Spacing.xxs) {
+                    SectionLabel(text: String(localized: "Type"))
+                    // Cards, not segments: "Necessary" and "Pleasant" are twice
+                    // the width of "Easy", and three of them in one row collapse
+                    // at the first Dynamic Type step. No glyph here — `.cards`
+                    // deliberately ignores `systemImage` so it does not compete
+                    // with the radio dot; the store's glyphs carry their meaning
+                    // by convention and by VoiceOver label instead.
+                    SegmentedChoice(
+                        options: kindOptions,
+                        selection: Binding(
+                            get: { viewModel.draftKind },
+                            set: { viewModel.draftKind = $0 ?? viewModel.draftKind }
+                        )
                     )
                 }
 

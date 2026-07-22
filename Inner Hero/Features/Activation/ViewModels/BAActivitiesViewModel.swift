@@ -12,6 +12,7 @@ final class BAActivitiesViewModel {
 
     var draftTitle = ""
     var draftEffort: BAEffort = .easy
+    var draftKind: BAKind = .routine
 
     var trimmedDraftTitle: String {
         draftTitle.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -22,12 +23,17 @@ final class BAActivitiesViewModel {
     func add(in context: ModelContext, now: Date = Date()) throws {
         guard canAdd else { return }
         context.insert(
-            BAActivity(title: trimmedDraftTitle, effort: draftEffort, createdAt: now)
+            BAActivity(
+                title: trimmedDraftTitle,
+                effort: draftEffort,
+                kind: draftKind,
+                createdAt: now
+            )
         )
         try context.save()
-        // The basket is kept for the next line: filling the store means adding
-        // several at once, and re-picking "easy" every time is the kind of
-        // repeated choice codex §2 exists to remove.
+        // The basket and the kind are kept for the next line: filling the store
+        // means adding several at once, and re-picking both every time is the kind
+        // of repeated choice codex §2 exists to remove.
         draftTitle = ""
     }
 

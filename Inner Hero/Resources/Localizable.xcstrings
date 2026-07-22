@@ -2063,6 +2063,17 @@
         }
       }
     },
+    "Book an appointment" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Записаться к врачу"
+          }
+        }
+      }
+    },
     "Box Breathing" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2326,6 +2337,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выберите технику"
+          }
+        }
+      }
+    },
+    "Clean one room properly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Убраться в одной комнате"
           }
         }
       }
@@ -3249,6 +3271,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Загрузить стирку"
+          }
+        }
+      }
+    },
+    "Do the weekly food shop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закупиться продуктами на неделю"
           }
         }
       }
@@ -4532,16 +4565,6 @@
         }
       }
     },
-    "Go to the shop" : {
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сходить в магазин"
-          }
-        }
-      }
-    },
     "Go to today" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5741,16 +5764,6 @@
         }
       }
     },
-    "Make the bed" : {
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Застелить кровать"
-          }
-        }
-      }
-    },
     "Mark as completed" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6005,6 +6018,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Мой список"
+          }
+        }
+      }
+    },
+    "Necessary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Необходимая"
           }
         }
       }
@@ -6720,6 +6744,17 @@
         }
       }
     },
+    "Open the post" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разобрать почту"
+          }
+        }
+      }
+    },
     "Opens the activity list for selection" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6812,6 +6847,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пауза"
+          }
+        }
+      }
+    },
+    "Pay a bill" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оплатить счёт"
           }
         }
       }
@@ -6929,6 +6975,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Собирался вчера в %@"
+          }
+        }
+      }
+    },
+    "Pleasant" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приятная"
           }
         }
       }
@@ -7554,6 +7611,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ритмичное"
+          }
+        }
+      }
+    },
+    "Routine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рутинная"
           }
         }
       }
@@ -8282,6 +8350,17 @@
         }
       }
     },
+    "Sort out the paperwork" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разобрать бумаги"
+          }
+        }
+      }
+    },
     "Sounds" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -8737,6 +8816,17 @@
         }
       }
     },
+    "Take the rubbish out" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вынести мусор"
+          }
+        }
+      }
+    },
     "Tap to get inspired" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -9019,16 +9109,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Это удалит все упражнения, расписания и результаты сеансов. Это действие нельзя отменить."
-          }
-        }
-      }
-    },
-    "Tidy the desk" : {
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Разобрать стол"
           }
         }
       }
@@ -9645,16 +9725,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Посмотрите видео"
-          }
-        }
-      }
-    },
-    "Water the plants" : {
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Полить цветы"
           }
         }
       }

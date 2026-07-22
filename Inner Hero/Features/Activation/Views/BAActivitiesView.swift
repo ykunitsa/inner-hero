@@ -63,10 +63,7 @@ struct BAActivitiesView: View {
             ForEach(viewModel.grouped(activities), id: \.basket) { group in
                 Section {
                     ForEach(group.items) { activity in
-                        Text(activity.title)
-                            .appFont(.body)
-                            .foregroundStyle(TextColors.primary)
-                            .fixedSize(horizontal: false, vertical: true)
+                        row(activity)
                     }
                     // The system list supplies the swipe *and* the VoiceOver
                     // "Delete" action from this one modifier — a hand-rolled
@@ -83,6 +80,34 @@ struct BAActivitiesView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .formBackground()
+    }
+
+    /// The kind glyph, then the line.
+    ///
+    /// One muted colour for all three: three different colours would be three new
+    /// colour meanings in a system where colour carries roles, and on a list of
+    /// one's own life they would read as a verdict. The glyph is decorative for
+    /// VoiceOver — the kind is folded into the row's spoken label instead, so it
+    /// is announced once rather than as a stray "heart" before every title.
+    private func row(_ activity: BAActivity) -> some View {
+        HStack(spacing: Spacing.xs) {
+            if let kind = activity.kind {
+                Image(systemName: kind.glyph)
+                    .appFont(.small)
+                    .foregroundStyle(AppColors.gray600)
+                    .frame(width: IconSize.fieldGlyph)
+                    .accessibilityHidden(true)
+            }
+
+            Text(activity.title)
+                .appFont(.body)
+                .foregroundStyle(TextColors.primary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            activity.kind.map { "\(activity.title), \($0.title)" } ?? activity.title
+        )
     }
 
     /// Only reachable by deleting everything, which is a decision — so this is a

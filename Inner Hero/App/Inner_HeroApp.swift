@@ -86,10 +86,15 @@ private enum StoreBootstrap {
             let url = URL(filePath: storeURL.path() + suffix)
             try? FileManager.default.removeItem(at: url)
         }
-        // Flags that describe the *contents* of the store have to die with it.
-        // The BA seed flag means "this store has been seeded"; leaving it set
-        // across a reset gives the user an activity store that is empty forever,
-        // and during the pre-release phase a reset is routine (CLAUDE.md).
+
+        // Flags that describe the *contents* of the store have to die with it —
+        // but only if it actually died. The BA seed flag means "this store has
+        // been seeded"; clearing it while the file survives seeds the preset a
+        // second time into a store that already has it, and the user opens
+        // "Занятия" to every line twice. Deletion can fail (an open handle, a
+        // store CoreData is mid-recovery on), so the flag follows the file rather
+        // than the intention.
+        guard !FileManager.default.fileExists(atPath: storeURL.path()) else { return }
         UserDefaults.standard.removeObject(forKey: AppStorageKeys.hasSeededBAPreset)
     }
 }

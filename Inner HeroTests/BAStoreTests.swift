@@ -84,6 +84,25 @@ struct BAPresetTests {
             #expect(BAPreset.activities.contains { $0.effort == basket })
         }
     }
+
+    @Test("Every basket holds routine, necessary and pleasurable activities")
+    func everyBasketIsBalanced() {
+        // Clinical BA materials are explicit that each difficulty level needs all
+        // three kinds: a shelf of nothing but chores and a shelf of nothing but
+        // treats both fail. "Necessary" is the one that quietly goes missing.
+        for basket in BALadder.baskets {
+            let kinds = BAPreset.activities.filter { $0.effort == basket }.map(\.kind)
+            #expect(kinds.contains { $0 == .routine })
+            #expect(kinds.contains { $0 == .necessary })
+            #expect(kinds.contains { $0 == .pleasurable })
+        }
+    }
+
+    @Test("Titles are unique — the same line twice halves the odds of the other one")
+    func titlesAreUnique() {
+        let titles = BAPreset.activities.map(\.title)
+        #expect(Set(titles).count == titles.count)
+    }
 }
 
 // MARK: - Store editing
@@ -99,12 +118,14 @@ struct BAActivitiesTests {
 
         viewModel.draftTitle = "  Go for a walk  "
         viewModel.draftEffort = .medium
+        viewModel.draftKind = .pleasurable
         try viewModel.add(in: context)
 
         let activities = try context.fetch(FetchDescriptor<BAActivity>())
         #expect(activities.count == 1)
         #expect(activities.first?.title == "Go for a walk")
         #expect(activities.first?.effort == .medium)
+        #expect(activities.first?.kind == .pleasurable)
     }
 
     @Test("A blank line is not an activity")
@@ -126,12 +147,14 @@ struct BAActivitiesTests {
 
         viewModel.draftTitle = "Dishes"
         viewModel.draftEffort = .hard
+        viewModel.draftKind = .necessary
         try viewModel.add(in: context)
 
         #expect(viewModel.draftTitle.isEmpty)
-        // Filling the store is a burst of several lines; re-picking the basket
-        // each time is the repeated choice codex §2 removes.
+        // Filling the store is a burst of several lines; re-picking the basket and
+        // the kind each time is the repeated choice codex §2 removes.
         #expect(viewModel.draftEffort == .hard)
+        #expect(viewModel.draftKind == .necessary)
     }
 
     @Test("Deleting removes the line")

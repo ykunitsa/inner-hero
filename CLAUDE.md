@@ -189,6 +189,12 @@ clock inside logic.
 - **No versioned schemas or migration plans until the 2.0 App Store release.**
   Models may be edited in place; wipe dev data when the store no longer opens.
   Versioned schemas + migration tests start at release.
+- **A new non-optional property needs a default in its declaration**
+  (`var kindRaw: String = BAKind.routine.rawValue`), not just a value in `init`.
+  Without one CoreData cannot infer the migration ("missing attribute values on
+  mandatory destination attribute") and the app fatalErrors at launch — the
+  delete-and-retry in `makeContainer()` does **not** save you, because the failed
+  first attempt can leave the file in place for the second.
 - Enum-backed fields store `String` rawValues. **Never rename a persisted rawValue.**
 
 ### Testing
