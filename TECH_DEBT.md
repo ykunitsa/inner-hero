@@ -53,6 +53,15 @@ chevrons at size 13). Replace with tokens as screens get touched.
 exposure control keeps its two markers — the ruler is single-value today, so this is
 a real component change, not a swap.
 
-### 9. Onboarding is the old single screen
+### 9. The ladder suggestion line exists twice
+`PMRBeforeView.suggestionLine` and `BAComponents.BASuggestionLine` are the same
+control — accent-tinted row, tap applies, renders nothing when there is no
+suggestion. Breathing will make it three. Unify into one component in
+`Components.swift` when the third appears, not before: the two ladders return
+different suggestion types, so a shared version needs a small protocol or a
+plain `(glyph, text, action)` init, and that is worth designing once with three
+call sites in hand.
+
+### 10. Onboarding is the old single screen
 Becomes the 3-screen zero-questions flow (spec §7) in §11.6. Until then the old
 welcome/disclaimer screen stays.

@@ -24,14 +24,18 @@ and the implementation order (§11).
   after, launched from the Exercises row), §11.3 (breathing: before → paced
   session → after, plus the ladder rule — see `docs/plans/11.3-breathing.md`) and
   §11.4 (PMR: script engine, all 5 ladder steps, voice prototype — see
-  `docs/plans/11.4-pmr.md`) are done. Two things still await a device run: §11.3
-  haptics and idle-timer suppression (CoreHaptics doesn't exist in the simulator),
-  and §11.4 TTS quality plus background audio. Current step: **§11.5 — BA**.
+  `docs/plans/11.4-pmr.md`) and §11.5 (BA: energy question → one random card →
+  open tail on Today → ratings, plus the store and the BA ladder) are done. Three
+  things still await a device run: §11.3 haptics and idle-timer suppression
+  (CoreHaptics doesn't exist in the simulator), §11.4 TTS quality plus background
+  audio, and §11.5's silent tail reminder. Current step: **§11.6 — оболочка**.
 - SwiftData: container lives in `App/Inner_HeroApp.swift` (`StoreBootstrap`),
-  currently holding `ExposureLogEntry`, `BreathingSessionEntry` and
-  `PMRSessionEntry`. The legacy 1.x store is wiped once on first
+  currently holding `ExposureLogEntry`, `BreathingSessionEntry`, `PMRSessionEntry`,
+  `BAActivity` and `BALogEntry`. The legacy 1.x store is wiped once on first
   2.0 launch; a store that stops opening after an in-place model edit is recreated
-  automatically (pre-release: no versioned schemas).
+  automatically (pre-release: no versioned schemas). **Anything that flags the
+  store's contents must be cleared when the store is deleted** — `deleteDefaultStore()`
+  drops the BA seed flag for exactly this reason.
 
 ## Language & communication
 
@@ -136,13 +140,14 @@ Inner Hero/
 │   └── Utilities/                 # HapticFeedback, ExportDocument, ScreenAwake, BreathingHaptics, PMRVoice, AudioSession
 ├── Features/
 │   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView; HistoryView (placeholder)
+│   ├── Activation/               # §11.5 BA flow: energy → one thing → tail → after + store
 │   ├── Breathing/                 # §11.3 flow: before → session → after + ladder rule
 │   ├── Exposure/                  # §11.1 situational form + §11.2 planned flow: Views/ViewModels/Components
 │   ├── KnowledgeCenter/           # Articles list (kept as-is)
 │   ├── Onboarding/                # 1-screen shell; becomes 3 screens per spec §7 in §11.6
 │   ├── Relaxation/                # §11.4 PMR flow: before → picker → voiced session → after
 │   └── Settings/                  # Settings + AppLock; Data section returns with new models
-├── Models/                        # AppSettings; ExposureLogEntry / BreathingSession / PMRSession (@Model) + BreathingLadder, PMRLadder, PMRScript
+├── Models/                        # AppSettings; ExposureLogEntry / BreathingSession / PMRSession / BAActivity / BALogEntry (@Model) + BreathingLadder, PMRLadder, PMRScript, BALadder, BAPreset
 ├── Services/                      # ArticlesLoader/Store, NotificationManager (generic primitives)
 ├── Resources/                     # Localizable.xcstrings, Articles.json, assets
 └── docs/redesign-spec.md          # ← product source of truth (repo root /docs)
@@ -184,6 +189,12 @@ clock inside logic.
 - **No versioned schemas or migration plans until the 2.0 App Store release.**
   Models may be edited in place; wipe dev data when the store no longer opens.
   Versioned schemas + migration tests start at release.
+- **A new non-optional property needs a default in its declaration**
+  (`var kindRaw: String = BAKind.routine.rawValue`), not just a value in `init`.
+  Without one CoreData cannot infer the migration ("missing attribute values on
+  mandatory destination attribute") and the app fatalErrors at launch — the
+  delete-and-retry in `makeContainer()` does **not** save you, because the failed
+  first attempt can leave the file in place for the second.
 - Enum-backed fields store `String` rawValues. **Never rename a persisted rawValue.**
 
 ### Testing
