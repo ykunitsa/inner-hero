@@ -153,7 +153,10 @@ struct BAFlowView: View {
                 title: title,
                 body: String(localized: "Did it happen?"),
                 after: delay,
-                sound: nil
+                sound: nil,
+                // Opens BA, which puts the tail first — the same door the row on
+                // Today and the "Сегодня" widget use.
+                deepLink: .exercise(.activation)
             )
         }
     }

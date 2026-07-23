@@ -38,53 +38,49 @@ struct ExercisesView: View {
     ]
 
     private struct LauncherTile: Identifiable {
-        var id: String { title }
-        let title: String
-        let subtitle: String
-        let icon: String
+        let exercise: ScheduledExercise
+        /// The ladder position, or nil while `sessions == 0` (§1.7) — in which case
+        /// the corrective phrase stands in.
+        let status: String?
         var action: (() -> Void)? = nil
+
+        init(exercise: ScheduledExercise, subtitle: String?, action: (() -> Void)? = nil) {
+            self.exercise = exercise
+            self.status = subtitle
+            self.action = action
+        }
+
+        var id: String { exercise.rawValue }
+        var title: String { exercise.title }
+        var icon: String { exercise.icon }
+        var subtitle: String { status ?? exercise.correctivePhrase }
     }
 
     private var tiles: [LauncherTile] {
         [
+            // Title, glyph and the `sessions == 0` phrase all come from
+            // `ScheduledExercise`: the widgets say the same things about the same
+            // exercises, and one vocabulary cannot drift from itself (§11.7).
             .init(
-                title: String(localized: "Exposures"),
-                // Corrective phrase (spec 2.2): the exercise's success
-                // criterion, not marketing.
-                subtitle: ExerciseStatus.exposure(exposures)
-                    ?? String(localized: "Success is staying, not calming down"),
-                icon: "leaf",
+                exercise: .exposure,
+                subtitle: ExerciseStatus.exposure(exposures),
                 // One tap from the tile to the "before" screen — no menu
                 // between icon and action (principle 1.2).
                 action: { showPlannedExposure = true }
             ),
             .init(
-                title: String(localized: "Breathing"),
-                // Corrective phrase (spec 2.2): breathing is applied
-                // relaxation — a skill trained on a schedule, not something
-                // reached for when the anxiety is already peaking.
-                subtitle: ExerciseStatus.breathing(breathingSessions)
-                    ?? String(localized: "Training, not first aid"),
-                icon: "wind",
+                exercise: .breathing,
+                subtitle: ExerciseStatus.breathing(breathingSessions),
                 action: { showBreathing = true }
             ),
             .init(
-                title: String(localized: "Relaxation"),
-                // Corrective phrase (spec 2.2): in PMR the release phase is the
-                // skill — tensing is only there to make the contrast findable.
-                subtitle: ExerciseStatus.pmr(pmrSessions)
-                    ?? String(localized: "Letting go is the part you train"),
-                icon: "figure.mind.and.body",
+                exercise: .relaxation,
+                subtitle: ExerciseStatus.pmr(pmrSessions),
                 action: { showRelaxation = true }
             ),
             .init(
-                title: String(localized: "Behavioral Activation"),
-                // Corrective phrase (spec 2.2): BA inverts the order people
-                // expect — you do not wait to feel like it, the feeling follows
-                // the doing.
-                subtitle: ExerciseStatus.activation(activationEntries)
-                    ?? String(localized: "Action comes before the wish"),
-                icon: "figure.walk",
+                exercise: .activation,
+                subtitle: ExerciseStatus.activation(activationEntries),
                 action: { showActivation = true }
             ),
         ]

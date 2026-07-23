@@ -10,5 +10,20 @@
 	<array>
 		<string>audio</string>
 	</array>
+	<!-- The one external entry point (§11.7): widgets and notifications both
+	     open the app through innerhero:// URLs. See Core/Navigation/DeepLink.swift.
+	     Not declared for inbound links from anywhere else — nothing outside this
+	     app has a reason to drive it. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>wrongteam.Inner-Hero.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>innerhero</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

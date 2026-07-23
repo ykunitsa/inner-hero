@@ -1,71 +1,9 @@
 import Foundation
 import SwiftData
 
-// MARK: - Scheduled exercise
-
-/// Which exercise a schedule entry points at (spec §1.10: the shared layer is
-/// scheduling and logging).
-///
-/// This enum is an **identifier and nothing else**. Principle 1.10 exists because
-/// the previous version died of a shared "exercise template" — so the boundary is
-/// hard: a rawValue, a title, a glyph. No `beforeView`, no `steps`, no `var flow`.
-/// Which screen to open stays a `switch` at the call site, the way `ExercisesView`
-/// and `HistoryView` already do it. A `some View` inside this enum is the warning
-/// sign that the template is growing back.
-nonisolated enum ScheduledExercise: String, CaseIterable, Identifiable {
-    // Persisted rawValues — never rename (CLAUDE.md).
-    case exposure
-    case breathing
-    case relaxation
-    case activation
-
-    var id: String { rawValue }
-
-    /// The same titles the launcher uses (spec §2.2) — one vocabulary for one
-    /// exercise, so a schedule row and its tile never disagree.
-    var title: String {
-        switch self {
-        case .exposure: String(localized: "Exposures")
-        case .breathing: String(localized: "Breathing")
-        case .relaxation: String(localized: "Relaxation")
-        case .activation: String(localized: "Behavioral Activation")
-        }
-    }
-
-    var icon: String {
-        switch self {
-        case .exposure: "leaf"
-        case .breathing: "wind"
-        case .relaxation: "figure.mind.and.body"
-        case .activation: "figure.walk"
-        }
-    }
-}
-
-// MARK: - Recurrence
-
-/// How a schedule entry repeats (`docs/plans/11.6d-schedule.md`, decision 4).
-///
-/// Three kinds, not the Reminders app's four: yearly has no meaning here, since
-/// neither practice nor therapy homework arrives once a year, and every extra kind
-/// multiplies the editor's states, the "what falls on today" logic and the
-/// notification triggers.
-nonisolated enum ScheduleRecurrence: String, CaseIterable, Identifiable {
-    // Persisted rawValues — never rename (CLAUDE.md).
-    case once
-    case weekly
-    case monthly
-
-    var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .once: String(localized: "Once")
-        case .weekly: String(localized: "Days")
-        case .monthly: String(localized: "Monthly")
-        }
-    }
-}
+// `ScheduledExercise` and `ScheduleRecurrence` live in their own files
+// (`ScheduledExercise.swift`, `ScheduleRecurrenceRule.swift`): the widget extension
+// needs both, and neither may drag a `@Model` into it (§11.7).
 
 // MARK: - Schedule item
 
@@ -163,14 +101,9 @@ final class ScheduleItem {
         )
     }
 
-    /// Split out from the model so every boundary is testable without building a
-    /// store — the same reason `ExerciseStatus.relativeDay` and
-    /// `TodayViewModel.greeting(forHour:)` are free functions.
-    ///
-    /// Monthly deliberately has **no fallback** for the 29th–31st: a month without
-    /// that day simply does not fire. `UNCalendarNotificationTrigger` behaves
-    /// exactly this way, and a cleverer rule here would make the day list disagree
-    /// with when the notification actually arrives.
+    /// The rule itself lives in `ScheduleRecurrenceRule` — testable without a store,
+    /// and reachable from the widget without SwiftData. This stays as the call site
+    /// everything in the app already uses.
     static func occurs(
         recurrence: ScheduleRecurrence,
         weekdays: [Int],
@@ -179,16 +112,14 @@ final class ScheduleItem {
         on date: Date,
         calendar: Calendar = .current
     ) -> Bool {
-        switch recurrence {
-        case .once:
-            guard let onceDate else { return false }
-            return calendar.isDate(onceDate, inSameDayAs: date)
-        case .weekly:
-            guard !weekdays.isEmpty else { return true }
-            return weekdays.contains(calendar.component(.weekday, from: date))
-        case .monthly:
-            return calendar.component(.day, from: date) == monthDay
-        }
+        ScheduleRecurrenceRule.occurs(
+            recurrence: recurrence,
+            weekdays: weekdays,
+            monthDay: monthDay,
+            onceDate: onceDate,
+            on: date,
+            calendar: calendar
+        )
     }
 
     // MARK: Cleanup
@@ -214,7 +145,8 @@ final class ScheduleItem {
         now: Date = Date(),
         calendar: Calendar = .current
     ) -> Bool {
-        guard recurrence == .once, let onceDate else { return false }
-        return calendar.startOfDay(for: onceDate) < calendar.startOfDay(for: now)
+        ScheduleRecurrenceRule.isSpent(
+            recurrence: recurrence, onceDate: onceDate, now: now, calendar: calendar
+        )
     }
 }

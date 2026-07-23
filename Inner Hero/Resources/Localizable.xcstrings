@@ -11,6 +11,56 @@
         }
       }
     },
+    "If it happened" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если случилось"
+          }
+        }
+      }
+    },
+    "One thing that's waiting." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Одно дело, которое ждёт."
+          }
+        }
+      }
+    },
+    "Opens a PMR session." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открывает сессию ПМР."
+          }
+        }
+      }
+    },
+    "Opens a breathing session." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открывает сессию дыхания."
+          }
+        }
+      }
+    },
+    "Opens the situational form." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открывает ситуативную форму."
+          }
+        }
+      }
+    },
     "—" : {
       "extractionState" : "stale",
       "localizations" : {
