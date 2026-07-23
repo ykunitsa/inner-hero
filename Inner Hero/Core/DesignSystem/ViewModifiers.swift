@@ -249,3 +249,35 @@ extension View {
     }
 }
 
+
+// ─────────────────────────────────────────────
+// MARK: Article Door Sheet
+// ─────────────────────────────────────────────
+
+extension View {
+    /// Presents the article that stands at an exercise's door (spec §8) from
+    /// inside a full-screen flow.
+    ///
+    /// A sheet rather than a push: the door screens live in a `fullScreenCover`
+    /// with no navigation stack of their own, and giving them one just to reach
+    /// an article would put a back-stack between the user and "Start".
+    ///
+    /// A `nil` article renders nothing at all — a renamed id degrades to a
+    /// missing row, never to an empty sheet.
+    func articleDoorSheet(_ article: Article?, isPresented: Binding<Bool>) -> some View {
+        sheet(isPresented: isPresented) {
+            if let article {
+                NavigationStack {
+                    ArticleDetailView(article: article)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button(String(localized: "Done")) {
+                                    isPresented.wrappedValue = false
+                                }
+                            }
+                        }
+                }
+            }
+        }
+    }
+}

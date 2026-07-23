@@ -585,6 +585,206 @@ struct ExerciseStepHeader: View {
 }
 
 // ─────────────────────────────────────────────
+// MARK: Exercise Door Header
+// ─────────────────────────────────────────────
+
+/// Top bar of an exercise's "before" screen: optional info button + centred
+/// title + close.
+///
+/// Extracted from the four flows, where this bar was byte-identical apart from
+/// the title. That is deduplication of chrome, not a shared exercise template —
+/// the bodies below it stay written separately (§1.10).
+///
+/// The info button is the article's permanent door (spec §8 + plan
+/// `11.6-shell.md` §2, decision 6): the card below disappears after the first
+/// session, this does not. It sits in the leading slot that the title's
+/// horizontal padding already reserved, so adding it shifts nothing.
+///
+/// Usage:
+/// ```swift
+/// ExerciseDoorHeader(
+///     title: "Breathing",
+///     infoLabel: article?.title,
+///     onInfo: article.map { a in { showArticle = true } },
+///     onClose: { dismiss() }
+/// )
+/// ```
+struct ExerciseDoorHeader: View {
+    let title: String
+    /// VoiceOver label for the info button — pass the real article title.
+    /// "Information" would promise nothing; the title says what opens.
+    var infoLabel: String? = nil
+    /// `nil` hides the button entirely (no article for this exercise).
+    var onInfo: (() -> Void)? = nil
+    let onClose: () -> Void
+
+    var body: some View {
+        ZStack {
+            Text(title)
+                .appFont(.h3)
+                .foregroundStyle(TextColors.primary)
+                .lineLimit(1)
+                // One button's width reserved on each side, so the title stays
+                // optically centred with or without the info button.
+                .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
+
+            HStack {
+                if let onInfo {
+                    CircleButton(
+                        systemImage: "info",
+                        background: AppColors.cardBackground,
+                        action: onInfo
+                    )
+                    .accessibilityLabel(infoLabel ?? String(localized: "Article"))
+                }
+                Spacer()
+                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
+                    onClose()
+                }
+                .accessibilityLabel(String(localized: "Close"))
+            }
+        }
+        .padding(.horizontal, Spacing.sm)
+        .padding(.top, Spacing.sm)
+        .padding(.bottom, Spacing.xs)
+        .pinnedHeaderBackground()
+    }
+}
+
+// ─────────────────────────────────────────────
+// MARK: Ladder Rule Row
+// ─────────────────────────────────────────────
+
+/// The ladder rule, as a line the user may take or ignore (spec §1.8, §2.3.2).
+///
+/// Extracted from `BreathingBeforeView` and `PMRBeforeView`, where the same
+/// markup had been copied inline, and now also used by History — the rule's
+/// permanent home per spec §2.3.
+///
+/// Accent-coloured on purpose, unlike `ArticleDoorRow`: a rule asks to be acted
+/// on, an article only lies there. It never changes anything by itself — the tap
+/// is the whole mechanism, and ignoring it is a first-class answer that leaves
+/// no trace.
+///
+/// Usage:
+/// ```swift
+/// LadderRuleRow(text: "Five in a row you relaxed in time. Try 8 min?",
+///               direction: .down) { viewModel.applySuggestion() }
+/// ```
+struct LadderRuleRow: View {
+    /// Which way along the ladder the rule points. Down means "less time / fewer
+    /// groups" — in this app that is the direction of progress (§1.4).
+    enum Direction {
+        case up
+        case down
+
+        var glyph: String {
+            switch self {
+            case .up: "arrow.up"
+            case .down: "arrow.down"
+            }
+        }
+    }
+
+    let text: String
+    let direction: Direction
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: Spacing.xxs) {
+                Image(systemName: direction.glyph)
+                    .appFont(.bodyMedium)
+                    .accessibilityHidden(true)
+                Text(text)
+                    .appFont(.small)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+            }
+            .foregroundStyle(AppColors.accent)
+            .padding(Spacing.xs)
+            .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .fill(AppColors.accent.opacity(Opacity.softBackground))
+            )
+        }
+        .buttonStyle(.plain)
+        .transition(.opacity)
+    }
+}
+
+// ─────────────────────────────────────────────
+// MARK: Article Door Row
+// ─────────────────────────────────────────────
+
+/// The article standing at the door of an exercise before its first session
+/// (spec §8, `sessions == 0`). Shows the real article title — never a pitch for
+/// why the exercise is good for you (§1.3).
+///
+/// Quieter than `PrimaryButton` on purpose: reading is not the job of this
+/// screen, starting the exercise is. Neutral surface rather than the accent
+/// used by the ladder-rule line — a rule asks to be acted on, an article only
+/// lies there.
+///
+/// Usage:
+/// ```swift
+/// ArticleDoorRow(title: article.title, readTime: article.readTime) {
+///     showArticle = true
+/// }
+/// ```
+struct ArticleDoorRow: View {
+    let title: String
+    /// Minutes, as published in `Articles.json`.
+    let readTime: Int
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: Spacing.xs) {
+                Image(systemName: "doc.text")
+                    .appFont(.bodyMedium)
+                    .foregroundStyle(TextColors.secondary)
+                    .accessibilityHidden(true)
+
+                VStack(alignment: .leading, spacing: Spacing.xxxs) {
+                    Text(title)
+                        .appFont(.bodyMedium)
+                        .foregroundStyle(TextColors.primary)
+                        .multilineTextAlignment(.leading)
+                        // The real title is the content of this row; clipping it
+                        // would leave a row that promises nothing.
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(metaText)
+                        .appFont(.small)
+                        .foregroundStyle(TextColors.tertiary)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(Spacing.xs)
+            .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
+                    .fill(AppColors.cardBackground)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title). \(metaText)")
+    }
+
+    private var metaText: String {
+        String(
+            format: String(localized: "%1$@ · %2$@"),
+            String(localized: "Article"),
+            String(format: String(localized: "%d min"), readTime)
+        )
+    }
+}
+
+// ─────────────────────────────────────────────
 // MARK: App Text Editor
 // ─────────────────────────────────────────────
 

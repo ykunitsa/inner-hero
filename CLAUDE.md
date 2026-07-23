@@ -18,8 +18,8 @@ and the implementation order (§11).
   deletion. **Never import, reference, or resurrect anything from it.** Git history
   has everything if archaeology is ever needed.
 - Current shell: 4 tabs — Today / Exercises / History / Knowledge. Settings opens
-  from the gear on Today. Exercises and History are placeholders that light up as
-  flows are rebuilt in spec §11 order. §11.1 (situational exposure form, hero card
+  from the gear on Today. Today is still thin (hero card + BA tail) until the
+  schedule lands. §11.1 (situational exposure form, hero card
   on Today → sheet) and §11.2 (planned exposure: before → hidden-random-end timer →
   after, launched from the Exercises row), §11.3 (breathing: before → paced
   session → after, plus the ladder rule — see `docs/plans/11.3-breathing.md`) and
@@ -28,7 +28,13 @@ and the implementation order (§11).
   open tail on Today → ratings, plus the store and the BA ladder) are done. Three
   things still await a device run: §11.3 haptics and idle-timer suppression
   (CoreHaptics doesn't exist in the simulator), §11.4 TTS quality plus background
-  audio, and §11.5's silent tail reminder. Current step: **§11.6 — оболочка**.
+  audio, and §11.5's silent tail reminder. Current step: **§11.6 — оболочка**, cut
+  into sub-steps in `docs/plans/11.6-shell.md`: 11.6a (launcher state subtitles +
+  the article door), 11.6b (History), 11.6c («Что работает») and 11.6e
+  (3-screen onboarding + the crisis section in Settings) are done. **11.6d —
+  schedule + Today — is what remains**, and it is the one still carrying an
+  unresolved product question: the spec requires a schedule but never says where
+  the user sets it.
 - SwiftData: container lives in `App/Inner_HeroApp.swift` (`StoreBootstrap`),
   currently holding `ExposureLogEntry`, `BreathingSessionEntry`, `PMRSessionEntry`,
   `BAActivity` and `BALogEntry`. The legacy 1.x store is wiped once on first
@@ -40,6 +46,8 @@ and the implementation order (§11).
 ## Language & communication
 
 - **Talk to the user in Russian.** Explanations, answers, summaries — in Russian.
+- **Commit messages are in English**, like the rest of the repository's written
+  artefacts. Only the conversation is Russian.
 - **Code and source strings are in English (primary).** `Localizable.xcstrings` has
   `sourceLanguage: en`. Every new user-facing string is authored in English via
   `String(localized: "English text")`; Russian is added as a translation in
@@ -139,12 +147,13 @@ Inner Hero/
 │   ├── Components/                # (empty for now — shared components return as flows land)
 │   └── Utilities/                 # HapticFeedback, ExportDocument, ScreenAwake, BreathingHaptics, PMRVoice, AudioSession
 ├── Features/
-│   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView; HistoryView (placeholder)
+│   ├── MainTab/Views/             # MainTabView, TodayView, ExercisesView, ArticleDetailView
+│   ├── History/                   # §11.6b: ladders, active rule, exposure stats, feed, JSON export
 │   ├── Activation/               # §11.5 BA flow: energy → one thing → tail → after + store
 │   ├── Breathing/                 # §11.3 flow: before → session → after + ladder rule
 │   ├── Exposure/                  # §11.1 situational form + §11.2 planned flow: Views/ViewModels/Components
 │   ├── KnowledgeCenter/           # Articles list (kept as-is)
-│   ├── Onboarding/                # 1-screen shell; becomes 3 screens per spec §7 in §11.6
+│   ├── Onboarding/                # §11.6e: 3 screens, zero questions (spec §7) + CrisisHelplineLink
 │   ├── Relaxation/                # §11.4 PMR flow: before → picker → voiced session → after
 │   └── Settings/                  # Settings + AppLock; Data section returns with new models
 ├── Models/                        # AppSettings; ExposureLogEntry / BreathingSession / PMRSession / BAActivity / BALogEntry (@Model) + BreathingLadder, PMRLadder, PMRScript, BALadder, BAPreset
