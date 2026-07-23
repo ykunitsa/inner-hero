@@ -62,6 +62,7 @@ different suggestion types, so a shared version needs a small protocol or a
 plain `(glyph, text, action)` init, and that is worth designing once with three
 call sites in hand.
 
-### 10. Onboarding is the old single screen
-Becomes the 3-screen zero-questions flow (spec §7) in §11.6. Until then the old
-welcome/disclaimer screen stays.
+### 10. `AppTab` labels are bare literals
+`MainTabView` passes plain strings to `.accessibilityLabel` ("Today", "Schedule", …)
+rather than `String(localized:)`, so VoiceOver announces the tabs in English on a
+Russian device. Pre-existing across all five tabs; fix in one pass, not per tab.

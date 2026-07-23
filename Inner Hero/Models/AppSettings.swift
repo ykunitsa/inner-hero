@@ -26,7 +26,9 @@ enum ThemeMode: String, CaseIterable, Identifiable {
 
 enum AppStorageKeys {
     static let themeMode = "settings.themeMode"
-    static let remindersEnabled = "settings.remindersEnabled"
+    // No global reminders switch: each schedule entry carries its own
+    // `isEnabled`, and a master toggle on top of it would make "reminders are on
+    // but nothing arrives" a reachable state.
     static let appLockEnabled = "settings.appLockEnabled"
     static let hasCompletedOnboarding = "hasCompletedOnboarding"
     static let hasLoadedSampleData = "hasLoadedSampleData"

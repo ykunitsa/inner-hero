@@ -55,9 +55,16 @@ rm -f "$build_log"
 
 # -parallel-testing-enabled NO: Xcode otherwise clones the simulator, which costs
 # far more than a suite that executes in 0.1s.
+#
+# -testLanguage ru: some tests read localized strings, and one of them
+# (PMRVoiceStressTests, "every override actually occurs in a spoken line") only
+# means anything in Russian — the stress dictionary is for the Russian voice.
+# Without pinning, the suite inherits whatever language the simulator happens to
+# be in, and reinstalling the app is enough to flip it. Same discipline as the
+# pinned calendar and time zone inside the tests themselves.
 run_log=$(mktemp)
 xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination "$DESTINATION" \
-    "${only_testing[@]}" -parallel-testing-enabled NO \
+    "${only_testing[@]}" -parallel-testing-enabled NO -testLanguage ru \
     test-without-building >"$run_log" 2>&1
 status=$?
 

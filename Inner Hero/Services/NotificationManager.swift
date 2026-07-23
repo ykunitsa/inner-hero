@@ -62,6 +62,71 @@ final class NotificationManager {
         }
     }
 
+    /// Schedules one repeating reminder at the given hour/minute of every day.
+    ///
+    /// Not the same as passing all seven weekdays to `scheduleWeeklyReminder`:
+    /// that would occupy seven of the system's 64 pending slots to say what one
+    /// request says.
+    func scheduleDailyReminder(
+        id: String,
+        title: String,
+        body: String,
+        hour: Int,
+        minute: Int,
+        sound: UNNotificationSound? = .default
+    ) async throws {
+        try await schedule(
+            id: id,
+            title: title,
+            body: body,
+            components: DateComponents(hour: hour, minute: minute),
+            repeats: true,
+            sound: sound
+        )
+    }
+
+    /// Schedules one repeating reminder on the given day of every month.
+    ///
+    /// Months without that day are skipped by the system rather than moved to the
+    /// last day — which is exactly what the schedule screen shows, on purpose
+    /// (`docs/plans/11.6d-schedule.md`, decision 7).
+    func scheduleMonthlyReminder(
+        id: String,
+        title: String,
+        body: String,
+        day: Int,
+        hour: Int,
+        minute: Int,
+        sound: UNNotificationSound? = .default
+    ) async throws {
+        try await schedule(
+            id: id,
+            title: title,
+            body: body,
+            components: DateComponents(day: day, hour: hour, minute: minute),
+            repeats: true,
+            sound: sound
+        )
+    }
+
+    private func schedule(
+        id: String,
+        title: String,
+        body: String,
+        components: DateComponents,
+        repeats: Bool,
+        sound: UNNotificationSound?
+    ) async throws {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = sound
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: repeats)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+        try await notificationCenter.add(request)
+    }
+
     /// Schedules a one-shot reminder at a specific date.
     func scheduleOneTimeReminder(id: String, title: String, body: String, at date: Date) async {
         let content = UNMutableNotificationContent()
@@ -110,6 +175,21 @@ final class NotificationManager {
         }
         notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
         notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
+
+    /// Removes every pending request whose identifier starts with `prefix`.
+    ///
+    /// This is how the schedule re-syncs itself. The blunt instrument —
+    /// `removeAllNotifications()` — is wrong here: the BA tail reminder and the
+    /// exposure end-signal share this queue, and a schedule edit must not silence
+    /// a walk someone committed to an hour ago.
+    func removePendingReminders(withPrefix prefix: String) async {
+        let pending = await notificationCenter.pendingNotificationRequests()
+        let identifiers = pending
+            .map(\.identifier)
+            .filter { $0.hasPrefix(prefix) }
+        guard !identifiers.isEmpty else { return }
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
 
     // MARK: - Cleanup
