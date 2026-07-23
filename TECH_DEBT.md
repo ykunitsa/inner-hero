@@ -9,6 +9,16 @@ Priorities: 🔴 critical · 🟠 important · 🟡 nice-to-have.
 
 ## 🔴 Critical
 
+### 0. Widget App Group capability not yet added in Xcode (§11.7)
+The `InnerHeroWidgetExtension` target exists and builds green (four widgets, shared
+sources wired via a synchronized-group exception set). **One step remains, and only the
+UI can do it:** add capability **App Groups** → `group.wrongteam.Inner-Hero` on **both**
+the `Inner Hero` and `InnerHeroWidgetExtension` targets (Signing & Capabilities — a
+developer-portal round trip, team `PFN9H3KS4G`, so it can't be scripted). Until then
+`UserDefaults(suiteName:)` is nil on both sides: the app writes the snapshot nowhere and
+every widget shows its default state. App and widget both still build and run. Details
+in `docs/plans/11.7-widget.md` → "Xcode setup".
+
 ### 1. `_to_delete/` awaits manual deletion
 The teardown moved legacy code to `_to_delete/` (the cloud bridge can't delete files
 on the mounted folder). Delete it manually (`git rm -r _to_delete` + commit).

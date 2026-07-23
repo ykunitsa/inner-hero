@@ -37,7 +37,8 @@ final class NotificationManager {
         body: String,
         weekdays: [Int],
         hour: Int,
-        minute: Int
+        minute: Int,
+        deepLink: DeepLink? = nil
     ) async throws {
         await removeReminder(id: id)
 
@@ -45,6 +46,7 @@ final class NotificationManager {
         content.title = title
         content.body = body
         content.sound = .default
+        content.userInfo = deepLink?.userInfo ?? [:]
 
         for weekday in weekdays {
             var dateComponents = DateComponents()
@@ -73,7 +75,8 @@ final class NotificationManager {
         body: String,
         hour: Int,
         minute: Int,
-        sound: UNNotificationSound? = .default
+        sound: UNNotificationSound? = .default,
+        deepLink: DeepLink? = nil
     ) async throws {
         try await schedule(
             id: id,
@@ -81,7 +84,8 @@ final class NotificationManager {
             body: body,
             components: DateComponents(hour: hour, minute: minute),
             repeats: true,
-            sound: sound
+            sound: sound,
+            deepLink: deepLink
         )
     }
 
@@ -97,7 +101,8 @@ final class NotificationManager {
         day: Int,
         hour: Int,
         minute: Int,
-        sound: UNNotificationSound? = .default
+        sound: UNNotificationSound? = .default,
+        deepLink: DeepLink? = nil
     ) async throws {
         try await schedule(
             id: id,
@@ -105,7 +110,8 @@ final class NotificationManager {
             body: body,
             components: DateComponents(day: day, hour: hour, minute: minute),
             repeats: true,
-            sound: sound
+            sound: sound,
+            deepLink: deepLink
         )
     }
 
@@ -115,12 +121,14 @@ final class NotificationManager {
         body: String,
         components: DateComponents,
         repeats: Bool,
-        sound: UNNotificationSound?
+        sound: UNNotificationSound?,
+        deepLink: DeepLink?
     ) async throws {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = sound
+        content.userInfo = deepLink?.userInfo ?? [:]
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: repeats)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
@@ -128,11 +136,18 @@ final class NotificationManager {
     }
 
     /// Schedules a one-shot reminder at a specific date.
-    func scheduleOneTimeReminder(id: String, title: String, body: String, at date: Date) async {
+    func scheduleOneTimeReminder(
+        id: String,
+        title: String,
+        body: String,
+        at date: Date,
+        deepLink: DeepLink? = nil
+    ) async {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
+        content.userInfo = deepLink?.userInfo ?? [:]
 
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
@@ -148,17 +163,23 @@ final class NotificationManager {
     ///   (spec §6: "одно тихое напоминание") uses it — it asks whether something
     ///   from hours ago happened, which never warrants pulling attention with a
     ///   chime.
+    /// - Parameter deepLink: where a tap should land. The planned-exposure end
+    ///   signal deliberately passes none: it is a vibration marking the end of a
+    ///   session, and its "after" form lives inside a flow that is no longer
+    ///   running (§11.7).
     func scheduleOneTimeSignal(
         id: String,
         title: String,
         body: String,
         after seconds: TimeInterval,
-        sound: UNNotificationSound? = .default
+        sound: UNNotificationSound? = .default,
+        deepLink: DeepLink? = nil
     ) async {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = sound
+        content.userInfo = deepLink?.userInfo ?? [:]
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(seconds, 1), repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)

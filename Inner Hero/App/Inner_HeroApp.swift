@@ -8,8 +8,12 @@ struct Inner_HeroApp: App {
 
     @State private var notificationManager = NotificationManager()
     @State private var articlesStore = ArticlesStore()
+    @State private var deepLinks: DeepLinkInbox
 
     private let modelContainer: ModelContainer
+    /// Held for its lifetime, not its interface: `UNUserNotificationCenter` keeps
+    /// only a weak reference to its delegate.
+    private let notificationRouter: NotificationRouter
     /// Whether onboarding was already behind us when this launch started.
     ///
     /// Spec §7 sends "Start" to the Exercises tab, not Today: that is where the
@@ -27,6 +31,13 @@ struct Inner_HeroApp: App {
         wasOnboardedAtLaunch = UserDefaults.standard.bool(
             forKey: AppStorageKeys.hasCompletedOnboarding
         )
+
+        // Both wired up before the launch finishes: a notification tapped from a
+        // cold start is delivered to whatever delegate exists at that moment.
+        let inbox = DeepLinkInbox()
+        _deepLinks = State(initialValue: inbox)
+        notificationRouter = NotificationRouter(inbox: inbox)
+        notificationRouter.start()
     }
 
     var body: some Scene {
@@ -39,6 +50,10 @@ struct Inner_HeroApp: App {
             }
             .environment(notificationManager)
             .environment(articlesStore)
+            .environment(deepLinks)
+            // A widget tap. Parked rather than acted on here: onboarding may still
+            // be on screen, and App Lock may be about to cover everything.
+            .onOpenURL { deepLinks.receive(url: $0) }
             .preferredColorScheme((ThemeMode(rawValue: themeModeRawValue) ?? .system).preferredColorScheme)
         }
         .modelContainer(modelContainer)

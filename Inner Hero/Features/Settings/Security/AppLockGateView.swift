@@ -26,6 +26,11 @@ struct AppLockGateView<Content: View>: View {
             }
         }
         .animation(.default, value: isBlocked)
+        // The gate hides its content with opacity rather than removing it, and a
+        // sheet or cover presented from inside would appear *above* the overlay —
+        // so an external deep link must be able to see the lock and wait for it
+        // (§11.7).
+        .environment(\.isAppLocked, isBlocked)
         .task {
             await ensureUnlockedIfNeeded()
         }
@@ -46,6 +51,21 @@ struct AppLockGateView<Content: View>: View {
         }
         
         lockManager.isUnlocked = true
+    }
+}
+
+// MARK: - Environment
+
+private struct IsAppLockedKey: EnvironmentKey {
+    static let defaultValue = false
+}
+
+extension EnvironmentValues {
+    /// Whether the lock overlay is currently covering the app. Read by anything that
+    /// would otherwise present over it.
+    var isAppLocked: Bool {
+        get { self[IsAppLockedKey.self] }
+        set { self[IsAppLockedKey.self] = newValue }
     }
 }
 

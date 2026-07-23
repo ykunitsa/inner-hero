@@ -33,6 +33,10 @@ nonisolated struct ScheduleReminderRequest: Equatable, Sendable {
     let title: String
     let body: String
     let trigger: Trigger
+    /// Where a tap lands. Part of the request rather than of the delivery step, so
+    /// "the 18:00 breathing reminder opens breathing" is a unit test and not a
+    /// device run (§11.7).
+    let deepLink: DeepLink
 }
 
 /// Turns the schedule into local reminders (spec §1.10: scheduling is the shared
@@ -72,7 +76,8 @@ nonisolated enum ScheduleReminderService {
             // practise": the person picked this hour, and the app does not urge
             // (§1.1, codex §5).
             body: String(localized: "On your schedule"),
-            trigger: trigger
+            trigger: trigger,
+            deepLink: .exercise(exercise)
         )
     }
 
@@ -132,22 +137,24 @@ nonisolated enum ScheduleReminderService {
             switch request.trigger {
             case .once(let date):
                 await manager.scheduleOneTimeReminder(
-                    id: request.id, title: request.title, body: request.body, at: date
+                    id: request.id, title: request.title, body: request.body, at: date,
+                    deepLink: request.deepLink
                 )
             case .daily(let hour, let minute):
                 try? await manager.scheduleDailyReminder(
                     id: request.id, title: request.title, body: request.body,
-                    hour: hour, minute: minute
+                    hour: hour, minute: minute, deepLink: request.deepLink
                 )
             case .weekly(let weekdays, let hour, let minute):
                 try? await manager.scheduleWeeklyReminder(
                     id: request.id, title: request.title, body: request.body,
-                    weekdays: weekdays, hour: hour, minute: minute
+                    weekdays: weekdays, hour: hour, minute: minute,
+                    deepLink: request.deepLink
                 )
             case .monthly(let day, let hour, let minute):
                 try? await manager.scheduleMonthlyReminder(
                     id: request.id, title: request.title, body: request.body,
-                    day: day, hour: hour, minute: minute
+                    day: day, hour: hour, minute: minute, deepLink: request.deepLink
                 )
             }
         }

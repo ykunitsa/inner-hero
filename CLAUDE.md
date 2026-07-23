@@ -39,6 +39,17 @@ and the implementation order (§11).
   from a notification into a flow (one external entry point, built once).
   Reminder *delivery* is the fifth thing awaiting a device run: calendar triggers
   are not trustworthy in the simulator.
+- **§11.7 is done in code (July 2026)** — four widgets, not one (amendment to §9,
+  author's decision, `docs/plans/11.7-widget.md`): «Сегодня» (§9 priority, small +
+  medium) + Exposure / Breathing / Relaxation tiles. One `innerhero://` deep link
+  serves widget taps and schedule/BA-tail notification taps alike; it is parked in
+  `DeepLinkInbox` and spent by `TodayView`, never over a live flow. Widgets read a
+  flat `WidgetSnapshot` (App Group JSON), never SwiftData; App Lock redacts it on
+  write. **The widget target and the App Group do not exist yet — they must be
+  created by hand in Xcode** (TECH_DEBT #0), so the extension ships no binary until
+  then; the app builds unaffected. Widget rendering + cold-start routing are the
+  sixth thing awaiting a device run. Current step is now **§11.8 — watchOS, voice,
+  monetisation**.
 - SwiftData: container lives in `App/Inner_HeroApp.swift` (`StoreBootstrap`),
   currently holding `ExposureLogEntry`, `BreathingSessionEntry`, `PMRSessionEntry`,
   `BAActivity`, `BALogEntry` and `ScheduleItem`. The legacy 1.x store is wiped once on first
@@ -148,10 +159,12 @@ python3 $P/scripts/build_and_test.py --project "Inner Hero.xcodeproj" \
 
 ```
 Inner Hero/
-├── App/Inner_HeroApp.swift        # Entry point + StoreBootstrap (ModelContainer, legacy wipe)
+├── App/Inner_HeroApp.swift        # Entry point + StoreBootstrap; wires NotificationRouter + DeepLinkInbox
+├── InnerHeroWidget/               # §11.7 widget extension sources — OUTSIDE the synced app group on purpose (target not yet created, TECH_DEBT #0)
 ├── Core/
 │   ├── DesignSystem/              # ⭐ Tokens and components — ALWAYS start here for UI
-│   ├── Navigation/                # AppTab, NavigationRouter, AppRoute, AppRouteView
+│   ├── Navigation/                # AppTab, NavigationRouter, AppRoute, AppRouteView, DeepLink (+ DeepLinkInbox)
+│   ├── Widget/                    # §11.7: WidgetSnapshot(+Store), WidgetState (priority + timeline), WidgetSnapshotBuilder — shared with the extension
 │   ├── Components/                # (empty for now — shared components return as flows land)
 │   └── Utilities/                 # HapticFeedback, ExportDocument, ScreenAwake, BreathingHaptics, PMRVoice, AudioSession
 ├── Features/
@@ -165,8 +178,8 @@ Inner Hero/
 │   ├── Relaxation/                # §11.4 PMR flow: before → picker → voiced session → after
 │   ├── Schedule/                  # §11.6d1: the Schedule tab — list, editor sheet, three recurrence kinds
 │   └── Settings/                  # Settings + AppLock; Data section returns with new models
-├── Models/                        # AppSettings; ExposureLogEntry / BreathingSession / PMRSession / BAActivity / BALogEntry / ScheduleItem (@Model) + BreathingLadder, PMRLadder, PMRScript, BALadder, BAPreset
-├── Services/                      # ArticlesLoader/Store, ExerciseStatusService, ScheduleReminderService, NotificationManager (generic primitives)
+├── Models/                        # AppSettings; ExposureLogEntry / BreathingSession / PMRSession / BAActivity / BALogEntry / ScheduleItem (@Model) + ladders; ScheduledExercise & ScheduleRecurrenceRule (widget-shareable, no @Model)
+├── Services/                      # ArticlesLoader/Store, ExerciseStatusService, ScheduleReminderService, NotificationManager, NotificationRouter (tap → deep link)
 ├── Resources/                     # Localizable.xcstrings, Articles.json, assets
 └── docs/redesign-spec.md          # ← product source of truth (repo root /docs)
 ```

@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import WidgetKit
 
 struct MainTabView: View {
     /// Which tab the app opens on. Normally Today; right after onboarding it is
@@ -13,6 +14,11 @@ struct MainTabView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(NotificationManager.self) private var notificationManager
+    @Environment(DeepLinkInbox.self) private var deepLinks
+
+    /// The setting, not the current lock state: what the widgets are allowed to
+    /// carry does not change while the phone is unlocked in the user's hand.
+    @AppStorage(AppStorageKeys.appLockEnabled) private var appLockEnabled = false
 
     init(initialTab: AppTab = .today) {
         self.initialTab = initialTab
@@ -68,14 +74,47 @@ struct MainTabView: View {
         // of them land here, and the re-sync is idempotent, so paying for it on
         // every activation is cheaper than tracking which of them happened.
         .task(id: scenePhase) {
-            guard scenePhase == .active else { return }
+            guard scenePhase == .active else {
+                // Leaving is the moment worth writing: while the app is in front,
+                // nobody is looking at the home screen.
+                if scenePhase == .background { writeWidgetSnapshot() }
+                return
+            }
             let items = (try? modelContext.fetch(FetchDescriptor<ScheduleItem>())) ?? []
             await ScheduleReminderService.sync(items, via: notificationManager)
+            writeWidgetSnapshot()
         }
+        // A link arrives from outside; the flows themselves live on Today, so the
+        // tab moves here and the screen underneath takes it from the inbox.
+        .task(id: deepLinks.pending) { routeToToday() }
+    }
+
+    private func routeToToday() {
+        guard deepLinks.pending != nil else { return }
+        router.popToRoot(in: .today)
+        selectedTab = .today
+    }
+
+    /// Rebuilds what the widgets read, then asks WidgetKit to redraw.
+    ///
+    /// Idempotent and cheap, for the same reason the reminder re-sync is: paying for
+    /// it on every transition costs less than tracking which of a dozen possible
+    /// edits happened.
+    private func writeWidgetSnapshot() {
+        let snapshot = WidgetSnapshotBuilder.build(
+            schedule: (try? modelContext.fetch(FetchDescriptor<ScheduleItem>())) ?? [],
+            breathing: (try? modelContext.fetch(FetchDescriptor<BreathingSessionEntry>())) ?? [],
+            pmr: (try? modelContext.fetch(FetchDescriptor<PMRSessionEntry>())) ?? [],
+            activation: (try? modelContext.fetch(FetchDescriptor<BALogEntry>())) ?? [],
+            isLocked: appLockEnabled
+        )
+        WidgetSnapshotStore().write(snapshot)
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 
 #Preview {
     MainTabView()
         .environment(ArticlesStore())
+        .environment(DeepLinkInbox())
 }

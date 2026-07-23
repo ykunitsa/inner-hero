@@ -103,6 +103,25 @@ nonisolated enum ExerciseStatus {
         return String(format: String(localized: "%1$@ · %2$@"), effort.title, day)
     }
 
+    // MARK: - Ladder position without the day
+
+    /// The ladder position alone, with no relative day attached (§11.7).
+    ///
+    /// The widgets use these instead of the full subtitles above, and the reason is
+    /// not layout. A precomputed "today" becomes a lie at midnight, and a widget
+    /// cannot recompute it — the app has to be opened first. The position never
+    /// goes stale, so it is the part that can safely live on a home screen; the day
+    /// is History's job anyway.
+    ///
+    /// Breathing needs no variant: `breathing(_:)` carries no day to begin with.
+    static func pmrPosition(_ entries: [PMRSessionEntry]) -> String? {
+        entries.max(by: { $0.createdAt < $1.createdAt })?.step?.title
+    }
+
+    static func activationPosition(_ entries: [BALogEntry]) -> String? {
+        entries.max(by: { $0.createdAt < $1.createdAt })?.effort?.title
+    }
+
     // MARK: - Relative day
 
     /// Split out so every boundary is testable without building a log entry —

@@ -11,6 +11,8 @@ struct TodayView: View {
     @Binding var path: NavigationPath
 
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(DeepLinkInbox.self) private var deepLinks
+    @Environment(\.isAppLocked) private var isAppLocked
 
     /// The open BA activity, if any (spec §2.1: first line of the day).
     @Query(sort: \BALogEntry.createdAt, order: .reverse) private var entries: [BALogEntry]
@@ -98,6 +100,28 @@ struct TodayView: View {
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active { viewModel.refresh() }
             }
+            // The doors a widget or a notification can open all live on this screen,
+            // so this is where an external tap is spent. Re-run when the lock lifts:
+            // a link that arrived under the lock waited for it.
+            .task(id: deepLinks.pending) { openDeepLink() }
+            .task(id: isAppLocked) { openDeepLink() }
+        }
+    }
+
+    /// Spends a parked deep link, if this screen can honour it right now.
+    ///
+    /// Nothing is opened over an existing flow. A widget tapped while a session is
+    /// mid-flight almost always means the app was backgrounded inside it — and
+    /// throwing that session away to obey the tap would discard data (§1.5).
+    private func openDeepLink() {
+        guard !isAppLocked, activeFlow == nil, !showExposureForm else { return }
+        guard let link = deepLinks.take() else { return }
+
+        switch link {
+        case .logExposure:
+            showExposureForm = true
+        case .exercise(let exercise):
+            activeFlow = exercise
         }
     }
 
@@ -186,6 +210,7 @@ struct TodayView: View {
     TodayView(path: .constant(NavigationPath()))
         .environment(ArticlesStore())
         .environment(NotificationManager())
+        .environment(DeepLinkInbox())
         .modelContainer(
             for: [
                 ExposureLogEntry.self, BreathingSessionEntry.self,
