@@ -2025,9 +2025,7 @@
         }
       }
     },
-    "Article not found" : {
-
-    },
+    "Article not found" : {},
     "Article of the day" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3198,7 +3196,6 @@
       }
     },
     "Days of the week" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -12497,12 +12494,11 @@
       }
     },
     "Repeat" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Повторение"
+            "value" : "Повтор"
           }
         }
       }
@@ -12901,12 +12897,11 @@
       }
     },
     "Schedule" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Запланировать"
+            "value" : "Расписание"
           }
         }
       }
@@ -15775,6 +15770,196 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ГОД"
+          }
+        }
+      }
+    },
+    "Once" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Однократно"
+          }
+        }
+      }
+    },
+    "Days" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По дням"
+          }
+        }
+      }
+    },
+    "Monthly" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ежемесячно"
+          }
+        }
+      }
+    },
+    "One-off" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разовые"
+          }
+        }
+      }
+    },
+    "Repeating" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторяющиеся"
+          }
+        }
+      }
+    },
+    "day %d" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d числа"
+          }
+        }
+      }
+    },
+    "Daily" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ежедневно"
+          }
+        }
+      }
+    },
+    "Add to schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить в расписание"
+          }
+        }
+      }
+    },
+    "Opens the editor" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Откроется редактор"
+          }
+        }
+      }
+    },
+    "Reminder" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напоминание"
+          }
+        }
+      }
+    },
+    "What you set for yourself will show up here." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Здесь появится то, что ты себе назначишь."
+          }
+        }
+      }
+    },
+    "New" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новое"
+          }
+        }
+      }
+    },
+    "Exercise" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Упражнение"
+          }
+        }
+      }
+    },
+    "Day of the month" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Число месяца"
+          }
+        }
+      }
+    },
+    "In months without this day, no reminder arrives." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В месяцах, где такого числа нет, напоминание не придёт."
+          }
+        }
+      }
+    },
+    "On your schedule" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По расписанию"
+          }
+        }
+      }
+    },
+    "Reminders are off in iOS Settings" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напоминания выключены в настройках iOS"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть настройки"
+          }
+        }
+      }
+    },
+    "done" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сделано"
           }
         }
       }

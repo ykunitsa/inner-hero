@@ -5,6 +5,9 @@ import SwiftUI
 enum AppTab: String, CaseIterable {
     case today
     case exercises
+    /// Spec §2 lists four tabs; the schedule is a ratified fifth
+    /// (`docs/plans/11.6d-schedule.md`, decision 3) and §2 is amended with it.
+    case schedule
     case history
     case knowledge
 }

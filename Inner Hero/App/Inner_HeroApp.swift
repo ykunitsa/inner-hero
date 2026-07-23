@@ -72,6 +72,7 @@ private enum StoreBootstrap {
         PMRSessionEntry.self,
         BAActivity.self,
         BALogEntry.self,
+        ScheduleItem.self,
     ])
 
     static func wipeLegacyStoreIfNeeded() {

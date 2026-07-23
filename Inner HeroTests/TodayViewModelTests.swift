@@ -57,11 +57,22 @@ struct TodayViewModelTests {
     }
 
     /// Spec §2.1: the empty state is a line of text, never a prompt to go
-    /// configure something. Until the schedule lands (§11.6) it is always on.
-    @Test("Nothing planned yields the quiet line")
+    /// configure something. It shows exactly while no exposure is on today's list.
+    @Test("The quiet line shows until an exposure is on the day")
     func emptySchedule() {
         let viewModel = TodayViewModel()
-        #expect(viewModel.hasPlannedExposure == false)
         #expect(viewModel.emptyScheduleText.isEmpty == false)
+        #expect(TodayViewModel.hasExposure(in: []) == false)
+
+        let exposure = ScheduleItem(exercise: .exposure, recurrence: .weekly, hour: 19, minute: 0)
+        let breathing = ScheduleItem(exercise: .breathing, recurrence: .weekly, hour: 7, minute: 0)
+
+        #expect(TodayViewModel.hasExposure(in: [
+            TodayScheduleRow(item: breathing, isDone: false)
+        ]) == false)
+        #expect(TodayViewModel.hasExposure(in: [
+            TodayScheduleRow(item: breathing, isDone: false),
+            TodayScheduleRow(item: exposure, isDone: false),
+        ]))
     }
 }
