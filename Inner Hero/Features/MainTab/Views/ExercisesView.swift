@@ -1,12 +1,26 @@
+import SwiftData
 import SwiftUI
 
-/// The exercise launcher: four fixed rows (spec 2.2). Subtitles will reflect
-/// state (`sessions == 0` → one corrective phrase, otherwise last-session
-/// state) when the shell lands in §11.6. During the rebuild the rows light
-/// up one by one as each exercise flow is rebuilt; the rest stay inactive
-/// placeholders.
+/// The exercise launcher (spec §2.2). Each tile's subtitle follows the
+/// `sessions == 0` rule (§1.7): one corrective phrase until the exercise has
+/// been done, the position on its ladder afterwards. The switch is driven by
+/// the session count alone — there is no "has seen" flag anywhere.
+///
+/// Spec §2.2 says "four rows". This is a 2×2 grid instead, ratified in
+/// `docs/plans/11.6-shell.md` §10: the corrective phrase is four to six words
+/// of real content (Russian runs ~15% longer than the English source) and a
+/// 44–60pt row cannot hold it without clipping the one thing the tile exists
+/// to say.
 struct ExercisesView: View {
     @Binding var path: NavigationPath
+
+    // Unsorted: every subtitle needs the whole set anyway — the newest entry
+    // for the date, a window of them for the exposure fraction — so sorting in
+    // the query would only move the same work earlier.
+    @Query private var exposures: [ExposureLogEntry]
+    @Query private var breathingSessions: [BreathingSessionEntry]
+    @Query private var pmrSessions: [PMRSessionEntry]
+    @Query private var activationEntries: [BALogEntry]
 
     @State private var showPlannedExposure = false
     @State private var showBreathing = false
@@ -37,7 +51,8 @@ struct ExercisesView: View {
                 title: String(localized: "Exposures"),
                 // Corrective phrase (spec 2.2): the exercise's success
                 // criterion, not marketing.
-                subtitle: String(localized: "Success is staying, not calming down"),
+                subtitle: ExerciseStatus.exposure(exposures)
+                    ?? String(localized: "Success is staying, not calming down"),
                 icon: "leaf",
                 // One tap from the tile to the "before" screen — no menu
                 // between icon and action (principle 1.2).
@@ -48,7 +63,8 @@ struct ExercisesView: View {
                 // Corrective phrase (spec 2.2): breathing is applied
                 // relaxation — a skill trained on a schedule, not something
                 // reached for when the anxiety is already peaking.
-                subtitle: String(localized: "Training, not first aid"),
+                subtitle: ExerciseStatus.breathing(breathingSessions)
+                    ?? String(localized: "Training, not first aid"),
                 icon: "wind",
                 action: { showBreathing = true }
             ),
@@ -56,7 +72,8 @@ struct ExercisesView: View {
                 title: String(localized: "Relaxation"),
                 // Corrective phrase (spec 2.2): in PMR the release phase is the
                 // skill — tensing is only there to make the contrast findable.
-                subtitle: String(localized: "Letting go is the part you train"),
+                subtitle: ExerciseStatus.pmr(pmrSessions)
+                    ?? String(localized: "Letting go is the part you train"),
                 icon: "figure.mind.and.body",
                 action: { showRelaxation = true }
             ),
@@ -65,7 +82,8 @@ struct ExercisesView: View {
                 // Corrective phrase (spec 2.2): BA inverts the order people
                 // expect — you do not wait to feel like it, the feeling follows
                 // the doing.
-                subtitle: String(localized: "Action comes before the wish"),
+                subtitle: ExerciseStatus.activation(activationEntries)
+                    ?? String(localized: "Action comes before the wish"),
                 icon: "figure.walk",
                 action: { showActivation = true }
             ),
@@ -168,4 +186,11 @@ struct ExercisesView: View {
     ExercisesView(path: .constant(NavigationPath()))
         .environment(ArticlesStore())
         .environment(NotificationManager())
+        .modelContainer(
+            for: [
+                ExposureLogEntry.self, BreathingSessionEntry.self,
+                PMRSessionEntry.self, BAActivity.self, BALogEntry.self,
+            ],
+            inMemory: true
+        )
 }

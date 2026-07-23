@@ -16,13 +16,20 @@ struct PMRBeforeView: View {
     let onClose: () -> Void
     let onStart: () -> Void
 
+    @Environment(ArticlesStore.self) private var articles
+    @State private var showArticle = false
+
+    private var article: Article? {
+        articles.allArticles.first { $0.id == ExerciseArticle.relaxation }
+    }
+
     var body: some View {
         VStack(spacing: Spacing.lg) {
             Spacer(minLength: Spacing.sm)
             stepBlock
             Spacer(minLength: Spacing.sm)
             stepSection
-            suggestionLine
+            doorSlot
             listeningLine
         }
         .padding(.horizontal, Spacing.sm)
@@ -31,30 +38,36 @@ struct PMRBeforeView: View {
         .safeAreaInset(edge: .bottom) { startButton }
         .formBackground()
         .ignoresSafeArea(.container, edges: .bottom)
+        .articleDoorSheet(article, isPresented: $showArticle)
     }
 
     // MARK: Header
 
     private var header: some View {
-        ZStack {
-            Text(String(localized: "Relaxation"))
-                .appFont(.h3)
-                .foregroundStyle(TextColors.primary)
-                .lineLimit(1)
-                .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
-            HStack {
-                Spacer()
-                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
-                    onClose()
-                }
-                .accessibilityLabel(String(localized: "Close"))
+        ExerciseDoorHeader(
+            title: String(localized: "Relaxation"),
+            infoLabel: article?.title,
+            onInfo: article == nil ? nil : { showArticle = true },
+            onClose: onClose
+        )
+    }
+
+    // MARK: Door slot
+
+    /// Shares one slot with the ladder rule (plan `11.6-shell.md` §2,
+    /// decision 5). The rule needs a history and the article needs none, so
+    /// this pinned layout never has to hold both at once.
+    @ViewBuilder
+    private var doorSlot: some View {
+        if hasSessions {
+            suggestionLine
+        } else if let article {
+            ArticleDoorRow(title: article.title, readTime: article.readTime) {
+                showArticle = true
             }
         }
-        .padding(.horizontal, Spacing.sm)
-        .padding(.top, Spacing.sm)
-        .padding(.bottom, Spacing.xs)
-        .pinnedHeaderBackground()
     }
+
 
     // MARK: Step
 
@@ -123,30 +136,13 @@ struct PMRBeforeView: View {
     @ViewBuilder
     private var suggestionLine: some View {
         if let suggestion = viewModel.suggestion {
-            Button {
+            LadderRuleRow(
+                text: suggestionText(suggestion),
+                direction: suggestionDirection(suggestion)
+            ) {
                 viewModel.applySuggestion()
                 HapticFeedback.light()
-            } label: {
-                HStack(spacing: Spacing.xxs) {
-                    Image(systemName: suggestionGlyph(suggestion))
-                        .appFont(.bodyMedium)
-                        .accessibilityHidden(true)
-                    Text(suggestionText(suggestion))
-                        .appFont(.small)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer(minLength: 0)
-                }
-                .foregroundStyle(AppColors.accent)
-                .padding(Spacing.xs)
-                .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
-                .background(
-                    RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                        .fill(AppColors.accent.opacity(Opacity.softBackground))
-                )
             }
-            .buttonStyle(.plain)
-            .transition(.opacity)
         }
     }
 
@@ -178,10 +174,10 @@ struct PMRBeforeView: View {
         )
     }
 
-    private func suggestionGlyph(_ suggestion: PMRLadder.Suggestion) -> String {
+    private func suggestionDirection(_ suggestion: PMRLadder.Suggestion) -> LadderRuleRow.Direction {
         switch suggestion {
-        case .stepDown: "arrow.down"
-        case .stepUp: "arrow.up"
+        case .stepDown: .down
+        case .stepUp: .up
         }
     }
 
@@ -208,4 +204,5 @@ struct PMRBeforeView: View {
         onClose: {},
         onStart: {}
     )
+    .environment(ArticlesStore())
 }

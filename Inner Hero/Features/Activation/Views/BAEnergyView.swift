@@ -16,6 +16,13 @@ struct BAEnergyView: View {
     let onOpenStore: () -> Void
     let onClose: () -> Void
 
+    @Environment(ArticlesStore.self) private var articles
+    @State private var showArticle = false
+
+    private var article: Article? {
+        articles.allArticles.first { $0.id == ExerciseArticle.activation }
+    }
+
     var body: some View {
         VStack(spacing: Spacing.lg) {
             Spacer(minLength: Spacing.sm)
@@ -47,6 +54,8 @@ struct BAEnergyView: View {
                     .padding(.horizontal, Spacing.md)
                     .padding(.top, Spacing.xxs)
                 }
+
+                articleDoor
             }
         }
         .padding(.horizontal, Spacing.sm)
@@ -55,27 +64,29 @@ struct BAEnergyView: View {
         .safeAreaInset(edge: .bottom) { storeLine }
         .formBackground()
         .ignoresSafeArea(.container, edges: .bottom)
+        .articleDoorSheet(article, isPresented: $showArticle)
     }
 
     private var header: some View {
-        ZStack {
-            Text(String(localized: "Activation"))
-                .appFont(.h3)
-                .foregroundStyle(TextColors.primary)
-                .lineLimit(1)
-                .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
-            HStack {
-                Spacer()
-                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
-                    onClose()
-                }
-                .accessibilityLabel(String(localized: "Close"))
+        ExerciseDoorHeader(
+            title: String(localized: "Activation"),
+            infoLabel: article?.title,
+            onInfo: article == nil ? nil : { showArticle = true },
+            onClose: onClose
+        )
+    }
+
+    /// Spec §8. BA's door has no "Start" button to sit above — the three energy
+    /// answers *are* the action — so the card goes below them, under the
+    /// corrective phrase it belongs with and above the quiet store line.
+    @ViewBuilder
+    private var articleDoor: some View {
+        if !hasSessions, let article {
+            ArticleDoorRow(title: article.title, readTime: article.readTime) {
+                showArticle = true
             }
+            .padding(.top, Spacing.xs)
         }
-        .padding(.horizontal, Spacing.sm)
-        .padding(.top, Spacing.sm)
-        .padding(.bottom, Spacing.xs)
-        .pinnedHeaderBackground()
     }
 
     /// The other door (spec §6), kept deliberately quiet. It is a count of what
@@ -107,4 +118,5 @@ struct BAEnergyView: View {
         onOpenStore: {},
         onClose: {}
     )
+    .environment(ArticlesStore())
 }
