@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// The "before" screen of the breathing flow (spec §4): confirm or change two
@@ -7,6 +8,14 @@ struct BreathingBeforeView: View {
     @Bindable var viewModel: BreathingFlowViewModel
     let onClose: () -> Void
     let onStart: () -> Void
+
+    @Environment(ArticlesStore.self) private var articles
+    @Query private var sessions: [BreathingSessionEntry]
+    @State private var showArticle = false
+
+    private var article: Article? {
+        articles.allArticles.first { $0.id == ExerciseArticle.breathing }
+    }
 
     var body: some View {
         // Not a ScrollView: the controls are pinned to the bottom, within
@@ -18,7 +27,7 @@ struct BreathingBeforeView: View {
             Spacer(minLength: Spacing.sm)
             typeSection
             durationSection
-            suggestionLine
+            doorSlot
         }
         .padding(.horizontal, Spacing.sm)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -26,31 +35,40 @@ struct BreathingBeforeView: View {
         .safeAreaInset(edge: .bottom) { startButton }
         .formBackground()
         .ignoresSafeArea(.container, edges: .bottom)
+        .articleDoorSheet(article, isPresented: $showArticle)
     }
 
     // MARK: Header
 
     private var header: some View {
-        ZStack {
-            Text(String(localized: "Breathing"))
-                .appFont(.h3)
-                .foregroundStyle(TextColors.primary)
-                .lineLimit(1)
-                .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
-            HStack {
-                Spacer()
-                // Closes straight away, no confirmation: nothing here was typed
-                // — both fields are seeded and there is no draft to lose.
-                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
-                    onClose()
+        // Closes straight away, no confirmation: nothing here was typed — both
+        // fields are seeded and there is no draft to lose.
+        ExerciseDoorHeader(
+            title: String(localized: "Breathing"),
+            infoLabel: article?.title,
+            onInfo: article == nil ? nil : { showArticle = true },
+            onClose: onClose
+        )
+    }
+
+    // MARK: Door slot
+
+    /// One slot, two tenants that can never collide (plan `11.6-shell.md` §2,
+    /// decision 5): the ladder rule needs a history, the article needs the
+    /// absence of one. Because they are mutually exclusive by construction,
+    /// this pinned layout — deliberately not a `ScrollView` — never has to grow
+    /// to fit both.
+    @ViewBuilder
+    private var doorSlot: some View {
+        if sessions.isEmpty {
+            if let article {
+                ArticleDoorRow(title: article.title, readTime: article.readTime) {
+                    showArticle = true
                 }
-                .accessibilityLabel(String(localized: "Close"))
             }
+        } else {
+            suggestionLine
         }
-        .padding(.horizontal, Spacing.sm)
-        .padding(.top, Spacing.sm)
-        .padding(.bottom, Spacing.xs)
-        .pinnedHeaderBackground()
     }
 
     // MARK: Selected type
@@ -124,30 +142,13 @@ struct BreathingBeforeView: View {
     @ViewBuilder
     private var suggestionLine: some View {
         if let suggestion = viewModel.suggestion {
-            Button {
+            LadderRuleRow(
+                text: suggestionText(suggestion),
+                direction: suggestionDirection(suggestion)
+            ) {
                 viewModel.applySuggestion()
                 HapticFeedback.light()
-            } label: {
-                HStack(spacing: Spacing.xxs) {
-                    Image(systemName: suggestionGlyph(suggestion))
-                        .appFont(.bodyMedium)
-                        .accessibilityHidden(true)
-                    Text(suggestionText(suggestion))
-                        .appFont(.small)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer(minLength: 0)
-                }
-                .foregroundStyle(AppColors.accent)
-                .padding(Spacing.xs)
-                .frame(maxWidth: .infinity, minHeight: TouchTarget.minimum)
-                .background(
-                    RoundedRectangle(cornerRadius: CornerRadius.md, style: .continuous)
-                        .fill(AppColors.accent.opacity(Opacity.softBackground))
-                )
             }
-            .buttonStyle(.plain)
-            .transition(.opacity)
         }
     }
 
@@ -168,10 +169,10 @@ struct BreathingBeforeView: View {
         )
     }
 
-    private func suggestionGlyph(_ suggestion: BreathingLadder.Suggestion) -> String {
+    private func suggestionDirection(_ suggestion: BreathingLadder.Suggestion) -> LadderRuleRow.Direction {
         switch suggestion {
-        case .stepDown: "arrow.down"
-        case .stepUp: "arrow.up"
+        case .stepDown: .down
+        case .stepUp: .up
         }
     }
 
@@ -198,4 +199,6 @@ struct BreathingBeforeView: View {
         onClose: {},
         onStart: {}
     )
+    .environment(ArticlesStore())
+    .modelContainer(for: BreathingSessionEntry.self, inMemory: true)
 }

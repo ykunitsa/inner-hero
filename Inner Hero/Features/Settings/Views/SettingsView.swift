@@ -34,6 +34,36 @@ struct SettingsView: View {
                     )
                 }
 
+                // Spec §7: the crisis section shown during onboarding stays
+                // here afterwards — that screen promises it, and this is where
+                // the promise is kept. Above "About" on purpose: it is not
+                // trivia about the app.
+                settingsSection(title: String(localized: "If things get really bad")) {
+                    linkRow(
+                        icon: "phone.arrow.up.right.fill",
+                        iconColor: AppColors.accent,
+                        title: String(localized: "Find a helpline in your country"),
+                        subtitle: "findahelpline.com",
+                        url: CrisisHelplineLink.url
+                    )
+                    rowDivider
+                    // A full sentence, not a label/value row: "Immediate danger
+                    // — Emergency number" is terse to the point of ambiguity,
+                    // and this is the one place in the app where a reader must
+                    // not have to work out what is meant.
+                    Text(
+                        String(
+                            localized: "If there is immediate danger, call your country's emergency number."
+                        )
+                    )
+                    .appFont(.small)
+                    .foregroundStyle(TextColors.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xs)
+                }
+
                 // About
                 settingsSection(title: String(localized: "About")) {
                     infoRow(

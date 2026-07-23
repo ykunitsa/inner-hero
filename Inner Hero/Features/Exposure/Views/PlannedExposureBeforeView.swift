@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// The "before" block of a planned exposure (spec §3): the prediction is
@@ -10,13 +11,25 @@ struct PlannedExposureBeforeView: View {
     let onStart: () async -> Bool
     let onClose: () -> Void
 
+    @Environment(ArticlesStore.self) private var articles
+    /// Both exposure forms count towards the `sessions == 0` rule: §3 keeps
+    /// situational and planned entries in one table because they are one
+    /// exercise, so the article leaves the door after either kind.
+    @Query private var entries: [ExposureLogEntry]
+
     @State private var showDiscardConfirmation = false
     @State private var showSaveError = false
     @State private var isStarting = false
+    @State private var showArticle = false
+
+    private var article: Article? {
+        articles.allArticles.first { $0.id == ExerciseArticle.exposure }
+    }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.md) {
+                articleDoor
                 activitySection
                 fearSection
                 confidenceSection
@@ -50,37 +63,40 @@ struct PlannedExposureBeforeView: View {
         ) {
             Button(String(localized: "OK"), role: .cancel) {}
         }
+        .articleDoorSheet(article, isPresented: $showArticle)
     }
 
     // MARK: Header
 
-    private var header: some View {
-        ZStack {
-            // "Planned", not just "Exposure": the Exercises tile leads only
-            // here, while the situational form (spec §3's primary mode) is
-            // launched from Today. The title is what tells the user which of
-            // the two they landed in, immediately and at no cost to the tile.
-            Text(String(localized: "Planned exposure"))
-                .appFont(.h3)
-                .foregroundStyle(TextColors.primary)
-                .lineLimit(1)
-                .padding(.horizontal, TouchTarget.minimum + Spacing.xs)
-            HStack {
-                Spacer()
-                CircleButton(systemImage: "xmark", background: AppColors.cardBackground) {
-                    if viewModel.hasBeforeDraft {
-                        showDiscardConfirmation = true
-                    } else {
-                        onClose()
-                    }
-                }
-                .accessibilityLabel(String(localized: "Close"))
+    /// Spec §8: the article stands at the door only before the first session.
+    /// Unlike the pinned flows, this screen scrolls, so the card sits at the top
+    /// of the form — above the first field, still below nothing.
+    @ViewBuilder
+    private var articleDoor: some View {
+        if entries.isEmpty, let article {
+            ArticleDoorRow(title: article.title, readTime: article.readTime) {
+                showArticle = true
             }
         }
-        .padding(.horizontal, Spacing.sm)
-        .padding(.top, Spacing.sm)
-        .padding(.bottom, Spacing.xs)
-        .pinnedHeaderBackground()
+    }
+
+    private var header: some View {
+        // "Planned", not just "Exposure": the Exercises tile leads only here,
+        // while the situational form (spec §3's primary mode) is launched from
+        // Today. The title is what tells the user which of the two they landed
+        // in, immediately and at no cost to the tile.
+        ExerciseDoorHeader(
+            title: String(localized: "Planned exposure"),
+            infoLabel: article?.title,
+            onInfo: article == nil ? nil : { showArticle = true },
+            onClose: {
+                if viewModel.hasBeforeDraft {
+                    showDiscardConfirmation = true
+                } else {
+                    onClose()
+                }
+            }
+        )
     }
 
     // MARK: Sections
@@ -177,4 +193,6 @@ struct PlannedExposureBeforeView: View {
         onStart: { true },
         onClose: {}
     )
+    .environment(ArticlesStore())
+    .modelContainer(for: ExposureLogEntry.self, inMemory: true)
 }

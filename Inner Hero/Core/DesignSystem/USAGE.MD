@@ -445,6 +445,24 @@ SectionLabel(text: "Safety behaviors")           // ALL CAPS метка секц
 ExerciseStepHeader(title: "Guided Breathing", category: "RELAXATION",
                    onBack: { dismiss() }, onSettings: { show = true })
 
+// Шапка ДВЕРИ упражнения (before-экран): «i» + заголовок + X.
+// «i» — постоянная точка входа в статью, остаётся и после первой сессии
+// (спека §8 + docs/plans/11.6-shell.md, решение 6). infoLabel — реальное
+// название статьи: VoiceOver-метка «Информация» ничего не обещает.
+ExerciseDoorHeader(title: "Breathing",
+                   infoLabel: article?.title,
+                   onInfo: article == nil ? nil : { showArticle = true },
+                   onClose: { dismiss() })
+
+// Карточка статьи у двери — ТОЛЬКО пока sessions == 0 (спека §8).
+// Тише PrimaryButton: читать — не работа этого экрана. Нейтральная
+// поверхность, а не accent строки-правила: правило зовёт действовать,
+// статья просто лежит рядом.
+ArticleDoorRow(title: article.title, readTime: article.readTime) { show = true }
+
+// Открыть статью из полноэкранного флоу (шит, а не push — стека там нет)
+.articleDoorSheet(article, isPresented: $showArticle)
+
 // Нижняя капсула сессии: назад | таймер | действие
 SessionFlowBottomPill(
     background: AppColors.cardBackground,   // на sessionSurface; по умолчанию чёрная

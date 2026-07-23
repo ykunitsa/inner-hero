@@ -1,8 +1,18 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State private var selectedTab: AppTab = .today
+    /// Which tab the app opens on. Normally Today; right after onboarding it is
+    /// Exercises, because §7 sends "Start" there and §8 has the articles waiting
+    /// at the doors.
+    var initialTab: AppTab = .today
+
+    @State private var selectedTab: AppTab
     @State private var router = NavigationRouter()
+
+    init(initialTab: AppTab = .today) {
+        self.initialTab = initialTab
+        _selectedTab = State(initialValue: initialTab)
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
