@@ -10,6 +10,13 @@ struct Inner_HeroApp: App {
     @State private var articlesStore = ArticlesStore()
 
     private let modelContainer: ModelContainer
+    /// Whether onboarding was already behind us when this launch started.
+    ///
+    /// Spec §7 sends "Start" to the Exercises tab, not Today: that is where the
+    /// articles stand at the doors while `sessions == 0` (§8). Captured at
+    /// launch rather than stored as another flag — finishing onboarding rebuilds
+    /// `RootAppView`, and this is the only thing that has to remember why.
+    private let wasOnboardedAtLaunch: Bool
 
     init() {
         StoreBootstrap.wipeLegacyStoreIfNeeded()
@@ -17,12 +24,18 @@ struct Inner_HeroApp: App {
         // The BA store has to exist before the first "Одно дело" card is drawn;
         // an empty shelf is not a state that screen can do anything useful with.
         BAPreset.seedIfNeeded(in: modelContainer.mainContext)
+        wasOnboardedAtLaunch = UserDefaults.standard.bool(
+            forKey: AppStorageKeys.hasCompletedOnboarding
+        )
     }
 
     var body: some Scene {
         WindowGroup {
             AppLockGateView {
-                RootAppView(hasCompletedOnboarding: hasCompletedOnboarding)
+                RootAppView(
+                    hasCompletedOnboarding: hasCompletedOnboarding,
+                    initialTab: wasOnboardedAtLaunch ? .today : .exercises
+                )
             }
             .environment(notificationManager)
             .environment(articlesStore)
@@ -34,10 +47,11 @@ struct Inner_HeroApp: App {
 
 private struct RootAppView: View {
     let hasCompletedOnboarding: Bool
+    let initialTab: AppTab
 
     var body: some View {
         if hasCompletedOnboarding {
-            MainTabView()
+            MainTabView(initialTab: initialTab)
         } else {
             OnboardingView()
         }
